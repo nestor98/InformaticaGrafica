@@ -33,10 +33,21 @@ public:
 		return s;
 	}
 
+	// Producto vectorial
+	Vector3 prodVectorial(const Vector3& otro) {
+		return otro; // TODO: implementar
+	}
+
+	// con otro nombre, por que no
+	Vector3 cross(const Vector3& otro) {
+		return prodVectorial(otro);
+	}
+
+
+
 	float operator [](int i) const {
 		return c[i];
 	}
-
 
 	float& operator [](int i) {
 		return c[i];
@@ -63,18 +74,38 @@ public:
 
 };
 
+/**************** OPERADORES **************/
 
+// para evitar el to_string en cout
+std::ostream& operator<<(std::ostream& os, const Vector3& v)
+{
+	os << v.to_string();
+	return os;
+}
 
-Vector3& operator - (const Vector3& v1, const Vector3& v2) {
+// +
+Vector3 operator + (const Vector3& v1, const Vector3& v2) {
+	Vector3 res(v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2], false);
+	return res;
+}
+
+// -
+Vector3 operator - (const Vector3& v1, const Vector3& v2) {
 	Vector3 res(v1[0] - v2[0], v1[1] - v2[1], v1[2] - v2[2], false);
 	return res;
 }
 
+// escalar s*v
 Vector3 operator * (const float& s, const Vector3& v) {
 	Vector3 res(v[0] * s, v[1] * s, v[2] * s, false);
 	return res;
 }
 
+// escalar s*v (orden v*s)
+Vector3 operator * (const Vector3& v, const float& s) {
+	Vector3 res(v[0] * s, v[1] * s, v[2] * s, false);
+	return res;
+}
 
 // Prod escalar
 float operator * (const Vector3& v1, const Vector3& v2) {

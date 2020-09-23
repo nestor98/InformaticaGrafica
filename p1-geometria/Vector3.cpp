@@ -20,20 +20,23 @@ public:
 		for (int i = 0; i < 4; i++) {
 			c[i] = original[i];
 		}
+		if (original.esVector() != this->esVector()) {
+			std::cout << "???????" << std::endl;
+		}
 	}
 
 	Vector3(float x, float y, float z, float homogenea) {
 		c[0] = x;
 		c[1] = y;
 		c[2] = z;
-		c[4] = homogenea;
+		c[3] = homogenea;
 	}
 
 	Vector3(float x, float y, float z, bool punto) {
 		c[0] = x;
 		c[1] = y;
 		c[2] = z;
-		c[4] = punto ? 1 : 0;
+		c[3] = punto ? 1 : 0;
 	}
 
 	/**************** Metodos ****************/

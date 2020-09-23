@@ -13,6 +13,7 @@ public:
 		: centro(_centro), eje(_eje), ciudad(_ciudad) 
 	{
 		// Comprobaciones...
+		//cout << (_centro.esVector() ? "joder" : "ah") << endl;
 		if (centro.esVector()) {
 			cerr << "El centro debe ser un punto, no un vector" << endl;
 			exit(1);
@@ -34,6 +35,22 @@ public:
 				 << centro_ciudad << endl << "La diferencia, " << diferencia << " no puede ser mayor a 10^-6" << endl;
 			exit(1);
 		}
+
+
+	}
+
+	// TODO: sacar estacion D:
+	void setEstacion(float theta, float phi_supongo) {
+		estacion = ciudad; // TODO: transformaciones con angulos, etc......
+
+		// Base:
+		k = (estacion - centro) / (estacion-centro).getModulo(); // vector del centro a la estacion entre su propio modulo, para que sea modulo 1
+		cout << "el modulo es " << k.getModulo() << " (deberia ser 1 creo)" << endl;
+		// TODO: las otras componentes
+	}
+
+	Vector3 getEstacion() const {
+		return estacion;
 	}
 
 
@@ -60,15 +77,15 @@ public:
 	// TODO: todo lo que sigue
 	// Calcular base:
 	Vector3 getI() const {
-
+		return i;
 	}
 
 	Vector3 getJ() const {
-
+		return j;
 	}
 
 	Vector3 getK() const {
-
+		return k;
 	}
 
 	Matriz4 getMatrizCambioBase() const {
@@ -82,6 +99,14 @@ private:
 	Vector3 ciudad; // punto UCS de la ciudad
 
 	float radio; // solo para comprobar (final punto 2 enunciado)
+
+	// Estacion, calculada a partir del centro, el eje, la ciudad y los dos angulos....
+	Vector3 estacion;
+
+	// Base:
+	Vector3 i; 
+	Vector3 j;
+	Vector3 k;
 };
 
 /**************** OPERADORES ****************/
@@ -115,18 +140,23 @@ int main() {
 	// ejercicios:
 	// Primer planeta:
 	Vector3 centro1(10,0,0,true); // TODO: cambiar los valores a algo con sentido
+	//cout << (centro1.esVector() ? "pero bueno" : "vale") << endl;
 	Vector3 eje1(10, 0, 0, false);
-	Vector3 ciudad1(10, 0, 0, true);
+	Vector3 ciudad1(15, 0, 0, true);
 	Planeta p1(centro1, eje1, ciudad1);
+	
+	p1.setEstacion(10,10); // estacion a partir de los angulos
 
 	// Segundo planeta:
 	Vector3 centro2(-10, 0, 0, true); // TODO: cambiar los valores a algo con sentido
 	Vector3 eje2(10, 0, 0, false);
-	Vector3 ciudad2(10, 0, 0, true);
+	Vector3 ciudad2(-15, 0, 0, true);
 	Planeta p2(centro2, eje2, ciudad2);
 
-	// Vector entre las ciudades en UCS:
-	Vector3 v = p2.getCiudad() - p1.getCiudad();
+	p2.setEstacion(10, 10); // estacion a partir de los angulos
+
+	// Vector entre las estaciones en UCS:
+	Vector3 v = p2.getEstacion() - p1.getEstacion();
 
 	// Vector en coordenadas de p1:
 	Matriz4 M1 = p1.getMatrizCambioBase();

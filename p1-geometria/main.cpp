@@ -10,7 +10,8 @@ class Planeta
 {
 public:
 	Planeta(const Vector3& _centro, const Vector3& _eje, const Vector3& _ciudad) 
-		: centro(_centro), eje(_eje), ciudad(_ciudad) {
+		: centro(_centro), eje(_eje), ciudad(_ciudad) 
+	{
 		radio = eje.getModulo() / 2.0; // el eje es el diametro
 		float centro_ciudad = (centro - ciudad).getModulo(); // distancia del centro a la ciudad
 		float diferencia = centro_ciudad - radio; // el error, debe ser menor a 10^-6
@@ -74,9 +75,6 @@ std::ostream& operator<<(std::ostream& os, const Planeta& p)
 	return os;
 }
 
-
-
-
 int main() {
 	
 	Vector3 v1(2, 2, 2, false);
@@ -88,6 +86,8 @@ int main() {
 
 	//cout << "hearsljnagsnon" << endl;
 	cout << v3 << endl;
+
+	cout << "Modulo v1(" << v1 << ") = " << v1.getModulo() << endl;
 	
 	return 0;
 }

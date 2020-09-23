@@ -45,7 +45,7 @@ public:
 
 		// Base:
 		k = (estacion - centro) / (estacion-centro).getModulo(); // vector del centro a la estacion entre su propio modulo, para que sea modulo 1
-		cout << "el modulo es " << k.getModulo() << " (deberia ser 1 creo)" << endl;
+		cout << "el modulo de k es " << k.getModulo() << " (deberia ser 1 creo)" << endl;
 		// TODO: las otras componentes
 	}
 
@@ -90,6 +90,10 @@ public:
 
 	Matriz4 getMatrizCambioBase() const {
 		// TODO: magia
+		Matriz4 cambioBase();
+
+		cambioBase.setCambioBase(i, j, k, estacion);
+		return cambioBase;
 	}
 
 
@@ -119,11 +123,10 @@ std::ostream& operator<<(std::ostream& os, const Planeta& p)
 }
 
 
-
 /**************** Programa principal ****************/
 int main() {
 	
-	// pruebecillas:
+	// ---------------  pruebecillas:
 	Vector3 u1(2, 2, 2, false);
 	Matriz4 m(u1, u1, u1, u1);
 
@@ -136,8 +139,12 @@ int main() {
 
 	cout << "Modulo u1(" << u1 << ") = " << u1.getModulo() << endl;
 	
+	m.setRotarX(30);
 
-	// ejercicios:
+	cout << " matriz de rotacion en X, por ej:\n" << m << endl;
+
+
+	// ---------------  ejercicios:
 	// Primer planeta:
 	Vector3 centro1(10,0,0,true); // TODO: cambiar los valores a algo con sentido
 	//cout << (centro1.esVector() ? "pero bueno" : "vale") << endl;

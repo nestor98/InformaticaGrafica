@@ -98,10 +98,10 @@ private:
 
 	// Matriz identidad, se usa en otros metodos:
 	void setIdentidad() {
-		m[0] = Vector3(1, 0, 0, 0);
-		m[1] = Vector3(0, 1, 0, 0);
-		m[2] = Vector3(0, 0, 1, 0);
-		m[3] = Vector3(0, 0, 0, 1);
+		m[0] = Vector3(1, 0, 0, float(0));
+		m[1] = Vector3(0, 1, 0, float(0));
+		m[2] = Vector3(0, 0, 1, float(0));
+		m[3] = Vector3(0, 0, 0, float(1));
 	}
 
 	// Escribe los parametros en la diagonal:
@@ -132,7 +132,7 @@ public:
 	// desplazamiento en x,y,z:
 	void setTraslacion(const float x, const float y, const float z) {
 		setIdentidad();
-		m[3] = Vector3(x, y, z, 1);
+		m[3] = Vector3(x, y, z, float(1));
 	}
 
 	// escalar en sx, sy, sz:
@@ -203,6 +203,14 @@ public:
 		m[3] = origen;
 	}
 
+	std::string to_string() const {
+		std::string s = "";
+		for (int i = 0; i < 4; i++) {
+			s += m[i].to_string() + "\n";
+		}
+		return s;
+	}
+
 	// Devuelve la iesima fila como Vector3
 	Vector3 fila(const int i) const {
 		Vector3 vFila(m[0][i], m[1][i], m[2][i], m[3][i]);
@@ -215,6 +223,7 @@ public:
 	}
 
 
+
 };
 
 /**************** OPERADORES ****************/
@@ -223,6 +232,13 @@ public:
 std::ostream& operator<<(std::ostream& os, const Vector3& v)
 {
 	os << v.to_string();
+	return os;
+}
+
+// para evitar el to_string en cout
+std::ostream& operator<<(std::ostream& os, const Matriz4& m)
+{
+	os << m.to_string();
 	return os;
 }
 

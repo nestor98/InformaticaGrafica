@@ -1,18 +1,25 @@
 #include <iostream>
 #include <array>
 #include <string>
+#include <cmath>
+// cmath para sqrt
 
 
-
-class Matriz4;
-
-
+class Matriz4; 
 
 class Vector3 {
 	std::array<float, 4> c; // coordenadas, con coord homogenea
 
 public:
+
+	/**************** Constructores ****************/
 	Vector3() {
+	}
+
+	Vector3(const Vector3& original) {
+		for (int i = 0; i < 4; i++) {
+			c[i] = original[i];
+		}
 	}
 
 	Vector3(float x, float y, float z, float homogenea) {
@@ -29,33 +36,46 @@ public:
 		c[4] = punto ? 1 : 0;
 	}
 
+	/**************** Metodos ****************/
 
+	// True sii es un vector (false si es punto)
 	bool esVector() const {
 		return c[3] == 0;
 	}
 
+	// Representacion en string del vector
 	std::string to_string() const {
 		std::string s = std::to_string(c[0]);
 		s += " " + std::to_string(c[1]) + " " + std::to_string(c[2]) + " " + std::to_string(c[3]);
 		return s;
 	}
 
-	// Producto vectorial
+	// Devuelve el modulo del vector
+	// TODO: comprobar!!
+	float getModulo() const {
+		float mod = 0;
+		for (int i = 0; i < 4; i++) {
+			mod += c[i] * c[i]; // cada componente al cuadrado
+		}
+		return sqrt(mod); // raiz de la suma de los cuads
+	}
+
+	// Producto vectorial (cross product)
 	Vector3 prodVectorial(const Vector3& otro) {
 		return otro; // TODO: implementar
 	}
 
-	// con otro nombre, por que no
+	// con el otro nombre, por que no
 	Vector3 cross(const Vector3& otro) {
 		return prodVectorial(otro);
 	}
 
-
-
+	// componente (get, a = v[2])
 	float operator [](int i) const {
 		return c[i];
 	}
 
+	// componente (set, v[2] = 3) 
 	float& operator [](int i) {
 		return c[i];
 	}
@@ -63,8 +83,9 @@ public:
 };
 
 
+// Clase matriz4, para las transformaciones de vectores
 class Matriz4 {
-	std::array<Vector3, 4> m;
+	std::array<Vector3, 4> m; // formada por 4 vectores (verticales)
 
 public:
 	Matriz4(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Vector3& v4) {
@@ -80,6 +101,7 @@ public:
 		return vFila;
 	}
 
+	// m[i] devuelve la iesima columna como Vector3
 	Vector3 operator [](int i) const {
 		return m[i];
 	}
@@ -87,7 +109,7 @@ public:
 
 };
 
-/**************** OPERADORES **************/
+/**************** OPERADORES ****************/
 
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Vector3& v)
@@ -120,7 +142,7 @@ Vector3 operator * (const Vector3& v, const float& s) {
 	return res;
 }
 
-// Prod escalar
+// Prod escalar (dot product)
 float operator * (const Vector3& v1, const Vector3& v2) {
 	float res = 0;
 	for (int i = 0; i < 4; i++) {
@@ -129,11 +151,11 @@ float operator * (const Vector3& v1, const Vector3& v2) {
 	return res;
 }
 
-
+// Producto M*v (transformaciones, cambios de base...). Devuelve otro Vector3
 Vector3 operator * (const Matriz4& m, const Vector3& v) {
 	Vector3 res;
 	for (int i = 0; i < 4; i++) {
-		res[i] = v * m.fila(i);
+		res[i] = v * m.fila(i); // prod escalar del vector y la fila
 	}
 	return res;
 }

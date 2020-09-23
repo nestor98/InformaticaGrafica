@@ -40,13 +40,48 @@ public:
 	}
 
 	// TODO: sacar estacion D:
-	void setEstacion(float theta, float phi_supongo) {
-		estacion = ciudad; // TODO: transformaciones con angulos, etc......
+	void setEstacion(float theta, float phi) {
+		Vector3 centro_ciudad = ciudad - centro;
+		// Nueva base con origen en el centro del planeta, i el eje
+		cout << "vector del centro a la ciudad: " << centro_ciudad << endl;
+		i = eje / eje.getModulo();
+		k = cross(i, centro_ciudad);
+		k = k / k.getModulo();
+		j = cross(k, i);
+		j = j / j.getModulo();
+		cout << "i,j,k...\n" << i << endl << j << endl << k << "\n..." << endl;
+		cout <<"Deberia cumplirse que...\n" << i << " = i = jxk =\n" << cross(j, k) << endl;
+
+		cout << "Deberia cumplirse que...\n" << k << " = k = ixj =\n" << cross(i, j) << endl;
+		Matriz4 baseCentroPlaneta, latitud, longitud;
+		baseCentroPlaneta.setCambioBase(i, j, k, centro);
+		latitud.setRotarZ(theta);
+		longitud.setRotarX(phi);
+
+		cout << "base en el centro: "<< baseCentroPlaneta << endl;
+		// TODO: DEBUG!!
+		estacion = centro + (eje / 2); // empieza en el polo norte
+		cout << "Polo norte: "<< estacion << endl; 
+		estacion = baseCentroPlaneta * estacion; // nueva base
+		cout << "En la nueva base: " << estacion <<endl;
+		// TODO: no entiendo pq en la nueva base hay una coord > 20, si el origen esta en el centro del planeta....??
+		estacion = latitud * estacion; // se rota a la latitud
+		cout << "En la latitud correcta: " << estacion << endl;
+		estacion = longitud * estacion; // Y a la longitud
+		cout << "En la longitud correcta: " << estacion << endl;
+		// TODO: inversa
+		//estacion = estacion * baseCentroPlaneta.inversa(); // Se deshace el cambio de base
+		//cout << "En UCS de nuevo: " << estacion << endl;
+
+
+
+
+		//estacion = ciudad; // TODO: transformaciones con angulos, etc......
 
 		// Base:
-		k = (estacion - centro) / (estacion-centro).getModulo(); // vector del centro a la estacion entre su propio modulo, para que sea modulo 1
-		cout << "el modulo de k es " << k.getModulo() << " (deberia ser 1 creo)" << endl;
-		// TODO: las otras componentes
+		//k = (estacion - centro) / (estacion-centro).getModulo(); // vector del centro a la estacion entre su propio modulo, para que sea modulo 1
+		// cout << "el modulo de k es " << k.getModulo() << " (deberia ser 1 creo)" << endl;
+	
 	}
 
 	Vector3 getEstacion() const {
@@ -90,12 +125,10 @@ public:
 
 	Matriz4 getMatrizCambioBase() const {
 		// TODO: magia
-		Matriz4 cambioBase();
-
+		Matriz4 cambioBase;
 		cambioBase.setCambioBase(i, j, k, estacion);
 		return cambioBase;
 	}
-
 
 private:
 	Vector3 centro; // punto UCS del centro del planeta
@@ -143,7 +176,7 @@ int main() {
 
 	cout << " matriz de rotacion en X, por ej:\n" << m << endl;
 
-
+	/*
 	// ---------------  ejercicios:
 	// Primer planeta:
 	Vector3 centro1(10,0,0,true); // TODO: cambiar los valores a algo con sentido
@@ -178,6 +211,45 @@ int main() {
 	if (v2[2] < 0) { // si la tercera componente es menor que 0, atraviesa el planeta
 		cout << "Va a atravesar el planeta 2!" << endl;
 	}
+	*/
+
+	/**************************** Version simple ******************************/
+	cout << "----------------------- programa con params simples ----------------------" << endl;
+	cout << "(deberia dar los vectores 0,0,distancia y 0,0,-distancia para cada planeta)" << endl;
+	// Primer planeta:
+	Vector3 centro1(-20, 0, 0, true); // TODO: cambiar los valores a algo con sentido
+	//cout << (centro1.esVector() ? "pero bueno" : "vale") << endl;
+	Vector3 eje1(0, 20, 0, false);
+	Vector3 ciudad1(-10, 0, 0, true);
+	Planeta p1(centro1, eje1, ciudad1);
+
+	p1.setEstacion(10, 10); // estacion a partir de los angulos
+
+	// Segundo planeta:
+	Vector3 centro2(20, 0, 0, true); // TODO: cambiar los valores a algo con sentido
+	Vector3 eje2(0, -20, 0, false);
+	Vector3 ciudad2(10, 0, 0, true);
+	Planeta p2(centro2, eje2, ciudad2);
+
+	p2.setEstacion(0, 0); // estacion a partir de los angulos
+
+	// Vector entre las estaciones en UCS:
+	Vector3 v = p2.getEstacion() - p1.getEstacion();
+
+	// Vector en coordenadas de p1:
+	Matriz4 M1 = p1.getMatrizCambioBase();
+	Vector3 v1 = M1 * v;
+	if (v1[2] < 0) { // si la tercera componente es menor que 0, atraviesa el planeta
+		cout << "Va a atravesar el planeta 1!" << endl;
+	}
+
+	// Vector en coordenadas de p1:
+	Matriz4 M2 = p2.getMatrizCambioBase();
+	Vector3 v2 = -(M2 * v); // - para cambiarle el sentido
+	if (v2[2] < 0) { // si la tercera componente es menor que 0, atraviesa el planeta
+		cout << "Va a atravesar el planeta 2!" << endl;
+	}
+
 
 	return 0;
 }

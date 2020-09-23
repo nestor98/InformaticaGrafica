@@ -63,16 +63,6 @@ public:
 		return sqrt(mod); // raiz de la suma de los cuads
 	}
 
-	// Producto vectorial (cross product)
-	Vector3 prodVectorial(const Vector3& otro) {
-		return otro; // TODO: implementar
-	}
-
-	// con el otro nombre, por que no
-	Vector3 cross(const Vector3& otro) {
-		return prodVectorial(otro);
-	}
-
 	// Cambio de sentido
 	Vector3 operator - () const {
 		return Vector3(-c[0], -c[1], -c[2], false);
@@ -203,6 +193,11 @@ public:
 		m[3] = origen;
 	}
 
+	Matriz4 inversa() const {
+		// TODO: implementar la inversa..........
+	}
+
+	// se muestra transpuesta jeje
 	std::string to_string() const {
 		std::string s = "";
 		for (int i = 0; i < 4; i++) {
@@ -283,6 +278,15 @@ float operator * (const Vector3& v1, const Vector3& v2) {
 	for (int i = 0; i < 4; i++) {
 		res += v1[i] * v2[i];
 	}
+	return res;
+}
+
+// cross product (producto vectorial)
+Vector3 cross(const Vector3& v1, const Vector3& v2) { // TODO: comprobar
+	//std::cout << "v1: " << v1 << std::endl;
+	//std::cout << "v2: " << v2 << std::endl;
+	Vector3 res(v1[1]*v2[2] - v1[2]*v2[1], v1[0]*v2[2] - v1[2]*v2[0], v1[0]*v2[1] - v1[1]*v2[0], false);
+	//std::cout << "v1 x v2 = " << res << std::endl;
 	return res;
 }
 

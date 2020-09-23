@@ -70,6 +70,11 @@ public:
 		return prodVectorial(otro);
 	}
 
+	// Cambio de sentido
+	Vector3 operator - () const {
+		return Vector3(-c[0], -c[1], -c[2], false);
+	}
+
 	// componente (get, a = v[2])
 	float operator [](int i) const {
 		return c[i];
@@ -139,6 +144,17 @@ Vector3 operator * (const float& s, const Vector3& v) {
 // escalar s*v (orden v*s)
 Vector3 operator * (const Vector3& v, const float& s) {
 	Vector3 res(v[0] * s, v[1] * s, v[2] * s, false);
+	return res;
+}
+
+
+// escalar v/s 
+Vector3 operator / (const Vector3& v, const float& s) {
+	if (s == 0) {
+		std::cerr << "no dividas entre 0..." << std::endl;
+		exit(1);
+	}
+	Vector3 res(v[0] / s, v[1] / s, v[2] / s, false);
 	return res;
 }
 

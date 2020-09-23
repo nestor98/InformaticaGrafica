@@ -15,6 +15,13 @@ public:
 	Vector3() {
 	}
 
+	Vector3(float x, float y, float z, float homogenea) {
+		c[0] = x;
+		c[1] = y;
+		c[2] = z;
+		c[4] = homogenea;
+	}
+
 	Vector3(float x, float y, float z, bool punto) {
 		c[0] = x;
 		c[1] = y;
@@ -67,10 +74,16 @@ public:
 		m[3] = v4;
 	}
 
+	// Devuelve la iesima fila como Vector3
+	Vector3 fila(const int i) const {
+		Vector3 vFila(m[0][i], m[1][i], m[2][i], m[3][i]);
+		return vFila;
+	}
 
 	Vector3 operator [](int i) const {
 		return m[i];
 	}
+
 
 };
 
@@ -116,10 +129,11 @@ float operator * (const Vector3& v1, const Vector3& v2) {
 	return res;
 }
 
-Vector3 operator * (const Vector3& v, const Matriz4& m) {
+
+Vector3 operator * (const Matriz4& m, const Vector3& v) {
 	Vector3 res;
 	for (int i = 0; i < 4; i++) {
-		res[i] = v * m[i];
+		res[i] = v * m.fila(i);
 	}
 	return res;
 }

@@ -11,7 +11,7 @@ int main() {
 
 	cout << 5.0 * v1 << endl;
 	//cout << "hey" << endl;
-	Vector3 v3 = v1 * m;
+	Vector3 v3 = m*v1;
 
 	//cout << "hearsljnagsnon" << endl;
 	cout << v3<< endl;

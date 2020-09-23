@@ -93,14 +93,114 @@ public:
 
 // Clase matriz4, para las transformaciones de vectores
 class Matriz4 {
+private:
 	std::array<Vector3, 4> m; // formada por 4 vectores (verticales)
 
+	// Matriz identidad, se usa en otros metodos:
+	void setIdentidad() {
+		m[0] = Vector3(1, 0, 0, 0);
+		m[1] = Vector3(0, 1, 0, 0);
+		m[2] = Vector3(0, 0, 1, 0);
+		m[3] = Vector3(0, 0, 0, 1);
+	}
+
+	// Escribe los parametros en la diagonal:
+	void setDiagonal(const float d0, const float d1, const float d2, const float d3) {
+		m[0][0] = d0;
+		m[1][1] = d1;
+		m[2][2] = d2;
+		m[3][3] = d3;
+	}
+
 public:
+	/**************** Constructores ****************/
+
+	// Por defecto, la identidad (no hace nada)
+	Matriz4() { 
+		setIdentidad();
+	}
+
 	Matriz4(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Vector3& v4) {
 		m[0] = v1;
 		m[1] = v2;
 		m[2] = v3;
 		m[3] = v4;
+	}
+
+	/**************** Definiciones de transformaciones especificas ****************/
+
+	// desplazamiento en x,y,z:
+	void setTraslacion(const float x, const float y, const float z) {
+		setIdentidad();
+		m[3] = Vector3(x, y, z, 1);
+	}
+
+	// escalar en sx, sy, sz:
+	void setEscalar(const float sx, const float sy, const float sz) {
+		setIdentidad();
+		setDiagonal(sx, sy, sz, 1);
+	}
+
+	// Rotar en x
+	/*
+		1    0    0    0
+		0   cos -sin   0
+		0   sin  cos   0
+		0    0    0    1
+	*/
+	void setRotarX(const float theta) {
+		setIdentidad();
+		m[1][1] = cos(theta);
+		m[1][2] = sin(theta);
+		m[2][1] = -sin(theta);
+		m[2][2] = cos(theta);
+	}
+
+	// Rotar en y
+	/*
+		cos  0   sin   0
+		0    1    0    0
+	   -sin  0   cos   0
+		0    0    0    1
+	*/
+	void setRotarY(const float theta) {
+		setIdentidad();
+		m[0][0] = cos(theta);
+		m[0][2] = -sin(theta);
+		m[2][0] = sin(theta);
+		m[2][2] = cos(theta);
+	}
+
+	// Rotar en z
+	/*
+		cos -sin   0    0
+		sin  cos   0    0
+		 0    0    1    0
+		 0    0    0    1
+	 */
+	void setRotarZ(const float theta) {
+		setIdentidad();
+		m[0][0] = cos(theta);
+		m[0][1] = sin(theta);
+		m[1][0] = -sin(theta);
+		m[1][1] = cos(theta);
+	}
+
+	// para cambiar un vector a una nueva base
+	void setCambioBase(const Vector3& eje1, const Vector3& eje2, const Vector3& eje3, const Vector3& origen) {
+		// comprobaciones...
+		if (!eje1.esVector() || !eje2.esVector() || !eje3.esVector()) {
+			std::cerr << "Los tres primeros parametros del cambio de base deben ser vectores" << std::endl;
+			exit(1);
+		}
+		if (origen.esVector()) {
+			std::cerr << "El origen del cambio de base debe ser un punto" << std::endl;
+			exit(1);
+		}
+		m[0] = eje1;
+		m[1] = eje2;
+		m[2] = eje3;
+		m[3] = origen;
 	}
 
 	// Devuelve la iesima fila como Vector3

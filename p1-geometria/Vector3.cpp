@@ -237,6 +237,23 @@ std::ostream& operator<<(std::ostream& os, const Matriz4& m)
 	return os;
 }
 
+// Comparaciones
+
+// TODO: ahora, un vector y un punto con las mismas componentes no son iguales,
+// revisar si seria mejor que lo fueran (cambiando el i<4 por i<3)
+bool operator == (const Vector3& v1, const Vector3& v2) {
+	bool iguales = true;
+	for (int i = 0; i < 4; i++) {
+		iguales &= v1[i] == v2[i];
+	}
+	return iguales;
+}
+
+bool operator != (const Vector3& v1, const Vector3& v2) {
+	return !(v1 == v2);
+}
+
+
 // +
 Vector3 operator + (const Vector3& v1, const Vector3& v2) {
 	Vector3 res(v1[0] + v2[0], v1[1] + v2[1], v1[2] + v2[2], false);

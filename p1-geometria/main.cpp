@@ -176,6 +176,15 @@ int main() {
 
 	cout << " matriz de rotacion en X, por ej:\n" << m << endl;
 
+	// Test de cambio de base
+	Vector3 punto(10, 0, 0, true); // punto a 10 uds a la dcha (x)
+	m.setCambioBase(Vector3(1, 0, 0, false), Vector3(0, 1, 0, false), Vector3(0, 0, 1, false), punto); // nueva base con origen en el propio punto
+	cout << "el punto " << punto << " deberia acabar en 0,0,0 ya que es el propio origen de la nueva base:" << endl
+		 << m * punto << endl;
+	if (m * punto != Vector3(0, 0, 0, true)) {
+		cout << "Pero no es asi....." << endl;
+	}
+
 	/*
 	// ---------------  ejercicios:
 	// Primer planeta:

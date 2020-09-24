@@ -197,11 +197,15 @@ public:
 		// TODO: implementar la inversa..........
 	}
 
-	// se muestra transpuesta jeje
+	// como string
 	std::string to_string() const {
 		std::string s = "";
 		for (int i = 0; i < 4; i++) {
-			s += m[i].to_string() + "\n";
+			for (int col = 0; col < 4; col++) {
+				s += std::to_string(m[col][i]) + "\t";
+			}
+			s += "\n";
+			//s += m[i].to_string() + "\n";
 		}
 		return s;
 	}

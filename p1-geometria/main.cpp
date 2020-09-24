@@ -43,32 +43,32 @@ public:
 	void setEstacion(float theta, float phi) {
 		Vector3 centro_ciudad = ciudad - centro;
 		// Nueva base con origen en el centro del planeta, i el eje
-		cout << "vector del centro a la ciudad: " << centro_ciudad << endl;
+		//cout << "vector del centro a la ciudad: " << centro_ciudad << endl;
 		i = eje / eje.getModulo();
 		k = cross(i, centro_ciudad);
 		k = k / k.getModulo();
 		j = cross(k, i);
 		j = j / j.getModulo();
-		cout << "i,j,k...\n" << i << endl << j << endl << k << "\n..." << endl;
-		cout <<"Deberia cumplirse que...\n" << i << " = i = jxk =\n" << cross(j, k) << endl;
+		//cout << "i,j,k...\n" << i << endl << j << endl << k << "\n..." << endl;
+		//cout <<"Deberia cumplirse que...\n" << i << " = i = jxk =\n" << cross(j, k) << endl;
 
-		cout << "Deberia cumplirse que...\n" << k << " = k = ixj =\n" << cross(i, j) << endl;
+		//cout << "Deberia cumplirse que...\n" << k << " = k = ixj =\n" << cross(i, j) << endl;
 		Matriz4 baseCentroPlaneta, latitud, longitud;
 		baseCentroPlaneta.setCambioBase(i, j, k, centro);
 		latitud.setRotarZ(theta);
 		longitud.setRotarX(phi);
 
-		cout << "base en el centro: "<< baseCentroPlaneta << endl;
+		//cout << "base en el centro: "<< baseCentroPlaneta << endl;
 		// TODO: DEBUG!!
 		estacion = centro + (eje / 2); // empieza en el polo norte
-		cout << "Polo norte: "<< estacion << endl; 
+		//cout << "Polo norte: "<< estacion << endl; 
 		estacion = baseCentroPlaneta * estacion; // nueva base
-		cout << "En la nueva base: " << estacion <<endl;
+		//cout << "En la nueva base: " << estacion <<endl;
 		// TODO: no entiendo pq en la nueva base hay una coord > 20, si el origen esta en el centro del planeta....??
 		estacion = latitud * estacion; // se rota a la latitud
-		cout << "En la latitud correcta: " << estacion << endl;
+		//cout << "En la latitud correcta: " << estacion << endl;
 		estacion = longitud * estacion; // Y a la longitud
-		cout << "En la longitud correcta: " << estacion << endl;
+		//cout << "En la longitud correcta: " << estacion << endl;
 		// TODO: inversa
 		//estacion = estacion * baseCentroPlaneta.inversa(); // Se deshace el cambio de base
 		//cout << "En UCS de nuevo: " << estacion << endl;
@@ -156,6 +156,25 @@ std::ostream& operator<<(std::ostream& os, const Planeta& p)
 }
 
 
+
+// Test de cambio de base:
+// p un punto en 10,0,0
+// Nueva base (con matriz m) centrada en 10,0,0
+// Lo que espero ------> m*p = 0,0,0........
+void probarCambioBase() {
+	Matriz4 m;
+	Vector3 punto(10, 0, 0, true); // punto a 10 uds a la dcha (x)
+	cout << "Punto p:\n" << punto << endl;
+	m.setCambioBase(Vector3(1, 0, 0, false), Vector3(0, 1, 0, false), Vector3(0, 0, 1, false), punto); // nueva base con origen en el propio punto
+	cout << "Matriz de cambio de base m:\n" << m << endl;
+	cout << "el punto deberia acabar en 0,0,0 ya que es el propio origen de la nueva base (?) m*p:" << endl
+		<< m * punto << endl;
+	if (m * punto != Vector3(0, 0, 0, true)) {
+		cout << "Pero no es asi....." << endl;
+	}
+}
+
+
 /**************** Programa principal ****************/
 int main() {
 	
@@ -176,14 +195,8 @@ int main() {
 
 	cout << " matriz de rotacion en X, por ej:\n" << m << endl;
 
-	// Test de cambio de base
-	Vector3 punto(10, 0, 0, true); // punto a 10 uds a la dcha (x)
-	m.setCambioBase(Vector3(1, 0, 0, false), Vector3(0, 1, 0, false), Vector3(0, 0, 1, false), punto); // nueva base con origen en el propio punto
-	cout << "el punto " << punto << " deberia acabar en 0,0,0 ya que es el propio origen de la nueva base:" << endl
-		 << m * punto << endl;
-	if (m * punto != Vector3(0, 0, 0, true)) {
-		cout << "Pero no es asi....." << endl;
-	}
+	probarCambioBase();
+	
 
 	/*
 	// ---------------  ejercicios:

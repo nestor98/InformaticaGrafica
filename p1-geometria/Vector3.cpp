@@ -4,7 +4,7 @@
 #include <cmath>
 // cmath para sqrt
 
-
+const int TAM_MATRIZ = 4;
 class Matriz4; 
 
 class Vector3 {
@@ -102,6 +102,19 @@ private:
 		m[3][3] = d3;
 	}
 
+	// auxiliar de determinante(), saca el determinante de una parte
+	float determinante(const int filaIni, const int colIni, const int tam) const {
+		float det = 0;
+		if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
+			det = m[filaIni][colIni];// TODO: otras columnas!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		}
+		else {
+			for (int i = 0; i<)
+			det = m[filaIni][colIni] * det(filaIni + 1, (colIni + 1) % TAM_MATRIZ, tam - 1);
+		}
+
+	}
+
 public:
 	/**************** Constructores ****************/
 
@@ -191,6 +204,12 @@ public:
 		m[1] = eje2;
 		m[2] = eje3;
 		m[3] = origen;
+	}
+
+
+
+	float determinante() const {
+		// TODO
 	}
 
 	Matriz4 inversa() const {

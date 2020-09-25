@@ -157,6 +157,17 @@ std::ostream& operator<<(std::ostream& os, const Planeta& p)
 
 
 
+void probarDeterminante() {
+	Matriz4 m;
+	Vector3 punto(10, 0, 0, true); // punto a 10 uds a la dcha (x)
+	cout << "Punto p:\n" << punto << endl;
+	m.setCambioBase(Vector3(1, 0, 20, false), Vector3(3, 1, 4, false), Vector3(2, 0, 1, false), punto); // me vale cualquier matriz
+	cout << "M=\n" << m << endl << "det(M) = " << m.determinante() << " segun internete, -39" << endl;
+
+	Matriz4 m2(Vector3(1, 2, 3, true), Vector3(5,5,5, true), Vector3(9,10,11, true), Vector3(1,0,0,true)); // me vale cualquier matriz
+	cout << "M=\n" << m2 << endl << "det(M) = " << m2.determinante() << " segun internete, -8" << endl;
+}
+
 // Test de cambio de base:
 // p un punto en 10,0,0
 // Nueva base (con matriz m) centrada en 10,0,0
@@ -195,7 +206,9 @@ int main() {
 
 	cout << " matriz de rotacion en X, por ej:\n" << m << endl;
 
-	probarCambioBase();
+
+	probarDeterminante();
+	//probarCambioBase();
 	
 
 	/*

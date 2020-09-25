@@ -2,6 +2,7 @@
 #include <array>
 #include <string>
 #include <cmath>
+#include <list>
 // cmath para sqrt
 
 const int TAM_MATRIZ = 4;
@@ -102,18 +103,69 @@ private:
 		m[3][3] = d3;
 	}
 
+/*  Funcion mu fea con muchos modulos
 	// auxiliar de determinante(), saca el determinante de una parte
-	float determinante(const int filaIni, const int colIni, const int tam) const {
+	float determinante(const int colIni, const int filaIni, const int ignorarCol, const int tam) const {
+		if (tam >= 3) std::cout << "-------------------------\n";
+		if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
 		float det = 0;
 		if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
-			det = m[filaIni][colIni];// TODO: otras columnas!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			det = m[colIni][filaIni];// TODO: otras columnas!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
-		else {
-			for (int i = 0; i<)
-			det = m[filaIni][colIni] * det(filaIni + 1, (colIni + 1) % TAM_MATRIZ, tam - 1);
+		else { // TODO: arreglar el orden, ta mal
+			int s = 1; // SIGNO!
+			for (int i = 0; i<tam; i++) { // se multiplica cada elto de la primera fila por el determinante de las otras filas y cols
+				det += s * m[(colIni+i)%TAM_MATRIZ][filaIni] * determinante((colIni + (i + 1)%tam) % TAM_MATRIZ, filaIni + 1, (colIni-1)%TAM_MATRIZ, tam - 1);
+				s = -s; // cambio de signo
+			}
 		}
-
+		if (tam >= 1) 
+			std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
+		return det;
 	}
+*/
+
+	// auxiliar de la de debajo, devuelve true sii l contiene elto
+	bool contiene (const std::list<int> &l, const int elto) const {
+		for (auto e : l) {
+			if (e == elto) return true;
+		}
+		return false;
+	}
+	
+
+	// auxiliar de determinante(), saca el determinante de una submatriz 
+	// (en la que se ignoran las columnas en ignorarCol, a partir de la fila filaIni y de tamaño tam)
+	float determinante(const std::list<int> &ignorarCol, const int filaIni, const int tam) const {
+		int colIni = 0;
+		while (contiene(ignorarCol, colIni)) colIni++; // saltamos las columnas no deseadas
+		if (tam >= 3) std::cout << "-------------------------\n";
+		if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
+		float det = 0;
+		if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
+			det = m[colIni][filaIni];
+		}
+		else { 
+			int s = 1; // SIGNO
+			int col = colIni;
+			for (int i = 0; i<tam; i++) { // tam veces
+				while (contiene(ignorarCol, col)) col++; // saltamos las columnas no deseadas
+				
+				auto ignorar(ignorarCol);
+				ignorar.push_back(col); // en el sub determinante, ignoramos la col actual
+				float algo = s * m[col][filaIni] * determinante(ignorar, filaIni+1, tam-1);
+				det += algo;
+
+				std::cout << col << "," << filaIni << "=" <<  m[col][filaIni] << " *det = " << algo << std::endl;
+				s = -s;
+				col++; // siguiente col
+			}
+		}
+		if (tam >= 1) 
+			std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
+		return det;
+	}
+
 
 public:
 	/**************** Constructores ****************/
@@ -206,10 +258,11 @@ public:
 		m[3] = origen;
 	}
 
-
-
+	// Devuelve el determinante de la matriz
 	float determinante() const {
-		// TODO
+		//return determinante(0, 0, -1, TAM_MATRIZ);
+		std::list<int> l;
+		return determinante(l, 0, TAM_MATRIZ);
 	}
 
 	Matriz4 inversa() const {

@@ -139,8 +139,8 @@ private:
 	float determinante(const std::list<int> &ignorarCol, const int filaIni, const int tam) const {
 		int colIni = 0;
 		while (contiene(ignorarCol, colIni)) colIni++; // saltamos las columnas no deseadas
-		if (tam >= 3) std::cout << "-------------------------\n";
-		if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
+		//if (tam >= 3) std::cout << "-------------------------\n";
+		//if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
 		float det = 0;
 		if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
 			det = m[colIni][filaIni];
@@ -156,13 +156,13 @@ private:
 				float algo = s * m[col][filaIni] * determinante(ignorar, filaIni+1, tam-1);
 				det += algo;
 
-				std::cout << col << "," << filaIni << "=" <<  m[col][filaIni] << " *det = " << algo << std::endl;
+				//std::cout << col << "," << filaIni << "=" <<  m[col][filaIni] << " *det = " << algo << std::endl;
 				s = -s;
 				col++; // siguiente col
 			}
 		}
-		if (tam >= 1) 
-			std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
+		//if (tam >= 1) 
+			//std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
 		return det;
 	}
 

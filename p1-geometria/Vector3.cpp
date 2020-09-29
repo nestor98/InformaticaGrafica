@@ -4,298 +4,349 @@
 #include <cmath>
 #include <list>
 // cmath para sqrt
+#include "Vector3.hpp"
 
-const int TAM_MATRIZ = 4;
-class Matriz4; 
 
-class Vector3 {
-	std::array<float, 4> c; // coordenadas, con coord homogenea
+Vector3::Vector3() {
+}
 
-public:
-
-	/**************** Constructores ****************/
-	Vector3() {
+Vector3::Vector3(const Vector3& original) {
+	for (int i = 0; i < 4; i++) {
+		c[i] = original[i];
 	}
-
-	Vector3(const Vector3& original) {
-		for (int i = 0; i < 4; i++) {
-			c[i] = original[i];
-		}
-		if (original.esVector() != this->esVector()) {
-			std::cout << "???????" << std::endl;
-		}
+	if (original.esVector() != this->esVector()) {
+		std::cout << "???????" << std::endl;
 	}
+}
 
-	Vector3(float x, float y, float z, float homogenea) {
-		c[0] = x;
-		c[1] = y;
-		c[2] = z;
-		c[3] = homogenea;
+Vector3::Vector3(float x, float y, float z, float homogenea) {
+	c[0] = x;
+	c[1] = y;
+	c[2] = z;
+	c[3] = homogenea;
+}
+
+Vector3::Vector3(float x, float y, float z, bool punto) {
+	c[0] = x;
+	c[1] = y;
+	c[2] = z;
+	c[3] = punto ? 1 : 0;
+}
+
+/**************** Metodos ****************/
+
+// True sii es un vector (false si es punto)
+bool Vector3::esVector() const {
+	return c[3] == 0;
+}
+
+// Representacion en string del vector
+std::string Vector3::to_string() const {
+	std::string s = std::to_string(c[0]);
+	s += " " + std::to_string(c[1]) + " " + std::to_string(c[2]) + " " + std::to_string(c[3]);
+	return s;
+}
+
+// Devuelve el modulo del vector
+// TODO: comprobar!!
+float Vector3::getModulo() const {
+	float mod = 0;
+	for (int i = 0; i < 4; i++) {
+		mod += c[i] * c[i]; // cada componente al cuadrado
 	}
+	return sqrt(mod); // raiz de la suma de los cuads
+}
 
-	Vector3(float x, float y, float z, bool punto) {
-		c[0] = x;
-		c[1] = y;
-		c[2] = z;
-		c[3] = punto ? 1 : 0;
-	}
+// Cambio de sentido
+Vector3 Vector3::operator - () const {
+	return Vector3(-c[0], -c[1], -c[2], false);
+}
 
-	/**************** Metodos ****************/
+// componente (get, a = v[2])
+float Vector3::operator [](int i) const {
+	return c[i];
+}
 
-	// True sii es un vector (false si es punto)
-	bool esVector() const {
-		return c[3] == 0;
-	}
+// componente (set, v[2] = 3) 
+float& Vector3::operator [](int i) {
+	return c[i];
+}
 
-	// Representacion en string del vector
-	std::string to_string() const {
-		std::string s = std::to_string(c[0]);
-		s += " " + std::to_string(c[1]) + " " + std::to_string(c[2]) + " " + std::to_string(c[3]);
-		return s;
-	}
-
-	// Devuelve el modulo del vector
-	// TODO: comprobar!!
-	float getModulo() const {
-		float mod = 0;
-		for (int i = 0; i < 4; i++) {
-			mod += c[i] * c[i]; // cada componente al cuadrado
-		}
-		return sqrt(mod); // raiz de la suma de los cuads
-	}
-
-	// Cambio de sentido
-	Vector3 operator - () const {
-		return Vector3(-c[0], -c[1], -c[2], false);
-	}
-
-	// componente (get, a = v[2])
-	float operator [](int i) const {
-		return c[i];
-	}
-
-	// componente (set, v[2] = 3) 
-	float& operator [](int i) {
-		return c[i];
-	}
-
-};
 
 
 // Clase matriz4, para las transformaciones de vectores
-class Matriz4 {
-private:
-	std::array<Vector3, 4> m; // formada por 4 vectores (verticales)
 
-	// Matriz identidad, se usa en otros metodos:
-	void setIdentidad() {
-		m[0] = Vector3(1, 0, 0, float(0));
-		m[1] = Vector3(0, 1, 0, float(0));
-		m[2] = Vector3(0, 0, 1, float(0));
-		m[3] = Vector3(0, 0, 0, float(1));
-	}
+// Matriz identidad, se usa en otros metodos:
+void Matriz4::setIdentidad() {
+	m[0] = Vector3(1, 0, 0, float(0));
+	m[1] = Vector3(0, 1, 0, float(0));
+	m[2] = Vector3(0, 0, 1, float(0));
+	m[3] = Vector3(0, 0, 0, float(1));
+}
 
-	// Escribe los parametros en la diagonal:
-	void setDiagonal(const float d0, const float d1, const float d2, const float d3) {
-		m[0][0] = d0;
-		m[1][1] = d1;
-		m[2][2] = d2;
-		m[3][3] = d3;
-	}
+// Escribe los parametros en la diagonal:
+void Matriz4::setDiagonal(const float d0, const float d1, const float d2, const float d3) {
+	m[0][0] = d0;
+	m[1][1] = d1;
+	m[2][2] = d2;
+	m[3][3] = d3;
+}
 
 /*  Funcion mu fea con muchos modulos
-	// auxiliar de determinante(), saca el determinante de una parte
-	float determinante(const int colIni, const int filaIni, const int ignorarCol, const int tam) const {
-		if (tam >= 3) std::cout << "-------------------------\n";
-		if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
-		float det = 0;
-		if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
-			det = m[colIni][filaIni];// TODO: otras columnas!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		}
-		else { // TODO: arreglar el orden, ta mal
-			int s = 1; // SIGNO!
-			for (int i = 0; i<tam; i++) { // se multiplica cada elto de la primera fila por el determinante de las otras filas y cols
-				det += s * m[(colIni+i)%TAM_MATRIZ][filaIni] * determinante((colIni + (i + 1)%tam) % TAM_MATRIZ, filaIni + 1, (colIni-1)%TAM_MATRIZ, tam - 1);
-				s = -s; // cambio de signo
-			}
-		}
-		if (tam >= 1) 
-			std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
-		return det;
+// auxiliar de determinante(), saca el determinante de una parte
+float determinante(const int colIni, const int filaIni, const int ignorarCol, const int tam) const {
+	if (tam >= 3) std::cout << "-------------------------\n";
+	if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
+	float det = 0;
+	if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
+		det = m[colIni][filaIni];// TODO: otras columnas!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
+	else { // TODO: arreglar el orden, ta mal
+		int s = 1; // SIGNO!
+		for (int i = 0; i<tam; i++) { // se multiplica cada elto de la primera fila por el determinante de las otras filas y cols
+			det += s * m[(colIni+i)%TAM_MATRIZ][filaIni] * determinante((colIni + (i + 1)%tam) % TAM_MATRIZ, filaIni + 1, (colIni-1)%TAM_MATRIZ, tam - 1);
+			s = -s; // cambio de signo
+		}
+	}
+	if (tam >= 1) 
+		std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
+	return det;
+}
 */
 
-	// auxiliar de la de debajo, devuelve true sii l contiene elto
-	bool contiene (const std::list<int> &l, const int elto) const {
-		for (auto e : l) {
-			if (e == elto) return true;
-		}
-		return false;
+/////////////////// Ya no se usan:
+/*
+// auxiliar de la de debajo, devuelve true sii l contiene elto
+bool Matriz4::contiene (const std::list<int> &l, const int elto) const {
+	for (auto e : l) {
+		if (e == elto) return true;
 	}
+	return false;
+}
 	
-
-	// auxiliar de determinante(), saca el determinante de una submatriz 
-	// (en la que se ignoran las columnas en ignorarCol, a partir de la fila filaIni y de tamaño tam)
-	float determinante(const std::list<int> &ignorarCol, const int filaIni, const int tam) const {
-		int colIni = 0;
-		while (contiene(ignorarCol, colIni)) colIni++; // saltamos las columnas no deseadas
-		//if (tam >= 3) std::cout << "-------------------------\n";
-		//if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
-		float det = 0;
-		if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
-			det = m[colIni][filaIni];
-		}
-		else { 
-			int s = 1; // SIGNO
-			int col = colIni;
-			for (int i = 0; i<tam; i++) { // tam veces
-				while (contiene(ignorarCol, col)) col++; // saltamos las columnas no deseadas
+// original que no vale para inversa
+// auxiliar de determinante(), saca el determinante de una submatriz 
+// (en la que se ignoran las columnas en ignorarCol, a partir de la fila filaIni y de tamaño tam)
+float Matriz4::determinante2(const std::list<int> &ignorarCol, const int filaIni, const int tam) const {
+	int colIni = 0;
+	while (contiene(ignorarCol, colIni)) colIni++; // saltamos las columnas no deseadas
+	//if (tam >= 3) std::cout << "-------------------------\n";
+	//if (tam >= 2) std::cout << "determinante2 " << colIni << "," << filaIni << " " << tam << std::endl;
+	float det = 0;
+	if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
+		det = m[colIni][filaIni];
+	}
+	else { 
+		int s = 1; // SIGNO
+		int col = colIni;
+		for (int i = 0; i<tam; i++) { // tam veces
+			while (contiene(ignorarCol, col)) col++; // saltamos las columnas no deseadas
 				
-				auto ignorar(ignorarCol);
-				ignorar.push_back(col); // en el sub determinante, ignoramos la col actual
-				float algo = s * m[col][filaIni] * determinante(ignorar, filaIni+1, tam-1);
-				det += algo;
+			auto ignorar(ignorarCol);
+			ignorar.push_back(col); // en el sub determinante2, ignoramos la col actual
+			float algo = s * m[col][filaIni] * determinante2(ignorar, filaIni+1, tam-1);
+			det += algo;
 
-				//std::cout << col << "," << filaIni << "=" <<  m[col][filaIni] << " *det = " << algo << std::endl;
-				s = -s;
-				col++; // siguiente col
-			}
+			//std::cout << col << "," << filaIni << "=" <<  m[col][filaIni] << " *det = " << algo << std::endl;
+			s = -s;
+			col++; // siguiente col
 		}
-		//if (tam >= 1) 
-			//std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
-		return det;
 	}
+	//if (tam >= 1) 
+		//std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
+	return det;
+}
+*/
 
-
-public:
-	/**************** Constructores ****************/
-
-	// Por defecto, la identidad (no hace nada)
-	Matriz4() { 
-		setIdentidad();
+// auxiliar de determinante(), saca el determinante de una submatriz 
+// compuesta por las columnas con indice <columnas> y filas de indice <filas>
+float Matriz4::determinante(const std::list<int> &columnas, const std::list<int> &filas) const {
+	float det = 0;
+	int tam = columnas.size();
+	int s = 1; // signo
+	if (tam != filas.size()) {
+		std::cerr << "La matriz del determinante debe ser cuadrada" << std::endl;
+		exit(1);
 	}
+	for (auto col : columnas) {
+		if (tam == 1) {
+			det = m[col][filas.front()];
+		}
+		else {
+			// Nuevas columnas:
+			auto columnasRed(columnas);
+			columnasRed.remove(col);
 
-	Matriz4(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Vector3& v4) {
-		m[0] = v1;
-		m[1] = v2;
-		m[2] = v3;
-		m[3] = v4;
+			// Nuevas filas:
+			auto filasRed(filas);
+			filasRed.remove(filas.front());
+
+			det += s * m[col][filas.front()] * determinante(columnasRed, filasRed);
+			s *= -1; // cambio de signo
+		}
 	}
+	//if (tam >= 1) 
+		//std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
+	return det;
+}
 
-	/**************** Definiciones de transformaciones especificas ****************/
-
-	// desplazamiento en x,y,z:
-	void setTraslacion(const float x, const float y, const float z) {
-		setIdentidad();
-		m[3] = Vector3(x, y, z, float(1));
+// devuelve la transpuesta de la matriz de cofactores (cada elto, el determinante de las otras filas y cols
+// * signo + - + -...)
+Matriz4 Matriz4::adj() const {
+	Matriz4 res;
+	int s; // signo
+	std::list<int> cols, filas, todas;
+	todas = {0,1,2,3};
+	for (int col = 0; col < TAM_MATRIZ; col++) {
+		for (int fila = 0; fila < TAM_MATRIZ; fila++) {
+			cols = todas; cols.remove(col); // todas las cols menos la actual
+			filas = todas; filas.remove(fila); // todas las filas menos la actual
+			s = (fila+col) % 2 == 0 ? 1 : -1;
+			res[fila][col] = s * determinante(cols, filas); // indices al reves para traspuesta
+		}
 	}
+	return res;
+}
 
-	// escalar en sx, sy, sz:
-	void setEscalar(const float sx, const float sy, const float sz) {
-		setIdentidad();
-		setDiagonal(sx, sy, sz, 1);
-	}
 
-	// Rotar en x
-	/*
-		1    0    0    0
-		0   cos -sin   0
-		0   sin  cos   0
+
+/**************** Constructores ****************/
+
+// Por defecto, la identidad (no hace nada)
+Matriz4::Matriz4() { 
+	setIdentidad();
+}
+
+Matriz4::Matriz4(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Vector3& v4) {
+	m[0] = v1;
+	m[1] = v2;
+	m[2] = v3;
+	m[3] = v4;
+}
+
+/**************** Definiciones de transformaciones especificas ****************/
+
+// desplazamiento en x,y,z:
+void Matriz4::setTraslacion(const float x, const float y, const float z) {
+	setIdentidad();
+	m[3] = Vector3(x, y, z, float(1));
+}
+
+// escalar en sx, sy, sz:
+void Matriz4::setEscalar(const float sx, const float sy, const float sz) {
+	setIdentidad();
+	setDiagonal(sx, sy, sz, 1);
+}
+
+// Rotar en x
+/*
+	1    0    0    0
+	0   cos -sin   0
+	0   sin  cos   0
+	0    0    0    1
+*/
+void Matriz4::setRotarX(const float theta) {
+	setIdentidad();
+	m[1][1] = cos(theta);
+	m[1][2] = sin(theta);
+	m[2][1] = -sin(theta);
+	m[2][2] = cos(theta);
+}
+
+// Rotar en y
+/*
+	cos  0   sin   0
+	0    1    0    0
+	-sin  0   cos   0
+	0    0    0    1
+*/
+void Matriz4::setRotarY(const float theta) {
+	setIdentidad();
+	m[0][0] = cos(theta);
+	m[0][2] = -sin(theta);
+	m[2][0] = sin(theta);
+	m[2][2] = cos(theta);
+}
+
+// Rotar en z
+/*
+	cos -sin   0    0
+	sin  cos   0    0
+		0    0    1    0
 		0    0    0    1
 	*/
-	void setRotarX(const float theta) {
-		setIdentidad();
-		m[1][1] = cos(theta);
-		m[1][2] = sin(theta);
-		m[2][1] = -sin(theta);
-		m[2][2] = cos(theta);
-	}
+void Matriz4::setRotarZ(const float theta) {
+	setIdentidad();
+	m[0][0] = cos(theta);
+	m[0][1] = sin(theta);
+	m[1][0] = -sin(theta);
+	m[1][1] = cos(theta);
+}
 
-	// Rotar en y
-	/*
-		cos  0   sin   0
-		0    1    0    0
-	   -sin  0   cos   0
-		0    0    0    1
-	*/
-	void setRotarY(const float theta) {
-		setIdentidad();
-		m[0][0] = cos(theta);
-		m[0][2] = -sin(theta);
-		m[2][0] = sin(theta);
-		m[2][2] = cos(theta);
+// para cambiar un vector a una nueva base
+void Matriz4::setCambioBase(const Vector3& eje1, const Vector3& eje2, const Vector3& eje3, const Vector3& origen) {
+	// comprobaciones...
+	if (!eje1.esVector() || !eje2.esVector() || !eje3.esVector()) {
+		std::cerr << "Los tres primeros parametros del cambio de base deben ser vectores" << std::endl;
+		exit(1);
 	}
-
-	// Rotar en z
-	/*
-		cos -sin   0    0
-		sin  cos   0    0
-		 0    0    1    0
-		 0    0    0    1
-	 */
-	void setRotarZ(const float theta) {
-		setIdentidad();
-		m[0][0] = cos(theta);
-		m[0][1] = sin(theta);
-		m[1][0] = -sin(theta);
-		m[1][1] = cos(theta);
+	if (origen.esVector()) {
+		std::cerr << "El origen del cambio de base debe ser un punto" << std::endl;
+		exit(1);
 	}
+	m[0] = eje1;
+	m[1] = eje2;
+	m[2] = eje3;
+	m[3] = origen;
+}
 
-	// para cambiar un vector a una nueva base
-	void setCambioBase(const Vector3& eje1, const Vector3& eje2, const Vector3& eje3, const Vector3& origen) {
-		// comprobaciones...
-		if (!eje1.esVector() || !eje2.esVector() || !eje3.esVector()) {
-			std::cerr << "Los tres primeros parametros del cambio de base deben ser vectores" << std::endl;
-			exit(1);
+// Devuelve el determinante de la matriz
+float Matriz4::determinante() const {
+	//return determinante(0, 0, -1, TAM_MATRIZ);
+	std::list<int> columnas = {0,1,2,3};
+	std::list<int> filas = {0,1,2,3};
+	return determinante(columnas, filas);
+}
+
+// Algoritmo general basado en: https://www.tutorialspoint.com/cplusplus-program-to-find-inverse-of-a-graph-matrix
+Matriz4 Matriz4::inversa() const {
+	float det = determinante();
+	std::cout << "det: " << det << std::endl;
+	if (det == 0) {
+		std::cerr << "Inversa imposible, det=0\n";
+		return *this;
+	}
+		
+	std::cout <<"adjunta:\n"<< adj() << std::endl;
+		
+	Matriz4 inv = adj()/det;
+	return inv;
+}
+
+// como string
+std::string Matriz4::to_string() const {
+	std::string s = "";
+	for (int i = 0; i < 4; i++) {
+		for (int col = 0; col < 4; col++) {
+			s += std::to_string(m[col][i]) + "\t";
 		}
-		if (origen.esVector()) {
-			std::cerr << "El origen del cambio de base debe ser un punto" << std::endl;
-			exit(1);
-		}
-		m[0] = eje1;
-		m[1] = eje2;
-		m[2] = eje3;
-		m[3] = origen;
+		s += "\n";
+		//s += m[i].to_string() + "\n";
 	}
+	return s;
+}
 
-	// Devuelve el determinante de la matriz
-	float determinante() const {
-		//return determinante(0, 0, -1, TAM_MATRIZ);
-		std::list<int> l;
-		return determinante(l, 0, TAM_MATRIZ);
-	}
+// Devuelve la iesima fila como Vector3
+Vector3 Matriz4::fila(const int i) const {
+	Vector3 vFila(m[0][i], m[1][i], m[2][i], m[3][i]);
+	return vFila;
+}
 
-	Matriz4 inversa() const {
-		// TODO: implementar la inversa..........
-	}
+// m[i] devuelve la iesima columna como Vector3
+Vector3 Matriz4::operator [](int i) const {
+	return m[i];
+}
 
-	// como string
-	std::string to_string() const {
-		std::string s = "";
-		for (int i = 0; i < 4; i++) {
-			for (int col = 0; col < 4; col++) {
-				s += std::to_string(m[col][i]) + "\t";
-			}
-			s += "\n";
-			//s += m[i].to_string() + "\n";
-		}
-		return s;
-	}
-
-	// Devuelve la iesima fila como Vector3
-	Vector3 fila(const int i) const {
-		Vector3 vFila(m[0][i], m[1][i], m[2][i], m[3][i]);
-		return vFila;
-	}
-
-	// m[i] devuelve la iesima columna como Vector3
-	Vector3 operator [](int i) const {
-		return m[i];
-	}
-
-
-
-};
 
 /**************** OPERADORES ****************/
 
@@ -355,6 +406,7 @@ Vector3 operator * (const Vector3& v, const float& s) {
 }
 
 
+
 // escalar v/s 
 Vector3 operator / (const Vector3& v, const float& s) {
 	if (s == 0) {
@@ -362,6 +414,16 @@ Vector3 operator / (const Vector3& v, const float& s) {
 		exit(1);
 	}
 	Vector3 res(v[0] / s, v[1] / s, v[2] / s, false);
+	return res;
+}
+
+// escalar M/s 
+Matriz4 operator / (const Matriz4& m, const float& s) {
+	if (s == 0) {
+		std::cerr << "no dividas entre 0..." << std::endl;
+		exit(1);
+	}
+	Matriz4 res(m[0] / s, m[1] / s, m[2] / s, m[3]/s);
 	return res;
 }
 
@@ -388,6 +450,20 @@ Vector3 operator * (const Matriz4& m, const Vector3& v) {
 	Vector3 res;
 	for (int i = 0; i < 4; i++) {
 		res[i] = v * m.fila(i); // prod escalar del vector y la fila
+	}
+	return res;
+}
+
+
+// Producto M1*M2 (transformaciones, cambios de base...). Devuelve otra Matriz4
+Matriz4 operator * (const Matriz4& m1, const Matriz4& m2) {
+	Matriz4 res;
+	for (int col = 0; col < TAM_MATRIZ; col++) {
+		for (int fila = 0; fila < TAM_MATRIZ; fila++) {
+			std::cout << "calculando " << col << "," << fila << std::endl;
+			res[col][fila] = m1.fila(fila) * m2[col];
+			std::cout << "fila de m1 = " << m1.fila(fila) << "\nm2.col(col) = " << m2[col] << "\nres = " << res[col][fila] << std::endl;
+		}
 	}
 	return res;
 }

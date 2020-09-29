@@ -157,6 +157,28 @@ std::ostream& operator<<(std::ostream& os, const Planeta& p)
 
 
 
+void probarInversa() {
+	Matriz4 m;
+	Vector3 punto(10, 0, 0, true); // punto a 10 uds a la dcha (x)
+	cout << "------------ Inversa ------------\n";
+	cout << "Punto p:\n" << punto << endl;
+	m.setCambioBase(Vector3(1, 0, 20, false), Vector3(3, 1, 4, false), Vector3(2, 0, 1, false), punto); // me vale cualquier matriz
+	Matriz4 m1 = m.inversa();
+	cout << "M=\n" << m << endl << "M^-1 =\n" << m1 << "\nsegun internete:\n(buscar en internete)" << endl;
+	cout << "M*M^-1 =\n" << m*m1 << "\n(deberia ser Identidad)\n";
+	/*
+	Matriz4 m2(Vector3(1, 2, 3, true), Vector3(5, 5, 5, true), Vector3(9, 10, 11, true), Vector3(1, 0, 0, true)); // me vale cualquier matriz
+	cout << "M=\n" << m2 << endl << "det(M) = " << m2.determinante() << " segun internete, -8" << endl;
+	*/
+	cout << "Traslacion: \n";
+	m.setTraslacion(2,3,4); // me vale cualquier matriz
+	m1 = m.inversa();
+	cout << "M=\n" << m << endl << "M^-1 =\n" << m1 << "\nsegun internete:\n(buscar en internete)" << endl;
+	cout << "M*M^-1 =\n" << m * m1 << "\n(deberia ser Identidad)\n";
+}
+
+
+
 void probarDeterminante() {
 	Matriz4 m;
 	Vector3 punto(10, 0, 0, true); // punto a 10 uds a la dcha (x)
@@ -209,6 +231,7 @@ int main() {
 
 	probarDeterminante();
 	//probarCambioBase();
+	probarInversa();
 	
 
 	/*

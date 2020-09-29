@@ -338,9 +338,7 @@ Matriz4 Matriz4::inversa() const {
 		std::cerr << "Inversa imposible, det=0\n";
 		return *this;
 	}
-		
-	std::cout <<"adjunta:\n"<< adj() << std::endl;
-		
+	//std::cout <<"adjunta:\n"<< adj() << std::endl;	
 	Matriz4 inv = adj()/det;
 	return inv;
 }
@@ -440,7 +438,7 @@ Vector3 operator / (const Vector3& v, const float& s) {
 		std::cerr << "no dividas entre 0..." << std::endl;
 		exit(1);
 	}
-	Vector3 res(v[0] / s, v[1] / s, v[2] / s, false);
+	Vector3 res(v[0] / s, v[1] / s, v[2] / s, v[3]/s);
 	return res;
 }
 

@@ -124,6 +124,8 @@ public:
 	// m[i] devuelve la iesima columna como Vector3
 	Vector3 operator [](int i) const;
 
+	Vector3& operator [](int i);
+
 
 
 };

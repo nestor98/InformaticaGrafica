@@ -190,6 +190,14 @@ float Matriz4::determinante(const std::list<int> &columnas, const std::list<int>
 	return det;
 }
 
+std::string str(std::list<int> l) {
+	std::string s = "";
+	for (auto e : l) {
+		s += e + ",";
+	}
+	return s;
+}
+
 // devuelve la transpuesta de la matriz de cofactores (cada elto, el determinante de las otras filas y cols
 // * signo + - + -...)
 Matriz4 Matriz4::adj() const {
@@ -201,10 +209,24 @@ Matriz4 Matriz4::adj() const {
 		for (int fila = 0; fila < TAM_MATRIZ; fila++) {
 			cols = todas; cols.remove(col); // todas las cols menos la actual
 			filas = todas; filas.remove(fila); // todas las filas menos la actual
+			/*std::cout << "------------------\n"<< col << "," << fila << std::endl;
+			for (auto e:cols) {
+				std::cout << e << ";";
+			}
+			std::cout << std::endl;
+			for (auto e:filas) {
+				std::cout << e << ";";
+			}
+			std::cout << std::endl;
+			*/
 			s = (fila+col) % 2 == 0 ? 1 : -1;
+			float det = determinante(cols, filas);
 			res[fila][col] = s * determinante(cols, filas); // indices al reves para traspuesta
+			//std::cout << res[fila][col] << ".........." << det << std::endl;
 		}
 	}
+	//std::cout << "adj dentro de la funcion\n";
+	//std::cout << res << std::endl;
 	return res;
 }
 
@@ -347,6 +369,11 @@ Vector3 Matriz4::operator [](int i) const {
 	return m[i];
 }
 
+// m[i] devuelve la iesima columna como Vector3
+Vector3& Matriz4::operator [](int i) {
+	return m[i];
+}
+
 
 /**************** OPERADORES ****************/
 
@@ -460,9 +487,9 @@ Matriz4 operator * (const Matriz4& m1, const Matriz4& m2) {
 	Matriz4 res;
 	for (int col = 0; col < TAM_MATRIZ; col++) {
 		for (int fila = 0; fila < TAM_MATRIZ; fila++) {
-			std::cout << "calculando " << col << "," << fila << std::endl;
+			//std::cout << "calculando " << col << "," << fila << std::endl;
 			res[col][fila] = m1.fila(fila) * m2[col];
-			std::cout << "fila de m1 = " << m1.fila(fila) << "\nm2.col(col) = " << m2[col] << "\nres = " << res[col][fila] << std::endl;
+			//std::cout << "fila de m1 = " << m1.fila(fila) << "\nm2.col(col) = " << m2[col] << "\nres = " << res[col][fila] << std::endl;
 		}
 	}
 	return res;

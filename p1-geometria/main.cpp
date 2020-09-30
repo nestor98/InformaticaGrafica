@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const float PI = 3.141592;
+const double PI = 3.141592653589793115997963468544185161590576171875;
 
 
 // Para encapsular un poco la info de los planetas de la practica 1:
@@ -41,8 +41,11 @@ public:
 
 	}
 
-	// TODO: sacar estacion D:
-	void setEstacion(float theta, float phi) {
+
+
+	// Calcula la pos y base de la estacion a partir de los parametros del planeta, 
+	// y de los angulos theta (latitud desde el polo norte) y phi (longitud desde la ciudad)
+	void setEstacion(float theta, float phi) { 
 		Vector3 centro_ciudad = ciudad - centro;
 		// Nueva base con origen en el centro del planeta, i el eje
 		//cout << "vector del centro a la ciudad: " << centro_ciudad << endl;
@@ -90,7 +93,7 @@ public:
 		jEstacion = cross(kEstacion, iEstacion);
 		jEstacion = jEstacion / jEstacion.getModulo();
 
-		cout << "i,j,k...\n" << i << endl << j << endl << k << "\n..." << endl;
+		cout << "ESTACION:\ni,j,k...\n" << i << endl << j << endl << k << "\n..." << endl;
 		cout <<"Deberia cumplirse que...\n" << i << " = i = jxk =\n" << cross(j, k) << endl;
 
 
@@ -295,6 +298,7 @@ int main() {
 	*/
 
 	/**************************** Version simple ******************************/
+	/*
 	cout << "----------------------- programa con params simples ----------------------" << endl;
 	cout << "(deberia dar los vectores 0,0,distancia y 0,0,-distancia para cada planeta)" << endl;
 	// Primer planeta:
@@ -304,15 +308,32 @@ int main() {
 	Vector3 ciudad1(-1, 0, 0, true);
 	Planeta p1(centro1, eje1, ciudad1);
 
-	p1.setEstacion(PI/2, 0); // estacion a partir de los angulos
+	p1.setEstacion(PI / 2, 0); // estacion a partir de los angulos
 
 	// Segundo planeta:
 	Vector3 centro2(2, 0, 0, true); // TODO: cambiar los valores a algo con sentido
 	Vector3 eje2(0, 2, 0, false);
 	Vector3 ciudad2(1, 0, 0, true);
 	Planeta p2(centro2, eje2, ciudad2);
+*/
+	cout << "----------------------- programa con params simples 2 ----------------------" << endl;
+	cout << "(deberia dar los vectores 0,0,distancia y 0,0,distancia para cada planeta(?))" << endl;
+	// Primer planeta:
+	Vector3 centro1(-20, 0, 0, true); // TODO: cambiar los valores a algo con sentido
+	//cout << (centro1.esVector() ? "pero bueno" : "vale") << endl;
+	Vector3 eje1(0, 20, 0, false);
+	Vector3 ciudad1(-20, 0, 10, true);
+	Planeta p1(centro1, eje1, ciudad1);
 
-	p2.setEstacion(PI/2, 0); // estacion a partir de los angulos
+	p1.setEstacion(PI/2, PI/2); // estacion a partir de los angulos
+
+	// Segundo planeta:
+	Vector3 centro2(20, 0, 0, true); // TODO: cambiar los valores a algo con sentido
+	Vector3 eje2(0, 20, 0, false);
+	Vector3 ciudad2(20, 0, 10, true);
+	Planeta p2(centro2, eje2, ciudad2);
+
+	p2.setEstacion(PI/2, -PI/2); // estacion a partir de los angulos
 
 	// Vector entre las estaciones en UCS:
 	Vector3 v = p2.getEstacion() - p1.getEstacion();
@@ -321,7 +342,9 @@ int main() {
 	Matriz4 M1 = p1.getMatrizCambioBase();
 	Vector3 v1 = M1 * v;
 	cout << "Vector en planeta 1: " << v1 << endl;
-	if (v1[2] < 0) { // si la tercera componente es menor que 0, atraviesa el planeta
+	// Comprobar choque con planeta:
+	// teniendo en cuenta que la primera componente es la normal al planeta...
+	if (v1[0] < 0) { // si la primera componente es menor que 0, atraviesa el planeta
 		cout << "Va a atravesar el planeta 1!" << endl;
 	}
 
@@ -329,10 +352,9 @@ int main() {
 	Matriz4 M2 = p2.getMatrizCambioBase();
 	Vector3 v2 = -(M2 * v); // - para cambiarle el sentido
 	cout << "Vector en planeta 2: " << v2 << endl;
-	if (v2[2] < 0) { // si la tercera componente es menor que 0, atraviesa el planeta
+	if (v2[0] < 0) { // si la primera componente es menor que 0, atraviesa el planeta
 		cout << "Va a atravesar el planeta 2!" << endl;
 	}
-
 
 	return 0;
 }

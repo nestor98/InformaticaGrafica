@@ -85,17 +85,23 @@ public:
 
 		Matriz4 baseEstacion;
 		
-		iEstacion = estacion-centro;
-		iEstacion = iEstacion / iEstacion.getModulo();
-		kEstacion = cross(iEstacion, i);
+		kEstacion = estacion-centro;
 		kEstacion = kEstacion / kEstacion.getModulo();
-
-		jEstacion = cross(kEstacion, iEstacion);
+		jEstacion = cross(kEstacion, i);
 		jEstacion = jEstacion / jEstacion.getModulo();
+		cout << "eje:" << i << endl;
+		iEstacion = cross(jEstacion, kEstacion);
+		iEstacion = iEstacion / iEstacion.getModulo();
+		//jEstacion = cross(kEstacion, iEstacion);
 
-		cout << "ESTACION:\ni,j,k...\n" << i << endl << j << endl << k << "\n..." << endl;
-		cout <<"Deberia cumplirse que...\n" << i << " = i = jxk =\n" << cross(j, k) << endl;
 
+		cout << "-------------------------------\n";
+		cout << "ESTACION:\ni,j,k...\n" << iEstacion << endl << jEstacion << endl << kEstacion << "\n..." << endl;
+		cout <<"Deberia cumplirse que...\n" << iEstacion << " = i = jxk =\n" << cross(jEstacion, kEstacion) << endl;
+		cout << "Y tb Deberia cumplirse que...\n" << jEstacion << " = j = kxi =\n" << cross(kEstacion, iEstacion) << endl;
+		cout << "Y tb Deberia cumplirse que...\n" << kEstacion << " = k = ixj =\n" << cross(iEstacion, jEstacion) << endl;
+
+		cout << "-------------------------------\n";
 
 		//estacion = ciudad; // TODO: transformaciones con angulos, etc......
 
@@ -344,7 +350,7 @@ int main() {
 	cout << "Vector en planeta 1: " << v1 << endl;
 	// Comprobar choque con planeta:
 	// teniendo en cuenta que la primera componente es la normal al planeta...
-	if (v1[0] < 0) { // si la primera componente es menor que 0, atraviesa el planeta
+	if (v1[2] < -0.001) { // si la primera componente es menor que 0, atraviesa el planeta
 		cout << "Va a atravesar el planeta 1!" << endl;
 	}
 
@@ -352,7 +358,7 @@ int main() {
 	Matriz4 M2 = p2.getMatrizCambioBase();
 	Vector3 v2 = -(M2 * v); // - para cambiarle el sentido
 	cout << "Vector en planeta 2: " << v2 << endl;
-	if (v2[0] < 0) { // si la primera componente es menor que 0, atraviesa el planeta
+	if (v2[2] < -0.001) { // si la primera componente es menor que 0, atraviesa el planeta
 		cout << "Va a atravesar el planeta 2!" << endl;
 	}
 

@@ -465,7 +465,7 @@ float operator * (const Vector3& v1, const Vector3& v2) {
 Vector3 cross(const Vector3& v1, const Vector3& v2) { // TODO: comprobar
 	//std::cout << "v1: " << v1 << std::endl;
 	//std::cout << "v2: " << v2 << std::endl;
-	Vector3 res(v1[1]*v2[2] - v1[2]*v2[1], v1[0]*v2[2] - v1[2]*v2[0], v1[0]*v2[1] - v1[1]*v2[0], false);
+	Vector3 res(v1[1]*v2[2] - v1[2]*v2[1], v1[2]*v2[0] - v1[0]*v2[2], v1[0]*v2[1] - v1[1]*v2[0], false);
 	//std::cout << "v1 x v2 = " << res << std::endl;
 	return res;
 }

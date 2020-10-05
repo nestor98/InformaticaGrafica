@@ -333,7 +333,7 @@ float Matriz4::determinante() const {
 // Algoritmo general basado en: https://www.tutorialspoint.com/cplusplus-program-to-find-inverse-of-a-graph-matrix
 Matriz4 Matriz4::inversa() const {
 	float det = determinante();
-	std::cout << "det: " << det << std::endl;
+	//std::cout << "det: " << det << std::endl;
 	if (det == 0) {
 		std::cerr << "Inversa imposible, det=0\n";
 		return *this;

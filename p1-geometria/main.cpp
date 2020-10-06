@@ -344,7 +344,7 @@ int main() {
 
 	// Vector en coordenadas de p1:
 	Matriz4 M1 = p1.getMatrizCambioBase();
-	Vector3 v1 = M1 * v;
+	Vector3 v1 = M1.inversa()* v;
 	cout << "Vector en UCS:" << v << endl;
 	cout << "Vector en planeta 1: " << v1 << endl;
 	// Comprobar choque con planeta:
@@ -355,7 +355,8 @@ int main() {
 
 	// Vector en coordenadas de p1:
 	Matriz4 M2 = p2.getMatrizCambioBase();
-	Vector3 v2 = -(M2 * v); // - para cambiarle el sentido
+	cout << "matriz cambio base p2:\n" << M2 << endl;
+	Vector3 v2 = -(M2.inversa() * v); // - para cambiarle el sentido
 	cout << "Vector en planeta 2: " << v2 << endl; 
 	cout<<"En este caso la componente j (segunda) no deberia ser 0??????????... En UCS la tercera es 0 en las dos estaciones, y el j es el unico que tiene esa\n";
 	if (v2[2] < -0.001) { // si la primera componente es menor que 0, atraviesa el planeta

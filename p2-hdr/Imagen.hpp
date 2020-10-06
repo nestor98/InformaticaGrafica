@@ -11,11 +11,18 @@ class Imagen {
 	std::vector<std::array<float, 3>> pixeles; // en un solo vector de filas*columnas
 	std::string titulo;
 	int filas, cols; // filas y columnas de la matriz
-	int max_in; // valor maximo de los pixeles de entrada
+	long max_in; // valor maximo de los pixeles de entrada
+	float maxFloat; // Maximo a conseguir de salida
 public:
 
 	Imagen();
 	Imagen(const std::string nombreFichero);
+	std::string to_string(const int elementos = 100) const;
+};
+
+	// para evitar el to_string en cout
+	std::ostream& operator<<(std::ostream& os, const Imagen& v);
+
 	/**************** Constructores ****************
 	/*
 	Imagen(const Imagen& original);
@@ -44,12 +51,7 @@ public:
 
 	// componente (set, v[2] = 3) 
 	float& operator [](int i);*/
-};
-
 /**************** OPERADORES ****************
-
-// para evitar el to_string en cout
-std::ostream& operator<<(std::ostream& os, const Imagen& v);
 
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Matriz4& m);

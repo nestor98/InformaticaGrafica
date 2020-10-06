@@ -2,23 +2,24 @@
 #include <array>
 #include <string>
 #include <cmath>
-#include <list>
+#include <vector>
 // cmath para sqrt
 
 
 
 class Imagen {
-	std::vector<<std::array<3, float>> pixeles; // en un solo vector de filas*columnas
+	std::vector<std::array<float, 3>> pixeles; // en un solo vector de filas*columnas
 	std::string titulo;
 	int filas, cols; // filas y columnas de la matriz
+	int max_in; // valor maximo de los pixeles de entrada
 public:
 
-	/**************** Constructores ****************/
 	Imagen();
-
+	Imagen(const std::string nombreFichero);
+	/**************** Constructores ****************
+	/*
 	Imagen(const Imagen& original);
 
-	Imagen(const std::string fichero);
 
 	Imagen(float x, float y, float z, bool punto);
 
@@ -37,15 +38,15 @@ public:
 	// Cambio de sentido
 	Imagen operator - () const;
 
-	*/
+	*
 	// componente (get, a = v[2])
 	float operator [](int i) const;
 
 	// componente (set, v[2] = 3) 
-	float& operator [](int i);
+	float& operator [](int i);*/
 };
 
-/**************** OPERADORES ****************/
+/**************** OPERADORES ****************
 
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Imagen& v);
@@ -93,3 +94,6 @@ Imagen operator * (const Matriz4& m, const Imagen& v);
 
 // Producto M1*M2 (transformaciones, cambios de base...). Devuelve otra Matriz4
 Matriz4 operator * (const Matriz4& m1, const Matriz4& m2);
+
+
+*/

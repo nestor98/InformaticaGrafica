@@ -396,3 +396,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 p1-geometria/main
+
+p2-hdr/hdrFiles/

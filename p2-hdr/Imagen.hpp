@@ -11,15 +11,22 @@ class Imagen {
 	std::vector<std::array<double, 3>> pixeles; // en un solo vector de filas*columnas
 	std::string titulo;
 	int filas, cols; // filas y columnas de la matriz
-	long max_in; // valor maximo de los pixeles de entrada
-	float maxFloat; // Maximo a conseguir de salida
+	//long max_in; // valor maximo de los pixeles de entrada
+	float maxFloat; // Maximo a conseguir de salida, m en el enunciado
+	long c; // resolucion de color (posibles valores distintos de cada valor rgb)
 public:
-
+	
 	Imagen();
 	Imagen(const std::string nombreFichero);
+	Imagen(const Imagen& i2);
 	std::string to_string(const int elementos = 100) const;
 
 	void guardar(const std::string fichero) const;
+
+	/* OPERACIONES */ 
+	void clamp();
+	void equalize();
+	void equalizeAndClamp(const float valor);
 };
 
 	// para evitar el to_string en cout

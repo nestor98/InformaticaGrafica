@@ -5,34 +5,29 @@
 using namespace std;
 
 
+void probarClamp(Imagen& i) {
+	cout << "Imagen antes de clamp:\n" << i << endl;
+	i.clamp();
+	cout << "Despues\n:" << i << endl;
+}
+
+
+void probarEqualization(Imagen& i1) {
+	cout << "Imagen antes de eq:\n" << i1 << endl;
+	i1.equalize();
+	cout << "Despues\n:" << i1 << endl;
+}
+
 /**************** Programa principal ****************/
 int main() {
-/*
-	cout << " arraysssssssssssssss " <<endl;
-	array<int, 5> a;
-	a[3] = 2;
-	/*for (auto e : a) {
-		cout << e << endl;
-	}
-
-
-	vector<array<int, 5>> v;
-	v.reserve(10);
-	/*
-	v[0][0] = 10;
-	v[3][1] = 10;
-	cout << v[0][0] << endl;
-	for (int i = 0; i< 10; i++) {
-		cout << "recorriendo v\n";
-		for (auto ea : v[i]) {
-			cout << ea << endl;
-		}
-	}
-
-	cout << "</arraysssssssssssssss>" << endl;
-	*/
 
 	Imagen i1("hdrFiles/mpi_office.ppm");
 	i1.guardar("procesados/mpi_office_deberiaserigual.ppm");
-	//cout << "Imagen:\n" << i1 << endl;
+	Imagen i2(i1);
+	cout << "i2:\n" << i2 << endl; 
+	/*probarClamp(i1);
+	probarClamp2(i2);
+	*/
+	probarEqualization(i1);
+	i1.guardar("procesados/mpi_office_ecualizado_2.ppm");
 }

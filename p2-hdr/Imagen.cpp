@@ -11,6 +11,15 @@
 
 Imagen::Imagen() {}
 
+Imagen::Imagen(const Imagen& i2) 
+: titulo(i2.titulo), filas(i2.filas), cols(i2.cols), maxFloat(i2.maxFloat), c(i2.c) 
+{
+	pixeles.reserve(i2.filas*i2.cols);
+	for (int i = 0; i < i2.filas * i2.cols; i++) {
+		pixeles[i] = i2.pixeles[i];
+	}
+}
+
 // separa <linea>, devolviendo el float a la derecha del caracter '=' 
 // ej: linea="#MAX=23.1"  ->  devuelve 23.1
 float parseMax(const std::string linea) {
@@ -48,7 +57,7 @@ Imagen::Imagen(const std::string nombreFichero) {
 	std::getline(fichero, linea, '\n'); // esta es # nombre_fichero, ya lo tenemos
 	fichero >> cols >> filas;
 	pixeles.reserve(filas * cols); // Reservar el tamaño del vector
-	fichero >> max_in;
+	fichero >> c;
 
 	//std::cout << "ewhehwh\n" << formato << std::endl << linea << std::endl << filas << std::endl << cols << std::endl << max_in << std::endl;
 	// valores
@@ -59,9 +68,7 @@ Imagen::Imagen(const std::string nombreFichero) {
 		if (i / 3 < 25) {
 			std::cout << valor << std::endl << i  << "..." << i/3 << std::endl;
 		}
-		//std::cout << valor << std::endl << i << std::endl;
-		pixeles[i/3][i%3] = valor; // cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
-		//std::cout << pixeles[i/3][i%3] << std::endl;
+		pixeles[i/3][i%3] = valor * maxFloat/c; // cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
 		i++;
 		
 	}
@@ -69,15 +76,61 @@ Imagen::Imagen(const std::string nombreFichero) {
 
 }
 
+/* re implementada con equalizeAndClamp
+void Imagen::clamp(const double max) {
+	std::cout << "hey estoy clampeando\n";
+	for (int i = 0; i < filas*cols; i++) { // cada pixel
+		for (auto& v : pixeles[i]) { // cada valor rgb
+			if (v > max) { // si se pasa del maximo, clamp
+				v = max;
+			}
+		}
+	}
+}
+*/
+
+// si v>1, v=1
+void Imagen::clamp() {
+	//std::cout << "hey estoy clampeando\n";
+	equalizeAndClamp(1);
+}
+
+// v=v/maxFloat
+void Imagen::equalize() {
+	//std::cout << "hey estoy ecualizando\n";
+	/*for (int i = 0; i < filas * cols; i++) { // cada pixel
+		for (auto& v : pixeles[i]) { // cada valor rgb
+			v = v/maxFloat;// ??
+		}
+	}*/
+	equalizeAndClamp(maxFloat);
+}
+
+// Eq hasta valor, clamp desde valor
+void Imagen::equalizeAndClamp(const float valor) {
+	for (int i = 0; i < filas * cols; i++) { // cada pixel
+		for (auto& v : pixeles[i]) { // cada valor rgb
+			if (v > valor) {
+				v = valor;
+			}
+			else {
+				v = v / valor;//maxFloat;// ??
+			}
+		}
+	}
+}
+
+
+
 // Guarda la imagen en <fichero>
 void Imagen::guardar(const std::string nombreFichero) const {
 	std::ofstream fichero(nombreFichero);
 	fichero << "P3\n#MAX=" << maxFloat << "\n# " << nombreFichero; // formato, #MAX, # nombre fichero
-	fichero << std::endl << cols << " " << filas << std::endl << max_in << std::endl; // filas cols, max_in...
+	fichero << std::endl << cols << " " << filas << std::endl << c << std::endl; // filas cols, max_in...
 	for (int i = 0; i < filas; i++) { // cada fila
 		for (int j = 0; j<cols; j++) { // cada pixel de la fila
 			for (auto val : pixeles[i*cols+j]) { // cada valor rgb
-				fichero << int(val) << " ";
+				fichero << int(val * c / maxFloat) << " ";
 			}
 			fichero << "    " << std::flush;
 		}

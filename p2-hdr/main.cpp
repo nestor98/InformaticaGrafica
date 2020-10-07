@@ -22,12 +22,12 @@ void probarEqualization(Imagen& i1) {
 int main() {
 
 	Imagen i1("hdrFiles/mpi_office.ppm");
-	i1.guardar("procesados/mpi_office_deberiaserigual.ppm");
+	i1.guardar("procesados/mpi_office_ldr.ppm", false);
 	Imagen i2(i1);
 	cout << "i2:\n" << i2 << endl; 
 	/*probarClamp(i1);
 	probarClamp2(i2);
 	*/
 	probarEqualization(i1);
-	i1.guardar("procesados/mpi_office_ecualizado_2.ppm");
+	i1.guardar("procesados/mpi_office_ecualizado_2_ldr.ppm", false);
 }

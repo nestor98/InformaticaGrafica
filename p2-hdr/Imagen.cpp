@@ -147,14 +147,19 @@ void Imagen::gammaClamp(const float g, const float valor) {
 }
 
 // Guarda la imagen en <fichero>
-void Imagen::guardar(const std::string nombreFichero) const {
+void Imagen::guardar(const std::string nombreFichero, bool formatoHdr) const {
 	std::ofstream fichero(nombreFichero);
+	long c_salida = c;
+	if (!formatoHdr) { 
+		// si no es en formato hdr, en lugar de usar c usamos 255
+		c_salida = 255;
+	}
 	fichero << "P3\n#MAX=" << maxFloat << "\n# " << nombreFichero; // formato, #MAX, # nombre fichero
-	fichero << std::endl << cols << " " << filas << std::endl << c << std::endl; // filas cols, max_in...
+	fichero << std::endl << cols << " " << filas << std::endl << c_salida << std::endl; // filas cols, max_in...
 	for (int i = 0; i < filas; i++) { // cada fila
 		for (int j = 0; j<cols; j++) { // cada pixel de la fila
 			for (auto val : pixeles[i*cols+j]) { // cada valor rgb
-				fichero << int(val * c / maxFloat) << " ";
+				fichero << int(val * c_salida / maxFloat) << " ";
 			}
 			fichero << "    " << std::flush;
 		}

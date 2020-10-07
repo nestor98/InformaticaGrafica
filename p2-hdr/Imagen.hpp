@@ -21,7 +21,7 @@ public:
 	Imagen(const Imagen& i2);
 	std::string to_string(const int elementos = 100) const;
 
-	void guardar(const std::string fichero) const;
+	void guardar(const std::string fichero, bool formatoHdr = true) const;
 
 	/* OPERACIONES */ 
 	void clamp();

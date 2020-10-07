@@ -115,6 +115,7 @@ void Imagen::equalizeAndClamp(const float valor) {
 			}
 			else {
 				v = v / valor;//maxFloat;// ??
+				maxFloat = 1; // el nuevo maximo ya no es max, es 1
 			}
 		}
 	}
@@ -154,7 +155,10 @@ void Imagen::guardar(const std::string nombreFichero, bool formatoHdr) const {
 		// si no es en formato hdr, en lugar de usar c usamos 255
 		c_salida = 255;
 	}
-	fichero << "P3\n#MAX=" << maxFloat << "\n# " << nombreFichero; // formato, #MAX, # nombre fichero
+	if (!(fichero << "P3\n#MAX=" << maxFloat << "\n# " << nombreFichero)) { // formato, #MAX, # nombre fichero
+		std::cerr << "Fichero de salida no accesible\n";
+		exit(1);
+	}
 	fichero << std::endl << cols << " " << filas << std::endl << c_salida << std::endl; // filas cols, max_in...
 	for (int i = 0; i < filas; i++) { // cada fila
 		for (int j = 0; j<cols; j++) { // cada pixel de la fila

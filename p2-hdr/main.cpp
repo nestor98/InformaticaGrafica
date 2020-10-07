@@ -24,6 +24,11 @@ void probarGamma(Imagen& i1, const float g) {
 	cout << "Despues\n:" << i1 << endl;
 }
 
+void probarGammaClamp(Imagen& i1, const float g, const float max) {
+	cout << "Imagen antes de gamma:\n" << i1 << endl;
+	i1.gammaClamp(g, max);
+	cout << "Despues\n:" << i1 << endl;
+}
 
 void probarEqualizationClamp(Imagen& i1) {
 	cout << "Imagen antes de eq:\n" << i1 << endl;
@@ -46,9 +51,9 @@ int main(int argc, char* argv[]) {
 	*/
 	//probarEqualizationClamp(i1);
 	cout << "maxfloat antes: " << i1.getMaxFloat() << endl;
-	probarGamma(i1, 0.5);
+	probarGammaClamp(i1, 0.5, 0.95);
 	cout << "maxfloat despues: " << i1.getMaxFloat() << endl;
-	i1.guardar(string(argv[2]), true);
+	i1.guardar(string(argv[2]), false);
 	/*probarGamma(i1);
 	i1.guardar("procesados/mpi_office_gamma_ldr.ppm", false);*/
 }

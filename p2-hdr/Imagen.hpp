@@ -27,6 +27,9 @@ public:
 	void clamp();
 	void equalize();
 	void equalizeAndClamp(const float valor);
+	// Eq hasta valor, clamp desde valor
+	void gamma(const float g);
+	void gamma(const float g, const float valor);
 };
 
 	// para evitar el to_string en cout

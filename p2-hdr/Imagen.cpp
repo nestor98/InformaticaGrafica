@@ -120,7 +120,30 @@ void Imagen::equalizeAndClamp(const float valor) {
 	}
 }
 
+// Eq y gamma con g
+void Imagen::gamma(const float g) {
+	equalize();
+	for (int i = 0; i < filas * cols; i++) { // cada pixel
+		for (auto& v : pixeles[i]) { // cada valor rgb
+			v = pow(v, g); // v^gamma
+		}
+	}
+}
 
+// Eq y gamma hasta valor, clamp desde valor
+void Imagen::gamma(const float g, const float valor) {
+	equalize();
+	for (int i = 0; i < filas * cols; i++) { // cada pixel
+		for (auto& v : pixeles[i]) { // cada valor rgb
+			if (v > valor) {
+				v = valor;
+			}
+			else {
+				v = pow(v, g); // v^gamma
+			}
+		}
+	}
+}
 
 // Guarda la imagen en <fichero>
 void Imagen::guardar(const std::string nombreFichero) const {

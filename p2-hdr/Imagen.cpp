@@ -65,9 +65,9 @@ Imagen::Imagen(const std::string nombreFichero) {
 	int i = 0;
 	while (fichero >> valor)
 	{
-		if (i / 3 < 25) {
+		/*if (i / 3 < 25) {
 			std::cout << valor << std::endl << i  << "..." << i/3 << std::endl;
-		}
+		}*/
 		pixeles[i/3][i%3] = valor * maxFloat/c; // cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
 		i++;
 		
@@ -115,6 +115,8 @@ void Imagen::equalizeAndClamp(const float valor) {
 			}
 			else {
 				v = v / valor;//maxFloat;// ??
+				//
+				
 				maxFloat = 1; // el nuevo maximo ya no es max, es 1
 			}
 		}
@@ -134,14 +136,11 @@ void Imagen::gamma(const float g) {
 
 // Eq y gamma hasta valor, clamp desde valor
 void Imagen::gammaClamp(const float g, const float valor) {
-	equalize();
+	equalizeAndClamp(valor);
 	for (int i = 0; i < filas * cols; i++) { // cada pixel
 		for (auto& v : pixeles[i]) { // cada valor rgb
-			if (v > valor) {
-				v = valor;
-			}
-			else {
-				v = pow(v, g); // v^gamma
+			if (v < 1) {
+				v = pow(v, g);
 			}
 		}
 	}
@@ -165,7 +164,7 @@ void Imagen::guardar(const std::string nombreFichero, bool formatoHdr) const {
 			for (auto val : pixeles[i*cols+j]) { // cada valor rgb
 				fichero << int(val * c_salida / maxFloat) << " ";
 			}
-			fichero << "    " << std::flush;
+			fichero << "\t";
 		}
 		fichero << std::endl; // siguiente fila
 	}
@@ -194,7 +193,9 @@ std::ostream& operator<<(std::ostream& os, const Imagen& i) {
 	return os;
 }
 
-
+float Imagen::getMaxFloat() const {
+	return maxFloat;
+}
 
 /*
 	while (std::getline(fichero, linea) && !finHeader) {

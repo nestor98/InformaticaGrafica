@@ -30,6 +30,9 @@ public:
 	// Eq hasta valor, clamp desde valor
 	void gamma(const float g);
 	void gammaClamp(const float g, const float valor);
+
+
+	float getMaxFloat() const;
 };
 
 	// para evitar el to_string en cout

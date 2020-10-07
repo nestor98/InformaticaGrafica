@@ -132,7 +132,7 @@ void Imagen::gamma(const float g) {
 }
 
 // Eq y gamma hasta valor, clamp desde valor
-void Imagen::gamma(const float g, const float valor) {
+void Imagen::gammaClamp(const float g, const float valor) {
 	equalize();
 	for (int i = 0; i < filas * cols; i++) { // cada pixel
 		for (auto& v : pixeles[i]) { // cada valor rgb

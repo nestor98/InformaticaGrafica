@@ -8,7 +8,7 @@
 
 
 class Imagen {
-	std::vector<std::array<float, 3>> pixeles; // en un solo vector de filas*columnas
+	std::vector<std::array<double, 3>> pixeles; // en un solo vector de filas*columnas
 	std::string titulo;
 	int filas, cols; // filas y columnas de la matriz
 	long max_in; // valor maximo de los pixeles de entrada
@@ -18,6 +18,8 @@ public:
 	Imagen();
 	Imagen(const std::string nombreFichero);
 	std::string to_string(const int elementos = 100) const;
+
+	void guardar(const std::string fichero) const;
 };
 
 	// para evitar el to_string en cout

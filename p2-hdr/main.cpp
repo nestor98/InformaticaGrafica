@@ -33,6 +33,6 @@ int main() {
 	*/
 
 	Imagen i1("hdrFiles/mpi_office.ppm");
-
-	cout << "Imagen:\n" << i1 << endl;
+	i1.guardar("procesados/mpi_office_deberiaserigual.ppm");
+	//cout << "Imagen:\n" << i1 << endl;
 }

@@ -398,3 +398,7 @@ FodyWeavers.xsd
 p1-geometria/main
 
 p2-hdr/hdrFiles/
+
+p2-hdr/procesados/
+
+p2-hdr/main

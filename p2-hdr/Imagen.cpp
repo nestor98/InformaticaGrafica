@@ -3,6 +3,7 @@
 #include <string>
 #include <cmath>
 #include <vector>
+#include <sstream>
 // cmath para sqrt
 #include "Imagen.hpp"
 
@@ -10,10 +11,19 @@
 
 Imagen::Imagen() {}
 
+// separa <linea>, devolviendo el float a la derecha del caracter '=' 
+// ej: linea="#MAX=23.1"  ->  devuelve 23.1
 float parseMax(const std::string linea) {
-	return 0; // TODO: DE MOMENTO
+	std::istringstream is{ linea }; // stream de string para facilitar la separacion
+	std::string ignorar;
+	std::getline(is, ignorar, '='); // ignora hasta el =
+	float max = 0;
+	is >> max; // saca el valor float del maximo
+	//std::cout << "ignorar: " << ignorar << "\nmax = " << max << std::endl;
+	return max; 
 }
 
+// constructor de la imagen a partir del fichero con nombre <nombreFichero>
 Imagen::Imagen(const std::string nombreFichero) {
 	std::ifstream fichero(nombreFichero);
 	std::string formato;
@@ -33,10 +43,10 @@ Imagen::Imagen(const std::string nombreFichero) {
 	std::string linea;
 	// leer cabecera:
 	fichero >> linea; // #MAX=...
-	maxFloat = parseMax(linea);
+	maxFloat = parseMax(linea); // saca el valor del max
 	fichero.ignore().ignore(); // HAY QUE LLAMAR A ESTO ANTES DEL GETLINE PORQUE NO IGNORA EL \n DEL >> ANTERIOR...............................
 	std::getline(fichero, linea, '\n'); // esta es # nombre_fichero, ya lo tenemos
-	fichero >> filas >> cols;
+	fichero >> cols >> filas;
 	pixeles.reserve(filas * cols); // Reservar el tamaño del vector
 	fichero >> max_in;
 
@@ -46,6 +56,9 @@ Imagen::Imagen(const std::string nombreFichero) {
 	int i = 0;
 	while (fichero >> valor)
 	{
+		if (i / 3 < 25) {
+			std::cout << valor << std::endl << i  << "..." << i/3 << std::endl;
+		}
 		//std::cout << valor << std::endl << i << std::endl;
 		pixeles[i/3][i%3] = valor; // cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
 		//std::cout << pixeles[i/3][i%3] << std::endl;
@@ -54,6 +67,23 @@ Imagen::Imagen(const std::string nombreFichero) {
 	}
 	//std::cout << "i/3 = " << i/3 << "\ny lineas*cols = " << filas*cols << std::endl;
 
+}
+
+// Guarda la imagen en <fichero>
+void Imagen::guardar(const std::string nombreFichero) const {
+	std::ofstream fichero(nombreFichero);
+	fichero << "P3\n#MAX=" << maxFloat << "\n# " << nombreFichero; // formato, #MAX, # nombre fichero
+	fichero << std::endl << cols << " " << filas << std::endl << max_in << std::endl; // filas cols, max_in...
+	for (int i = 0; i < filas; i++) { // cada fila
+		for (int j = 0; j<cols; j++) { // cada pixel de la fila
+			for (auto val : pixeles[i*cols+j]) { // cada valor rgb
+				fichero << int(val) << " ";
+			}
+			fichero << "    " << std::flush;
+		}
+		fichero << std::endl; // siguiente fila
+	}
+	std::cout << "fin de guardar\n";
 }
 
 std::string Imagen::to_string(const int elementos) const {

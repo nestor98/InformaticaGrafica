@@ -76,19 +76,10 @@ Imagen::Imagen(const std::string nombreFichero) {
 
 }
 
-/* re implementada con equalizeAndClamp
-void Imagen::clamp(const double max) {
-	std::cout << "hey estoy clampeando\n";
-	for (int i = 0; i < filas*cols; i++) { // cada pixel
-		for (auto& v : pixeles[i]) { // cada valor rgb
-			if (v > max) { // si se pasa del maximo, clamp
-				v = max;
-			}
-		}
-	}
-}
-*/
 
+
+
+// TODO: Re-probar las 3 siguientes:
 // si v>1, v=1
 void Imagen::clamp() {
 	//std::cout << "hey estoy clampeando\n";
@@ -108,7 +99,8 @@ void Imagen::equalize() {
 
 // Eq hasta valor, clamp desde valor
 void Imagen::equalizeAndClamp(const float valor) {
-	for (int i = 0; i < filas * cols; i++) { // cada pixel
+	gammaClamp(1, valor);
+	/*for (int i = 0; i < filas * cols; i++) { // cada pixel
 		for (auto& v : pixeles[i]) { // cada valor rgb
 			if (v > valor) {
 				v = valor;
@@ -120,7 +112,7 @@ void Imagen::equalizeAndClamp(const float valor) {
 				maxFloat = 1; // el nuevo maximo ya no es max, es 1
 			}
 		}
-	}
+	}*/
 }
 
 // Eq y gamma con g
@@ -136,15 +128,43 @@ void Imagen::gamma(const float g) {
 
 // Eq y gamma hasta valor, clamp desde valor
 void Imagen::gammaClamp(const float g, const float valor) {
-	equalizeAndClamp(valor);
+	//equalizeAndClamp(valor);
 	for (int i = 0; i < filas * cols; i++) { // cada pixel
 		for (auto& v : pixeles[i]) { // cada valor rgb
-			if (v < 1) {
+			if (v < valor) {
+				v = v/valor;
 				v = pow(v, g);
+				maxFloat = 1;
+			}
+			else {
+				v = valor;
 			}
 		}
 	}
 }
+
+
+// https://64.github.io/tonemapping/#reinhard
+void Imagen::reinhard() {
+	for (int i = 0; i < filas * cols; i++) { // cada pixel
+		for (auto& v : pixeles[i]) { // cada valor rgb
+			v = v / (1.0+v);
+		}
+	}
+	maxFloat = 1;
+}
+
+void Imagen::extendedReinhard() {
+	for (int i = 0; i < filas * cols; i++) { // cada pixel
+		for (auto& v : pixeles[i]) { // cada valor rgb
+			v = v * (1.0 + (v / (maxFloat * maxFloat))) / (1.0 + v);
+
+		}
+	}
+	maxFloat = 1;
+}
+
+
 
 // Guarda la imagen en <fichero>
 void Imagen::guardar(const std::string nombreFichero, bool formatoHdr) const {

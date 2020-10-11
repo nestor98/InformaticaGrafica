@@ -36,6 +36,20 @@ void probarEqualizationClamp(Imagen& i1) {
 	cout << "Despues\n:" << i1 << endl;
 }
 
+
+void probarReinhard(Imagen& i1) {
+	cout << "Imagen antes de eq:\n" << i1 << endl;
+	i1.reinhard();
+	cout << "Despues\n:" << i1 << endl;
+}
+
+
+void probarExtendedReinhard(Imagen& i1) {
+	cout << "Imagen antes de eq:\n" << i1 << endl;
+	i1.extendedReinhard();
+	cout << "Despues\n:" << i1 << endl;
+}
+
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
 	if (argc < 3) {
@@ -51,7 +65,8 @@ int main(int argc, char* argv[]) {
 	*/
 	//probarEqualizationClamp(i1);
 	cout << "maxfloat antes: " << i1.getMaxFloat() << endl;
-	probarGammaClamp(i1, 0.5, 0.95);
+	//probarGammaClamp(i1, 0.75, 0.95);
+	probarExtendedReinhard(i1);
 	cout << "maxfloat despues: " << i1.getMaxFloat() << endl;
 	i1.guardar(string(argv[2]), false);
 	/*probarGamma(i1);

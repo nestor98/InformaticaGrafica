@@ -88,41 +88,16 @@ void Imagen::clamp() {
 
 // v=v/maxFloat
 void Imagen::equalize() {
-	//std::cout << "hey estoy ecualizando\n";
-	/*for (int i = 0; i < filas * cols; i++) { // cada pixel
-		for (auto& v : pixeles[i]) { // cada valor rgb
-			v = v/maxFloat;// ??
-		}
-	}*/
 	equalizeAndClamp(maxFloat);
 }
 
 // Eq hasta valor, clamp desde valor
 void Imagen::equalizeAndClamp(const float valor) {
 	gammaClamp(1, valor);
-	/*for (int i = 0; i < filas * cols; i++) { // cada pixel
-		for (auto& v : pixeles[i]) { // cada valor rgb
-			if (v > valor) {
-				v = valor;
-			}
-			else {
-				v = v / valor;//maxFloat;// ??
-				//
-				
-				maxFloat = 1; // el nuevo maximo ya no es max, es 1
-			}
-		}
-	}*/
 }
 
 // Eq y gamma con g
 void Imagen::gamma(const float g) {
-	/*equalize();
-	for (int i = 0; i < filas * cols; i++) { // cada pixel
-		for (auto& v : pixeles[i]) { // cada valor rgb
-			v = pow(v, g); // v^gamma
-		}
-	}*/
 	gammaClamp(g, maxFloat);
 }
 
@@ -216,36 +191,3 @@ std::ostream& operator<<(std::ostream& os, const Imagen& i) {
 float Imagen::getMaxFloat() const {
 	return maxFloat;
 }
-
-/*
-	while (std::getline(fichero, linea) && !finHeader) {
-		int found = linea.find("#");
-		if (found != std::string::npos) { // Todo esto pinta raro
-			// Tiene comentario
-			if (found == 0) {
-				found = linea.find("MAX=");
-				if (found != std::string::npos) {
-					// tiene max
-					linea.erase(0, 5);
-					std::cout << "se supone que esto es el MAX" << linea << std::endl;
-
-				}
-			}
-			else {
-				linea.erase(found, linea.end()); // TODO: arreglar
-			}
-		}
-		else { // suponemos que no hay mas comentarios TODO: cambiar esto si eso
-			std::vector<int> v;
-			strToVector(linea, " ", v);
-			if (v.length() == 1) {
-				max_in = v[0];
-				finHeader = true;
-			}
-			else if (v.length() == 2) {
-				filas = v[0];
-				cols = v[1];
-				pixeles.reserve(filas*cols);
-			}
-		}
-	}*/

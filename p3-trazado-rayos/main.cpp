@@ -3,6 +3,8 @@
 #include "escena.hpp"
 // #include "camara.cpp"
 #include "esfera.hpp"
+#include "plano.hpp"
+
 #include "../p1-geometria/Vector3.cpp"
 //#include "Matriz4.cpp"
 
@@ -24,10 +26,7 @@ int main(int argc, char* argv[]) {
 	Vector3 posEsf(0,10,0,true);
 	Esfera esf(posEsf, 4);
 	e.addFigura(std::make_shared<Esfera>(esf));
+	e.addFigura(std::make_shared<Plano>(Plano(posEsf, -dirCam))); // plano en la pos de la esfera con la normal hacia la camara
 	cout << e << endl;
 	//Escena e()
-	Figura *e2 = new Esfera(posEsf, 4);
-	cout  << endl << endl<< e2->to_string() << endl;
-
-
 }

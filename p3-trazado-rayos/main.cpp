@@ -18,15 +18,19 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 	Vector3 posCam(0,0,0,true);
-	Vector3 dirCam(0,1,0,false);
+	Vector3 fCam(0,8,0,false);
+	Vector3 lCam(1,0,0,false);
+	Vector3 uCam(0,0,1,false);
 	//Camara c(posCam, dirCam);
 	//cout << c << endl;
 
-	Escena e(Camara(posCam, dirCam));
-	Vector3 posEsf(0,10,0,true);
+	Escena e(Camara(posCam, fCam, lCam, uCam));
+	Vector3 posEsf(0,30,0,true);
 	Esfera esf(posEsf, 4);
 	e.addFigura(std::make_shared<Esfera>(esf));
-	e.addFigura(std::make_shared<Plano>(Plano(posEsf, -dirCam))); // plano en la pos de la esfera con la normal hacia la camara
+	//e.addFigura(std::make_shared<Plano>(Plano(posEsf, -fCam))); // plano en la pos de la esfera con la normal hacia la camara
 	cout << e << endl;
+
+	e.render("out/primer_render.ppm");
 	//Escena e()
 }

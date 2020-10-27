@@ -17,6 +17,8 @@ public:
 
 	std::string to_string() const;
 	void addFigura(const std::shared_ptr<Figura> f);
+
+	void render(const std::string fichero) const;
 };
 
 	// para evitar el to_string en cout

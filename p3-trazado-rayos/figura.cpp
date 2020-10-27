@@ -3,8 +3,8 @@
 
 #include "figura.hpp"
 
-Figura::Figura(const Vector3& _posicion) :
-	posicion(_posicion)
+Figura::Figura(const Vector3& _posicion, const std::array<double, 3> _e) :
+	posicion(_posicion), e(_e)
 {}
 
 
@@ -15,6 +15,12 @@ std::string Figura::to_string() const {
 Vector3 Figura::getPos() const {
 	return posicion;
 }
+
+std::array<double, 3> Figura::getEmision() const {
+	return e;
+}
+
+
 
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Figura& c) {

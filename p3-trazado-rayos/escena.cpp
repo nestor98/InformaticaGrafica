@@ -6,9 +6,10 @@
 // cmath para sqrt
 
 #include "escena.hpp"
+#include "imagen/Imagen.hpp"
 
 
-Escena::Escena(const Camara& _c) : c(_c.getPos(), _c.getDir())
+Escena::Escena(const Camara& _c) : c(_c.getPos(), _c.getFront(),_c.getLeft(),_c.getUp())
 {
 	//std::cout << "Constructor de escena: " << c.to_string() << std::endl;
 }
@@ -27,6 +28,31 @@ std::string Escena::to_string() const {
 	}
 	return s;
 }
+
+
+void Escena::render(const std::string fichero) const {
+	// TODO: Buena suerte xd
+	// iterar para cada pixel de la camara:
+		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
+	Vector3 o = c.getPos();
+	Imagen im(c.getPixelesY(), c.getPixelesX());
+	for (int pixel = 0; pixel<c.getPixelesX()*c.getPixelesY(); pixel++) {
+		Vector3 dir = c.getRayoPixel(pixel);
+		bool interseccion = false;
+		for (auto figura : figuras) {
+			if (interseccion = figura->intersecta(o, dir)) { // TODO: gestionar que haya varias
+				std::array<double, 3> eFig = figura->getEmision(); // emision de la figura
+				im.setPixel(eFig[0], eFig[1], eFig[2], pixel); // se pone el pixel de la imagen de ese color
+				break;
+			}
+		}
+		if (!interseccion) { // fondo, no ha intersectado con nada:
+			im.setPixel(0,0,0, pixel); // negro
+		}
+	}
+	im.guardar(fichero);
+}
+
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Escena& e) {
 	os << e.to_string();

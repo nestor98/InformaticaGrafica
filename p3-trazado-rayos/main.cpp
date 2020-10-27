@@ -17,10 +17,10 @@ int main(int argc, char* argv[]) {
 	}
 	Vector3 posCam(0,0,0,true);
 	Vector3 dirCam(0,1,0,false);
-	Camara c(posCam, dirCam);
-	cout << c << endl;
+	//Camara c(posCam, dirCam);
+	//cout << c << endl;
 
-	Escena e(c);
+	Escena e(Camara(posCam, dirCam));
 	Vector3 posEsf(0,10,0,true);
 	Esfera esf(posEsf, 4);
 	e.addFigura(std::make_shared<Esfera>(esf));

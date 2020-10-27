@@ -10,7 +10,11 @@
 
 Camara::Camara(const Vector3& _posicion, const Vector3& _direccion) :
 	posicion(_posicion), direccion(_direccion)
-{}
+{
+	// std::cout << "Constructor de camara: " << to_string() << std::endl;
+	// std::cout << "param direccion: " << _direccion << std::endl << direccion<< std::endl;
+
+}
 
 
 std::string Camara::to_string() const {

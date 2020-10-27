@@ -8,8 +8,10 @@
 #include "escena.hpp"
 
 
-Escena::Escena(const Camara& _c) : c(_c.getPos(), c.getDir())
-{}
+Escena::Escena(const Camara& _c) : c(_c.getPos(), _c.getDir())
+{
+	//std::cout << "Constructor de escena: " << c.to_string() << std::endl;
+}
 
 void Escena::addFigura(const std::shared_ptr<Figura> f)
 {

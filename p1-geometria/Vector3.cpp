@@ -14,6 +14,7 @@ Vector3::Vector3(const Vector3& original) {
 	for (int i = 0; i < 4; i++) {
 		c[i] = original[i];
 	}
+	//std::cout<<"copiado " << original << "\ncopia: " << to_string() << std::endl;
 	if (original.esVector() != this->esVector()) {
 		std::cout << "???????" << std::endl;
 	}
@@ -67,7 +68,7 @@ float Vector3::operator [](int i) const {
 	return c[i];
 }
 
-// componente (set, v[2] = 3) 
+// componente (set, v[2] = 3)
 float& Vector3::operator [](int i) {
 	return c[i];
 }
@@ -98,7 +99,7 @@ float determinante(const int colIni, const int filaIni, const int ignorarCol, co
 	if (tam >= 3) std::cout << "-------------------------\n";
 	if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
 	float det = 0;
-	if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
+	if (tam <= 1) { // tamaï¿½o es 1, el det es el de esa posicion
 		det = m[colIni][filaIni];// TODO: otras columnas!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 	else { // TODO: arreglar el orden, ta mal
@@ -108,7 +109,7 @@ float determinante(const int colIni, const int filaIni, const int ignorarCol, co
 			s = -s; // cambio de signo
 		}
 	}
-	if (tam >= 1) 
+	if (tam >= 1)
 		std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
 	return det;
 }
@@ -123,25 +124,25 @@ bool Matriz4::contiene (const std::list<int> &l, const int elto) const {
 	}
 	return false;
 }
-	
+
 // original que no vale para inversa
-// auxiliar de determinante(), saca el determinante de una submatriz 
-// (en la que se ignoran las columnas en ignorarCol, a partir de la fila filaIni y de tamaño tam)
+// auxiliar de determinante(), saca el determinante de una submatriz
+// (en la que se ignoran las columnas en ignorarCol, a partir de la fila filaIni y de tamaï¿½o tam)
 float Matriz4::determinante2(const std::list<int> &ignorarCol, const int filaIni, const int tam) const {
 	int colIni = 0;
 	while (contiene(ignorarCol, colIni)) colIni++; // saltamos las columnas no deseadas
 	//if (tam >= 3) std::cout << "-------------------------\n";
 	//if (tam >= 2) std::cout << "determinante2 " << colIni << "," << filaIni << " " << tam << std::endl;
 	float det = 0;
-	if (tam <= 1) { // tamaño es 1, el det es el de esa posicion
+	if (tam <= 1) { // tamaï¿½o es 1, el det es el de esa posicion
 		det = m[colIni][filaIni];
 	}
-	else { 
+	else {
 		int s = 1; // SIGNO
 		int col = colIni;
 		for (int i = 0; i<tam; i++) { // tam veces
 			while (contiene(ignorarCol, col)) col++; // saltamos las columnas no deseadas
-				
+
 			auto ignorar(ignorarCol);
 			ignorar.push_back(col); // en el sub determinante2, ignoramos la col actual
 			float algo = s * m[col][filaIni] * determinante2(ignorar, filaIni+1, tam-1);
@@ -152,13 +153,13 @@ float Matriz4::determinante2(const std::list<int> &ignorarCol, const int filaIni
 			col++; // siguiente col
 		}
 	}
-	//if (tam >= 1) 
+	//if (tam >= 1)
 		//std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
 	return det;
 }
 */
 
-// auxiliar de determinante(), saca el determinante de una submatriz 
+// auxiliar de determinante(), saca el determinante de una submatriz
 // compuesta por las columnas con indice <columnas> y filas de indice <filas>
 float Matriz4::determinante(const std::list<int> &columnas, const std::list<int> &filas) const {
 	float det = 0;
@@ -185,7 +186,7 @@ float Matriz4::determinante(const std::list<int> &columnas, const std::list<int>
 			s *= -1; // cambio de signo
 		}
 	}
-	//if (tam >= 1) 
+	//if (tam >= 1)
 		//std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
 	return det;
 }
@@ -235,7 +236,7 @@ Matriz4 Matriz4::adj() const {
 /**************** Constructores ****************/
 
 // Por defecto, la identidad (no hace nada)
-Matriz4::Matriz4() { 
+Matriz4::Matriz4() {
 	setIdentidad();
 }
 
@@ -338,7 +339,7 @@ Matriz4 Matriz4::inversa() const {
 		std::cerr << "Inversa imposible, det=0\n";
 		return *this;
 	}
-	//std::cout <<"adjunta:\n"<< adj() << std::endl;	
+	//std::cout <<"adjunta:\n"<< adj() << std::endl;
 	Matriz4 inv = adj()/det;
 	return inv;
 }
@@ -432,7 +433,7 @@ Vector3 operator * (const Vector3& v, const float& s) {
 
 
 
-// escalar v/s 
+// escalar v/s
 Vector3 operator / (const Vector3& v, const float& s) {
 	if (s == 0) {
 		std::cerr << "no dividas entre 0..." << std::endl;
@@ -442,7 +443,7 @@ Vector3 operator / (const Vector3& v, const float& s) {
 	return res;
 }
 
-// escalar M/s 
+// escalar M/s
 Matriz4 operator / (const Matriz4& m, const float& s) {
 	if (s == 0) {
 		std::cerr << "no dividas entre 0..." << std::endl;

@@ -10,7 +10,7 @@ Esfera::Esfera(const Vector3& _posicion, const float _radio) :
 
 
 std::string Esfera::to_string() const {
-	return "posicion: " + posicion.to_string() + "\nradio: " + std::to_string(radio);
+	return "--- Esfera:\nposicion: " + posicion.to_string() + "\nradio: " + std::to_string(radio);
 }
 
 Vector3 Esfera::getPos() const {

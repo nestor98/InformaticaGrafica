@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <array>
 #include <string>
@@ -6,7 +8,7 @@
 // cmath para sqrt
 
 const int TAM_MATRIZ = 4;
-class Matriz4; 
+class Matriz4;
 
 class Vector3 {
 	std::array<float, 4> c; // coordenadas, con coord homogenea
@@ -40,7 +42,7 @@ public:
 	// componente (get, a = v[2])
 	float operator [](int i) const;
 
-	// componente (set, v[2] = 3) 
+	// componente (set, v[2] = 3)
 	float& operator [](int i);
 
 };
@@ -57,7 +59,7 @@ private:
 	// Escribe los parametros en la diagonal:
 	void setDiagonal(const float d0, const float d1, const float d2, const float d3);
 
-	// auxiliar de determinante(), saca el determinante de una submatriz 
+	// auxiliar de determinante(), saca el determinante de una submatriz
 	// compuesta por las columnas con indice <columnas> y filas de indice <filas>
 	float determinante(const std::list<int> &columnas, const std::list<int> &filas) const;
 
@@ -161,10 +163,10 @@ Vector3 operator * (const Vector3& v, const float& s);
 
 
 
-// escalar v/s 
+// escalar v/s
 Vector3 operator / (const Vector3& v, const float& s);
 
-// escalar M/s 
+// escalar M/s
 Matriz4 operator / (const Matriz4& m, const float& s);
 // Prod escalar (dot product)
 float operator * (const Vector3& v1, const Vector3& v2);

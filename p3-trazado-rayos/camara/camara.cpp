@@ -46,6 +46,12 @@ int Camara::getPixelesY() const {
 // devuelve el vector del iesimo pixel de la camara
 Vector3 Camara::getRayoPixel(const int i) const {
 	// TODO!!!!
+	int x = i%(pixelesX); // coord x
+	int y = i/(pixelesX);
+	Vector3 dirCamara(1,-(x/(pixelesX/2)-1), y/(pixelesY/2)-1, false);
+	// std::cout << "Dircamara: " << dirCamara << std::endl;
+	Matriz4 base(front, left, up, posicion);
+	return base.inversa()*dirCamara; // se devuelve en coords del mundo
 }
 
 

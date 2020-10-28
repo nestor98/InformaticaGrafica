@@ -14,8 +14,8 @@ Imagen::Imagen() {}
 Imagen::Imagen(const Imagen& i2)
 : titulo(i2.titulo), filas(i2.filas), cols(i2.cols), maxFloat(i2.maxFloat), c(i2.c)
 {
-	pixeles.reserve(i2.filas*i2.cols);
-	for (int i = 0; i < i2.filas * i2.cols; i++) {
+	pixeles.reserve(i2.getNumPixels());
+	for (int i = 0; i < i2.getNumPixels(); i++) {
 		pixeles[i] = i2.pixeles[i];
 	}
 }
@@ -78,7 +78,7 @@ Imagen::Imagen(const std::string nombreFichero) {
 
 
 Imagen::Imagen(const int _filas, const int _cols, const long _c, const float _maxFloat, const std::string _titulo)
-						: filas(filas), cols(_cols), c(_c), maxFloat(_maxFloat), titulo(_titulo)
+						: filas(_filas), cols(_cols), c(_c), maxFloat(_maxFloat), titulo(_titulo)
 {
 	pixeles.reserve(filas * cols);
 }
@@ -208,4 +208,9 @@ std::ostream& operator<<(std::ostream& os, const Imagen& i) {
 
 float Imagen::getMaxFloat() const {
 	return maxFloat;
+}
+
+
+int Imagen::getNumPixels() const {
+	return filas*cols;
 }

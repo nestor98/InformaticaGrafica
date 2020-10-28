@@ -37,17 +37,20 @@ void Escena::render(const std::string fichero) const {
 	Vector3 o = c.getPos();
 	Imagen im(c.getPixelesY(), c.getPixelesX());
 	for (int pixel = 0; pixel<c.getPixelesX()*c.getPixelesY(); pixel++) {
-		Vector3 dir = c.getRayoPixel(pixel);
+		Vector3 dir(c.getRayoPixel(pixel));
+		//std::cout << "dir: " << dir << std::endl << "rayoPixel: " << c.getRayoPixel(pixel) <<  std::endl;
 		bool interseccion = false;
 		for (auto figura : figuras) {
-			if (interseccion = figura->intersecta(o, dir)) { // TODO: gestionar que haya varias
+			interseccion = figura->intersecta(o, dir);
+			if (interseccion) { // TODO: gestionar que haya varias
+				std::cout << "intersecto con " << figura->to_string() << std::endl;
 				std::array<double, 3> eFig = figura->getEmision(); // emision de la figura
 				im.setPixel(eFig[0], eFig[1], eFig[2], pixel); // se pone el pixel de la imagen de ese color
 				break;
 			}
 		}
 		if (!interseccion) { // fondo, no ha intersectado con nada:
-			im.setPixel(0,0,0, pixel); // negro
+			im.setPixel(0.5,0.5,0.5, pixel); // negro
 		}
 	}
 	im.guardar(fichero);

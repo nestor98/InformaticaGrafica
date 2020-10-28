@@ -15,7 +15,7 @@ protected:
 	std::array<double, 3> e; // emitividad emision o como se llame: RGB
 
 public:
-	Figura(const Vector3& _posicion, const std::array<double, 3> _e = {1,1,1});
+	Figura(const Vector3& _posicion, const std::array<double, 3> _e = {1,0,0});
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;

@@ -24,7 +24,8 @@ float Esfera::getRadio() const {
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera
 bool Esfera::intersecta(const Vector3& origen, const Vector3& dir) const {
-	return true;
+	// std::cout << dir << std::endl;
+	return dir[0]>=0&&dir[1]>=0&&dir[2]>=0;
 }
 
 

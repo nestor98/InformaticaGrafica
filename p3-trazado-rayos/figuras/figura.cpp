@@ -20,8 +20,10 @@ std::array<double, 3> Figura::getEmision() const {
 	return e;
 }
 
-
-
+// True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera
+bool Figura::intersecta(const Vector3& origen, const Vector3& dir) const {
+	return true;
+}
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Figura& c) {
 	os << c.to_string();

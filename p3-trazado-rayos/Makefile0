@@ -1,0 +1,93 @@
+#*****************************************************************
+# File:   Makefile trabajo practico
+# Author: Nestor Monzon
+# Date:   enero 2019
+# Coms:   Makefile para el trabajo práctico de PSCD. De momento para Tuplas y mainTuplas,
+#		  para probarlo
+#*****************************************************************
+
+#---------------------------------------------------------
+CC=g++
+
+### vectores:
+VECTOR_DIR=../p1-geometria
+VECTOR=${VECTOR_DIR}/Vector3
+
+### imagen:
+IMAGEN_DIR=../p2-hdr/imagen
+IMAGEN=${IMAGEN_DIR}/Imagen
+
+### Figuras:
+FIGURAS_DIR=figuras
+FIGURAS=${FIGURAS_DIR}/figuras
+# Subclases:
+ESFERA_DIR=${FIGURAS_DIR}/esfera
+ESFERA=${ESFERA_DIR}/esfera
+
+PLANO_DIR=${FIGURAS_DIR}/plano
+PLANO=${PLANO_DIR}/plano
+
+### camara:
+CAMARA_DIR=camara
+CAMARA=${CAMARA_DIR}/camara
+
+### escena:
+ESCENA_DIR=escena
+ESCENA=${ESCENA_DIR}/escena
+
+### main:
+MAIN=main
+
+CPPFLAGS=-I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${FIGURAS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${ESCENA_DIR} -std=c++11 -O2 #-lsockets #-I${CAMARA_DIR} # Flags compilacion
+LDFLAGS=-pthread # Flags linkado threads
+
+all: ${MAIN}# ${MAIN_DRIVER} ${SERVER1}# ${MAIN_TUPLAS} usar make MAIN_TUPLAS si hace falta
+#-----------------------------------------------------------
+# MAIN
+# Compilacion
+${MAIN}.o: ${MAIN}.cpp
+	${CC} -c ${CPPFLAGS} ${MAIN}.cpp -o ${MAIN}.o
+# Linkado
+${MAIN}: ${VECTOR}.o ${IMAGEN}.o ${FIGURAS}.o ${ESFERA}.o ${PLANO}.o ${CAMARA}.o ${ESCENA}.o
+	${CC} ${LDFLAGS} ${VECTOR}.o ${IMAGEN}.o ${FIGURAS}.o ${ESFERA}.o ${PLANO}.o ${CAMARA}.o ${ESCENA}.o -o ${MAIN}
+#-----------------------------------------------------------
+# VECTOR
+# Compilacion
+${VECTOR}.o: ${VECTOR}.hpp ${VECTOR}.cpp
+	${CC} -c ${CPPFLAGS} ${VECTOR}.cpp -o ${VECTOR}.o
+#-----------------------------------------------------------
+# IMAGEN
+# Compilacion
+${IMAGEN}.o: ${IMAGEN}.hpp ${IMAGEN}.cpp
+	${CC} -c ${CPPFLAGS} ${IMAGEN}.cpp -o ${IMAGEN}.o
+#-----------------------------------------------------------
+# FIGURAS
+# Compilacion
+${FIGURAS}.o: ${FIGURAS}.hpp ${FIGURAS}.cpp
+	${CC} -c ${CPPFLAGS} ${FIGURAS}.cpp -o ${FIGURAS}.o
+#-----------------------------------------------------------
+# ESFERA
+# Compilacion
+${ESFERA}.o: ${FIGURAS}.hpp ${FIGURAS}.cpp ${ESFERA}.hpp ${ESFERA}.cpp
+	${CC} -c ${CPPFLAGS} ${ESFERA}.cpp -o ${ESFERA}.o
+#-----------------------------------------------------------
+# PLANO
+# Compilacion
+${PLANO}.o: ${FIGURAS}.hpp ${FIGURAS}.cpp ${PLANO}.hpp ${PLANO}.cpp
+	${CC} -c ${CPPFLAGS} ${PLANO}.cpp -o ${PLANO}.o
+#-----------------------------------------------------------
+# CAMARA
+# Compilacion
+${CAMARA}.o: ${CAMARA}.hpp ${CAMARA}.cpp
+	${CC} -c ${CPPFLAGS} ${CAMARA}.cpp -o ${CAMARA}.o
+#-----------------------------------------------------------
+# CAMARA
+# Compilacion
+${CAMARA}.o: ${CAMARA}.hpp ${CAMARA}.cpp
+	${CC} -c ${CPPFLAGS} ${CAMARA}.cpp -o ${CAMARA}.o
+#-----------------------------------------------------------
+# LIMPIEZA
+clean:
+	$(RM) ${TUPLAS}.o ${SOCKET}.o ${LINDA_DRIVER}.o
+	$(RM) ${MAIN_TUPLAS} ${MAIN_TUPLAS_FUENTES}.o
+	$(RM) ${MAIN_DRIVER} ${MAIN_DRIVER}.o

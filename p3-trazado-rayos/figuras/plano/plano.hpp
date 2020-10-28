@@ -6,7 +6,7 @@
 #include <cmath>
 #include <vector>
 // cmath para sqrt
-#include "../p1-geometria/Vector3.hpp"
+#include "Vector3.hpp"
 
 
 #include "figura.hpp"

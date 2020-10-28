@@ -6,7 +6,7 @@
 // cmath para sqrt
 
 #include "escena.hpp"
-#include "imagen/Imagen.hpp"
+#include "Imagen.hpp"
 
 
 Escena::Escena(const Camara& _c) : c(_c.getPos(), _c.getFront(),_c.getLeft(),_c.getUp())

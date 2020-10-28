@@ -5,7 +5,7 @@
 #include "esfera.hpp"
 #include "plano.hpp"
 
-#include "../p1-geometria/Vector3.cpp"
+#include "../p1-geometria/Vector3.hpp"
 //#include "Matriz4.cpp"
 
 using namespace std;

@@ -4,28 +4,32 @@
 
 #include "Plano.hpp"
 
-Plano::Plano(const Vector3& _posicion, const Vector3& _normal) :
-	Figura(_posicion), normal(_normal)
+Plano::Plano(const Vector3& _normal, const double _dist) :
+	dist(_dist), normal(_normal)
 {}
 
 
 std::string Plano::to_string() const {
-	return "--- Plano:\nposicion: " + posicion.to_string() + "\nnormal: " + normal.to_string();
+	return "--- Plano:\ndistancia: " + std::to_string(dist) + "\nnormal: " + normal.to_string();
 }
 
-Vector3 Plano::getPos() const {
-	return posicion;
+double Plano::getDist() const {
+	return dist;
 }
 
 Vector3 Plano::getNormal() const {
 	return normal;
 }
 
-
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el plano
-bool Plano::intersecta(const Vector3& origen, const Vector3& dir) const {
-	return true;
+double Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
+	double d_n = dir*normal;
+	if (d_n!=0) { // intersecta
+		return -(getDist()+origen*normal)/d_n; // t
+	}
+	return 0;
 }
+
 
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Plano& c) {

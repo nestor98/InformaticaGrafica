@@ -14,13 +14,14 @@
 
 class Plano : public Figura {
 	Vector3 normal;
+	double dist; // distancia al origen
 public:
-	Plano(const Vector3& _posicion, const Vector3& _normal);
+	Plano(const Vector3& _normal, const double _dist);
 	std::string to_string() const override;
 
-	Vector3 getPos() const;
+	double getDist() const;
 	Vector3 getNormal() const;
-	bool intersecta(const Vector3& origen, const Vector3& dir) const override;
+	double interseccion(const Vector3& origen, const Vector3& dir) const override;
 };
 
 	// para evitar el to_string en cout

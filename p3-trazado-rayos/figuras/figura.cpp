@@ -3,26 +3,30 @@
 
 #include "figura.hpp"
 
-Figura::Figura(const Vector3& _posicion, const std::array<double, 3> _e) :
-	posicion(_posicion), e(_e)
+Figura::Figura(const std::array<double, 3> _e) : e(_e)
 {}
 
 
 std::string Figura::to_string() const {
-	return "posicion: " + posicion.to_string();
-}
-
-Vector3 Figura::getPos() const {
-	return posicion;
+	return "Figura no tiene to_string";
 }
 
 std::array<double, 3> Figura::getEmision() const {
 	return e;
 }
 
+
+void Figura::setColor(const double r, const double g, const double b) {
+	e = {r,g,b};
+}
+
+void Figura::setColor(const std::array<double, 3> _e = {1,0,0}) {
+	e=_e;
+}
+
 // True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera
-bool Figura::intersecta(const Vector3& origen, const Vector3& dir) const {
-	return true;
+double Figura::interseccion(const Vector3& origen, const Vector3& dir) const {
+	return 0;
 }
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Figura& c) {

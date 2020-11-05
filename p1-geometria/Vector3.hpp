@@ -35,6 +35,9 @@ public:
 	// Devuelve el modulo del vector
 	// TODO: comprobar!!
 	float getModulo() const;
+	float getModuloSq() const;
+
+	bool esPositivo() const;
 
 	// Cambio de sentido
 	Vector3 operator - () const;
@@ -158,10 +161,16 @@ Vector3 operator - (const Vector3& v1, const Vector3& v2);
 // escalar s*v
 Vector3 operator * (const float& s, const Vector3& v);
 
+// escalar s/v
+Vector3 operator / (const float& s, const Vector3& v);
+
+// Devuelve el vector cuyo iesimo comp es v1[i]/v2[i]
+Vector3 dividirComponentes(const Vector3& v1, const Vector3& v2);
+
 // escalar s*v (orden v*s)
 Vector3 operator * (const Vector3& v, const float& s);
 
-
+float operator / (const Vector3& v1, const Vector3& v2);
 
 // escalar v/s
 Vector3 operator / (const Vector3& v, const float& s);
@@ -170,6 +179,8 @@ Vector3 operator / (const Vector3& v, const float& s);
 Matriz4 operator / (const Matriz4& m, const float& s);
 // Prod escalar (dot product)
 float operator * (const Vector3& v1, const Vector3& v2);
+
+
 
 // cross product (producto vectorial)
 Vector3 cross(const Vector3& v1, const Vector3& v2);

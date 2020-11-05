@@ -9,9 +9,10 @@
 #include "Imagen.hpp"
 
 
-Escena::Escena(const Camara& _c) : c(_c.getPos(), _c.getFront(),_c.getLeft(),_c.getUp())
+Escena::Escena(const std::shared_ptr<Camara> _c) : c(_c)//_c->getPos(), _c->getFront(),_c->getLeft(),_c->getUp(),_c->getPixelesX(),_c->getPixelesY(),_c->getRayosPorPixel())
 {
-	//std::cout << "Constructor de escena: " << c.to_string() << std::endl;
+	//std::cout << "Constructor de escena: " << c->to_string() << std::endl;
+	//c = std::make_shared<Camara> _c;
 }
 
 void Escena::addFigura(const std::shared_ptr<Figura> f)
@@ -22,7 +23,7 @@ void Escena::addFigura(const std::shared_ptr<Figura> f)
 
 
 std::string Escena::to_string() const {
-	std::string s = "camara:\n" + c.to_string() + "\nfiguras:";
+	std::string s = "camara:\n" + c->to_string() + "\nfiguras:";
 	for (auto f : figuras) {
 		s += "\n" + f->to_string();
 	}
@@ -34,24 +35,36 @@ void Escena::render(const std::string fichero) const {
 	// TODO: Buena suerte xd
 	// iterar para cada pixel de la camara:
 		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
-	Vector3 o = c.getPos();
-	Imagen im(c.getPixelesY(), c.getPixelesX());
-	for (int pixel = 0; pixel<c.getPixelesX()*c.getPixelesY(); pixel++) {
-		Vector3 dir(c.getRayoPixel(pixel));
-		//std::cout << "dir: " << dir << std::endl << "rayoPixel: " << c.getRayoPixel(pixel) <<  std::endl;
+	Vector3 o = c->getPos();
+	// Vector3 ultimaDir(c->getRayoPixel(0)); // DEBUG
+	Imagen im(c->getPixelesY(), c->getPixelesX());
+	// std::cout <<" P3\n#MAX=1\n# out/rayos.ppm\n400 400\n255";
+	for (int pixel = 0; pixel<c->getPixelesX()*c->getPixelesY(); pixel++) {
 		bool interseccion = false;
-		for (auto figura : figuras) {
-			interseccion = figura->intersecta(o, dir);
-			if (interseccion) { // TODO: gestionar que haya varias
-				std::cout << "intersecto con " << figura->to_string() << std::endl;
-				std::array<double, 3> eFig = figura->getEmision(); // emision de la figura
-				im.setPixel(eFig[0], eFig[1], eFig[2], pixel); // se pone el pixel de la imagen de ese color
-				break;
+		std::array<double, 3> color = {0.0,0.0,0.0};
+		for (int i=0; i<c->getRayosPorPixel(); i++) {
+			Vector3 dir(c->getRayoPixel(pixel));
+			for (auto figura : figuras) {
+				interseccion = figura->interseccion(o, dir)>0;
+				if (interseccion) { // TODO: gestionar que haya varias
+					//std::cout << "intersecto con " << figura->to_string() << std::endl;
+					std::array<double, 3> eFig = figura->getEmision(); // emision de la figura
+					for (int j=0; j<3; j++) {
+						color[j]+=eFig[j]/c->getRayosPorPixel();
+					}
+					//im.setPixel(dir[0], dir[1], dir[2], pixel);
+					break;
+				}
+			}
+			if (!interseccion) { // fondo, no ha intersectado con nada:
+				// std::cout << "FONDO!!\n";
+				double fondo = 0.5/c->getRayosPorPixel();
+				for (int j=0; j<3; j++) {
+					color[j]+=fondo;
+				} // fondo gris
 			}
 		}
-		if (!interseccion) { // fondo, no ha intersectado con nada:
-			im.setPixel(0.5,0.5,0.5, pixel); // negro
-		}
+		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 	}
 	im.guardar(fichero);
 }

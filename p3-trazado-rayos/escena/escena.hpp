@@ -10,10 +10,11 @@
 #include "figura.hpp"
 
 class Escena {
-	Camara c;
+	std::shared_ptr<Camara> c;
 	std::vector<std::shared_ptr<Figura>> figuras;
 public:
 	Escena(const Camara& _c);
+	Escena(const std::shared_ptr<Camara> _c);
 
 	std::string to_string() const;
 	void addFigura(const std::shared_ptr<Figura> f);

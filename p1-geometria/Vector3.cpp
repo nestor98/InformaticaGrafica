@@ -41,6 +41,15 @@ bool Vector3::esVector() const {
 	return c[3] == 0;
 }
 
+// True sii todos sus componentes son >=0
+bool Vector3::esPositivo() const {
+	bool pos = true;
+	for (int i = 0; i<3; i++) {
+		pos &= c[i]>=-0.00001;
+	}
+	return pos;
+}
+
 // Representacion en string del vector
 std::string Vector3::to_string() const {
 	std::string s = std::to_string(c[0]);
@@ -51,11 +60,16 @@ std::string Vector3::to_string() const {
 // Devuelve el modulo del vector
 // TODO: comprobar!!
 float Vector3::getModulo() const {
+	return sqrt(getModuloSq()); // raiz de la suma de los cuads
+}
+
+// devuelve el modulo al cuadrado
+float Vector3::getModuloSq() const {
 	float mod = 0;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 3; i++) { // TODO: hasta 3 o 4????
 		mod += c[i] * c[i]; // cada componente al cuadrado
 	}
-	return sqrt(mod); // raiz de la suma de los cuads
+	return mod;
 }
 
 // Cambio de sentido
@@ -347,8 +361,8 @@ Matriz4 Matriz4::inversa() const {
 // como string
 std::string Matriz4::to_string() const {
 	std::string s = "";
-	for (int i = 0; i < 4; i++) {
-		for (int col = 0; col < 4; col++) {
+	for (int col = 0; col < 4; col++) {
+		for (int i = 0; i < 4; i++) {
 			s += std::to_string(m[col][i]) + "\t";
 		}
 		s += "\n";
@@ -425,6 +439,27 @@ Vector3 operator * (const float& s, const Vector3& v) {
 	return res;
 }
 
+// Devuelve el vector cuyo iesimo comp es v1[i]/v2[i]
+Vector3 dividirComponentes(const Vector3& v1, const Vector3& v2) {
+	Vector3 res;
+	for (int i=0; i<3;i++) {
+		if (v2[i]!=0) {
+			res[i] = v1[i]/v2[i];
+		}
+		else {
+			res[i] = 0;
+		}
+	}
+	res[3] = v1[3];
+	return res;
+}
+
+// escalar s/v
+Vector3 operator / (const float& s, const Vector3& v) {
+	Vector3 res(s/v[0], s/v[1], s/v[2], false);
+	return res;
+}
+
 // escalar s*v (orden v*s)
 Vector3 operator * (const Vector3& v, const float& s) {
 	Vector3 res(v[0] * s, v[1] * s, v[2] * s, false);
@@ -458,6 +493,15 @@ float operator * (const Vector3& v1, const Vector3& v2) {
 	float res = 0;
 	for (int i = 0; i < 4; i++) {
 		res += v1[i] * v2[i];
+	}
+	return res;
+}
+
+// Prod escalar (dot product) inverso
+float operator / (const Vector3& v1, const Vector3& v2) {
+	float res = 0;
+	for (int i = 0; i < 4; i++) {
+		res += v1[i] / v2[i];
 	}
 	return res;
 }

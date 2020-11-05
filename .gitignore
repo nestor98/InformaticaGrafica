@@ -404,3 +404,7 @@ p2-hdr/procesados/
 p2-hdr/main
 
 p3-trazado-rayos/main
+
+p3-trazado-rayos/out/
+
+p3-trazado-rayos/cout.txt

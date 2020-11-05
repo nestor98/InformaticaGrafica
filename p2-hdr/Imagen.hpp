@@ -44,8 +44,6 @@ public:
 	void extendedReinhard();
 
 	float getMaxFloat() const;
-
-	int getNumPixels() const;
 };
 
 	// para evitar el to_string en cout

@@ -9,9 +9,13 @@
 #include "camara.hpp"
 #include "figura.hpp"
 
+#include "utils.hpp"
+
 class Escena {
 	std::shared_ptr<Camara> c;
 	std::vector<std::shared_ptr<Figura>> figuras;
+
+	Utils utils;
 public:
 	Escena(const Camara& _c);
 	Escena(const std::shared_ptr<Camara> _c);

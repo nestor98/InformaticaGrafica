@@ -9,7 +9,7 @@
 #include "Imagen.hpp"
 
 
-Escena::Escena(const std::shared_ptr<Camara> _c) : c(_c)//_c->getPos(), _c->getFront(),_c->getLeft(),_c->getUp(),_c->getPixelesX(),_c->getPixelesY(),_c->getRayosPorPixel())
+Escena::Escena(const std::shared_ptr<Camara> _c) : c(_c), utils()//_c->getPos(), _c->getFront(),_c->getLeft(),_c->getUp(),_c->getPixelesX(),_c->getPixelesY(),_c->getRayosPorPixel())
 {
 	//std::cout << "Constructor de escena: " << c->to_string() << std::endl;
 	//c = std::make_shared<Camara> _c;
@@ -32,14 +32,13 @@ std::string Escena::to_string() const {
 
 
 void Escena::render(const std::string fichero) const {
-	// TODO: Buena suerte xd
 	// iterar para cada pixel de la camara:
 		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
 	Vector3 o = c->getPos();
 	// Vector3 ultimaDir(c->getRayoPixel(0)); // DEBUG
 	Imagen im(c->getPixelesY(), c->getPixelesX());
 	// std::cout <<" P3\n#MAX=1\n# out/rayos.ppm\n400 400\n255";
-	for (int pixel = 0; pixel<c->getPixelesX()*c->getPixelesY(); pixel++) {
+	for (int pixel = 0; pixel<c->getNumPixeles(); pixel++) {
 		bool interseccion = false;
 		std::array<double, 3> color = {0.0,0.0,0.0};
 		for (int i=0; i<c->getRayosPorPixel(); i++) {
@@ -60,7 +59,7 @@ void Escena::render(const std::string fichero) const {
 				// std::cout << "FONDO!!\n";
 				double fondo = 0.5/c->getRayosPorPixel();
 				for (int j=0; j<3; j++) {
-					color[j]+=fondo;
+					color[j]+=fondo;//*utils.rand01();
 				} // fondo gris
 			}
 		}

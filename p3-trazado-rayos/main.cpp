@@ -30,8 +30,13 @@ int main(int argc, char* argv[]) {
 	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 	Escena e(std::make_shared<Camara>(c));
 	Vector3 posEsf(-2,30,0,true);
-	Esfera esf(posEsf, 0.5);
-	e.addFigura(std::make_shared<Esfera>(esf));
+	for (int i=0; i<100; i++) {
+		Esfera esf(posEsf+(0.2*i*fCam), 0.5);
+		cout << esf.to_string() << endl;
+		esf.setRandomColor();
+		e.addFigura(std::make_shared<Esfera>(esf));
+		cout << "----\n";
+	}
 	// Suelo (normal, distancia al origen):
 	Plano suelo(uCam/uCam.getModulo(), 3);
 	suelo.setColor(0,0,0.8);
@@ -41,6 +46,8 @@ int main(int argc, char* argv[]) {
 	Prisma prisma(posPrisma, 2*tamPrisma);
 	prisma.setColor(0,0.7,0);
 	e.addFigura(std::make_shared<Prisma>(prisma));
+	cout<<e<<endl;
+	e.render("out/" + string(argv[1]));
 	//e.addFigura(std::make_shared<Plano>(Plano(posEsf, -fCam))); // plano en la pos de la esfera con la normal hacia la camara
 	// cout << e << endl;
 	// for (int i = 0; i<100; i++) {
@@ -50,6 +57,5 @@ int main(int argc, char* argv[]) {
 	// 	}
 	//
 	// }
-	e.render("out/" + string(argv[1]));
 	//Escena e()
 }

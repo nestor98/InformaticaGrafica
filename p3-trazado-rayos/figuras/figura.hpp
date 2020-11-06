@@ -8,10 +8,13 @@
 // cmath para sqrt
 #include "Vector3.hpp"
 
+#include "utils.hpp"
 
 class Figura {
 protected:
 	std::array<double, 3> e; // emitividad emision o como se llame: RGB
+
+	Utils utils; // random, etc
 
 public:
 	Figura(const std::array<double, 3> _e = {1,0,0});
@@ -24,6 +27,8 @@ public:
 	void setColor(const double r, const double g, const double b);
 
 	void setColor(const std::array<double, 3> _e);
+
+	void setRandomColor();
 
 	virtual double interseccion(const Vector3& origen, const Vector3& dir) const;
 };

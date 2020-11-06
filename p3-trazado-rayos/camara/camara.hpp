@@ -9,7 +9,7 @@
 #include "Vector3.hpp"
 
 
-#include <random>
+#include "utils.hpp"
 
 class Camara {
 	Vector3 posicion;
@@ -24,11 +24,12 @@ class Camara {
 
 	Matriz4 baseInversa;
 
+	Utils utils; // random, etc
+
 	// Para generacion de nums aleatorios
 	mutable std::mt19937 gen; //Standard mersenne_twister_engine seeded with rd()
 	mutable std::uniform_real_distribution<> dis;
 
-	double rand01() const; // devuelve un nº aleatorio uniforme entre 0 y 1
 
 public:
 	Camara(const Vector3& _posicion, const Vector3& _front, const Vector3& _left, const Vector3& _up,
@@ -41,6 +42,7 @@ public:
 	Vector3 getUp() const;
 	int getPixelesX() const;
 	int getPixelesY() const;
+	int getNumPixeles() const;
 
 	Vector3 getRayoPixel(const int i) const;
 	int getRayosPorPixel() const;

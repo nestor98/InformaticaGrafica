@@ -3,8 +3,12 @@ VECTOR_DIR=../p1-geometria
 VECTOR=${VECTOR_DIR}/Vector3
 
 ### imagen:
-IMAGEN_DIR=../p2-hdr/imagen
+IMAGEN_DIR=../p2-hdr
 IMAGEN=${IMAGEN_DIR}/Imagen
+
+### utils:
+UTILS_DIR=utils
+UTILS=${UTILS_DIR}/utils
 
 ### Figuras:
 FIGURAS_DIR=figuras
@@ -29,7 +33,7 @@ ESCENA=${ESCENA_DIR}/escena
 ### main:
 MAIN=main
 
-CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${FIGURAS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -std=c++11 -O2
+CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${FIGURAS_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -std=c++11 -O2
 
 src = $(wildcard *.cpp) \
         $(wildcard ../p1-geometria/Vector3.cpp) \
@@ -37,6 +41,7 @@ src = $(wildcard *.cpp) \
         $(wildcard camara/*.cpp) \
         $(wildcard escena/*.cpp)\
         $(wildcard figuras/*.cpp)\
+        $(wildcard utils/*.cpp)\
         $(wildcard figuras/esfera/*.cpp)\
         $(wildcard figuras/plano/*.cpp)\
         $(wildcard figuras/prisma/*.cpp)

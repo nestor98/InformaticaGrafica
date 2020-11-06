@@ -3,7 +3,7 @@
 
 #include "figura.hpp"
 
-Figura::Figura(const std::array<double, 3> _e) : e(_e)
+Figura::Figura(const std::array<double, 3> _e) : e(_e), utils()
 {}
 
 
@@ -22,6 +22,12 @@ void Figura::setColor(const double r, const double g, const double b) {
 
 void Figura::setColor(const std::array<double, 3> _e = {1,0,0}) {
 	e=_e;
+}
+
+// color aleatorio
+void Figura::setRandomColor() {
+	std::cout << utils.rand01()<<std::endl;
+	e = {utils.rand01(), utils.rand01(), utils.rand01()};
 }
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera

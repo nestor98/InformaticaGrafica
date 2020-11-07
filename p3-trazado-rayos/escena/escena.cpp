@@ -22,7 +22,7 @@ void Escena::addFigura(const std::shared_ptr<Figura> f)
 }
 
 void Escena::consumirTasks(Imagen& im, const Vector3& origen) {
-	std::cout<<"Bueno"<<std::endl;
+	//std::cout<<"Bueno"<<std::endl;
 	bool fin = false;
 	int cuenta = 0;
 	while (true) {
@@ -36,14 +36,12 @@ void Escena::consumirTasks(Imagen& im, const Vector3& origen) {
 		renderPixel(im, origen, pixel);
 		cuenta++;
 	}
-	std::cout<<"He hecho: " << cuenta << " pixeles\n";
+	std::cout<<"He dibujado: " << cuenta << " pixeles\n";
 }
 
 void Escena::initThreads(Imagen& im, const Vector3& origen) {
-	//std::cout<<"hm???????\n" << threads.capacity();
 	for (int i=0; i<threads.capacity(); i++) {
 		// std::thread t1(&Escena::consumirTasks, this, std::ref(im), std::ref(origen));
-		//std::cout<<"hm\n";
 		threads.emplace_back(std::thread(&Escena::consumirTasks, this, std::ref(im), std::ref(origen)));
 	}
 }

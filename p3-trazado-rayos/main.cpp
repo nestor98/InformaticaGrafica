@@ -29,14 +29,14 @@ int main(int argc, char* argv[]) {
 	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 	Escena e(std::make_shared<Camara>(c));
 	Vector3 posEsf(-2,30,0,true);
-	for (int i=0; i<300; i++) {
+	for (int i=0; i<100; i++) {
 		Esfera esf(posEsf+(0.2*i*fCam+0.3*i*uCam), 0.5);
 		cout << esf.to_string() << endl;
 		esf.setRandomColor();
 		e.addFigura(std::make_shared<Esfera>(esf));
 		cout << "----\n";
 	}
-	for (int i=0; i<300; i++) {
+	for (int i=0; i<50; i++) {
 		Esfera esf(posEsf+(0.2*i*fCam)+(0.3*i*lCam), 0.5);
 		cout << esf.to_string() << endl;
 		esf.setRandomColor();

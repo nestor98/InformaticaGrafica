@@ -4,8 +4,10 @@
 #include <string>
 #include <vector>
 #include <memory>
-// cmath para sqrt
+#include <thread>
 
+
+#include "Imagen.hpp"
 #include "camara.hpp"
 #include "figura.hpp"
 
@@ -16,14 +18,36 @@ class Escena {
 	std::vector<std::shared_ptr<Figura>> figuras;
 
 	Utils utils;
+
+	// Auxiliar de render
+	void renderPixel(Imagen& im, const Vector3& o, const int pixel) const;
+
+	// --------- Threads ---------
+	std::vector<std::thread> threads; // Vector con cada thread
+
+	std::vector<int> tasks; // cola de pixeles a renderizar
+
+	// Inicializa los threads:
+	void initThreads(Imagen& im, const Vector3& origen);
+
+	void waitThreads();
+
+	// encola un pixel
+	void enQueueTask(const int pixel);
+
+	// funcion que ejecutan los threads
+	void consumirTasks(Imagen& im, const Vector3& origen);
+
+
+	// ---------------------------
 public:
 	Escena(const Camara& _c);
-	Escena(const std::shared_ptr<Camara> _c);
+	Escena(const std::shared_ptr<Camara> _c, const int _nThreads = 16);
 
 	std::string to_string() const;
 	void addFigura(const std::shared_ptr<Figura> f);
 
-	void render(const std::string fichero) const;
+	void render(const std::string fichero);
 };
 
 	// para evitar el to_string en cout

@@ -33,7 +33,7 @@ ESCENA=${ESCENA_DIR}/escena
 ### main:
 MAIN=main
 
-CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${FIGURAS_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -std=c++11 -O2
+CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${FIGURAS_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -std=c++11 -pthread -O2
 
 src = $(wildcard *.cpp) \
         $(wildcard ../p1-geometria/Vector3.cpp) \

@@ -6,11 +6,10 @@
 #include "plano.hpp"
 #include "prisma.hpp"
 
-#include "../p1-geometria/Vector3.hpp"
+#include "Vector3.hpp"
 //#include "Matriz4.cpp"
 
 using namespace std;
-
 
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
@@ -30,8 +29,15 @@ int main(int argc, char* argv[]) {
 	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 	Escena e(std::make_shared<Camara>(c));
 	Vector3 posEsf(-2,30,0,true);
-	for (int i=0; i<100; i++) {
-		Esfera esf(posEsf+(0.2*i*fCam), 0.5);
+	for (int i=0; i<300; i++) {
+		Esfera esf(posEsf+(0.2*i*fCam+0.3*i*uCam), 0.5);
+		cout << esf.to_string() << endl;
+		esf.setRandomColor();
+		e.addFigura(std::make_shared<Esfera>(esf));
+		cout << "----\n";
+	}
+	for (int i=0; i<300; i++) {
+		Esfera esf(posEsf+(0.2*i*fCam)+(0.3*i*lCam), 0.5);
 		cout << esf.to_string() << endl;
 		esf.setRandomColor();
 		e.addFigura(std::make_shared<Esfera>(esf));
@@ -48,6 +54,7 @@ int main(int argc, char* argv[]) {
 	e.addFigura(std::make_shared<Prisma>(prisma));
 	cout<<e<<endl;
 	e.render("out/" + string(argv[1]));
+	cout << "en total hay "<<pixelesX*pixelesY<<endl;
 	//e.addFigura(std::make_shared<Plano>(Plano(posEsf, -fCam))); // plano en la pos de la esfera con la normal hacia la camara
 	// cout << e << endl;
 	// for (int i = 0; i<100; i++) {

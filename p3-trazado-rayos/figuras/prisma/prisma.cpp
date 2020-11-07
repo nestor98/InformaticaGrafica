@@ -4,6 +4,11 @@
 
 #include "Prisma.hpp"
 
+
+Prisma::Prisma() :posicion(0,0,0,true), tam(0,0,0,true)
+{}
+
+
 Prisma::Prisma(const Vector3& _posicion, const Vector3& _tam) :
 	posicion(_posicion), tam(_tam)//, caras[0]()
 {}
@@ -71,3 +76,33 @@ double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
 		return 0;
 	}
 }
+
+
+// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
+std::shared_ptr<Prisma> Prisma::boundingBox() const {
+	// TODO: actualizar cuando se implementen prismas rotados
+	Prisma box = *this;
+	return std::make_shared<Prisma>(box);
+}
+
+// True sii el rayo desde <origen>, hacia <dir> intersecta con el Prisma
+// // adaptado de: https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/implementing-reflections-with-a-local-cubemap/ray-box-intersection-algorithm
+// bool Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
+// 	Vector3 a = getPos(); // primera esquina
+// 	Vector3 b = a + getTam(); // segunda
+// 	Vector3 tA = dividirComponentes((a - origen), dir); // Primera esquina
+// 	Vector3 tB = dividirComponentes((b - origen), dir); // Segunda
+//
+// 	// std::cout<<"dir: "<< dir << std::endl;
+// 	// std::cout<<"1/dir: "<< 1/dir << std::endl;
+// 	// std::cout<<"a: "<< a << std::endl;
+// 	// std::cout<<"tA: "<< tA << std::endl;
+// 	double t1 = maxVect(tA);
+// 	double t2 = maxVect(tB);
+// 	if (t1>t2) {
+// 		t1 = t2;
+// 	}
+// 	// std::cout<<"origen:"<<origen<<"\nt1: "<<t1<<std::endl;
+// 	Vector3 p = origen+t1*dir; // pto de interseccion
+// 	return contiene(p) && t1>0;
+// }

@@ -10,6 +10,7 @@
 
 
 #include "figura.hpp"
+#include "prisma.hpp"
 
 
 class Esfera : public Figura {
@@ -23,6 +24,9 @@ public:
 	float getRadio() const;
 
 	double interseccion(const Vector3& origen, const Vector3& dir) const override;
+
+	std::shared_ptr<Prisma> boundingBox() const override;
+
 
 };
 

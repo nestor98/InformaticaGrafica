@@ -6,6 +6,10 @@
 Figura::Figura(const std::array<double, 3> _e) : e(_e), utils()
 {}
 
+Figura::Figura() : Figura({0,0,0})
+{
+	setRandomColor();
+}
 
 std::string Figura::to_string() const {
 	return "Figura no tiene to_string";
@@ -13,6 +17,11 @@ std::string Figura::to_string() const {
 
 std::array<double, 3> Figura::getEmision() const {
 	return e;
+}
+
+
+std::shared_ptr<Prisma> Figura::boundingBox() const {
+	return 0;
 }
 
 
@@ -26,7 +35,7 @@ void Figura::setColor(const std::array<double, 3> _e = {1,0,0}) {
 
 // color aleatorio
 void Figura::setRandomColor() {
-	std::cout << utils.rand01()<<std::endl;
+	//std::cout << utils.rand01()<<std::endl;
 	e = {utils.rand01(), utils.rand01(), utils.rand01()};
 }
 

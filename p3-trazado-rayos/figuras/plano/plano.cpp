@@ -2,7 +2,8 @@
 #include <string>
 
 
-#include "Plano.hpp"
+#include "plano.hpp"
+#include "prisma.hpp"
 
 Plano::Plano(const Vector3& _normal, const double _dist) :
 	dist(_dist), normal(_normal)
@@ -28,6 +29,11 @@ double Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
 		return -(getDist()+origen*normal)/d_n; // t
 	}
 	return 0;
+}
+
+
+std::shared_ptr<Prisma> Plano::boundingBox() const {
+	return std::make_shared<Prisma>(Prisma()); // TODO: caja finita que contenga plano infinito...??
 }
 
 

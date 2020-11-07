@@ -20,6 +20,8 @@ public:
 
 	Vector3(const Vector3& original);
 
+	Vector3(const float tam); // Devuelve un vector con todas las componentes = tam
+
 	Vector3(float x, float y, float z, float homogenea);
 
 	Vector3(float x, float y, float z, bool punto);

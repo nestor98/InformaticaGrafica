@@ -7,8 +7,11 @@
 #include "Vector3.hpp"
 
 
-Vector3::Vector3() {
-}
+Vector3::Vector3() : Vector3(1,1,1,false)
+{}
+
+Vector3::Vector3(const float tam) : Vector3(tam, tam, tam, false)
+{}
 
 Vector3::Vector3(const Vector3& original) {
 	for (int i = 0; i < 4; i++) {

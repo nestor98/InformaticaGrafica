@@ -5,10 +5,14 @@
 #include <string>
 #include <cmath>
 #include <vector>
+#include <memory>
 // cmath para sqrt
 #include "Vector3.hpp"
+//#include "prisma.hpp"
 
 #include "utils.hpp"
+
+class Prisma;
 
 class Figura {
 protected:
@@ -17,7 +21,8 @@ protected:
 	Utils utils; // random, etc
 
 public:
-	Figura(const std::array<double, 3> _e = {1,0,0});
+	Figura();
+	Figura(const std::array<double, 3> _e);
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;
@@ -31,6 +36,10 @@ public:
 	void setRandomColor();
 
 	virtual double interseccion(const Vector3& origen, const Vector3& dir) const;
+
+	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
+	virtual std::shared_ptr<Prisma> boundingBox() const;
+
 };
 
 	// para evitar el to_string en cout

@@ -66,3 +66,10 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	}
 	return delta; // intersecta
 }
+
+std::shared_ptr<Prisma> Esfera::boundingBox() const {
+	// la caja va del centro-radio hasta el centro+radio
+	Vector3 despl(radio); // 3 componentes radio, radio, radio
+	Prisma box(posicion - radio, posicion+radio);
+	return std::make_shared<Prisma>(box);
+}

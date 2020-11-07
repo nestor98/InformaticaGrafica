@@ -20,6 +20,8 @@ protected:
 
 	Utils utils; // random, etc
 
+	std::shared_ptr<Prisma> bbox;
+
 public:
 	Figura();
 	Figura(const std::array<double, 3> _e);
@@ -38,9 +40,11 @@ public:
 	virtual double interseccion(const Vector3& origen, const Vector3& dir) const;
 
 	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
-	virtual std::shared_ptr<Prisma> boundingBox() const;
+	virtual std::shared_ptr<Prisma> getBoundingBox() const;
 
 };
 
 	// para evitar el to_string en cout
 	std::ostream& operator<<(std::ostream& os, const Figura& c);
+
+	std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Figura> c);

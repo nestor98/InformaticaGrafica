@@ -22,7 +22,7 @@ public:
 	double getDist() const;
 	Vector3 getNormal() const;
 	double interseccion(const Vector3& origen, const Vector3& dir) const override;
-	std::shared_ptr<Prisma> boundingBox() const override;
+	std::shared_ptr<Prisma> getBoundingBox() const override;
 };
 
 	// para evitar el to_string en cout

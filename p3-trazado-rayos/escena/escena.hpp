@@ -12,6 +12,8 @@
 #include "camara.hpp"
 #include "figura.hpp"
 
+#include "bvh.hpp"
+
 #include "utils.hpp"
 
 class Escena {
@@ -19,6 +21,8 @@ class Escena {
 	std::vector<std::shared_ptr<Figura>> figuras;
 
 	Utils utils;
+
+	BoundingVolumeH bvh;
 
 	// Auxiliar de render
 	void renderPixel(Imagen& im, const Vector3& o, const int pixel) const;

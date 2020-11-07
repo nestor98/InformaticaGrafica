@@ -25,7 +25,8 @@ public:
 
 	double interseccion(const Vector3& origen, const Vector3& dir) const override;
 
-	std::shared_ptr<Prisma> boundingBox() const override;
+	void setBoundingBox();
+	std::shared_ptr<Prisma> getBoundingBox() const override;
 
 
 };

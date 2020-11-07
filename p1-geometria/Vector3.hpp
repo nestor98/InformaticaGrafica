@@ -183,6 +183,11 @@ Matriz4 operator / (const Matriz4& m, const float& s);
 float operator * (const Vector3& v1, const Vector3& v2);
 
 
+// Devuelve el minimo de las i-esimas coordenadas de v1 y v2
+float minI(const Vector3& v1, const Vector3& v2, const int i);
+
+// Devuelve el max de las i-esimas coordenadas de v1 y v2
+float maxI(const Vector3& v1, const Vector3& v2, const int i);
 
 // cross product (producto vectorial)
 Vector3 cross(const Vector3& v1, const Vector3& v2);

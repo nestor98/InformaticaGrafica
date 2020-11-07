@@ -110,71 +110,6 @@ void Matriz4::setDiagonal(const float d0, const float d1, const float d2, const 
 	m[3][3] = d3;
 }
 
-/*  Funcion mu fea con muchos modulos
-// auxiliar de determinante(), saca el determinante de una parte
-float determinante(const int colIni, const int filaIni, const int ignorarCol, const int tam) const {
-	if (tam >= 3) std::cout << "-------------------------\n";
-	if (tam >= 2) std::cout << "determinante " << colIni << "," << filaIni << " " << tam << std::endl;
-	float det = 0;
-	if (tam <= 1) { // tama�o es 1, el det es el de esa posicion
-		det = m[colIni][filaIni];// TODO: otras columnas!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	}
-	else { // TODO: arreglar el orden, ta mal
-		int s = 1; // SIGNO!
-		for (int i = 0; i<tam; i++) { // se multiplica cada elto de la primera fila por el determinante de las otras filas y cols
-			det += s * m[(colIni+i)%TAM_MATRIZ][filaIni] * determinante((colIni + (i + 1)%tam) % TAM_MATRIZ, filaIni + 1, (colIni-1)%TAM_MATRIZ, tam - 1);
-			s = -s; // cambio de signo
-		}
-	}
-	if (tam >= 1)
-		std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
-	return det;
-}
-*/
-
-/////////////////// Ya no se usan:
-/*
-// auxiliar de la de debajo, devuelve true sii l contiene elto
-bool Matriz4::contiene (const std::list<int> &l, const int elto) const {
-	for (auto e : l) {
-		if (e == elto) return true;
-	}
-	return false;
-}
-
-// original que no vale para inversa
-// auxiliar de determinante(), saca el determinante de una submatriz
-// (en la que se ignoran las columnas en ignorarCol, a partir de la fila filaIni y de tama�o tam)
-float Matriz4::determinante2(const std::list<int> &ignorarCol, const int filaIni, const int tam) const {
-	int colIni = 0;
-	while (contiene(ignorarCol, colIni)) colIni++; // saltamos las columnas no deseadas
-	//if (tam >= 3) std::cout << "-------------------------\n";
-	//if (tam >= 2) std::cout << "determinante2 " << colIni << "," << filaIni << " " << tam << std::endl;
-	float det = 0;
-	if (tam <= 1) { // tama�o es 1, el det es el de esa posicion
-		det = m[colIni][filaIni];
-	}
-	else {
-		int s = 1; // SIGNO
-		int col = colIni;
-		for (int i = 0; i<tam; i++) { // tam veces
-			while (contiene(ignorarCol, col)) col++; // saltamos las columnas no deseadas
-
-			auto ignorar(ignorarCol);
-			ignorar.push_back(col); // en el sub determinante2, ignoramos la col actual
-			float algo = s * m[col][filaIni] * determinante2(ignorar, filaIni+1, tam-1);
-			det += algo;
-
-			//std::cout << col << "," << filaIni << "=" <<  m[col][filaIni] << " *det = " << algo << std::endl;
-			s = -s;
-			col++; // siguiente col
-		}
-	}
-	//if (tam >= 1)
-		//std::cout << "FIN determinante " << colIni << "," << filaIni << " " << tam << " -> det = " << det<< std::endl;
-	return det;
-}
-*/
 
 // auxiliar de determinante(), saca el determinante de una submatriz
 // compuesta por las columnas con indice <columnas> y filas de indice <filas>
@@ -527,6 +462,16 @@ Vector3 operator * (const Matriz4& m, const Vector3& v) {
 	return res;
 }
 
+// PRE: i en [0, 3)
+// Devuelve el minimo de las i-esimas coordenadas de v1 y v2
+float minI(const Vector3& v1, const Vector3& v2, const int i) {
+	return (v1[i]<v2[i]) ? v1[i] : v2[i];
+}
+// PRE: i en [0, 3)
+// Devuelve el minimo de las i-esimas coordenadas de v1 y v2
+float maxI(const Vector3& v1, const Vector3& v2, const int i) {
+	return (v1[i]>v2[i]) ? v1[i] : v2[i];
+}
 
 // Producto M1*M2 (transformaciones, cambios de base...). Devuelve otra Matriz4
 Matriz4 operator * (const Matriz4& m1, const Matriz4& m2) {

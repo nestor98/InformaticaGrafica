@@ -94,6 +94,9 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 }
 
 void Escena::render(const std::string fichero) {
+	bvh.construirArbol(figuras);
+	/*
+	// std::cout << bvh << std::endl;
 	// iterar para cada pixel de la camara:
 		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
 	Vector3 o = c->getPos();
@@ -107,6 +110,7 @@ void Escena::render(const std::string fichero) {
 	initThreads(im, o); // inicializar los threads
 	waitThreads(); // y esperar a que terminen
 	im.guardar(fichero); // guardar la imagen
+	*/
 }
 
 /* Implementacion secuencial:

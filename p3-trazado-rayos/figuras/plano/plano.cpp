@@ -32,7 +32,7 @@ double Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
 }
 
 
-std::shared_ptr<Prisma> Plano::boundingBox() const {
+std::shared_ptr<Prisma> Plano::getBoundingBox() const {
 	return std::make_shared<Prisma>(Prisma()); // TODO: caja finita que contenga plano infinito...??
 }
 

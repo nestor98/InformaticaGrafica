@@ -5,6 +5,7 @@
 #include <string>
 #include <cmath>
 #include <vector>
+#include <utility> // pair
 // cmath para sqrt
 #include "Vector3.hpp"
 
@@ -20,6 +21,9 @@ class Prisma : public Figura {
 public:
 	Prisma();
 	Prisma(const Vector3& _posicion, const Vector3& _tam);
+
+	// Constructor del prisma bounding box del vector de figuras
+	Prisma(const std::vector<std::shared_ptr<Figura>>& bboxes);
 	std::string to_string() const override;
 
 	Vector3 getPos() const;
@@ -30,11 +34,20 @@ public:
 	double interseccion(const Vector3& origen, const Vector3& dir) const override;
 
 	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
-	std::shared_ptr<Prisma> boundingBox() const override;
+	std::shared_ptr<Prisma> getBoundingBox() const override;
+
+	std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> partirEnEje(const int eje) const;
 
  	// bool interseccion(const Vector3& origen, const Vector3& dir) const;
 
+	Vector3 getCentroide() const;
+
+	// Devuelve el indice del eje mas grande
+	int maxEje() const;
+
 };
 
-	// para evitar el to_string en cout
-	std::ostream& operator<<(std::ostream& os, const Prisma& c);
+std::shared_ptr<Prisma> combinar(const std::shared_ptr<Prisma> p1, const std::shared_ptr<Prisma> p2);
+
+// para evitar el to_string en cout
+std::ostream& operator<<(std::ostream& os, const Prisma& c);

@@ -6,7 +6,9 @@
 
 Esfera::Esfera(const Vector3& _posicion, const float _radio) :
 	posicion(_posicion), radio(_radio)
-{}
+{
+	setBoundingBox();
+}
 
 
 std::string Esfera::to_string() const {
@@ -67,9 +69,12 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	return delta; // intersecta
 }
 
-std::shared_ptr<Prisma> Esfera::boundingBox() const {
-	// la caja va del centro-radio hasta el centro+radio
+void Esfera::setBoundingBox() {
+	// la caja va del centro-{radio,radio,radio} hasta el centro+{radio,radio,radio}
 	Vector3 despl(radio); // 3 componentes radio, radio, radio
-	Prisma box(posicion - radio, posicion+radio);
-	return std::make_shared<Prisma>(box);
+	bbox = std::shared_ptr<Prisma>(new Prisma(posicion - despl, despl));
+}
+
+std::shared_ptr<Prisma> Esfera::getBoundingBox() const {
+	return bbox;
 }

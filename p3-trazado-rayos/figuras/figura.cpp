@@ -20,7 +20,7 @@ std::array<double, 3> Figura::getEmision() const {
 }
 
 
-std::shared_ptr<Prisma> Figura::boundingBox() const {
+std::shared_ptr<Prisma> Figura::getBoundingBox() const {
 	return 0;
 }
 
@@ -46,5 +46,10 @@ double Figura::interseccion(const Vector3& origen, const Vector3& dir) const {
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Figura& c) {
 	os << c.to_string();
+	return os;
+}
+// para evitar el to_string en cout
+std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Figura> c) {
+	os << c->to_string();
 	return os;
 }

@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <thread>
+#include <mutex>
 
 
 #include "Imagen.hpp"
@@ -24,6 +25,7 @@ class Escena {
 
 	// --------- Threads ---------
 	std::vector<std::thread> threads; // Vector con cada thread
+	std::mutex mtx; // mutex para asegurar seccion critica (tomar dato de la cola)
 
 	std::vector<int> tasks; // cola de pixeles a renderizar
 

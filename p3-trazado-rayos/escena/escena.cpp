@@ -26,13 +26,16 @@ void Escena::consumirTasks(Imagen& im, const Vector3& origen) {
 	bool fin = false;
 	int cuenta = 0;
 	while (true) {
-		//Lock
-		if (tasks.empty()) {
-			break;
-		}
-		int pixel = tasks.back();
-		tasks.pop_back();
-		// unlock
+		int pixel;
+		{ //Lock
+			// Las llaves son para que la guarda solo este entre ellas (scope):
+			std::lock_guard<std::mutex> guarda(mtx); // asegura la SC
+			if (tasks.empty()) {
+				break;
+			}
+			pixel = tasks.back();
+			tasks.pop_back();
+		} // unlock
 		renderPixel(im, origen, pixel);
 		cuenta++;
 	}

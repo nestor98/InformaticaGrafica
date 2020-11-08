@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 // cmath para sqrt
+#include <algorithm> // std::partition
 
 #include "bvh.hpp"
 
@@ -20,6 +21,7 @@ bool BoundingVolumeH::isLeaf() const {
 }
 
 // Devuelve el vector de figuras contenidas en cajas con las que intersecta el rayo
+// TODO: revisar que intersecte con varias, devolver la mas cercana
 BoundingVolumeH::vectorFigs BoundingVolumeH::puedenIntersectar(const Vector3& origen, const Vector3& dir) const
 {
 	BoundingVolumeH::vectorFigs figuras;
@@ -40,35 +42,34 @@ BoundingVolumeH::vectorFigs BoundingVolumeH::puedenIntersectar(const Vector3& or
 BoundingVolumeH::BoundingVolumeH()
 {
 	std::cout << "Yeeee\n";
-
 }
 
-BoundingVolumeH::BoundingVolumeH(const std::vector<std::shared_ptr<Figura>>& figuras) //: box()
+BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>>& figuras) //: box()
 {
 	construirArbol(figuras);
 }
 
+//
+// BoundingVolumeH::BoundingVolumeH(const std::vector<std::shared_ptr<Figura>>& figuras, const int eje) //: box()
+// {
+// 	construirArbol(figuras, eje);
+// }
 
-BoundingVolumeH::BoundingVolumeH(const std::vector<std::shared_ptr<Figura>>& figuras, const int eje) //: box()
-{
-	construirArbol(figuras, eje);
-}
+
+
+// // Construccion del arbol adaptada de https://www.youtube.com/watch?v=xUszK2xNL3I
+// void BoundingVolumeH::construirArbol(const std::vector<std::shared_ptr<Figura>>& figuras) {
+// 	// std::vector<std::shared_ptr<Prisma>> figBoxes; // cajas de las figuras
+// 	// for (auto& figura : figuras) {
+// 	// 	figBoxes.emplace_back(figura->getBoundingBox());
+// 	// }
+// 	construirArbol(figuras, 0);
+// }
 
 
 
 // Construccion del arbol adaptada de https://www.youtube.com/watch?v=xUszK2xNL3I
-void BoundingVolumeH::construirArbol(const std::vector<std::shared_ptr<Figura>>& figuras) {
-	// std::vector<std::shared_ptr<Prisma>> figBoxes; // cajas de las figuras
-	// for (auto& figura : figuras) {
-	// 	figBoxes.emplace_back(figura->getBoundingBox());
-	// }
-	construirArbol(figuras, 0);
-}
-
-
-
-// Construccion del arbol adaptada de https://www.youtube.com/watch?v=xUszK2xNL3I
-void BoundingVolumeH::construirArbol(const std::vector<std::shared_ptr<Figura>>& figuras, const int eje) {
+void BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>>& figuras) {
 	int nFigs = figuras.size(); // num de figuras
 	if (nFigs == 1) { // hoja
 		left = (std::shared_ptr<BoundingVolumeH>(new BoundingVolumeH(figuras[0]))); // Construir la rama izq con la figura y su caja
@@ -83,9 +84,31 @@ void BoundingVolumeH::construirArbol(const std::vector<std::shared_ptr<Figura>>&
 	else {
 		box = std::shared_ptr<Prisma>(new Prisma(figuras));
 		std::cout <<"CAJA: \n"<<box->to_string()<<std::endl;
-		auto dosCajas = box->partirEnEje(eje); // pair de cajas al partir box en <eje>
-		std::cout <<"CAJA1: \n"<<dosCajas.first->to_string()<<std::endl;
-		std::cout <<"CAJA2: \n"<<dosCajas.second->to_string()<<std::endl;
+		//auto dosCajas = box->partirEnEje(eje); // pair de cajas al partir box en <eje>
+		// std::cout <<"CAJA1: \n"<<dosCajas.first->to_string()<<std::endl;
+		// std::cout <<"CAJA2: \n"<<dosCajas.second->to_string()<<std::endl;
+		int eje = box->getMaxEje();
+		float ptoCentro = box->getCentroide()[eje];
+
+		for (auto f:figuras) {
+			std::cout <<f<<std::endl;
+		}
+		std::cout << "DESPUES\n";
+    auto it = std::partition(figuras.begin(), figuras.end(), [eje, ptoCentro](const std::shared_ptr<Figura> f){return f->getCentroide()[eje] < ptoCentro;});
+		if (it == figuras.begin() || it == figuras.end()) {
+			std::cout << "Oh no\n";
+		}
+		else {
+			std::vector<std::shared_ptr<Figura>> mitad;
+			for (auto f:figuras) {
+				std::cout <<f<<std::endl;
+			}
+			// std::copy(figuras.begin(), it, mitad);
+			// std::cout << "Mitad:\n";
+			// for (auto f : mitad) {
+			// 	std::cout << f;
+			// }
+		}
 		// auto listas =
 		// left = std::shared_ptr<BoundingVolumeH>(new BoundingVolumeH(dosCajas.first->contiene(figuras), (eje+1)%3));
 		// right = std::shared_ptr<BoundingVolumeH>(new BoundingVolumeH(dosCajas.first->contiene(figuras), (eje+1)%3)));

@@ -22,6 +22,7 @@ public:
 	Imagen(const std::string nombreFichero);
 	Imagen(const Imagen& i2);
 
+
 	Imagen(const int _filas, const int _cols, const long _c = 255, const float _maxFloat = 1, const std::string _titulo = "");
 
 	void setPixel(const double r, const double g, const double b, const int i);

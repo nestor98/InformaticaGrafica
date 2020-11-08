@@ -42,8 +42,8 @@ public:
 
 	Vector3 getCentroide() const;
 
-	// Devuelve el indice del eje mas grande
-	int maxEje() const;
+	// Devuelve el indice del eje mas grande (0, 1 o 2)
+	int getMaxEje() const;
 
 };
 

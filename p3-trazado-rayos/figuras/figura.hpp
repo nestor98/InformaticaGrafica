@@ -42,6 +42,9 @@ public:
 	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
 	virtual std::shared_ptr<Prisma> getBoundingBox() const;
 
+
+	Vector3 getCentroide() const;
+
 };
 
 	// para evitar el to_string en cout

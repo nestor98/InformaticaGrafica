@@ -71,8 +71,6 @@ int Camara::getRayosPorPixel() const {
 }
 
 
-
-
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Camara& c) {
 	os << c.to_string();

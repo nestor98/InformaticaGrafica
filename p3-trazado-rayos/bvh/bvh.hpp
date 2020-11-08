@@ -25,13 +25,10 @@ public:
 	BoundingVolumeH();
 	// Constructor de nodo hoja:
 	BoundingVolumeH(std::shared_ptr<Figura> fig);
-	BoundingVolumeH(const std::vector<std::shared_ptr<Figura>>& figuras);
-	BoundingVolumeH(const std::vector<std::shared_ptr<Figura>>& figuras, const int eje);
+	BoundingVolumeH(std::vector<std::shared_ptr<Figura>>& figuras);
 
 
-	void construirArbol(const std::vector<std::shared_ptr<Figura>>& figuras);
-
-	void construirArbol(const std::vector<std::shared_ptr<Figura>>& figuras, const int eje);
+	void construirArbol(std::vector<std::shared_ptr<Figura>>& figuras);
 
 	void setRightBranch(std::shared_ptr<BoundingVolumeH> _r);
 	void setLeftBranch(std::shared_ptr<BoundingVolumeH> _l);

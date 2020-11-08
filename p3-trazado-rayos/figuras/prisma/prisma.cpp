@@ -16,12 +16,12 @@ Prisma::Prisma(const Vector3& _posicion, const Vector3& _tam) :
 
 // Devuelve el minimo de la coord i
 float minPos(const std::vector<std::shared_ptr<Figura>>& prismas, const int i) {
-	std::cout <<"si\n";
+	// std::cout <<"si\n";
 	float min = prismas[0]->getBoundingBox()->getPos()[i];
-	std::cout <<"b\n";
+	// std::cout <<"b\n";
 
 	for (auto p : prismas) {
-		std::cout <<"forrrr\n";
+		// std::cout <<"forrrr\n";
 		auto box = p->getBoundingBox();
 		min = (box->getPos()[i] < min) ? box->getPos()[i] : min;
 	}
@@ -31,10 +31,10 @@ float minPos(const std::vector<std::shared_ptr<Figura>>& prismas, const int i) {
 
 // Devuelve el minimo de la coord i
 float maxPos2(const std::vector<std::shared_ptr<Figura>>& prismas, const int i) {
-	std::cout <<"mmmmmmmmmmmm\n";
+	// std::cout <<"mmmmmmmmmmmm\n";
 	float max = prismas[0]->getBoundingBox()->getPos()[i] + prismas[0]->getBoundingBox()->getTam()[i];
 	for (auto p : prismas) {
-		std::cout <<"qqqqqqqqqqqq\n";
+		// std::cout <<"qqqqqqqqqqqq\n";
 		auto box = p->getBoundingBox();
 		float pos2 = box->getPos()[i] + box->getTam()[i];
 		max = (pos2 > max) ? pos2 : max;
@@ -47,7 +47,7 @@ Prisma::Prisma(const std::vector<std::shared_ptr<Figura>>& bboxes)
 : posicion(minPos(bboxes, 0), minPos(bboxes, 1), minPos(bboxes, 2), true),
 tam(posicion[0]+maxPos2(bboxes, 0), posicion[1]+maxPos2(bboxes, 1), posicion[2]+maxPos2(bboxes, 2), true)
 {
-	std::cout <<"mmmou3whwughuhmmmm\n";
+	// std::cout <<"mmmou3whwughuhmmmm\n";
 }
 
 
@@ -124,7 +124,7 @@ std::shared_ptr<Prisma> Prisma::getBoundingBox() const {
 
 
 // Devuelve el indice del eje mas grande
-int Prisma::maxEje() const {
+int Prisma::getMaxEje() const {
 	int ejeMax = 0;
 	float max = tam[0];
 	if (tam[1]>tam[0]) {

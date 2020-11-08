@@ -2,6 +2,7 @@
 #include <string>
 
 #include "figura.hpp"
+#include "prisma.hpp"
 
 Figura::Figura(const std::array<double, 3> _e) : e(_e), utils()
 {}
@@ -52,4 +53,10 @@ std::ostream& operator<<(std::ostream& os, const Figura& c) {
 std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Figura> c) {
 	os << c->to_string();
 	return os;
+}
+
+// TODO: de momento devuelve el centroide de su bounding box, que no tiene
+// pq ser el mismo que el suyo propio, ya veremos si hay que cambiarlo
+Vector3 Figura::getCentroide() const {
+	return getBoundingBox()->getCentroide();
 }

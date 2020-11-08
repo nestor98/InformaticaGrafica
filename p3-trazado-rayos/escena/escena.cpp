@@ -77,13 +77,17 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		Vector3 dir(c->getRayoPixel(pixel)); // una direccion
 		double tMin = -1; // distancia a la figura mas cercana
 		// color de la figura mas cercana, por defecto el fondo:
-		std::array<double, 3> eFigCercana = {0.2/nRayos,0.2/nRayos,0.2/nRayos};
+		std::array<double, 3> eFigCercana = {0.2,0.2,0.2};
 		for (auto figura : figuras) {
 			double t = figura->interseccion(o, dir); // distancia
 			interseccion = t>0; // intersecta
-						if (interseccion && tMenor(t, tMin)) {
-					tMin = t;
-					eFigCercana = figura->getEmision();
+			if (interseccion && tMenor(t, tMin)) {
+				tMin = t;
+				eFigCercana = figura->getEmision();
+				// Vector3 ptoInterseccion = o + t*dir;
+				// float xCoord = ptoInterseccion[0];
+				// float yCoord = ptoInterseccion[1];
+				// eFigCercana = figura->getEmision(xCoord, yCoord);
 			}
 		}
 		for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
@@ -93,24 +97,25 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
 
+
 void Escena::render(const std::string fichero) {
 	bvh.construirArbol(figuras);
-	/*
-	// std::cout << bvh << std::endl;
-	// iterar para cada pixel de la camara:
-		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
-	Vector3 o = c->getPos();
-	// Vector3 ultimaDir(c->getRayoPixel(0)); // DEBUG
-	Imagen im(c->getPixelesY(), c->getPixelesX());
-	// std::cout <<" P3\n#MAX=1\n# out/rayos.ppm\n400 400\n255";
-	for (int pixel = 0; pixel<c->getNumPixeles(); pixel++) {
-		tasks.push_back(pixel); // encolar cada pixel
-		//renderPixel(im, o, pixel);
-	}
-	initThreads(im, o); // inicializar los threads
-	waitThreads(); // y esperar a que terminen
-	im.guardar(fichero); // guardar la imagen
-	*/
+	//
+	// // std::cout << bvh << std::endl;
+	// // iterar para cada pixel de la camara:
+	// 	// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
+	// Vector3 o = c->getPos();
+	// // Vector3 ultimaDir(c->getRayoPixel(0)); // DEBUG
+	// Imagen im(c->getPixelesY(), c->getPixelesX());
+	// // std::cout <<" P3\n#MAX=1\n# out/rayos.ppm\n400 400\n255";
+	// for (int pixel = 0; pixel<c->getNumPixeles(); pixel++) {
+	// 	tasks.push_back(pixel); // encolar cada pixel
+	// 	//renderPixel(im, o, pixel);
+	// }
+	// initThreads(im, o); // inicializar los threads
+	// waitThreads(); // y esperar a que terminen
+	// im.guardar(fichero); // guardar la imagen
+
 }
 
 /* Implementacion secuencial:

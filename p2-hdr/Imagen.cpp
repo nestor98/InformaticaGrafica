@@ -7,7 +7,9 @@
 // cmath para sqrt
 #include "Imagen.hpp"
 
+
 #include <fstream>
+using namespace std;
 
 Imagen::Imagen() {}
 
@@ -33,7 +35,7 @@ float parseMax(const std::string linea) {
 }
 
 // constructor de la imagen a partir del fichero con nombre <nombreFichero>
-Imagen::Imagen(const std::string nombreFichero) {
+Imagen::Imagen(const std::string nombreFichero, bool ldr) {
 	std::ifstream fichero(nombreFichero);
 	std::string formato;
 	std::string s;
@@ -51,10 +53,32 @@ Imagen::Imagen(const std::string nombreFichero) {
 	}
 	std::string linea;
 	// leer cabecera:
+	if(ldr){
+			fichero >> cols >> filas; //todo esto pa las texturas
+			cout<<cols<<endl<<filas<<endl;
+			fichero.ignore(); // HAY QUE LLAMAR A ESTO ANTES DEL GETLINE PORQUE NO IGNORA EL \n DEL >> ANTERIOR...............................
+			fichero>>c;
+			maxFloat=255;
+				int valor;
+			int i = 0;
+			pixeles.reserve(filas * cols);
+			while (fichero >> valor)
+			{
+				/*if (i / 3 < 25) {
+					std::cout << valor << std::endl << i  << "..." << i/3 << std::endl;
+				}*/
+				pixeles[i/3][i%3] = valor;// cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
+				//cout<<pixeles[i/3][i%3];
+				i++;
+
+			}
+	//std::cout << "i/3 = " << i/3 << "\ny lineas*cols = " << filas*cols << std::endl;
+	}else{
+
 	fichero >> linea; // #MAX=...
 	maxFloat = parseMax(linea); // saca el valor del max
 	fichero.ignore().ignore(); // HAY QUE LLAMAR A ESTO ANTES DEL GETLINE PORQUE NO IGNORA EL \n DEL >> ANTERIOR...............................
-	std::getline(fichero, linea, '\n'); // esta es # nombre_fichero, ya lo tenemos
+	std::getline(fichero, linea, '\n'); // esta es # nombre_fichero, ya lo tenemos LO HE CAMBIADO PARA LA TEXTURA
 	fichero >> cols >> filas;
 	pixeles.reserve(filas * cols); // Reservar el tama�o del vector
 	fichero >> c;
@@ -68,11 +92,13 @@ Imagen::Imagen(const std::string nombreFichero) {
 		/*if (i / 3 < 25) {
 			std::cout << valor << std::endl << i  << "..." << i/3 << std::endl;
 		}*/
-		pixeles[i/3][i%3] = valor * maxFloat/c; // cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
+		pixeles[i/3][i%3] = valor*maxFloat/c; // cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
+		//cout<<pixeles[i/3][i%3];
 		i++;
 
 	}
 	//std::cout << "i/3 = " << i/3 << "\ny lineas*cols = " << filas*cols << std::endl;
+	}
 
 }
 
@@ -95,6 +121,9 @@ void Imagen::setPixel(const double r, const double g, const double b, const int 
 	pixeles[i][0] = r;
 	pixeles[i][1] = g;
 	pixeles[i][2] = b;
+}
+std::array<double, 3> Imagen::getPixel(const int fila, const int col)const{
+	return {pixeles[fila*cols+col][0], pixeles[fila*cols+col][1], pixeles[fila*cols+col][1]};
 }
 
 // TODO: Re-probar las 3 siguientes:

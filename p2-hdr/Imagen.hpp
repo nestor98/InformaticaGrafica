@@ -19,7 +19,7 @@ class Imagen {
 public:
 
 	Imagen();
-	Imagen(const std::string nombreFichero);
+	Imagen(const std::string nombreFichero, bool ldr);
 	Imagen(const Imagen& i2);
 
 
@@ -28,6 +28,8 @@ public:
 	void setPixel(const double r, const double g, const double b, const int i);
 
 	void setPixel(const double r, const double g, const double b, const int fila, const int col);
+
+	std::array<double, 3> getPixel(const int fila, const int col)const;
 
 	std::string to_string(const int elementos = 100) const;
 

@@ -130,7 +130,7 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 			interseccion = t>0; // intersecta
 			if (interseccion && tMenor(t, tMin)) {
 				tMin = t;
-				eFigCercana = figura->getEmision();
+				eFigCercana = figura->getEmision(dir);
 			}
 		}
 		for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media

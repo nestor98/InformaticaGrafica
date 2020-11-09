@@ -19,6 +19,6 @@ class Textura{
         Vector3 pos;
     public:
     Textura();
-    Textura(Imagen& i, int _ancho, int _largo, Vector3 _pos);
-    std::array<double, 3> getEmision(const Vector3& dir)const;
+    Textura(Imagen& i, float _ancho, float _largo, Vector3 _pos);
+    std::array<double, 3> getEmision(const Vector3& pto)const;
 };

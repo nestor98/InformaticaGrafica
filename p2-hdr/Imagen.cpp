@@ -122,9 +122,30 @@ void Imagen::setPixel(const double r, const double g, const double b, const int 
 	pixeles[i][1] = g;
 	pixeles[i][2] = b;
 }
-std::array<double, 3> Imagen::getPixel(const int fila, const int col)const{
-	return {pixeles[fila*cols+col][0], pixeles[fila*cols+col][1], pixeles[fila*cols+col][2]};
+
+int modBien(const int algo, const int mod) {
+	int r = algo%mod;
+	return (r>=0) ? r : -r;
 }
+
+std::array<double, 3> Imagen::getPixel(const int fila, const int col)const{
+	if (fila>=filas || col>=cols || fila <0 || col<0) {
+		std::cout <<"indice equivocado\n" << fila<<" " << col <<std::endl << "Tengo " << filas << " " <<cols << std::endl;
+		exit(1);
+	}
+	// return {pixeles[modBien((fila*cols+col),(filas*cols))][0], pixeles[modBien((fila*cols+col),(filas*cols))][1], pixeles[modBien((fila*cols+col),(filas*cols))][2]};
+	return getPixel(fila*cols+col);
+}
+
+std::array<double, 3> Imagen::getPixel(const int i)const{
+	// if (fila>=filas || col>=cols || fila <0 || col<0) {
+	// 	std::cout <<"indice equivocado\n" << fila<<" " << col <<std::endl << "Tengo " << filas << " " <<cols << std::endl;
+	// 	exit(1);
+	// }
+	return {pixeles[i][0], pixeles[i][1], pixeles[i][2]};
+	// return getPixel(fila*cols+col);
+}
+
 
 // TODO: Re-probar las 3 siguientes:
 // si v>1, v=1
@@ -241,4 +262,11 @@ float Imagen::getMaxFloat() const {
 
 int Imagen::getNumPixels() const {
 	return filas*cols;
+}
+int Imagen::getNumPixelsX() const {
+	return cols;
+}
+
+int Imagen::getNumPixelsY() const {
+	return filas;
 }

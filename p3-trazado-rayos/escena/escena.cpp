@@ -164,11 +164,6 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 			auto fig = distFigura.second; // Puntero a la Figura intersectada
 			// std::cout <<"uno\n";
 			eFigCercana = fig->getEmision(o+t*dir);// se le pasa el pto de interseccion
-			// std::cout << fig << std::endl;
-			// Vector3 ptoInterseccion = o + t*dir;
-			// float xCoord = ptoInterseccion[0];
-			// float yCoord = ptoInterseccion[1];
-			// eFigCercana = figura->getEmision(xCoord, yCoord);
 		}
 	// }
 		for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
@@ -176,10 +171,10 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		}
 	}
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
-	// auto color2 = im.getPixel(pixel%c->getPixelesX());
+	// auto color2 = im.getPixel(pixel);
 	// if (color != color2) {
 	// 	std::cout << "MALLLLLLLLLLLLLL\n";
-	//
+	// 	exit(1);
 	// }
 }
 

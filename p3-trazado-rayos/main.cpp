@@ -27,18 +27,18 @@ int main(int argc, char* argv[]) {
 	Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
 	//Camara c(posCam, dirCam);
 	//cout << c << endl;
-	int rayosPP = 50; // rayos por pixel
+	int rayosPP = 1; // rayos por pixel
 	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
 	int nThreads = 1; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 
 	Escena e(std::make_shared<Camara>(c), nThreads);
-	Vector3 posEsf(-2,30,-0.5,true);
+	Vector3 posEsf(-2,3000,-0.5,true);
 	//PRUEBAS TEXTURAS SIMPLE
 	Imagen t= Imagen("textura1.ppm", true);
-	Textura tex=Textura(t, 1, 1, posEsf-2.0*uCam+lCam+5.0*(0.2*fCam));
+	Textura tex=Textura(t, 474.0, 474.0, posEsf-2.0*uCam+lCam+5.0*(0.2*fCam));
 	// std::make_shared<Esfera>(Esfera(algo)) ===  std::shared_ptr<Esfera>(new Esfera(algo))
-	Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*fCam), 0.5, std::make_shared<Textura>(tex));// 1*1
+	Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*fCam), 474.0/2, std::make_shared<Textura>(tex));// 1*1
 	e.addFigura(std::make_shared<Esfera>(esf));
 	// for (int i=0; i<200; i++) {
 	// 	// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1

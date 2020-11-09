@@ -30,6 +30,7 @@ public:
 	void setPixel(const double r, const double g, const double b, const int fila, const int col);
 
 	std::array<double, 3> getPixel(const int fila, const int col)const;
+	std::array<double, 3> getPixel(const int i)const;
 
 	std::string to_string(const int elementos = 100) const;
 
@@ -48,6 +49,8 @@ public:
 
 	float getMaxFloat() const;
 	int getNumPixels() const;
+	int getNumPixelsX() const;
+	int getNumPixelsY() const;
 };
 
 	// para evitar el to_string en cout

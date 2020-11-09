@@ -43,32 +43,4 @@ std::array<double, 3> Textura::getEmision(const Vector3& pto) const{
 
     // std::cout << int(y*tex.getNumPixelsY()) << "  " << int(x*tex.getNumPixelsX()) << std::endl;
     return tex.getPixel(int(y*(tex.getNumPixelsY()-1)), int(x*(tex.getNumPixelsX()-1)));
-
-    // if(x<pos[0]){
-    //     x=pos[0]-x;
-    // }else{
-    //     x=x-pos[0];
-    // }
-    // if(y<pos[2]){
-    //     y=pos[2]-y;
-    // }else{
-    //     y=y-pos[2];
-    // }
-
-    // // std::cout << int(x*tex.getNumPixelsX()) << "," << int(y*tex.getNumPixelsY()) << std::endl;
-    // double x = pto[0]-pos[0];
-    // int xInt = x;
-    // x -= double(xInt);
-    // double y = pto[2]-pos[2];
-    // int yInt = y;
-    // y -= double(yInt);
-    //
-    // int col = xInt * tex.getNumPixelsX() / ancho;
-    // col += x * tex.getNumPixelsX() / ancho;
-    // int fila = yInt * tex.getNumPixelsY() / largo;
-    // // fila += y * tex.getNumPixelsY() / largo;
-    //
-    // return tex.getPixel(fila, col);
-    // return tex.getPixel(int(y*tex.getNumPixelsY()), int(x*tex.getNumPixelsX()));
-
 }

@@ -30,40 +30,46 @@ int main(int argc, char* argv[]) {
 	int rayosPP = 50; // rayos por pixel
 	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
-	int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+	int nThreads = 1; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 
 	Escena e(std::make_shared<Camara>(c), nThreads);
 	Vector3 posEsf(-2,30,-0.5,true);
-	for (int i=0; i<200; i++) {
-		// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
-		Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*i*fCam), 0.5);// 1*1
-
-		// cout << esf.to_string() << endl;
-		esf.setRandomColor();
-		e.addFigura(std::make_shared<Esfera>(esf));
-		// cout << "----\n";
-	}
-	// for (int i=0; i<1; i++) {
-	// 	// Esfera esf(posEsf+5.0*(0.2*(i+1)*fCam)+(0.3*i*lCam), 0.5);
-	// 	Esfera esf(posEsf+4*(0.3*(i+1)*lCam), 0.5);
+	//PRUEBAS TEXTURAS SIMPLE
+	Imagen t= Imagen("textura1.ppm", true);
+	Textura tex=Textura(t, 1, 1, posEsf-2.0*uCam+lCam+5.0*(0.2*fCam));
+	// std::make_shared<Esfera>(Esfera(algo)) ===  std::shared_ptr<Esfera>(new Esfera(algo))
+	Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*fCam), 0.5, std::make_shared<Textura>(tex));// 1*1
+	e.addFigura(std::make_shared<Esfera>(esf));
+	// for (int i=0; i<200; i++) {
+	// 	// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
+	// 	Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*i*fCam), 0.5);// 1*1
 	//
 	// 	// cout << esf.to_string() << endl;
 	// 	esf.setRandomColor();
 	// 	e.addFigura(std::make_shared<Esfera>(esf));
 	// 	// cout << "----\n";
 	// }
-	// Suelo (normal, distancia al origen):
-	// Plano suelo(uCam/uCam.getModulo(), 3);
-	// suelo.setColor(0,0,0.8);
-	// e.addFigura(std::make_shared<Plano>(suelo));
-	for (int i=0; i<400; i++) {
-		Vector3 posPrisma = posEsf + lCam*3+ 2*fCam*(i-10)/3.0 - lCam*4*(i%2);// a la dcha de la esfera
-		Vector3 tamPrisma(1-0.5*(i%2),1,3,false);
-		Prisma prisma(posPrisma, tamPrisma);
-		prisma.setRandomColor();
-		// prisma.setColor(0,0.7,0);
-		e.addFigura(std::make_shared<Prisma>(prisma));
-	}
+	// // for (int i=0; i<1; i++) {
+	// // 	// Esfera esf(posEsf+5.0*(0.2*(i+1)*fCam)+(0.3*i*lCam), 0.5);
+	// // 	Esfera esf(posEsf+4*(0.3*(i+1)*lCam), 0.5);
+	// //
+	// // 	// cout << esf.to_string() << endl;
+	// // 	esf.setRandomColor();
+	// // 	e.addFigura(std::make_shared<Esfera>(esf));
+	// // 	// cout << "----\n";
+	// // }
+	// // Suelo (normal, distancia al origen):
+	// // Plano suelo(uCam/uCam.getModulo(), 3);
+	// // suelo.setColor(0,0,0.8);
+	// // e.addFigura(std::make_shared<Plano>(suelo));
+	// for (int i=0; i<400; i++) {
+	// 	Vector3 posPrisma = posEsf + lCam*3+ 2*fCam*(i-10)/3.0 - lCam*4*(i%2);// a la dcha de la esfera
+	// 	Vector3 tamPrisma(1-0.5*(i%2),1,3,false);
+	// 	Prisma prisma(posPrisma, tamPrisma);
+	// 	prisma.setRandomColor();
+	// 	// prisma.setColor(0,0.7,0);
+	// 	e.addFigura(std::make_shared<Prisma>(prisma));
+	// }
 	// cout<<e<<endl;
 	e.render("out/" + string(argv[1]));
 	// e.testBVHRender();

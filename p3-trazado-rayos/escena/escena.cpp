@@ -162,7 +162,8 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		if (interseccion && tMenor(t, tMin)) {
 			tMin = t;
 			auto fig = distFigura.second; // Puntero a la Figura intersectada
-			eFigCercana = fig->getEmision();
+			// std::cout <<"uno\n";
+			eFigCercana = fig->getEmision(o+t*dir);// se le pasa el pto de interseccion
 			// std::cout << fig << std::endl;
 			// Vector3 ptoInterseccion = o + t*dir;
 			// float xCoord = ptoInterseccion[0];
@@ -175,21 +176,26 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		}
 	}
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
+	// auto color2 = im.getPixel(pixel%c->getPixelesX());
+	// if (color != color2) {
+	// 	std::cout << "MALLLLLLLLLLLLLL\n";
+	//
+	// }
 }
 
+
+// CODIGO viejo pa enseñar las figuras y el arbol correspondiente
+// for (auto fig : figuras) {
+// 	std::cout << "figura y caja: " << std::endl;
+// 	std::cout << fig << std::endl;
+// 	std::cout << fig->getBoundingBox()->to_string() << std::endl;
+// }
+// std::cout << "ESCENA\n " << this->to_string() << std::endl;
+// std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
 
 
 void Escena::render(const std::string fichero) {
 	bvh.construirArbol(figuras);
-
-	// for (auto fig : figuras) {
-	// 	std::cout << "figura y caja: " << std::endl;
-	// 	std::cout << fig << std::endl;
-	// 	std::cout << fig->getBoundingBox()->to_string() << std::endl;
-	// }
-	// std::cout << "ESCENA\n " << this->to_string() << std::endl;
-	// std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
-
 	// std::cout << bvh << std::endl;
 	// iterar para cada pixel de la camara:
 		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte

@@ -29,8 +29,8 @@ protected:
 
 public:
 	Figura();
-	Figura(const std::array<double, 3> _e, bool textura=false);
-	Figura(std::shared_ptr<Textura> _tex, bool _textura);
+	Figura(const std::array<double, 3> _e);
+	Figura(std::shared_ptr<Textura> _tex);
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;

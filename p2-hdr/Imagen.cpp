@@ -123,7 +123,7 @@ void Imagen::setPixel(const double r, const double g, const double b, const int 
 	pixeles[i][2] = b;
 }
 std::array<double, 3> Imagen::getPixel(const int fila, const int col)const{
-	return {pixeles[fila*cols+col][0], pixeles[fila*cols+col][1], pixeles[fila*cols+col][1]};
+	return {pixeles[fila*cols+col][0], pixeles[fila*cols+col][1], pixeles[fila*cols+col][2]};
 }
 
 // TODO: Re-probar las 3 siguientes:

@@ -4,14 +4,16 @@
 #include "figura.hpp"
 #include "prisma.hpp"
 
-Figura::Figura(const std::array<double, 3> _e, bool textura) : e(_e), utils()
+Figura::Figura(const std::array<double, 3> _e) : e(_e), utils(), textura(false)
 {}
 
 
-Figura::Figura(std::shared_ptr<Textura> _tex, bool _textura): tex(_tex), utils()
-{}
+Figura::Figura(std::shared_ptr<Textura> _tex): tex(_tex), utils(), textura(true)
+{
+	std::cout << "ah pos si\n";
+}
 
-Figura::Figura() : Figura({0,0,0})
+Figura::Figura() : Figura(std::array<double, 3>({0,0,0}))
 {
 	setRandomColor();
 }

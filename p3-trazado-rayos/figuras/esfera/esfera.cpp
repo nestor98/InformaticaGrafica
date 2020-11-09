@@ -4,14 +4,15 @@
 
 #include "esfera.hpp"
 
-Esfera::Esfera(const Vector3& _posicion, const float _radio) : 
+Esfera::Esfera(const Vector3& _posicion, const float _radio) :
 	 posicion(_posicion), radio(_radio)
 {
 	setBoundingBox();
 }
 Esfera::Esfera(const Vector3& _posicion, const float _radio,std::shared_ptr<Textura> _tex) :
-	Figura(_tex,true), posicion(_posicion), radio(_radio)
+	Figura(_tex), posicion(_posicion), radio(_radio)
 {
+	std::cout << "hola\n";
 	setBoundingBox();
 }
 

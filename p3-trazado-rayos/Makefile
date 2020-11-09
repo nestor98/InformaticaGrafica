@@ -34,14 +34,20 @@ ESCENA=${ESCENA_DIR}/escena
 BVH_DIR=bvh
 BVH=${BVH_DIR}/bvh
 
+
+### Texturas
+TEX_DIR=textura
+TEX=${TEX_DIR}/textura
+
 ### main:
 MAIN=main
 
-CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${FIGURAS_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${BVH_DIR} -std=c++11 -pthread -O2
+CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${TEX_DIR} -I${FIGURAS_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${BVH_DIR} -std=c++11 -pthread -O2
 
 src = $(wildcard *.cpp) \
         $(wildcard ../p1-geometria/Vector3.cpp) \
 				$(wildcard ../p2-hdr/Imagen.cpp) \
+	$(wildcard textura/*.cpp) \
         $(wildcard camara/*.cpp) \
         $(wildcard escena/*.cpp)\
         $(wildcard bvh/*.cpp)\

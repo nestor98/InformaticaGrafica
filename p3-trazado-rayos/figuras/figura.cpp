@@ -22,7 +22,8 @@ std::array<double, 3> Figura::getEmision() const {
 
 
 std::shared_ptr<Prisma> Figura::getBoundingBox() const {
-	return 0;
+	std::cout << "CUIDAOOOOOOOOOOOOOOOOOOOOOOOOOOOO------------------------------------------------------\n";
+	return bbox;
 }
 
 

@@ -38,16 +38,19 @@ float maxPos2(const std::vector<std::shared_ptr<Figura>>& prismas, const int i) 
 		auto box = p->getBoundingBox();
 		float pos2 = box->getPos()[i] + box->getTam()[i];
 		max = (pos2 > max) ? pos2 : max;
+		// std::cout << i << " max: " << max << std::endl;
 	}
 	return max;
 }
 
 // Constructor del prisma bounding box del vector de figuras
 Prisma::Prisma(const std::vector<std::shared_ptr<Figura>>& bboxes)
-: posicion(minPos(bboxes, 0), minPos(bboxes, 1), minPos(bboxes, 2), true),
-tam(posicion[0]+maxPos2(bboxes, 0), posicion[1]+maxPos2(bboxes, 1), posicion[2]+maxPos2(bboxes, 2), true)
+: posicion(minPos(bboxes, 0), minPos(bboxes, 1), minPos(bboxes, 2), true)
 {
-	// std::cout <<"mmmou3whwughuhmmmm\n";
+	tam.setCoords({maxPos2(bboxes, 0)-posicion[0], maxPos2(bboxes, 1)-posicion[1], maxPos2(bboxes, 2)-posicion[2]});
+	// std::cout << "posicion......y tam......." << posicion<<std::endl << tam<< std::endl;
+	// std::cout << posicion[0] << " " << posicion[1] << " "<< posicion[2] << "\n";
+	// std::cout <<"mmmou3whwughuhmmmm\n" << tam << std::endl;
 }
 
 
@@ -63,17 +66,6 @@ Vector3 Prisma::getTam() const {
 	return tam;
 }
 
-// devuelve el max de 3 reales
-double max3 (double d1, double d2, double d3) {
-	//// std::cout << d1 << "\t" << d2 <<"\t" << d3 << "\n";
-	double max = (d1>d2) ? d1 : d2;
-	return (max>d3 && !isinf(max)) ? max : d3;
-}
-
-// devuelve el mayor componente del vector
-double maxVect(const Vector3& v) {
-	return max3(v[0], v[1], v[2]);
-}
 
 // Devuelve true sii el prisma contiene p
 bool Prisma::contiene(const Vector3& p) const {
@@ -85,33 +77,88 @@ bool Prisma::contiene(const Vector3& p) const {
 	return (p-posicion).esPositivo() && (posicion+tam-p).esPositivo();
 }
 
+// Devuelve true sii alguna coord i de a, es mayor que otra distinta j de b
+// (EX i,j en 0,3, con i!=j, tq a[i] > b[j])
+bool compAmayorCompB(const Vector3& a, const Vector3& b) {
+	bool mayor = true;
+	for (int i = 0; i<3; i++) { // coord del primero
+		for (int j = 0; j<3; j++) { // y del segundo
+			if (i!=j) { // Las compara si no son la misma
+				mayor &= a[i] > b[j];
+				if (mayor) {
+					std::cout << a[i] << ">" << b[j] << "\ncon " << i << "," <<j<<std::endl;
+					return true; // solo necesita encontrar una
+				}
+			}
+		}
+	}
+	return mayor; // si llega aqui es falso
+}
+
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el Prisma
 // adaptado de: https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/implementing-reflections-with-a-local-cubemap/ray-box-intersection-algorithm
 double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
-	Vector3 a = getPos(); // primera esquina
-	Vector3 b = a + getTam(); // segunda
-	Vector3 tA = dividirComponentes((a - origen), dir); // Primera esquina
-	Vector3 tB = dividirComponentes((b - origen), dir); // Segunda
+	// Vector3 a = getPos(); // primera esquina
+	// Vector3 b = a + getTam(); // segunda
+	// Vector3 tA = dividirComponentes((a - origen), dir); // Primera esquina
+	// Vector3 tB = dividirComponentes((b - origen), dir); // Segunda
+	//
+	// // std::cout<<"dir: "<< dir << std::endl;
+	// // std::cout<<"1/dir: "<< 1/dir << std::endl;
+	// // std::cout<<"a: "<< a << std::endl;
+	// // std::cout<<"tA: "<< tA << std::endl;
+	// double t1 = tA.getMaxComponente();
+	// double t2 = tB.getMinComponente();
+	// if (t1>t2) {
+	// 	std::swap(t1,t2);
+	// 	std::swap(tA, tB);
+	// }
+	// std::cout << "tA\n" << tA << "\ntB\n" << tB<< std::endl;
+	// std::cout << "t1: " << t1 << "\nt2: " << t2<< std::endl;
+	// if (compAmayorCompB(tA, tB)) // True sii alguna comp de a es mayor que otra comp de b
+	// 	return 0;
+	// // (t0x > t1y || t0y > t1x)          (tmin > t1z || t0z > tmax)
+	// // if (tA[0] > tB[1] || tA[1] > tB[0] || tA[2] > tB[2] || tA[2] > t2)
+	//
+	// return t1;
+////////////////////////////////////////////////////////////// V2 ////////////////////////////////////////////777
+// Adaptado de https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
+	Vector3 min =getPos();
+	Vector3 max =min+getTam();
+	float tmin = (min[0] - origen[0]) / dir[0];
+  float tmax = (max[0] - origen[0]) / dir[0];
 
-	// std::cout<<"dir: "<< dir << std::endl;
-	// std::cout<<"1/dir: "<< 1/dir << std::endl;
-	// std::cout<<"a: "<< a << std::endl;
-	// std::cout<<"tA: "<< tA << std::endl;
-	double t1 = maxVect(tA);
-	double t2 = maxVect(tB);
-	if (t1>t2) {
-		t1 = t2;
-	}
-	// std::cout<<"origen:"<<origen<<"\nt1: "<<t1<<std::endl;
-	Vector3 p = origen+t1*dir; // pto de interseccion
+  if (tmin > tmax) std::swap(tmin, tmax);
 
-	//// std::cout<<"p: "<< p << std::endl;
-	if (contiene(p)) {
-		return t1;
-	}
-	else {
-		return 0;
-	}
+  float tymin = (min[1] - origen[1]) / dir[1];
+  float tymax = (max[1] - origen[1]) / dir[1];
+
+  if (tymin > tymax) std::swap(tymin, tymax);
+
+  if ((tmin > tymax) || (tymin > tmax))
+      return 0;
+
+  if (tymin > tmin)
+      tmin = tymin;
+
+  if (tymax < tmax)
+      tmax = tymax;
+
+  float tzmin = (min[2] - origen[2]) / dir[2];
+  float tzmax = (max[2] - origen[2]) / dir[2];
+
+  if (tzmin > tzmax) std::swap(tzmin, tzmax);
+
+  if ((tmin > tzmax) || (tzmin > tmax))
+      return 0;
+
+  if (tzmin > tmin)
+      tmin = tzmin;
+
+  if (tzmax < tmax)
+      tmax = tzmax;
+
+  return tmin;
 }
 
 

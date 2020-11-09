@@ -28,6 +28,9 @@ public:
 
 	/**************** Metodos ****************/
 
+	void setCoords(std::array<float, 3> _c);
+	void setCoords(float x, float y, float z, float homogenea);
+
 	// True sii es un vector (false si es punto)
 	bool esVector() const;
 
@@ -38,6 +41,9 @@ public:
 	// TODO: comprobar!!
 	float getModulo() const;
 	float getModuloSq() const;
+
+	double getMaxComponente() const;
+	double getMinComponente() const;
 
 	bool esPositivo() const;
 

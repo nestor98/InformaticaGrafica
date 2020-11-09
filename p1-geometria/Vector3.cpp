@@ -39,6 +39,18 @@ Vector3::Vector3(float x, float y, float z, bool punto) {
 
 /**************** Metodos ****************/
 
+
+void Vector3::setCoords(std::array<float, 3> _c) {
+	setCoords(_c[0], _c[1], _c[2], 0);
+}
+
+void Vector3::setCoords(float x, float y, float z, float homogenea) {
+	c[0] = x;
+	c[1] = y;
+	c[2] = z;
+	c[3] = homogenea;
+}
+
 // True sii es un vector (false si es punto)
 bool Vector3::esVector() const {
 	return c[3] == 0;
@@ -48,7 +60,7 @@ bool Vector3::esVector() const {
 bool Vector3::esPositivo() const {
 	bool pos = true;
 	for (int i = 0; i<3; i++) {
-		pos &= c[i]>=-0.00001;
+		pos &= c[i]>=-0.001;
 	}
 	return pos;
 }
@@ -377,6 +389,16 @@ Vector3 operator * (const float& s, const Vector3& v) {
 	return res;
 }
 
+
+double Vector3::getMaxComponente() const {
+	double max = (c[0] > c[1] && c[0]!=0) ? c[0] : c[1];
+	return (c[2] > max && c[2]!=0) ? c[2] : max;
+}
+double Vector3::getMinComponente() const {
+	double min = (c[0] < c[1]) ? c[0] : c[1];
+	return (c[2] < min && c[2]!=0) ? c[2] : min;
+}
+
 // Devuelve el vector cuyo iesimo comp es v1[i]/v2[i]
 Vector3 dividirComponentes(const Vector3& v1, const Vector3& v2) {
 	Vector3 res;
@@ -385,6 +407,7 @@ Vector3 dividirComponentes(const Vector3& v1, const Vector3& v2) {
 			res[i] = v1[i]/v2[i];
 		}
 		else {
+			std::cout << "DIVISOR 0!!!!!!!!!!!\n";
 			res[i] = 0;
 		}
 	}

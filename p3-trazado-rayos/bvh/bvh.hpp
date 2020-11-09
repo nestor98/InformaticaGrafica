@@ -11,6 +11,8 @@
 #include "utils.hpp"
 
 // Arbol binario con las figuras
+// Implementado a partir de: http://www.pbr-book.org/3ed-2018/Primitives_and_Intersection_Acceleration/Bounding_Volume_Hierarchies.html
+
 class BoundingVolumeH {
 	typedef std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectorFigs;
 
@@ -38,10 +40,13 @@ public:
 	// True sii es nodo hoja (tiene figura y no ramas)
 	bool isLeaf() const;
 
+
+	std::pair<float, std::shared_ptr<Figura>> interseccion(const Vector3& origen, const Vector3& dir) const;
+
 	vectorFigs puedenIntersectar(const Vector3& origen, const Vector3& dir) const;
 
 
-	std::string to_string() const;
+	std::string to_string(const std::string prefijo="") const;
 
 	void render(const std::string fichero);
 };

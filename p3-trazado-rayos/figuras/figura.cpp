@@ -4,7 +4,11 @@
 #include "figura.hpp"
 #include "prisma.hpp"
 
-Figura::Figura(const std::array<double, 3> _e) : e(_e), utils()
+Figura::Figura(const std::array<double, 3> _e, bool textura) : e(_e), utils()
+{}
+
+
+Figura::Figura(std::shared_ptr<Textura> _tex, bool _textura): tex(_tex), utils()
 {}
 
 Figura::Figura() : Figura({0,0,0})
@@ -16,8 +20,13 @@ std::string Figura::to_string() const {
 	return "Figura no tiene to_string";
 }
 
-std::array<double, 3> Figura::getEmision() const {
-	return e;
+std::array<double, 3> Figura::getEmision(Vector3 dir) const {
+	if(!textura){
+			return e;
+
+	}else{
+		return tex->getEmision(dir);
+	}
 }
 
 

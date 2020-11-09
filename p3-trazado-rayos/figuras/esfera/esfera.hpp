@@ -16,15 +16,18 @@
 class Esfera : public Figura {
 	float radio;
 	Vector3 posicion;
+
 public:
 	Esfera(const Vector3& _posicion, const float _radio);
+	Esfera(const Vector3& _posicion, const float _radio,std::shared_ptr<Textura> _tex);
+
 	std::string to_string() const override;
 
 	Vector3 getPos() const;
 	float getRadio() const;
 
 	double interseccion(const Vector3& origen, const Vector3& dir) const override;
-
+	void addTextura(Textura _tex);
 	void setBoundingBox();
 	std::shared_ptr<Prisma> getBoundingBox() const override;
 

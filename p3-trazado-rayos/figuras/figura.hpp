@@ -8,6 +8,8 @@
 #include <memory>
 // cmath para sqrt
 #include "Vector3.hpp"
+#include "textura.hpp"
+
 //#include "prisma.hpp"
 
 #include "utils.hpp"
@@ -22,13 +24,17 @@ protected:
 
 	std::shared_ptr<Prisma> bbox;
 
+	std::shared_ptr<Textura> tex;
+	bool textura;
+
 public:
 	Figura();
-	Figura(const std::array<double, 3> _e);
+	Figura(const std::array<double, 3> _e, bool textura=false);
+	Figura(std::shared_ptr<Textura> _tex, bool _textura);
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;
-	std::array<double, 3> getEmision() const;
+	std::array<double, 3> getEmision(Vector3 dir) const;
 	//Vector3 getDir() const;
 
 	void setColor(const double r, const double g, const double b);

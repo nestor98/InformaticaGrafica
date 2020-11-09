@@ -4,12 +4,16 @@
 
 #include "esfera.hpp"
 
-Esfera::Esfera(const Vector3& _posicion, const float _radio) :
-	posicion(_posicion), radio(_radio)
+Esfera::Esfera(const Vector3& _posicion, const float _radio) : 
+	 posicion(_posicion), radio(_radio)
 {
 	setBoundingBox();
 }
-
+Esfera::Esfera(const Vector3& _posicion, const float _radio,std::shared_ptr<Textura> _tex) :
+	Figura(_tex,true), posicion(_posicion), radio(_radio)
+{
+	setBoundingBox();
+}
 
 std::string Esfera::to_string() const {
 	return "--- Esfera:\nposicion: " + posicion.to_string() + "\nradio: " + std::to_string(radio);
@@ -68,6 +72,12 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	}
 	return delta; // intersecta
 }
+
+/*void Esfera::addTextura(Textura _tex){ //NO FUNCIONA
+	tex=_tex;
+	std::cout<<"que pasa"<<std::endl;
+	textura=true;
+}*/
 
 void Esfera::setBoundingBox() {
 	// la caja va del centro-{radio,radio,radio} hasta el centro+{radio,radio,radio}

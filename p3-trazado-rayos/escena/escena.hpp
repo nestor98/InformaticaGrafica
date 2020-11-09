@@ -43,9 +43,15 @@ class Escena {
 
 	// funcion que ejecutan los threads
 	void consumirTasks(Imagen& im, const Vector3& origen);
-
-
 	// ---------------------------
+	// --------- TESTS  ---------
+	enum Metodo {Original, BVH};
+
+	void testRenderMethod(const Metodo metodo, const std::string fichero) const;
+
+	void renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const;
+
+
 public:
 	Escena(const Camara& _c);
 	Escena(const std::shared_ptr<Camara> _c, const int _nThreads = 16);
@@ -54,6 +60,10 @@ public:
 	void addFigura(const std::shared_ptr<Figura> f);
 
 	void render(const std::string fichero);
+
+	// Compara los tiempos de render (secuencial, sin threads) de la escena con
+	// el metodo original y el bvh. Muestra los resultados por salida estandar.
+	void testBVHRender(const std::string f1 = "out/testRenderOriginal.ppm", const std::string f2 = "out/testRenderBVH.ppm");
 };
 
 	// para evitar el to_string en cout

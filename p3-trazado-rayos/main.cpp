@@ -11,6 +11,8 @@
 
 using namespace std;
 
+
+
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
 	if (argc < 2) {// <fichero de entrada>
@@ -64,6 +66,7 @@ int main(int argc, char* argv[]) {
 	}
 	// cout<<e<<endl;
 	e.render("out/" + string(argv[1]));
+	// e.testBVHRender();
 	cout << "en total hay "<<pixelesX*pixelesY<<endl;
 	//e.addFigura(std::make_shared<Plano>(Plano(posEsf, -fCam))); // plano en la pos de la esfera con la normal hacia la camara
 	// cout << e << endl;

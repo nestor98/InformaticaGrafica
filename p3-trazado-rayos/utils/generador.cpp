@@ -9,7 +9,7 @@ void GeneradorEstructuras::setMengerSponge(const Vector3& pos, const Vector3& ta
   // std::cout << "hm " << iteraciones<<"\n";
   if (iteraciones <= 1) { // "hoja", se genera y añade el prisma
     Prisma cubo(pos, tam);
-    cubo.setColorFromPos(20);
+    cubo.setColorFromPos(30);
     figuras->emplace_back(std::make_shared<Prisma>(cubo));
   }
   else { // Se generan 3 * 3 * 3 cubos (menos los que estan en el centro de alguna cara o el central)

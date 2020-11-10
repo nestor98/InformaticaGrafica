@@ -2,7 +2,7 @@
 #include <string>
 #include <math.h>
 
-#include "Prisma.hpp"
+#include "prisma.hpp"
 
 
 Prisma::Prisma() :posicion(0,0,0,true), tam(0,0,0,true)

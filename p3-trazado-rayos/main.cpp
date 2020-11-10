@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	int pixelesX = 720;
+	/*int pixelesX = 720;
 	int pixelesY = 720*9/16;
 	Vector3 posCam(0,0,0,true);
 	Vector3 fCam(0,8,0,false);
@@ -104,7 +104,7 @@ int main(int argc, char* argv[]) {
 	auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 	e.addFiguras(figuras);
 	e.render("out/" + string(argv[1]));
-	std::cout << "escena\n" <<e << '\n';
+	std::cout << "escena\n" <<e << '\n';*/
 	// cout << e << endl;
 	// for (int i = 47; i<49/*pixelesX/4*/; i++) {
 	// 	int despl = pixelesX/6;
@@ -116,4 +116,5 @@ int main(int argc, char* argv[]) {
 	//
 	// }
 	//Escena e()
+	escenaBastanteGuay400prismas200esferas(argv);
 }

@@ -14,7 +14,12 @@
 
 using namespace std;
 
+
+
+
 void escenaBastanteGuay400prismas200esferas(char* argv[]) {
+
+	// std::shared_ptr<Utils> utils = make_shared<Utils>(Utils());
 	int pixelesX = 720;
 	int pixelesY = 720*9/16;
 	Vector3 posCam(0,0,0,true);
@@ -119,5 +124,6 @@ int main(int argc, char* argv[]) {
 		cerr << "invocar como:\n" << argv[0] << " <fichero de salida>\n";
 		exit(1);
 	}
-	escenaBastanteGuay400prismas200esferas(argv);
+	// escenaBastanteGuay400prismas200esferas(argv);
+	escenaEsponja(argv);
 }

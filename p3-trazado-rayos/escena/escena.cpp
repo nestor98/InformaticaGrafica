@@ -128,13 +128,13 @@ void Escena::testRenderMethod(const Escena::Metodo metodo, const std::string fic
 // Itera todo el vector de figuras
 void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const {
 	bool interseccion = false;
-	std::array<double, 3> color = {0.0,0.0,0.0};
+	Color color(0.0,0.0,0.0);
 	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 	for (int i=0; i<nRayos; i++) { // cada rayo
 		Vector3 dir(c->getRayoPixel(pixel)); // una direccion
 		double tMin = -1; // distancia a la figura mas cercana
 		// color de la figura mas cercana, por defecto el fondo:
-		std::array<double, 3> eFigCercana = {0.2,0.2,0.2};
+		Color eFigCercana = {0.2,0.2,0.2};
 		for (auto figura : figuras) {
 			double t = figura->interseccion(o,dir);
 			interseccion = t>0; // intersecta
@@ -143,9 +143,10 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 				eFigCercana = figura->getEmision(dir);
 			}
 		}
-		for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
-			color[j]+=eFigCercana[j]/nRayos;
-		}
+		color = color + eFigCercana / double(nRayos);
+		// for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
+		// 	color[j]+=eFigCercana[j]/nRayos;
+		// }
 	}
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
@@ -154,13 +155,13 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
 void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 	bool interseccion = false;
-	std::array<double, 3> color = {0.0,0.0,0.0};
+	Color color(0.0,0.0,0.0);
 	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 	for (int i=0; i<nRayos; i++) { // cada rayo
 		Vector3 dir(c->getRayoPixel(pixel)); // una direccion
 		double tMin = -1; // distancia a la figura mas cercana
 		// color de la figura mas cercana, por defecto el fondo:
-		std::array<double, 3> eFigCercana = {0.2,0.2,0.2};
+		Color eFigCercana(0.2,0.2,0.2);
 		// for (auto figura : figuras) {
 		// for (auto figura = figurasIntersectables->begin(); figura!=figurasIntersectables->end(); figura++) {
 
@@ -177,9 +178,11 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 			// im.setPixel( eFigCercana[0],  eFigCercana[1], eFigCercana[2], pixel);
 		}
 	// }
-		for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
-			color[j]+=eFigCercana[j]/nRayos;
-		}
+		color = color + eFigCercana / double(nRayos);
+
+		// for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
+		// 	color[j]+=eFigCercana[j]/nRayos;
+		// }
 	}
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 	// auto color2 = im.getPixel(pixel);

@@ -45,7 +45,7 @@ TEX=${TEX_DIR}/textura
 ### main:
 MAIN=main
 
-CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I{COLOR_DIR} -I${TEX_DIR} -I${FIGURAS_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${BVH_DIR} -std=c++11 -pthread -O2
+CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${COLOR_DIR} -I${TEX_DIR} -I${FIGURAS_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${BVH_DIR} -std=c++17 -pthread -O2
 
 src = $(wildcard *.cpp) \
         $(wildcard ../p1-geometria/Vector3.cpp) \
@@ -62,7 +62,7 @@ src = $(wildcard *.cpp) \
         $(wildcard figuras/prisma/*.cpp)
 obj = $(src:.cpp=.o)
 
-LDFLAGS = -std=c++11#-lGL -lglut -lpng -lz -lm
+# LDFLAGS = -std=c++20#-lGL -lglut -lpng -lz -lm
 
 main: $(obj)
 	$(CXX) $(CPPFLAGS) -o $@ $^ $(LDFLAGS)

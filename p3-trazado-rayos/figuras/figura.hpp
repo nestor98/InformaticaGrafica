@@ -13,6 +13,7 @@
 //#include "prisma.hpp"
 
 #include "utils.hpp"
+#include "color.hpp"
 
 class Prisma;
 
@@ -20,12 +21,13 @@ class Figura {
 protected:
 	Color e; // emitividad emision o como se llame: RGB
 
-	Utils utils; // random, etc
 
 	std::shared_ptr<Prisma> bbox;
 
 	std::shared_ptr<Textura> tex;
 	bool textura;
+
+
 
 public:
 	Figura();
@@ -34,7 +36,7 @@ public:
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;
-	Color getEmision(Vector3 dir) const;
+	Color getEmision(const Vector3& dir) const;
 	//Vector3 getDir() const;
 
 	void setColor(const double r, const double g, const double b);

@@ -9,6 +9,7 @@
 
 
 #include "Imagen.hpp"
+#include "color.hpp"
 #include "Vector3.hpp"
 
 class Textura{
@@ -20,6 +21,6 @@ class Textura{
     public:
     Textura();
     Textura(Imagen& i, float _ancho, float _largo, Vector3 _pos);
-    std::array<double, 3> getEmision(const Vector3& pto)const;
+    Color getEmision(const Vector3& pto)const;
 
 };

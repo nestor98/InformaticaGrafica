@@ -21,9 +21,7 @@ Textura::Textura(Imagen& i, float _ancho, float _largo, Vector3 _pos)
     // tex.guardar("out/vamohave.ppm");
     for (int i = 0; i<100; i++) {
       auto color = tex.getPixel(i) ;
-      std::cout << i <<" ..... "<< color[0] << " " << color[1] <<" "<<color[2] << std::endl;
     }
-    std::cout<<"yeeyeyeyey\n";
 }
 
 Textura::Textura(): ancho(0), largo(0)
@@ -31,7 +29,7 @@ Textura::Textura(): ancho(0), largo(0)
   std::cout<<"vacio\n";
 }
 
-std::array<double, 3> Textura::getEmision(const Vector3& pto) const{
+Color Textura::getEmision(const Vector3& pto) const{
   // std::cout <<"por si acaso\n";
     double ptox=pto[0]; // [0, tex.getPixelesX)
     double x = pto[0];
@@ -42,5 +40,5 @@ std::array<double, 3> Textura::getEmision(const Vector3& pto) const{
     y = y/largo;
 
     // std::cout << int(y*tex.getNumPixelsY()) << "  " << int(x*tex.getNumPixelsX()) << std::endl;
-    return tex.getPixel(int((y)*(tex.getNumPixelsY()-1)), int((1.0-x)*(tex.getNumPixelsX()-1)));
+    return Color(tex.getPixel(int((y)*(tex.getNumPixelsY()-1)), int((1.0-x)*(tex.getNumPixelsX()-1))));
 }

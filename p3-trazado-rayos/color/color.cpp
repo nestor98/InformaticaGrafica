@@ -45,8 +45,14 @@ void Color::setB(const double _b) {
   b = _b;
 }
 
-void Color::setRGB(const std::array<3,double> rgb) {
+void Color::setRGB(const double _r, const double _g, const double _b) {
+  r = _r;
+  g = _g;
+  b = _b;
+}
 
+void Color::setRGB(const std::array<3,double> rgb) {
+  setRGB(rgb[0], rgb[1], rgb[2]);
 }
 
 void Color::setIndex(const int i, const double val) {

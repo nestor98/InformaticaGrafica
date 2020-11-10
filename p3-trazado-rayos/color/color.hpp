@@ -24,6 +24,8 @@ public:
   void setG(const double g);
   void setB(const double b);
 
+  void setRGB(const double _r, const double _g, const double _b);
+
 
   void setRGB(const std::array<3,double> rgb);
 

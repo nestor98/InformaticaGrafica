@@ -42,5 +42,5 @@ std::array<double, 3> Textura::getEmision(const Vector3& pto) const{
     y = y/largo;
 
     // std::cout << int(y*tex.getNumPixelsY()) << "  " << int(x*tex.getNumPixelsX()) << std::endl;
-    return tex.getPixel(int(y*(tex.getNumPixelsY()-1)), int(x*(tex.getNumPixelsX()-1)));
+    return tex.getPixel(int((y)*(tex.getNumPixelsY()-1)), int((1.0-x)*(tex.getNumPixelsX()-1)));
 }

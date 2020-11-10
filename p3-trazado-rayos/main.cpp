@@ -14,7 +14,6 @@
 
 using namespace std;
 
-
 void escenaBastanteGuay400prismas200esferas(char* argv[]) {
 	int pixelesX = 720;
 	int pixelesY = 720*9/16;

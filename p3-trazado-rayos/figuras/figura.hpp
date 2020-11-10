@@ -18,7 +18,7 @@ class Prisma;
 
 class Figura {
 protected:
-	std::array<double, 3> e; // emitividad emision o como se llame: RGB
+	Color e; // emitividad emision o como se llame: RGB
 
 	Utils utils; // random, etc
 
@@ -34,12 +34,13 @@ public:
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;
-	std::array<double, 3> getEmision(Vector3 dir) const;
+	Color getEmision(Vector3 dir) const;
 	//Vector3 getDir() const;
 
 	void setColor(const double r, const double g, const double b);
 
 	void setColor(const std::array<double, 3> _e);
+	void setColor(Color e);
 	void setRandomColor();
 
 	virtual double interseccion(const Vector3& origen, const Vector3& dir) const;

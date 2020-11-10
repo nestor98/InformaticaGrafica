@@ -23,10 +23,9 @@ std::string Figura::to_string() const {
 	return "Figura no tiene to_string";
 }
 
-std::array<double, 3> Figura::getEmision(Vector3 dir) const {
+Color Figura::getEmision(Vector3 dir) const {
 	if(!textura){
 			return e;
-
 	}else{
 		return tex->getEmision(dir);
 	}
@@ -40,11 +39,11 @@ std::shared_ptr<Prisma> Figura::getBoundingBox() const {
 
 
 void Figura::setColor(const double r, const double g, const double b) {
-	e = {r,g,b};
+	e ({r,g,b});
 }
 
 void Figura::setColor(const std::array<double, 3> _e = {1,0,0}) {
-	e=_e;
+	e.setColor(_e);
 }
 
 double abs(double a) {

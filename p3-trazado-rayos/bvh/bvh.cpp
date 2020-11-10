@@ -147,7 +147,6 @@ BoundingVolumeH::vectorFigs BoundingVolumeH::puedenIntersectar(const Vector3& or
 
 BoundingVolumeH::BoundingVolumeH()
 {
-	std::cout << "Yeeee\n";
 }
 
 BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>>& figuras) //: box()

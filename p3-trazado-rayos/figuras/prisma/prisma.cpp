@@ -66,6 +66,9 @@ Vector3 Prisma::getTam() const {
 	return tam;
 }
 
+void Prisma::setColorFromPos(const double c) {
+	e = {abs((int(posicion[0])%int(c))/c),abs((int(posicion[1])%int(c))/c),abs((int(posicion[2])%int(c))/c)};
+}
 
 // Devuelve true sii el prisma contiene p
 bool Prisma::contiene(const Vector3& p) const {

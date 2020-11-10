@@ -16,6 +16,7 @@ Figura::Figura(std::shared_ptr<Textura> _tex): tex(_tex), utils(), textura(true)
 Figura::Figura() : Figura(std::array<double, 3>({0,0,0}))
 {
 	setRandomColor();
+	// setColorFromPos();
 }
 
 std::string Figura::to_string() const {
@@ -45,6 +46,12 @@ void Figura::setColor(const double r, const double g, const double b) {
 void Figura::setColor(const std::array<double, 3> _e = {1,0,0}) {
 	e=_e;
 }
+
+double abs(double a) {
+	return (a>=0) ? a : -a;
+}
+
+
 
 // color aleatorio
 void Figura::setRandomColor() {

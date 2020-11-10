@@ -29,6 +29,8 @@ public:
 	Vector3 getPos() const;
 	Vector3 getTam() const;
 
+	void setColorFromPos(const double c = 200);
+
 	bool contiene(const Vector3& p) const;
 
 	double interseccion(const Vector3& origen, const Vector3& dir) const override;

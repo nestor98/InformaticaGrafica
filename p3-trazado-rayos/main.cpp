@@ -9,16 +9,13 @@
 #include "Vector3.hpp"
 //#include "Matriz4.cpp"
 
+
+#include "generador.hpp"
+
 using namespace std;
 
 
-
-/**************** Programa principal ****************/
-int main(int argc, char* argv[]) {
-	if (argc < 2) {// <fichero de entrada>
-		cerr << "invocar como:\n" << argv[0] << " <fichero de salida>\n";
-		exit(1);
-	}
+void escenaBastanteGuay400prismas200esferas(char* argv[]) {
 	int pixelesX = 720;
 	int pixelesY = 720*9/16;
 	Vector3 posCam(0,0,0,true);
@@ -70,11 +67,44 @@ int main(int argc, char* argv[]) {
 	// 	// prisma.setColor(0,0.7,0);
 	// 	e.addFigura(std::make_shared<Prisma>(prisma));
 	// }
+	//e.addFigura(std::make_shared<Plano>(Plano(posEsf, -fCam))); // plano en la pos de la esfera con la normal hacia la camara
+
 	// cout<<e<<endl;
 	e.render("out/" + string(argv[1]));
 	// e.testBVHRender();
 	cout << "en total hay "<<pixelesX*pixelesY<<endl;
-	//e.addFigura(std::make_shared<Plano>(Plano(posEsf, -fCam))); // plano en la pos de la esfera con la normal hacia la camara
+}
+
+
+
+/**************** Programa principal ****************/
+int main(int argc, char* argv[]) {
+	if (argc < 2) {// <fichero de entrada>
+		cerr << "invocar como:\n" << argv[0] << " <fichero de salida>\n";
+		exit(1);
+	}
+
+	int pixelesX = 720;
+	int pixelesY = 720*9/16;
+	Vector3 posCam(0,0,0,true);
+	Vector3 fCam(0,8,0,false);
+	Vector3 lCam(1,0,0,false);
+	Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
+	//Camara c(posCam, dirCam);
+	//cout << c << endl;
+	int rayosPP = 50; // rayos por pixel
+	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+
+	int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+
+	Escena e(std::make_shared<Camara>(c), nThreads);
+	Vector3 posEsponja(-2,300,-10.5,true);
+	Vector3 tamEsponja(30,30,30,false);
+	GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posEsponja, tamEsponja, 4);
+	auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+	e.addFiguras(figuras);
+	e.render("out/" + string(argv[1]));
+	std::cout << "escena\n" <<e << '\n';
 	// cout << e << endl;
 	// for (int i = 47; i<49/*pixelesX/4*/; i++) {
 	// 	int despl = pixelesX/6;

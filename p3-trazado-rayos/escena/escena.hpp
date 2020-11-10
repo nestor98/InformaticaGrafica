@@ -59,6 +59,8 @@ public:
 	std::string to_string() const;
 	void addFigura(const std::shared_ptr<Figura> f);
 
+	void addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectFiguras);
+
 	void render(const std::string fichero);
 
 	// Compara los tiempos de render (secuencial, sin threads) de la escena con

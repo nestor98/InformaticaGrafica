@@ -25,6 +25,11 @@ void Escena::addFigura(const std::shared_ptr<Figura> f)
 	figuras.push_back(f);
 }
 
+void Escena::addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectFiguras) {
+	figuras.insert(figuras.end(), vectFiguras->begin(), vectFiguras->end());
+}
+
+
 void Escena::consumirTasks(Imagen& im, const Vector3& origen) {
 	//std::cout<<"Bueno"<<std::endl;
 	bool fin = false;
@@ -61,8 +66,13 @@ void Escena::waitThreads() {
 
 std::string Escena::to_string() const {
 	std::string s = "camara:\n" + c->to_string() + "\nfiguras:";
-	for (auto f : figuras) {
-		s += "\n" + f->to_string();
+	if (figuras.size()>50) {
+		s+= "Hay " + std::to_string(figuras.size()) +" figuras, no las listo todas\n";
+	}
+	else {
+		for (auto f : figuras) {
+			s += "\n" + f->to_string();
+		}
 	}
 	return s;
 }

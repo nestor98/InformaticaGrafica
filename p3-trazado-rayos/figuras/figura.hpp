@@ -40,7 +40,6 @@ public:
 	void setColor(const double r, const double g, const double b);
 
 	void setColor(const std::array<double, 3> _e);
-
 	void setRandomColor();
 
 	virtual double interseccion(const Vector3& origen, const Vector3& dir) const;

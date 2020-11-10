@@ -21,4 +21,5 @@ class Textura{
     Textura();
     Textura(Imagen& i, float _ancho, float _largo, Vector3 _pos);
     std::array<double, 3> getEmision(const Vector3& pto)const;
+
 };

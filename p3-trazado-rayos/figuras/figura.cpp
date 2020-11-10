@@ -56,7 +56,8 @@ double abs(double a) {
 // color aleatorio
 void Figura::setRandomColor() {
 	//std::cout << utils.rand01()<<std::endl;
-	e = {utils.rand01(), utils.rand01(), utils.rand01()};
+	color.setRandomColor();
+	
 }
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera

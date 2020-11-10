@@ -15,6 +15,13 @@ Esfera::Esfera(const Vector3& _posicion, const float _radio,std::shared_ptr<Text
 	std::cout << "hola\n";
 	setBoundingBox();
 }
+// 
+// Esfera::Esfera(const Vector3& _posicion, const float _radio, const std::string fichero_textura) :
+// 	Figura(fichero_textura, _radio*2.0, _radio*2.0), posicion(_posicion), radio(_radio)
+// {
+// 	std::cout << "hola\n";
+// 	setBoundingBox();
+// }
 
 std::string Esfera::to_string() const {
 	return "--- Esfera:\nposicion: " + posicion.to_string() + "\nradio: " + std::to_string(radio);

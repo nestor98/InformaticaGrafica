@@ -14,7 +14,6 @@
 
 using namespace std;
 
-
 void escenaBastanteGuay400prismas200esferas(char* argv[]) {
 	int pixelesX = 720;
 	int pixelesY = 720*9/16;
@@ -24,7 +23,7 @@ void escenaBastanteGuay400prismas200esferas(char* argv[]) {
 	Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
 	//Camara c(posCam, dirCam);
 	//cout << c << endl;
-	int rayosPP = 5; // rayos por pixel
+	int rayosPP = 100; // rayos por pixel
 	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
 	int nThreads = 1; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!

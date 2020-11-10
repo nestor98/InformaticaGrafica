@@ -215,6 +215,7 @@ void Escena::render(const std::string fichero) {
 	}
 	initThreads(im, o); // inicializar los threads
 	waitThreads(); // y esperar a que terminen
+	//im.extendedReinhard();
 	im.guardar(fichero); // guardar la imagen
 
 }

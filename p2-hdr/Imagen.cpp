@@ -55,11 +55,11 @@ Imagen::Imagen(const std::string nombreFichero, bool ldr) {
 	// leer cabecera:
 	if(ldr){
 			fichero >> cols >> filas; //todo esto pa las texturas
-			cout<<cols<<endl<<filas<<endl;
 			fichero.ignore(); // HAY QUE LLAMAR A ESTO ANTES DEL GETLINE PORQUE NO IGNORA EL \n DEL >> ANTERIOR...............................
 			fichero>>c;
-			maxFloat=255;
-				int valor;
+			cout<<cols<<endl<<filas<<c<<endl;
+			maxFloat=1;
+			int valor;
 			int i = 0;
 			pixeles.reserve(filas * cols);
 			while (fichero >> valor)
@@ -67,7 +67,7 @@ Imagen::Imagen(const std::string nombreFichero, bool ldr) {
 				/*if (i / 3 < 25) {
 					std::cout << valor << std::endl << i  << "..." << i/3 << std::endl;
 				}*/
-				pixeles[i/3][i%3] = valor;// cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
+				pixeles[i/3][i%3] = valor*maxFloat/c;// cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
 				//cout<<pixeles[i/3][i%3];
 				i++;
 

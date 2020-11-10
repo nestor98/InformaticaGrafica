@@ -55,8 +55,8 @@ double abs(double a) {
 // color aleatorio
 void Figura::setRandomColor() {
 	//std::cout << utils.rand01()<<std::endl;
-	// color.setRandomColor();
-	e = {0,0,0};// TODO{utils.rand01(),utils.rand01(),utils.rand01()};
+	e.setRandom();
+	// e = {0,0,0};// TODO{utils.rand01(),utils.rand01(),utils.rand01()};
 }
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera
@@ -78,4 +78,10 @@ std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Figura> c) {
 // pq ser el mismo que el suyo propio, ya veremos si hay que cambiarlo
 Vector3 Figura::getCentroide() const {
 	return getBoundingBox()->getCentroide();
+}
+
+
+// Le cambia el color en funcion de la posicion
+void Figura::setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max) {
+	e.setFromPosGrad(pto, min, max);
 }

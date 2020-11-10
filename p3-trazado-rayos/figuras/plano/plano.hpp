@@ -21,6 +21,11 @@ public:
 
 	double getDist() const;
 	Vector3 getNormal() const;
+
+
+	// Devuelve la normal de la figura en el <pto>
+	Vector3 getNormal(const Vector3& pto) const override;
+
 	double interseccion(const Vector3& origen, const Vector3& dir) const override;
 	std::shared_ptr<Prisma> getBoundingBox() const override;
 };

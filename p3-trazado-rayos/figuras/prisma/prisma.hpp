@@ -29,7 +29,9 @@ public:
 	Vector3 getPos() const;
 	Vector3 getTam() const;
 
-	void setColorFromPos(const double c = 200);
+
+	// Devuelve la normal de la figura en el <pto>
+	Vector3 getNormal(const Vector3& pto) const override;
 
 	bool contiene(const Vector3& p) const;
 

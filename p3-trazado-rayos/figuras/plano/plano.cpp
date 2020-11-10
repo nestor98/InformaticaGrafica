@@ -22,6 +22,10 @@ Vector3 Plano::getNormal() const {
 	return normal;
 }
 
+Vector3 Plano::getNormal(const Vector3& pto) const {
+	return getNormal(); // misma normal en todos los ptos
+}
+
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el plano
 double Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
 	double d_n = dir*normal;

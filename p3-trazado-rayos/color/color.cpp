@@ -1,3 +1,5 @@
+#include <cmath> // seno
+
 #include "color.hpp"
 #include "utils.hpp"
 
@@ -15,7 +17,19 @@ Color::Color(const std::array<double,3> rgb) : Color(rgb[0], rgb[1], rgb[2])
 // r primera coordenada, g segunda, b tercera
 Color::Color(const Vector3& pto, const Vector3& min, const Vector3& max)
 {
+  setFromPosGrad(pto, min, max);
+}
 
+void Color::setFromPosGrad(const Vector3& pto, const Vector3& min, const Vector3& max)
+{
+  Vector3 pos = 1-dividirComponentes((max-pto),max-min); // Si se quita el 1- sale guay tb
+	setRGB(pos[0], pos[1], pos[2]);
+}
+
+void Color::setFromPosExp(const Vector3& pto, const Vector3& min, const Vector3& max)
+{
+  Vector3 pos = 4.0*dividirComponentes((max-pto),max-min); // Si se quita el 1- sale guay tb
+	setRGB((1+sin(pos[0])/2.0), (1+sin(pos[1]))/2.0, (1+sin(pos[2]))/2.0);
 }
 
 void Color::setRandom() {

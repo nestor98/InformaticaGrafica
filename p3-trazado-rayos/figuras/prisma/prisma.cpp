@@ -66,9 +66,40 @@ Vector3 Prisma::getTam() const {
 	return tam;
 }
 
-void Prisma::setColorFromPos(const double c) {
-	e = {abs((int(posicion[0])%int(c))/c),abs((int(posicion[1])%int(c))/c),abs((int(posicion[2])%int(c))/c)};
+// TODO: COMPROBAR, COMPLETAMENTE A OJO
+Vector3 normalDeCara(const int cara) {
+	Vector3 normal(0, 0, 0, false);
+	if (cara<3)	normal[cara] = 1;
+	else {
+		normal[cara-3] = -1;
+	}
+	return normal;
 }
+
+
+// TODO: comprobar!!!!
+Vector3 Prisma::getNormal(const Vector3& pto) const {
+	Vector3 p1 = getPos(); // esquina 1
+	Vector3 p2 = p1 + getTam(); // esquina 2
+	Vector3 p1_pto = abs(pto-p1); // Distancia al pto 1
+	Vector3 p2_pto = abs(p2-pto); // Dist al 2
+	double min = p1_pto[0]; // Buscamos la minima en las 6 posibilidades:
+	int minIdx = 0; // indice del minimo
+	for (int i = 1; i < 3; i++) {
+		if (p1_pto[i] < min) {
+			min = p1_pto[i];
+			minIdx = i;
+		}
+	}
+	for (int i = 0; i < 3; i++) {
+		if (p2_pto[i] < min) {
+			min = p2_pto[i];
+			minIdx = i+3;
+		}
+	}
+	return normalDeCara(minIdx);
+}
+
 
 // Devuelve true sii el prisma contiene p
 bool Prisma::contiene(const Vector3& p) const {

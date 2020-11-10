@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include "Vector3.hpp"
+// #include "figura.hpp"
 #include "utils.hpp"
 
 
@@ -35,8 +36,8 @@ public:
 
   void setRGB(const std::array<double,3> rgb);
 
-
-
+  void setFromPosGrad(const Vector3& pto, const Vector3& min, const Vector3& max);
+  void setFromPosExp(const Vector3& pto, const Vector3& min, const Vector3& max);
 
 	// componente (get, a = v[2])
 	double operator [](int i) const;
@@ -45,8 +46,6 @@ public:
 	double& operator [](int i);
 
 };
-
-
 
 // +
 Color operator + (const Color& c1, const Color& c2);

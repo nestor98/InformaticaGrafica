@@ -204,3 +204,6 @@ Vector3 operator * (const Matriz4& m, const Vector3& v);
 
 // Producto M1*M2 (transformaciones, cambios de base...). Devuelve otra Matriz4
 Matriz4 operator * (const Matriz4& m1, const Matriz4& m2);
+
+// Valor absoluto de cada componente
+Vector3 abs(const Vector3& v);

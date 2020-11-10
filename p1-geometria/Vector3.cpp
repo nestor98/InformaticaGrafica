@@ -508,3 +508,13 @@ Matriz4 operator * (const Matriz4& m1, const Matriz4& m2) {
 	}
 	return res;
 }
+
+
+// Valor absoluto de cada componente
+Vector3 abs(const Vector3& v) {
+	Vector3 res = v;
+	for (int i = 0; i<3; i++) {
+		if (res[i]<0) res[i] = -res[i];
+	}
+	return res;
+}

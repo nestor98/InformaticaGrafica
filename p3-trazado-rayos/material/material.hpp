@@ -15,12 +15,13 @@
 #include "utils.hpp"
 #include "color.hpp"
 
-class Prisma;
 
-class Figura {
+class Material {
 protected:
-	Color e; // emitividad emision o como se llame: RGB
-
+  // Tuplas RGB de cada tipo:
+	Color difuso;// Lambertian diffuse BRDF.
+  Color reflexion; // • A perfect specular reflectance according to the law of reflection (delta BRDF).
+  Color refraccion;// • A perfect refraction according to Snell’s law (delta BTDF)
 
 	std::shared_ptr<Prisma> bbox;
 
@@ -30,9 +31,9 @@ protected:
 
 
 public:
-	Figura();
-	Figura(const std::array<double, 3> _e);
-	Figura(std::shared_ptr<Textura> _tex);
+	Material();
+	Material(const std::array<double, 3> _e);
+	Material(std::shared_ptr<Textura> _tex);
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;
@@ -47,10 +48,7 @@ public:
 
 	virtual double interseccion(const Vector3& origen, const Vector3& dir) const;
 
-	// Devuelve la normal de la figura en el <pto>
-	virtual Vector3 getNormal(const Vector3& pto) const;
-
-	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
+	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la Material
 	virtual std::shared_ptr<Prisma> getBoundingBox() const;
 
 
@@ -62,6 +60,6 @@ public:
 };
 
 	// para evitar el to_string en cout
-	std::ostream& operator<<(std::ostream& os, const Figura& c);
+	std::ostream& operator<<(std::ostream& os, const Material& c);
 
-	std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Figura> c);
+	std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Material> c);

@@ -31,6 +31,7 @@ void GeneradorEstructuras::setMengerSponge(const Vector3& pos, const Vector3& ta
   }
 }
 
+
 // Genera la estructura a partir del punto pos
 GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura, const Vector3& _pos, const Vector3& _tam, const int iteraciones) :
 tipo(_estructura), pos(_pos), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>())

@@ -235,8 +235,8 @@ Vector3 Prisma::getCentroide() const {
 // Su primera esquina sera el minimo de cada coordenada de las primeras esquinas
 // La segunda esquina, el maximo de cada coord de las segundas esquinas
 std::shared_ptr<Prisma> combinar(const std::shared_ptr<Prisma> p1, const std::shared_ptr<Prisma> p2) {
-	if (p1->esInfinito()) return p2;
-	else if (p2->esInfinito()) return p1;
+	if (p1->esInfinito() || p2->esInfinito()) return std::make_shared<CajaInfinita>(CajaInfinita());
+	//else if (p2->esInfinito()) return p1;
 	// Si ninguno es infinito, los combinamos
 	// PRisma 1
 	Vector3 pos1 = p1->getPos(); // esquina 1
@@ -278,6 +278,6 @@ bool Prisma::esInfinito() const  {
 }
 
 bool CajaInfinita::esInfinito() const  {
-	std::cout << "AAAAAAAAAAAAAJJJJJJJJJJJJAAAAAAAAAAAAa\n";
+	// std::cout << "AAAAAAAAAAAAAJJJJJJJJJJJJAAAAAAAAAAAAa\n";
 	return true;
 }

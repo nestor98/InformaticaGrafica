@@ -136,15 +136,17 @@ void escenaPlanos(char* argv[]) {
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
 		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
-
+		//
 		Escena e(std::make_shared<Camara>(c), nThreads);
 
 		Plano suelo(uCam/uCam.getModulo(), 3);
 		e.addFigura(std::make_shared<Plano>(suelo));
-		Plano paredi(lCam/lCam.getModulo(), 3);
-		e.addFigura(std::make_shared<Plano>(suelo));
-		// e.render("out/" + string(argv[1]));
-		e.testBVHRender();
+		Plano paredi(lCam/lCam.getModulo(), 4);
+		e.addFigura(std::make_shared<Plano>(paredi));
+		Plano paredd(-lCam/lCam.getModulo(), 4);
+		e.addFigura(std::make_shared<Plano>(paredd));
+		e.render("out/" + string(argv[1]));
+		// e.testBVHRender();
 		std::cout << "escena\n" <<e << '\n';
 }
 

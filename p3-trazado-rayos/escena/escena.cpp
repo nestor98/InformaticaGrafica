@@ -103,7 +103,7 @@ void Escena::testBVHRender(const std::string f1, const std::string f2) {
 	std::cout << "Tiempo de render con BVH = " << tiempoBVH.count() <<" segundos"<<linea;
 	auto bvhTotal = tiempoBVH.count()+tiempoConstruccion.count();
 	std::cout << "BVH total: " <<  bvhTotal << linea << "bvhTotal/Original = "
-					 	<< bvhTotal/tiempoNormal.count() << linea << "(Speedup, bvhTotal/Original = "
+					 	<< bvhTotal/tiempoNormal.count() << linea << "(Speedup, Original/bvhTotal = "
 						<< tiempoNormal.count()/bvhTotal << ")" << linea;
 }
 

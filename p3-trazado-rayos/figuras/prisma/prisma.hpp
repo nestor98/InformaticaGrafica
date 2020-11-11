@@ -19,6 +19,8 @@ class Prisma : public Figura {
 	Vector3 posicion; // posicion de la esquina mas cercana al origen
 	// std::array<Plano, 4> caras;
 
+	// bool esInfinito;
+
 public:
 	Prisma();
 	Prisma(const Vector3& _posicion, const Vector3& _tam);

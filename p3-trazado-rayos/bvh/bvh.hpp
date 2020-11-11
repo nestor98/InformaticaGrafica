@@ -16,6 +16,9 @@
 class BoundingVolumeH {
 	typedef std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectorFigs;
 
+	std::vector<std::shared_ptr<Figura>> vectorPlanos; // Los planos infinitos se guardan aparte para no tener cajas infinitas
+	bool tieneFigsFinitas;
+
 	std::shared_ptr<Prisma> box; // caja del nodo actual
 
 	std::shared_ptr<BoundingVolumeH> left; // Rama dcha
@@ -23,6 +26,10 @@ class BoundingVolumeH {
 
 	std::shared_ptr<Figura> figura; // Figura
 	// ---------------------------
+
+	// Auxiliares de construirArbol e interseccion
+	void construirArbolRec(std::vector<std::shared_ptr<Figura>>& figuras);
+	std::pair<float, std::shared_ptr<Figura>> interseccionFinitas(const Vector3& origen, const Vector3& dir) const;
 public:
 	BoundingVolumeH();
 	// Constructor de nodo hoja:
@@ -31,6 +38,7 @@ public:
 
 
 	void construirArbol(std::vector<std::shared_ptr<Figura>>& figuras);
+
 
 	void setRightBranch(std::shared_ptr<BoundingVolumeH> _r);
 	void setLeftBranch(std::shared_ptr<BoundingVolumeH> _l);
@@ -42,6 +50,7 @@ public:
 
 
 	std::pair<float, std::shared_ptr<Figura>> interseccion(const Vector3& origen, const Vector3& dir) const;
+
 
 	vectorFigs puedenIntersectar(const Vector3& origen, const Vector3& dir) const;
 

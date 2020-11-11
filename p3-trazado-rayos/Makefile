@@ -7,6 +7,10 @@ IMAGEN_DIR=../p2-hdr
 IMAGEN=${IMAGEN_DIR}/Imagen
 
 ### utils:
+MATERIAL_DIR=material
+MATERIAL=${MATERIAL_DIR}/material
+
+### utils:
 UTILS_DIR=utils
 UTILS=${UTILS_DIR}/utils
 
@@ -45,17 +49,18 @@ TEX=${TEX_DIR}/textura
 ### main:
 MAIN=main
 
-CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${COLOR_DIR} -I${TEX_DIR} -I${FIGURAS_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${BVH_DIR} -std=c++17 -pthread -O2
+CPPFLAGS=-MMD -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${COLOR_DIR} -I${TEX_DIR} -I${FIGURAS_DIR} -I${MATERIAL_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${BVH_DIR} -std=c++17 -pthread -O2
 
 src = $(wildcard *.cpp) \
         $(wildcard ../p1-geometria/Vector3.cpp) \
 				$(wildcard ../p2-hdr/Imagen.cpp) \
-	$(wildcard textura/*.cpp) \
+				$(wildcard textura/*.cpp) \
         $(wildcard camara/*.cpp) \
         $(wildcard escena/*.cpp)\
         $(wildcard bvh/*.cpp)\
         $(wildcard figuras/*.cpp)\
         $(wildcard color/*.cpp)\
+        $(wildcard material/*.cpp)\
         $(wildcard utils/*.cpp)\
         $(wildcard figuras/esfera/*.cpp)\
         $(wildcard figuras/plano/*.cpp)\

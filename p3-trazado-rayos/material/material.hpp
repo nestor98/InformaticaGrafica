@@ -19,20 +19,18 @@
 class Material {
 protected:
   // Tuplas RGB de cada tipo:
-	Color difuso;// Lambertian diffuse BRDF.
-  Color reflexion; // • A perfect specular reflectance according to the law of reflection (delta BRDF).
-  Color refraccion;// • A perfect refraction according to Snell’s law (delta BTDF)
+	// Color difuso;// Lambertian diffuse BRDF.
+  // Color reflexion; // • A perfect specular reflectance according to the law of reflection (delta BRDF).
+  // Color refraccion;// • A perfect refraction according to Snell’s law (delta BTDF)
+	std::array<Color, 3> coeficientes; // Lambertiano, especular, refraccion
 
-	std::shared_ptr<Prisma> bbox;
-
-	std::shared_ptr<Textura> tex;
-	bool textura;
-
-
+	// inline static Utils utils;
+	bool coeficientesCorrectos() const;
 
 public:
-	Material();
-	Material(const std::array<double, 3> _e);
+	enum Tipo {Plastico, Metal, Difuso};
+	Material(bool aleatorio = false);
+	Material(const Tipo predeterminado);
 	Material(std::shared_ptr<Textura> _tex);
 	virtual std::string to_string() const;
 
@@ -40,22 +38,18 @@ public:
 	Color getEmision(const Vector3& dir) const;
 	//Vector3 getDir() const;
 
-	void setColor(const double r, const double g, const double b);
+	std::array<Color, 3> getCoeficientes() const;
 
-	void setColor(const std::array<double, 3> _e);
-	void setColor(Color e);
-	void setRandomColor();
+	void setCoeficiente(const Color& coef, const int i);
 
-	virtual double interseccion(const Vector3& origen, const Vector3& dir) const;
+	Color getCoeficiente(const int i) const;
 
-	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la Material
-	virtual std::shared_ptr<Prisma> getBoundingBox() const;
+	void setCoeficientes(const std::array<Color, 3>& _coefs);
 
-
-	Vector3 getCentroide() const;
-
-	// Le cambia el color en funcion de la posicion
-	void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);
+	void setRandom();
+	//
+	// // Le cambia el color en funcion de la posicion
+	// void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);
 
 };
 

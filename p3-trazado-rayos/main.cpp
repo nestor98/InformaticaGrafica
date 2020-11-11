@@ -212,15 +212,15 @@ void escenaCornellBox(char* argv[]) {
 			esf.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esf));
 
-			Esfera esf2(centroSuelo, tamEsfera);// 1*1
+			Esfera esf2(centroSuelo+distanciaParedes*UP, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
 			esf2.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esf2));
-			// Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,2.0*tamEsfera, false);
-			// Prisma caja(centroSuelo - 0.5*distanciaParedes*LEFT, tamPrisma/2.0);// 1*1
-			// // cout << esf.to_string() << endl;
-			// caja.setRandomColor();
-			// e.addFigura(std::make_shared<Prisma>(caja));
+			Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,2.0*tamEsfera, false);
+			Prisma caja(centroSuelo - 0.5*distanciaParedes*LEFT, tamPrisma/2.0);// 1*1
+			// cout << esf.to_string() << endl;
+			caja.setRandomColor();
+			e.addFigura(std::make_shared<Prisma>(caja));
 		}
 		// std::cout << "front x left = " << cross(FRONT, LEFT) << "\nUP = " << UP << endl;
 		double d_prisma = 2.0*distanciaParedes / 10.0;

@@ -78,6 +78,13 @@ float Vector3::getModulo() const {
 	return sqrt(getModuloSq()); // raiz de la suma de los cuads
 }
 
+// Devuelve el modulo del vector
+// TODO: comprobar!!
+float Vector3::setModulo(const float mod) {
+	Vector3 temp = mod*((*this)/getModulo());
+	setCoords(temp[0], temp[1], temp[2], 0);
+}
+
 // devuelve el modulo al cuadrado
 float Vector3::getModuloSq() const {
 	float mod = 0;

@@ -44,6 +44,11 @@ public:
 	int getPixelesY() const;
 	int getNumPixeles() const;
 
+	void setFocalLength(const double mm);
+
+	void setFOV(const double fov);
+
+
 	Vector3 getRayoPixel(const int i) const;
 	int getRayosPorPixel() const;
 };

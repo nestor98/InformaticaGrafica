@@ -203,11 +203,11 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 
 
 void Escena::render(const std::string fichero) {
-	std::cout<<"a construir el arbol\n";
+	// std::cout<<"a construir el arbol\n";
 	bvh.construirArbol(figuras);
-		std::cout<<"hecho\n";
-
-		std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
+		// std::cout<<"hecho\n";
+		//
+		// std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
 
 	// std::cout << bvh << std::endl;
 	// iterar para cada pixel de la camara:

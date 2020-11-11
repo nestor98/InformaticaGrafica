@@ -6,6 +6,7 @@
 #include <cmath>
 #include <list>
 // cmath para sqrt
+const double PI = 3.141592653589793115997963468544185161590576171875;
 
 const int TAM_MATRIZ = 4;
 class Matriz4;
@@ -41,6 +42,8 @@ public:
 	// TODO: comprobar!!
 	float getModulo() const;
 	float getModuloSq() const;
+	float setModulo(const float mod);
+
 
 	double getMaxComponente() const;
 	double getMinComponente() const;

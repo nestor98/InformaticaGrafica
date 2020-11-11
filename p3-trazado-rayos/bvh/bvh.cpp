@@ -31,6 +31,7 @@ void BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>>& figur
 		vectorPlanos.insert(vectorPlanos.end(), figuras.begin(), it);
 	}
 	else { // Figuras y planos
+		std::cout << "Hay planos y figuras finitas\n";
 		vectorPlanos.insert(vectorPlanos.end(), figuras.begin(), it); // Tenemos la primera mitad
 		// left = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitad));
 		std::vector<std::shared_ptr<Figura>> figsFinitas;
@@ -78,7 +79,6 @@ bool BoundingVolumeH::isLeaf() const {
 
 
 std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccion(const Vector3& origen, const Vector3& dir) const {
-	std::pair<float, std::shared_ptr<Figura>> interseccionPlanos;
 	float tPlanosMin=0;
 	std::shared_ptr<Figura> intersectado; // plano
 		// std::cout << "intersectando\n";
@@ -95,7 +95,13 @@ std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccion(const Ve
 			// std::cout << "intersectadas figs\n";
 			auto iFinitas = interseccionFinitas(origen, dir);
 			float tFinitas = iFinitas.first;
-			if (tFinitas < tPlanosMin) return iFinitas;
+			// if (tFinitas>0) {
+			//
+			// 	std::cout << tFinitas << "      "<< tPlanosMin<< std::endl;
+			// }
+			if (tFinitas < tPlanosMin && tFinitas>0 || tPlanosMin==0) {
+				return iFinitas;
+			}
 			//else return std::pair<float, std::shared_ptr<Figura>>(tPlanosMin, intersectado);
 	} // Si llega aqui intersecta con un plano:
 	return std::pair<float, std::shared_ptr<Figura>>(tPlanosMin, intersectado);
@@ -109,6 +115,7 @@ std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccionFinitas(c
 {
 	// std::cout << "intersectando nodo de bvh...\n";
 	if (box->interseccion(origen, dir)) {
+		// std::cout << "Pos no se\n";
 		if (isLeaf()) {
 			// if (figura->getBoundingBox()->esInfinito()) {
 			// 	std::cout << figura << "\ntiene una caja infinita!!\n";
@@ -134,6 +141,7 @@ std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccionFinitas(c
 			}
 		}
 	}
+
 	// No hay interseccion:
 	return 	std::pair<float, std::shared_ptr<Figura>>(0,0);
 }

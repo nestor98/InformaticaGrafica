@@ -58,6 +58,7 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	// std::cout<<"c: "<<c<<std::endl;
 
 	double delta = b*b-4.0*a*c;
+	// std::cout << "INTERSECTANDO ESF\n";
 
 	// std::cout<<"delta: "<<delta<<std::endl;
 	// si delta>0, dos soluciones (dos puntos de interseccion),
@@ -83,7 +84,7 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 
 
 Vector3 Esfera::getNormal(const Vector3& pto) const {
-	return pto-posicion; 
+	return pto-posicion;
 }
 
 

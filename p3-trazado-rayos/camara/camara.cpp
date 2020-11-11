@@ -15,16 +15,16 @@ Camara::Camara(const Vector3& _posicion, const Vector3& _front, const Vector3& _
 	posicion(_posicion), front(_front), left(_left), up(_up), pixelesX(_pixelesX), pixelesY(_pixelesY),
 	rayosPixel(_rayosPixel), base(left, up, front, posicion)
 {
-	std::cout << "pixelesX: " << pixelesX << std::endl;
-	std::cout << "pixelesY: " << pixelesY << std::endl;
-	baseInversa = base.inversa();
-	std::cout<< "Matriz de cambio de base:\n" << base << std::endl<< baseInversa<< std::endl;
+	// std::cout << "pixelesX: " << pixelesX << std::endl;
+	// std::cout << "pixelesY: " << pixelesY << std::endl;
+	// // baseInversa = base.inversa();
+	// std::cout<< "Matriz de cambio de base:\n" << base << std::endl<< baseInversa<< std::endl;
 
 }
 
 
 std::string Camara::to_string() const {
-	return "posicion: " + posicion.to_string() + "\ndireccion: " + front.to_string();
+	return "posicion: " + posicion.to_string() + "\nbase: " + base.to_string();
 }
 
 Vector3 Camara::getPos() const {
@@ -68,6 +68,21 @@ Vector3 Camara::getRayoPixel(const int i) const{
 
 int Camara::getRayosPorPixel() const {
 	return rayosPixel;
+}
+
+// Cambia la distancia focal de la camara
+void setFocalLength(const double mm) {
+
+}
+
+// Cambia la distancia focal de la camara
+void Camara::setFOV(const double fov) {
+	// sacado con un dibujo y tan(angulo) = opuesto/adyacente
+	// con angulo=fov, opuesto=up, adyacente=front
+	float modFront = 1.0/tan(fov/2.0);
+	// std::cout << "modFront: " << modFront << std::endl;
+	front.setModulo(abs(modFront));
+	base.setCambioBase(left, up, front, posicion);
 }
 
 

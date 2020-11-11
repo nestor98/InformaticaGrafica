@@ -125,31 +125,101 @@ void escenaEsponja(char* argv[]) {
 void escenaPlanos(char* argv[]) {
 
 		int pixelesX = 720;
-		int pixelesY = 720*9/16;
+		int pixelesY = 720;//*9/16;
 		Vector3 posCam(0,0,0,true);
-		Vector3 fCam(0,8,0,false);
+		Vector3 fCam(0,1,0,false);
 		Vector3 lCam(1,0,0,false);
 		Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
+		cout << "mod fcam: " << fCam.getModulo() << endl;
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
 		int rayosPP = 50; // rayos por pixel
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		c.setFOV(3.0*PI/2.0);
 
 		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 		Escena e(std::make_shared<Camara>(c), nThreads);
 
-		Plano suelo(uCam/uCam.getModulo(), 3);
+		float distanciaParedes = 3;
+		Plano suelo(uCam/uCam.getModulo(), distanciaParedes);
+		suelo.setColor(0.8,0.8,0.8);
 		e.addFigura(std::make_shared<Plano>(suelo));
-		Plano paredi(lCam/lCam.getModulo(), 4);
+		Plano techo(-uCam/uCam.getModulo(), distanciaParedes);
+		techo.setColor(0.8,0.8,0.8);
+		e.addFigura(std::make_shared<Plano>(techo));
+		Plano paredi(lCam/lCam.getModulo(), distanciaParedes);
+		paredi.setColor(0.8,0,0);
 		e.addFigura(std::make_shared<Plano>(paredi));
-		Plano paredd(-lCam/lCam.getModulo(), 4);
+		Plano paredd(-lCam/lCam.getModulo(), distanciaParedes);
+		paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
+		Plano paredFondo(-fCam/fCam.getModulo(), 2*distanciaParedes);
+		paredFondo.setColor(0.75,0.75,0.75);
+		e.addFigura(std::make_shared<Plano>(paredFondo));
 		e.render("out/" + string(argv[1]));
 		// e.testBVHRender();
 		std::cout << "escena\n" <<e << '\n';
 }
 
+
+
+void escenaCornellBox(char* argv[]) {
+
+		int pixelesX = 400;
+		int pixelesY = 400;//*9/16;
+		Vector3 posCam(0,0,0,true);
+		Vector3 fCam(0,1,0,false);
+		Vector3 lCam(1,0,0,false);
+		Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
+		cout << "mod fcam: " << fCam.getModulo() << endl;
+		//Camara c(posCam, dirCam);
+		//cout << c << endl;
+		int rayosPP = 50; // rayos por pixel
+		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		c.setFOV(3.0*PI/2.0);
+		// c.setFOV(PI);
+
+		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		//
+		Escena e(std::make_shared<Camara>(c), nThreads);
+
+		float distanciaParedes = 3;
+		// Caja:
+		Plano suelo(uCam/uCam.getModulo(), distanciaParedes);
+		suelo.setColor(0.8,0.8,0.8);
+		e.addFigura(std::make_shared<Plano>(suelo));
+		Plano techo(-uCam/uCam.getModulo(), distanciaParedes);
+		techo.setColor(0.8,0.8,0.8);
+		e.addFigura(std::make_shared<Plano>(techo));
+		Plano paredi(lCam/lCam.getModulo(), distanciaParedes);
+		paredi.setColor(0.8,0,0);
+		e.addFigura(std::make_shared<Plano>(paredi));
+		Plano paredd(-lCam/lCam.getModulo(), distanciaParedes);
+		paredd.setColor(0,0.8,0);
+		e.addFigura(std::make_shared<Plano>(paredd));
+		Plano paredFondo(-fCam/fCam.getModulo(), 2*distanciaParedes);
+		paredFondo.setColor(0.75,0.75,0.75);
+		e.addFigura(std::make_shared<Plano>(paredFondo));
+		// Figuras:
+		// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
+		Vector3 centroSuelo = distanciaParedes*fCam/fCam.getModulo() - distanciaParedes*uCam/uCam.getModulo();
+		for (int i = 0; i<1; i++) {
+			float tamEsfera =distanciaParedes/3.0*1.2;
+
+			Esfera esf(centroSuelo + tamEsfera*uCam, tamEsfera);// 1*1
+
+			// cout << esf.to_string() << endl;
+			esf.setRandomColor();
+
+			e.addFigura(std::make_shared<Esfera>(esf));
+		}
+
+
+		e.render("out/" + string(argv[1]));
+		// e.testBVHRender();
+		std::cout << "escena\n" <<e << '\n';
+}
 
 
 /**************** Programa principal ****************/
@@ -160,5 +230,6 @@ int main(int argc, char* argv[]) {
 	}
 	// escenaBastanteGuay400prismas200esferas(argv);
 	// escenaEsponja(argv);
-	escenaPlanos(argv);
+	// escenaPlanos(argv);
+	escenaCornellBox(argv);
 }

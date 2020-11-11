@@ -36,7 +36,7 @@ void escenaBastanteGuay400prismas200esferas(char* argv[]) {
 	Escena e(std::make_shared<Camara>(c), nThreads);
 	Vector3 posEsf(-2,3000,-0.5,true);
 	//PRUEBAS TEXTURAS SIMPLE
-	Imagen t= Imagen("out/salida.ppm", true);
+	Imagen t= Imagen("textura3.ppm", true);
 	Textura tex=Textura(t, 474.0, 474.0, posEsf-2.0*uCam+lCam+5.0*(0.2*fCam));
 	// std::make_shared<Esfera>(Esfera(algo)) ===  std::shared_ptr<Esfera>(new Esfera(algo))
 	Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*fCam), 474.0/2, std::make_shared<Textura>(tex));// 1*1

@@ -32,6 +32,8 @@ public:
 	std::shared_ptr<Prisma> getBoundingBox() const override;
 
 
+	Vector3 getNormal(const Vector3& pto) const override;
+
 };
 
 	// para evitar el to_string en cout

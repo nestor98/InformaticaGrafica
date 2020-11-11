@@ -14,7 +14,12 @@
 
 using namespace std;
 
+
+
+
 void escenaBastanteGuay400prismas200esferas(char* argv[]) {
+
+	// std::shared_ptr<Utils> utils = make_shared<Utils>(Utils());
 	int pixelesX = 720;
 	int pixelesY = 720*9/16;
 	Vector3 posCam(0,0,0,true);
@@ -96,6 +101,9 @@ void escenaEsponja(char* argv[]) {
 		GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posEsponja, tamEsponja, 4);
 		auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 		e.addFiguras(figuras);
+		Plano suelo(uCam/uCam.getModulo(), 3);
+		// suelo.setColor(0,0,0.8);
+		e.addFigura(std::make_shared<Plano>(suelo));
 		e.render("out/" + string(argv[1]));
 		std::cout << "escena\n" <<e << '\n';
 		// cout << e << endl;
@@ -113,11 +121,42 @@ void escenaEsponja(char* argv[]) {
 
 
 
+
+void escenaPlanos(char* argv[]) {
+
+		int pixelesX = 720;
+		int pixelesY = 720*9/16;
+		Vector3 posCam(0,0,0,true);
+		Vector3 fCam(0,8,0,false);
+		Vector3 lCam(1,0,0,false);
+		Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
+		//Camara c(posCam, dirCam);
+		//cout << c << endl;
+		int rayosPP = 50; // rayos por pixel
+		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+
+		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+
+		Escena e(std::make_shared<Camara>(c), nThreads);
+
+		Plano suelo(uCam/uCam.getModulo(), 3);
+		e.addFigura(std::make_shared<Plano>(suelo));
+		Plano paredi(lCam/lCam.getModulo(), 3);
+		e.addFigura(std::make_shared<Plano>(suelo));
+		// e.render("out/" + string(argv[1]));
+		e.testBVHRender();
+		std::cout << "escena\n" <<e << '\n';
+}
+
+
+
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
 	if (argc < 2) {// <fichero de entrada>
 		cerr << "invocar como:\n" << argv[0] << " <fichero de salida>\n";
 		exit(1);
 	}
-	escenaBastanteGuay400prismas200esferas(argv);
+	// escenaBastanteGuay400prismas200esferas(argv);
+	// escenaEsponja(argv);
+	escenaPlanos(argv);
 }

@@ -9,7 +9,6 @@
 
 
 #include <fstream>
-using namespace std;
 
 Imagen::Imagen() {}
 
@@ -57,7 +56,7 @@ Imagen::Imagen(const std::string nombreFichero, bool ldr) {
 			fichero >> cols >> filas; //todo esto pa las texturas
 			fichero.ignore(); // HAY QUE LLAMAR A ESTO ANTES DEL GETLINE PORQUE NO IGNORA EL \n DEL >> ANTERIOR...............................
 			fichero>>c;
-			cout<<cols<<endl<<filas<<c<<endl;
+			// cout<<cols<<endl<<filas<<c<<endl;
 			maxFloat=1;
 			int valor;
 			int i = 0;

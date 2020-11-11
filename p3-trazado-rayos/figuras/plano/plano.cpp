@@ -22,18 +22,23 @@ Vector3 Plano::getNormal() const {
 	return normal;
 }
 
+Vector3 Plano::getNormal(const Vector3& pto) const {
+	return getNormal(); // misma normal en todos los ptos
+}
+
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el plano
 double Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
 	double d_n = dir*normal;
 	if (d_n!=0) { // intersecta
 		return -(getDist()+origen*normal)/d_n; // t
 	}
+	std::cout << "Interseccion con plano\n";
 	return 0;
 }
 
 
 std::shared_ptr<Prisma> Plano::getBoundingBox() const {
-	return std::make_shared<Prisma>(Prisma()); // TODO: caja finita que contenga plano infinito...??
+	return std::make_shared<CajaInfinita>(CajaInfinita()); // TODO: caja finita que contenga plano infinito...??
 }
 
 

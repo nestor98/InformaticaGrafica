@@ -4,11 +4,11 @@
 #include "figura.hpp"
 #include "prisma.hpp"
 
-Figura::Figura(const std::array<double, 3> _e) : e(_e), utils(), textura(false)
+Figura::Figura(const std::array<double, 3> _e) : e(_e), textura(false)
 {}
 
 
-Figura::Figura(std::shared_ptr<Textura> _tex): tex(_tex), utils(), textura(true)
+Figura::Figura(std::shared_ptr<Textura> _tex): tex(_tex), textura(true)
 {
 	std::cout << "ah pos si\n";
 }
@@ -23,7 +23,12 @@ std::string Figura::to_string() const {
 	return "Figura no tiene to_string";
 }
 
-Color Figura::getEmision(Vector3 dir) const {
+// Devuelve la normal de la figura en el <pto>
+Vector3 Figura::getNormal(const Vector3& pto) const {
+	return Vector3();
+}
+
+Color Figura::getEmision(const Vector3& dir) const {
 	if(!textura){
 			return e;
 	}else{
@@ -39,11 +44,11 @@ std::shared_ptr<Prisma> Figura::getBoundingBox() const {
 
 
 void Figura::setColor(const double r, const double g, const double b) {
-	e ({r,g,b});
+	e.setRGB(r,g,b);
 }
 
 void Figura::setColor(const std::array<double, 3> _e = {1,0,0}) {
-	e.setColor(_e);
+	e.setRGB(_e);
 }
 
 double abs(double a) {
@@ -55,8 +60,8 @@ double abs(double a) {
 // color aleatorio
 void Figura::setRandomColor() {
 	//std::cout << utils.rand01()<<std::endl;
-	// color.setRandomColor();
-	e = {utils.rand01(),utils.rand01(),utils.rand01()};
+	e.setRandom();
+	// e = {0,0,0};// TODO{utils.rand01(),utils.rand01(),utils.rand01()};
 }
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera
@@ -78,4 +83,10 @@ std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Figura> c) {
 // pq ser el mismo que el suyo propio, ya veremos si hay que cambiarlo
 Vector3 Figura::getCentroide() const {
 	return getBoundingBox()->getCentroide();
+}
+
+
+// Le cambia el color en funcion de la posicion
+void Figura::setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max) {
+	e.setFromPosGrad(pto, min, max);
 }

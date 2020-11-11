@@ -92,11 +92,14 @@ bool BoundingVolumeH::isLeaf() const {
 
 // Devuelve la distancia a la figura mas cercana intersectada y asigna a intersectada la figura intersectada
 // Devuelve 0 si no intersecta con ninguna
-	std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccion(const Vector3& origen, const Vector3& dir) const
+std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccion(const Vector3& origen, const Vector3& dir) const
 {
 	// std::cout << "intersectando nodo de bvh...\n";
 	if (box->interseccion(origen, dir)) {
 		if (isLeaf()) {
+			// if (figura->getBoundingBox()->esInfinito()) {
+			// 	std::cout << figura << "\ntiene una caja infinita!!\n";
+			// }
 			return std::pair<float, std::shared_ptr<Figura>>(figura->interseccion(origen, dir), figura);
 		}
 		else { // caja padre:

@@ -15,7 +15,7 @@ Esfera::Esfera(const Vector3& _posicion, const float _radio,std::shared_ptr<Text
 	std::cout << "hola\n";
 	setBoundingBox();
 }
-// 
+//
 // Esfera::Esfera(const Vector3& _posicion, const float _radio, const std::string fichero_textura) :
 // 	Figura(fichero_textura, _radio*2.0, _radio*2.0), posicion(_posicion), radio(_radio)
 // {
@@ -80,6 +80,12 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	}
 	return delta; // intersecta
 }
+
+
+Vector3 Esfera::getNormal(const Vector3& pto) const {
+	return pto-posicion; 
+}
+
 
 /*void Esfera::addTextura(Textura _tex){ //NO FUNCIONA
 	tex=_tex;

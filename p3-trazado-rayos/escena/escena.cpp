@@ -32,23 +32,22 @@ void Escena::addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura
 
 void Escena::consumirTasks(Imagen& im, const Vector3& origen) {
 	//std::cout<<"Bueno"<<std::endl;
-	bool fin = false;
-	int cuenta = 0;
+	// int cuenta = 0;
 	while (true) {
 		int pixel;
 		{ //Lock
 			// Las llaves son para que la guarda solo este entre ellas (scope):
 			std::lock_guard<std::mutex> guarda(mtx); // asegura la SC
-			if (tasks.empty()) {
+			if (tasks.empty()) { // Fin cuando no quedan tasks
 				break;
 			}
 			pixel = tasks.back();
 			tasks.pop_back();
 		} // unlock
 		renderPixel(im, origen, pixel);
-		cuenta++;
+		// cuenta++;
 	}
-	std::cout<<"He dibujado: " << cuenta << " pixeles\n";
+	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";
 }
 
 void Escena::initThreads(Imagen& im, const Vector3& origen) {
@@ -128,13 +127,13 @@ void Escena::testRenderMethod(const Escena::Metodo metodo, const std::string fic
 // Itera todo el vector de figuras
 void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const {
 	bool interseccion = false;
-	std::array<double, 3> color = {0.0,0.0,0.0};
+	Color color(0.0,0.0,0.0);
 	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 	for (int i=0; i<nRayos; i++) { // cada rayo
 		Vector3 dir(c->getRayoPixel(pixel)); // una direccion
 		double tMin = -1; // distancia a la figura mas cercana
 		// color de la figura mas cercana, por defecto el fondo:
-		std::array<double, 3> eFigCercana = {0.2,0.2,0.2};
+		Color eFigCercana = {0.2,0.2,0.2};
 		for (auto figura : figuras) {
 			double t = figura->interseccion(o,dir);
 			interseccion = t>0; // intersecta
@@ -143,9 +142,10 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 				eFigCercana = figura->getEmision(dir);
 			}
 		}
-		for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
-			color[j]+=eFigCercana[j]/nRayos;
-		}
+		color = color + eFigCercana / double(nRayos);
+		// for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
+		// 	color[j]+=eFigCercana[j]/nRayos;
+		// }
 	}
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
@@ -154,13 +154,13 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
 void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 	bool interseccion = false;
-	std::array<double, 3> color = {0.0,0.0,0.0};
+	Color color(0.0,0.0,0.0);
 	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 	for (int i=0; i<nRayos; i++) { // cada rayo
 		Vector3 dir(c->getRayoPixel(pixel)); // una direccion
 		double tMin = -1; // distancia a la figura mas cercana
 		// color de la figura mas cercana, por defecto el fondo:
-		std::array<double, 3> eFigCercana = {0.2,0.2,0.2};
+		Color eFigCercana(0.2,0.2,0.2);
 		// for (auto figura : figuras) {
 		// for (auto figura = figurasIntersectables->begin(); figura!=figurasIntersectables->end(); figura++) {
 
@@ -177,9 +177,11 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 			// im.setPixel( eFigCercana[0],  eFigCercana[1], eFigCercana[2], pixel);
 		}
 	// }
-		for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
-			color[j]+=eFigCercana[j]/nRayos;
-		}
+		color = color + eFigCercana / double(nRayos);
+
+		// for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
+		// 	color[j]+=eFigCercana[j]/nRayos;
+		// }
 	}
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 	// auto color2 = im.getPixel(pixel);
@@ -201,7 +203,12 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 
 
 void Escena::render(const std::string fichero) {
+	std::cout<<"a construir el arbol\n";
 	bvh.construirArbol(figuras);
+		std::cout<<"hecho\n";
+
+		std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
+
 	// std::cout << bvh << std::endl;
 	// iterar para cada pixel de la camara:
 		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte

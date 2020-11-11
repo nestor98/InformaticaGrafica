@@ -23,6 +23,11 @@ std::string Figura::to_string() const {
 	return "Figura no tiene to_string";
 }
 
+// Devuelve la normal de la figura en el <pto>
+Vector3 Figura::getNormal(const Vector3& pto) const {
+	return Vector3();
+}
+
 Color Figura::getEmision(const Vector3& dir) const {
 	if(!textura){
 			return e;

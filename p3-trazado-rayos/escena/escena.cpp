@@ -32,23 +32,22 @@ void Escena::addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura
 
 void Escena::consumirTasks(Imagen& im, const Vector3& origen) {
 	//std::cout<<"Bueno"<<std::endl;
-	bool fin = false;
-	int cuenta = 0;
+	// int cuenta = 0;
 	while (true) {
 		int pixel;
 		{ //Lock
 			// Las llaves son para que la guarda solo este entre ellas (scope):
 			std::lock_guard<std::mutex> guarda(mtx); // asegura la SC
-			if (tasks.empty()) {
+			if (tasks.empty()) { // Fin cuando no quedan tasks
 				break;
 			}
 			pixel = tasks.back();
 			tasks.pop_back();
 		} // unlock
 		renderPixel(im, origen, pixel);
-		cuenta++;
+		// cuenta++;
 	}
-	std::cout<<"He dibujado: " << cuenta << " pixeles\n";
+	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";
 }
 
 void Escena::initThreads(Imagen& im, const Vector3& origen) {
@@ -204,7 +203,12 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 
 
 void Escena::render(const std::string fichero) {
+	std::cout<<"a construir el arbol\n";
 	bvh.construirArbol(figuras);
+		std::cout<<"hecho\n";
+
+		std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
+
 	// std::cout << bvh << std::endl;
 	// iterar para cada pixel de la camara:
 		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte

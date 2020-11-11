@@ -32,12 +32,13 @@ double Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
 	if (d_n!=0) { // intersecta
 		return -(getDist()+origen*normal)/d_n; // t
 	}
+	std::cout << "Interseccion con plano\n";
 	return 0;
 }
 
 
 std::shared_ptr<Prisma> Plano::getBoundingBox() const {
-	return std::make_shared<Prisma>(Prisma()); // TODO: caja finita que contenga plano infinito...??
+	return std::make_shared<CajaInfinita>(CajaInfinita()); // TODO: caja finita que contenga plano infinito...??
 }
 
 

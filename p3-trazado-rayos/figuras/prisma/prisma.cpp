@@ -8,7 +8,7 @@
 Prisma::Prisma() :posicion(0,0,0,true), tam(0,0,0,true)
 {}
 
-
+// Prisma normal
 Prisma::Prisma(const Vector3& _posicion, const Vector3& _tam) :
 	posicion(_posicion), tam(_tam)//, caras[0]()
 {}
@@ -19,12 +19,16 @@ float minPos(const std::vector<std::shared_ptr<Figura>>& prismas, const int i) {
 	// std::cout <<"si\n";
 	float min = prismas[0]->getBoundingBox()->getPos()[i];
 	// std::cout <<"b\n";
-
+	// std::cout <<"minpos\n";
 	for (auto p : prismas) {
 		// std::cout <<"forrrr\n";
 		auto box = p->getBoundingBox();
-		min = (box->getPos()[i] < min) ? box->getPos()[i] : min;
+		if (!box->esInfinito()){
+			min = (box->getPos()[i] < min) ? box->getPos()[i] : min;
+		}
 	}
+
+		// std::cout <<"fin minpos\n";
 	return min;
 }
 
@@ -34,11 +38,15 @@ float maxPos2(const std::vector<std::shared_ptr<Figura>>& prismas, const int i) 
 	// std::cout <<"mmmmmmmmmmmm\n";
 	float max = prismas[0]->getBoundingBox()->getPos()[i] + prismas[0]->getBoundingBox()->getTam()[i];
 	for (auto p : prismas) {
-		// std::cout <<"qqqqqqqqqqqq\n";
 		auto box = p->getBoundingBox();
-		float pos2 = box->getPos()[i] + box->getTam()[i];
-		max = (pos2 > max) ? pos2 : max;
+
+		if (!box->esInfinito()){
+			float pos2 = box->getPos()[i] + box->getTam()[i];
+			max = (pos2 > max) ? pos2 : max;
+		}
 		// std::cout << i << " max: " << max << std::endl;
+
+				// std::cout <<"fin maxpos\n";
 	}
 	return max;
 }
@@ -132,6 +140,7 @@ bool compAmayorCompB(const Vector3& a, const Vector3& b) {
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el Prisma
 // adaptado de: https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/implementing-reflections-with-a-local-cubemap/ray-box-intersection-algorithm
 double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
+	return 1;
 	// Vector3 a = getPos(); // primera esquina
 	// Vector3 b = a + getTam(); // segunda
 	// Vector3 tA = dividirComponentes((a - origen), dir); // Primera esquina
@@ -226,6 +235,9 @@ Vector3 Prisma::getCentroide() const {
 // Su primera esquina sera el minimo de cada coordenada de las primeras esquinas
 // La segunda esquina, el maximo de cada coord de las segundas esquinas
 std::shared_ptr<Prisma> combinar(const std::shared_ptr<Prisma> p1, const std::shared_ptr<Prisma> p2) {
+	if (p1->esInfinito()) return p2;
+	else if (p2->esInfinito()) return p1;
+	// Si ninguno es infinito, los combinamos
 	// PRisma 1
 	Vector3 pos1 = p1->getPos(); // esquina 1
 	Vector3 pos1_2 = pos1 + p1->getTam(); // esquina 2
@@ -250,3 +262,22 @@ std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> Prisma::partirEnEje(
 	Prisma segundo(pos2, nuevoTam);
 	return std::pair<std::shared_ptr<Prisma>,std::shared_ptr<Prisma>>(std::make_shared<Prisma>(primero), std::make_shared<Prisma>(segundo));
 } // return primero, segundo   <----- esto es lo de arriba en python :/
+
+
+
+/******** CAJAS INFINITAS **********/
+
+// Siempre intersecta
+double CajaInfinita::interseccion(const Vector3& origen, const Vector3& dir) const {
+	return true;
+}
+
+// Introspeccion a lo bestia:
+bool Prisma::esInfinito() const  {
+	return false;
+}
+
+bool CajaInfinita::esInfinito() const  {
+	std::cout << "AAAAAAAAAAAAAJJJJJJJJJJJJAAAAAAAAAAAAa\n";
+	return true;
+}

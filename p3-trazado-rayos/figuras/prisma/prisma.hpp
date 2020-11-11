@@ -18,6 +18,7 @@ class Prisma : public Figura {
 	Vector3 tam; // tamaño xyz
 	Vector3 posicion; // posicion de la esquina mas cercana al origen
 	// std::array<Plano, 4> caras;
+
 public:
 	Prisma();
 	Prisma(const Vector3& _posicion, const Vector3& _tam);
@@ -35,7 +36,9 @@ public:
 
 	bool contiene(const Vector3& p) const;
 
-	double interseccion(const Vector3& origen, const Vector3& dir) const override;
+	virtual double interseccion(const Vector3& origen, const Vector3& dir) const override;
+
+	virtual bool esInfinito() const;
 
 	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
 	std::shared_ptr<Prisma> getBoundingBox() const override;
@@ -55,3 +58,18 @@ std::shared_ptr<Prisma> combinar(const std::shared_ptr<Prisma> p1, const std::sh
 
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Prisma& c);
+
+
+
+
+
+
+/*********************** PRISMAS INFINITOS *****************************/
+// SOLO se usan para AABBs de planos infinitos
+
+class CajaInfinita : public Prisma {
+public:
+	virtual double interseccion(const Vector3& origen, const Vector3& dir) const override;
+
+	bool esInfinito() const override;
+};

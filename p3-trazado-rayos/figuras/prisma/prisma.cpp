@@ -140,7 +140,6 @@ bool compAmayorCompB(const Vector3& a, const Vector3& b) {
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el Prisma
 // adaptado de: https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/implementing-reflections-with-a-local-cubemap/ray-box-intersection-algorithm
 double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
-	return 1;
 	// Vector3 a = getPos(); // primera esquina
 	// Vector3 b = a + getTam(); // segunda
 	// Vector3 tA = dividirComponentes((a - origen), dir); // Primera esquina

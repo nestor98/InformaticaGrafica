@@ -146,6 +146,13 @@ public:
 
 };
 
+/***** Vectores constantes de utilidad *****/
+
+const Vector3 UP(0,0,1,false);
+const Vector3 LEFT(-1,0,0,false);
+const Vector3 FRONT(0,1,0,false);
+
+
 /**************** OPERADORES ****************/
 
 // para evitar el to_string en cout

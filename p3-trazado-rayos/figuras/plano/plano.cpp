@@ -32,7 +32,7 @@ double Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
 	if (d_n!=0) { // intersecta
 		return -(getDist()+origen*normal)/d_n; // t
 	}
-	std::cout << "Interseccion con plano\n";
+	// std::cout << "Interseccion con plano\n";
 	return 0;
 }
 

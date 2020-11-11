@@ -146,28 +146,28 @@ std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccionFinitas(c
 	return 	std::pair<float, std::shared_ptr<Figura>>(0,0);
 }
 
-
-// Devuelve el vector de figuras contenidas en cajas con las que intersecta el rayo
-// TODO: revisar que intersecte con varias, devolver la mas cercana
-BoundingVolumeH::vectorFigs BoundingVolumeH::puedenIntersectar(const Vector3& origen, const Vector3& dir) const
-{
-	std::cout << "hasta aqui bien\n";
-	BoundingVolumeH::vectorFigs figuras; // puntero a vector de punteros a figuras
-	if (box->interseccion(origen, dir)) { // intersecta con la caja de este nodo
-		if (isLeaf()) { // Si es hoja, añadimos su figura
-			figuras->emplace_back(figura);
-		}
-		else { // Si no, devolvemos las figuras de las ramas izq y dcha
-
-				std::cout << "else..........\n";
-			auto figurasRight = right->puedenIntersectar(origen, dir); // dcha
-			figuras->insert(figuras->end(), figurasRight->begin(), figurasRight->end()); // append
-			auto figurasLeft = left->puedenIntersectar(origen, dir); // izq
-			figuras->insert(figuras->end(), figurasLeft->begin(), figurasLeft->end()); // append
-		}
-	}
-	return figuras;
-}
+// 
+// // Devuelve el vector de figuras contenidas en cajas con las que intersecta el rayo
+// // TODO: revisar que intersecte con varias, devolver la mas cercana
+// BoundingVolumeH::vectorFigs BoundingVolumeH::puedenIntersectar(const Vector3& origen, const Vector3& dir) const
+// {
+// 	std::cout << "hasta aqui bien\n";
+// 	BoundingVolumeH::vectorFigs figuras; // puntero a vector de punteros a figuras
+// 	if (box->interseccion(origen, dir)) { // intersecta con la caja de este nodo
+// 		if (isLeaf()) { // Si es hoja, añadimos su figura
+// 			figuras->emplace_back(figura);
+// 		}
+// 		else { // Si no, devolvemos las figuras de las ramas izq y dcha
+//
+// 				std::cout << "else..........\n";
+// 			auto figurasRight = right->puedenIntersectar(origen, dir); // dcha
+// 			figuras->insert(figuras->end(), figurasRight->begin(), figurasRight->end()); // append
+// 			auto figurasLeft = left->puedenIntersectar(origen, dir); // izq
+// 			figuras->insert(figuras->end(), figurasLeft->begin(), figurasLeft->end()); // append
+// 		}
+// 	}
+// 	return figuras;
+// }
 
 BoundingVolumeH::BoundingVolumeH() : vectorPlanos(), tieneFigsFinitas(true)
 {

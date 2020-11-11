@@ -169,15 +169,15 @@ void escenaCornellBox(char* argv[]) {
 		int pixelesX = 400;
 		int pixelesY = 400;//*9/16;
 		Vector3 posCam(0,0,0,true);
-		Vector3 fCam(0,1,0,false);
-		Vector3 lCam(1,0,0,false);
-		Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
+		Vector3 fCam = FRONT;//(0,1,0,false);
+		Vector3 lCam = LEFT; //(1,0,0,false);
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
 		cout << "mod fcam: " << fCam.getModulo() << endl;
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
 		int rayosPP = 50; // rayos por pixel
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
-		c.setFOV(3.0*PI/2.0);
+		c.setFOV(0.50*PI);
 		// c.setFOV(PI);
 
 		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
@@ -186,35 +186,53 @@ void escenaCornellBox(char* argv[]) {
 
 		float distanciaParedes = 3;
 		// Caja:
-		Plano suelo(uCam/uCam.getModulo(), distanciaParedes);
+		Plano suelo(UP, distanciaParedes);
 		suelo.setColor(0.8,0.8,0.8);
 		e.addFigura(std::make_shared<Plano>(suelo));
-		Plano techo(-uCam/uCam.getModulo(), distanciaParedes);
+		Plano techo(-UP, distanciaParedes);
 		techo.setColor(0.8,0.8,0.8);
 		e.addFigura(std::make_shared<Plano>(techo));
-		Plano paredi(lCam/lCam.getModulo(), distanciaParedes);
+		Plano paredi(LEFT, distanciaParedes);
 		paredi.setColor(0.8,0,0);
 		e.addFigura(std::make_shared<Plano>(paredi));
-		Plano paredd(-lCam/lCam.getModulo(), distanciaParedes);
+		Plano paredd(-LEFT, distanciaParedes);
 		paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
-		Plano paredFondo(-fCam/fCam.getModulo(), 2*distanciaParedes);
+		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
 		paredFondo.setColor(0.75,0.75,0.75);
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 		// Figuras:
 		// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
-		Vector3 centroSuelo = distanciaParedes*fCam/fCam.getModulo() - distanciaParedes*uCam/uCam.getModulo();
+		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
 
-			Esfera esf(centroSuelo + tamEsfera*uCam, tamEsfera);// 1*1
-
+			Esfera esf(centroSuelo + tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
 			esf.setRandomColor();
-
 			e.addFigura(std::make_shared<Esfera>(esf));
-		}
 
+			Esfera esf2(centroSuelo, tamEsfera);// 1*1
+			// cout << esf.to_string() << endl;
+			esf2.setRandomColor();
+			e.addFigura(std::make_shared<Esfera>(esf2));
+			// Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,2.0*tamEsfera, false);
+			// Prisma caja(centroSuelo - 0.5*distanciaParedes*LEFT, tamPrisma/2.0);// 1*1
+			// // cout << esf.to_string() << endl;
+			// caja.setRandomColor();
+			// e.addFigura(std::make_shared<Prisma>(caja));
+		}
+		// std::cout << "front x left = " << cross(FRONT, LEFT) << "\nUP = " << UP << endl;
+		double d_prisma = 2.0*distanciaParedes / 10.0;
+		for (int i = 0; i<10; i++) {
+
+			Vector3 tamPrisma(1,1,1, false);
+			tamPrisma = d_prisma/2.0 * tamPrisma;
+			Prisma caja(centroSuelo + 0.75*distanciaParedes*LEFT + d_prisma * FRONT * (i-5), tamPrisma);// 1*1
+			// cout << esf.to_string() << endl;
+			caja.setRandomColor();
+			e.addFigura(std::make_shared<Prisma>(caja));
+		}
 
 		e.render("out/" + string(argv[1]));
 		// e.testBVHRender();

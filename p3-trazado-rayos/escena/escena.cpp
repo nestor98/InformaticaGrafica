@@ -73,6 +73,7 @@ std::string Escena::to_string() const {
 			s += "\n" + f->to_string();
 		}
 	}
+	s += "El arbol es:\n" + bvh.to_string();
 	return s;
 }
 

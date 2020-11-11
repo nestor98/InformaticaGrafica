@@ -79,10 +79,16 @@ void setFocalLength(const double mm) {
 void Camara::setFOV(const double fov) {
 	// sacado con un dibujo y tan(angulo) = opuesto/adyacente
 	// con angulo=fov, opuesto=up, adyacente=front
-	float modFront = 1.0/tan(fov/2.0);
+	float modFront = left.getModulo()/tan(fov/2.0);
 	// std::cout << "modFront: " << modFront << std::endl;
 	front.setModulo(abs(modFront));
 	base.setCambioBase(left, up, front, posicion);
+}
+
+// Dada una anchura de una escena a renderizar, devuelve a que distancia tiene que estar
+// la camara actual del centro
+double Camara::distanciaParaAnchura(const double anchura) const {
+
 }
 
 

@@ -48,6 +48,7 @@ public:
 
 	void setFOV(const double fov);
 
+	double distanciaParaAnchura(const double anchura) const;
 
 	Vector3 getRayoPixel(const int i) const;
 	int getRayosPorPixel() const;

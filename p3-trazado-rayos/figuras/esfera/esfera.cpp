@@ -64,12 +64,15 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	// si delta>0, dos soluciones (dos puntos de interseccion),
 	if (delta>0) {
 		double sqrtDelta = sqrt(delta);
-		if (b<sqrtDelta) {
-			return (-b+sqrtDelta)/(2*a);
-		}
-		else {
-			return (-b-sqrtDelta)/(2*a);
-		}
+		double t = (-b+sqrtDelta)/(2*a);
+		if (t<=0) return (-b-sqrtDelta)/(2*a);
+		else return t;
+		// if (b<sqrtDelta) {
+		// 	return (-b+sqrtDelta)/(2*a);
+		// }
+		// else {
+		// 	return (-b-sqrtDelta)/(2*a);
+		// }
 	}
 	// si delta==0, una solucion (pto tangente)
 	else if (delta==0) {
@@ -84,7 +87,10 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 
 
 Vector3 Esfera::getNormal(const Vector3& pto) const {
-	return pto-posicion;
+	Vector3 normal = pto-posicion;
+	normal.normalizar();
+	// std::cout <<"Pto: " << pto <<"\npos" <<posicion<<"\nnormal normalizada: " << normal << std::endl;
+	return normal;
 }
 
 

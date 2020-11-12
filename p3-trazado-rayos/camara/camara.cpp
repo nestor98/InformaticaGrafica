@@ -81,7 +81,7 @@ void Camara::setFOV(const double fov) {
 	// con angulo=fov, opuesto=up, adyacente=front
 	float modFront = left.getModulo()/tan(fov/2.0);
 	// std::cout << "modFront: " << modFront << std::endl;
-	front.setModulo(abs(modFront));
+	front.setModulo(std::abs(modFront));
 	base.setCambioBase(left, up, front, posicion);
 }
 

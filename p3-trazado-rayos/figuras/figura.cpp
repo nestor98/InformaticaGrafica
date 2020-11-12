@@ -51,11 +51,6 @@ void Figura::setColor(const std::array<double, 3> _e = {1,0,0}) {
 	e.setRGB(_e);
 }
 
-double abs(double a) {
-	return (a>=0) ? a : -a;
-}
-
-
 
 // color aleatorio
 void Figura::setRandomColor() {

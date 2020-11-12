@@ -44,6 +44,7 @@ public:
 	float getModuloSq() const;
 	float setModulo(const float mod);
 
+	void normalizar();
 
 	double getMaxComponente() const;
 	double getMinComponente() const;

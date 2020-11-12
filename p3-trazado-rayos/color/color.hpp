@@ -39,6 +39,10 @@ public:
   void setFromPosGrad(const Vector3& pto, const Vector3& min, const Vector3& max);
   void setFromPosExp(const Vector3& pto, const Vector3& min, const Vector3& max);
 
+  void setFromNormal(const Vector3& normal);
+
+  void setFromDistancia(const double t, const double min = 0, const double max = 4);
+
 	// componente (get, a = v[2])
 	double operator [](int i) const;
 

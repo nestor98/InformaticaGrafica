@@ -52,9 +52,14 @@ class Escena {
 	void renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const;
 
 
+
 public:
-	Escena(const Camara& _c);
-	Escena(const std::shared_ptr<Camara> _c, const int _nThreads = 16);
+	enum TipoRender {Emision, Distancia, Normales};
+private:
+	TipoRender renderSeleccionado;
+public:
+	// Escena(const Camara& _c, const TipoRender tipo = BVHEmision);
+	Escena(const std::shared_ptr<Camara> _c, const int _nThreads = 16, const TipoRender tipo = Emision);
 
 	std::string to_string() const;
 	void addFigura(const std::shared_ptr<Figura> f);

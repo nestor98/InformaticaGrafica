@@ -85,6 +85,13 @@ float Vector3::setModulo(const float mod) {
 	setCoords(temp[0], temp[1], temp[2], 0);
 }
 
+void Vector3::normalizar() {
+	float mod = getModulo();
+	if (mod != 1) {
+		c[0]/mod; c[1]/mod; c[2]/mod;
+	}
+}
+
 // devuelve el modulo al cuadrado
 float Vector3::getModuloSq() const {
 	float mod = 0;

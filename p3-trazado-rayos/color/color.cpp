@@ -37,6 +37,27 @@ void Color::setRandom() {
 }
 
 
+
+// Color para una normal (o cualquier vector normalizado)
+void Color::setFromNormal(const Vector3& normal) {
+  // if (normal[0]!= normal[1] && normal[1]!=normal[2]) {
+  //   std::cout << "Normal: " << normal << "\nabs(normal[0]) = " << abs(normal[0]) << std::endl;
+  // }
+  setRGB(std::abs(normal[0]), std::abs(normal[1]), std::abs(normal[2]));
+  // Vector3 normal01 = (-normal + 1.0)/ 2.0;
+  // // Vector3 normal01 = normal * normal;
+  // normal01 = dividirComponentes(Vector3(1,1,1,false), normal01);
+  // setRGB((normal01[0]), (normal01[1]), (normal01[2]));
+  // setRGB(std::abs((normal[0])/2.0+1.0), std::abs((normal[1])/2.0+1.0), std::abs((normal[2])/2.0+1.0));
+}
+
+
+void Color::setFromDistancia(const double t, const double min, const double max) {
+  double c = (max-t) / (max-min);
+  setRGB(c,c,c);
+}
+
+
 std::array<double,3> Color::toArray() const {
   return std::array<double,3>{r,g,b};
 }

@@ -12,8 +12,8 @@
 
 #define hrc std::chrono::high_resolution_clock
 
-Escena::Escena(const std::shared_ptr<Camara> _c, const int _nThreads)
-: c(_c), utils()//, threads(_nThreads)
+Escena::Escena(const std::shared_ptr<Camara> _c, const int _nThreads, const Escena::TipoRender tipo)
+: c(_c), utils(), renderSeleccionado(tipo)//, threads(_nThreads)
 {
 	threads.reserve(_nThreads);
 	//std::cout << "Constructor de escena: " << c->to_string() << std::endl;
@@ -174,8 +174,15 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 			tMin = t;
 			auto fig = distFigura.second; // Puntero a la Figura intersectada
 			// std::cout <<"uno\n";
-			eFigCercana = fig->getEmision(o+t*dir);// se le pasa el pto de interseccion
-			// im.setPixel( eFigCercana[0],  eFigCercana[1], eFigCercana[2], pixel);
+			if (renderSeleccionado == TipoRender::Emision) {
+				eFigCercana = fig->getEmision(o+t*dir);// se le pasa el pto de interseccion // COLOR DE FIGURA
+			} else if (renderSeleccionado == TipoRender::Normales) {
+				Vector3 normal = fig->getNormal(o+t*dir); // Normal en el pto
+				// if (normal[0] ) std::cout << "PERO QUE\n";
+				eFigCercana.setFromNormal(normal); // Color para la normal
+			} else if (renderSeleccionado == TipoRender::Distancia) {
+				eFigCercana.setFromDistancia(t, 1, 7); // Color para la normal
+			}
 		}
 	// }
 		color = color + eFigCercana / double(nRayos);

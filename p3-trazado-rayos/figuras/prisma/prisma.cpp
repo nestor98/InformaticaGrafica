@@ -77,9 +77,9 @@ Vector3 Prisma::getTam() const {
 // TODO: COMPROBAR, COMPLETAMENTE A OJO
 Vector3 normalDeCara(const int cara) {
 	Vector3 normal(0, 0, 0, false);
-	if (cara<3)	normal[cara] = 1;
+	if (cara<3)	normal[cara] = -1;
 	else {
-		normal[cara-3] = -1;
+		normal[cara-3] = 1;
 	}
 	return normal;
 }

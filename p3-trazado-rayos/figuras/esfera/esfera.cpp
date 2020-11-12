@@ -54,7 +54,7 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	double r = getRadio();
 	// std::cout<<"r: "<<r<<std::endl;
 	// std::cout<<"origen*origen: "<<origen.getModulo()*origen.getModulo()<<std::endl;
-	double c = o_centro*o_centro-r*r; // (o-c)^2-r^2
+	double c = o_centro*o_centro-r*r; // (o)^2-r^2
 	// std::cout<<"c: "<<c<<std::endl;
 
 	double delta = b*b-4.0*a*c;
@@ -76,7 +76,7 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	}
 	// si delta==0, una solucion (pto tangente)
 	else if (delta==0) {
-		return -b/2*a;
+		return -b/(2*a);
 	}
 	// si delta<0, no hay solucion (no intersecta)
 	else {

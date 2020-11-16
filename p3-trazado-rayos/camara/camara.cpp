@@ -56,9 +56,9 @@ Vector3 Camara::getRayoPixel(const int i) const{
 	int x = i%(pixelesX); // coord x
 	int y = i/(pixelesX);
 
-	double xLeft = x+utils.rand01();
+	double xLeft = x+gen.rand01();
 	xLeft = -(xLeft/(pixelesX/2.0)-1.0);
-	double yUp = y+utils.rand01();
+	double yUp = y+gen.rand01();
 	yUp = -(2.0*yUp/double(pixelesY)-1.0);
 	// std::cout << xLeft << "\t" << yUp << std::endl;
 	Vector3 dirCamara(xLeft, yUp, 1, false);

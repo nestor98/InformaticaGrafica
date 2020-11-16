@@ -13,7 +13,7 @@
 #define hrc std::chrono::high_resolution_clock
 
 Escena::Escena(const std::shared_ptr<Camara> _c, const int _nThreads, const Escena::TipoRender tipo)
-: c(_c), utils(), renderSeleccionado(tipo)//, threads(_nThreads)
+: c(_c), renderSeleccionado(tipo)//, threads(_nThreads)
 {
 	threads.reserve(_nThreads);
 	//std::cout << "Constructor de escena: " << c->to_string() << std::endl;
@@ -197,7 +197,7 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		// 	std::cout << "MALLLLLLLLLLLLLL\n";
 		// 	exit(1);
 		// }
-	
+
 }
 
 

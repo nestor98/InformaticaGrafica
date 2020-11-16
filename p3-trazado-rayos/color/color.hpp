@@ -8,7 +8,7 @@
 class Color {
   double r, g, b;
 
-  inline static Utils utils; // random, etc
+  //inline static Utils utils; // random, etc
 public:
   Color();
   Color(const double _r, const double _g, const double _b);
@@ -25,7 +25,9 @@ public:
   double getG() const;
   double getB() const;
 
-  void setRandom();
+  // Color aleatorio:
+  void setRandom(); // mas comoda
+  void setRandom(const GeneradorAleatorio& gen); // mas aleatoria (y rapida)
 
   void setR(const double r);
   void setG(const double g);

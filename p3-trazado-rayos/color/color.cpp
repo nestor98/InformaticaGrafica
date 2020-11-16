@@ -32,8 +32,15 @@ void Color::setFromPosExp(const Vector3& pto, const Vector3& min, const Vector3&
 	setRGB((1+sin(pos[0])/2.0), (1+sin(pos[1]))/2.0, (1+sin(pos[2]))/2.0);
 }
 
+void Color::setRandom(const GeneradorAleatorio& gen) {
+  setRGB(gen.rand01(), gen.rand01(), gen.rand01());
+}
+
+
 void Color::setRandom() {
-  setRGB(utils.rand01(), utils.rand01(), utils.rand01());
+  GeneradorAleatorio gen;
+  setRandom(gen);
+  //setRGB(gen.rand01(), gen.rand01(), gen.rand01());
 }
 
 

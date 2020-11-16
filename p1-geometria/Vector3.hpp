@@ -199,6 +199,8 @@ Matriz4 operator / (const Matriz4& m, const float& s);
 // Prod escalar (dot product)
 float operator * (const Vector3& v1, const Vector3& v2);
 
+// Devuelve el vector v normalizado:
+Vector3 normalizar(const Vector3& v);
 
 // Devuelve el minimo de las i-esimas coordenadas de v1 y v2
 float minI(const Vector3& v1, const Vector3& v2, const int i);

@@ -20,7 +20,7 @@ class Escena {
 	std::shared_ptr<Camara> c;
 	std::vector<std::shared_ptr<Figura>> figuras;
 
-	std::shared_ptr<Utils> utils;
+	GeneradorAleatorio gen;
 
 	BoundingVolumeH bvh;
 

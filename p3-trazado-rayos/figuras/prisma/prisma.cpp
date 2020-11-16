@@ -266,11 +266,16 @@ Vector3 Prisma::getCentroide() const {
 
 // Devuelve un pto aleatorio dentro del prisma
 Vector3 Prisma::getPtoAleatorio() const {
-	Utils utils;
-	double random01 = utils.rand01();
+	GeneradorAleatorio gen;
+	double random01 = gen.rand01();
 	Vector3 pto = posicion + random01*tam;
 }
 
+// Devuelve un pto aleatorio dentro del prisma
+Vector3 Prisma::getPtoAleatorio(const GeneradorAleatorio& gen) const {
+	double random01 = gen.rand01();
+	Vector3 pto = posicion + random01*tam;
+}
 
 
 // Devuelve el prisma minimo que envuelve a p1 y p2

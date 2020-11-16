@@ -24,11 +24,7 @@ class Camara {
 
 	Matriz4 baseInversa;
 
-	Utils utils; // random, etc
-
-	// Para generacion de nums aleatorios
-	mutable std::mt19937 gen; //Standard mersenne_twister_engine seeded with rd()
-	mutable std::uniform_real_distribution<> dis;
+	GeneradorAleatorio gen; // random, etc
 
 
 public:

@@ -91,7 +91,7 @@ float Esfera::getRadio() const {
 }*/
 
 
-double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const 
+double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const
     {
    // printf (">>>%f,%f,%f<< \n",  ray.direccion.x,  ray.direccion.y,  ray.direccion.z);
 	double distancia=0;
@@ -124,9 +124,14 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const
 
 Vector3 Esfera::getNormal(const Vector3& pto) const {
 	Vector3 normal = pto-posicion;
-	normal.normalizar();
+	//Vector3 normalizada2 = normal / normal.getModulo();
+
+	//normal.normalizar();
+	// if (normalizada2 != normal) {
+	// 	std::cout << normalizada2 << "    "<<normal<<std::endl;
+	// }
 	// std::cout <<"Pto: " << pto <<"\npos" <<posicion<<"\nnormal normalizada: " << normal << std::endl;
-	return normal;
+	return normalizar(normal);
 }
 
 

@@ -86,10 +86,17 @@ float Vector3::setModulo(const float mod) {
 }
 
 void Vector3::normalizar() {
+	std::cerr << "HOLA SOY Vector3::normalizar() Y NO FUNCIONO, USA normalizar(Vector3) O ARREGLAME\n";
+	exit(1);
+	// No funciona:
 	float mod = getModulo();
-	if (mod != 1) {
-		c[0]/mod; c[1]/mod; c[2]/mod;
-	}
+	c[0]/mod; c[1]/mod; c[2]/mod;
+}
+
+// Devuelve el vector v normalizado:
+Vector3 normalizar(const Vector3& v) {
+	//Vector3 normalizado = v / v.getModulo();
+	return v/v.getModulo();
 }
 
 // devuelve el modulo al cuadrado

@@ -51,6 +51,7 @@ public:
 
 	Vector3 getCentroide() const;
 	Vector3 getPtoAleatorio() const;
+	Vector3 getPtoAleatorio(const GeneradorAleatorio& gen) const; // mas rapida y aleatoria
 
 
 	// Devuelve el indice del eje mas grande (0, 1 o 2)

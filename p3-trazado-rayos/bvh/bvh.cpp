@@ -44,8 +44,8 @@ void BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>>& figur
 std::vector<std::shared_ptr<Figura> >::iterator BoundingVolumeH::casoParticular(std::vector<std::shared_ptr<Figura>>& figuras, const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it) {
 	while (it == figuras.begin() || it == figuras.end()){ // prueba otro punto hasta encontrar una partición
 		std::cout << "Caso particular, buscando otro pto de corte...\n";
-		int eje = utils.rand(0,3); // eje aleatorio [0,2]
-		double ptoSep = box->getPtoAleatorio()[eje];
+		int eje = gen.rand(0,3); // eje aleatorio [0,2]
+		double ptoSep = box->getPtoAleatorio(gen)[eje];
 		it = std::partition(figuras.begin(), figuras.end(), [eje, ptoSep](const std::shared_ptr<Figura> f){return f->getCentroide()[eje] < ptoSep;});
 	}
 	return it;

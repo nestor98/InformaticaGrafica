@@ -27,7 +27,7 @@ class BoundingVolumeH {
 	std::shared_ptr<Figura> figura; // Figura
 
 
-	Utils utils;
+	GeneradorAleatorio gen;
 	// ---------------------------
 
 	// Auxiliares de construirArbol e interseccion

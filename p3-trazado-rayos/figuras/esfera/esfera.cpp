@@ -37,7 +37,7 @@ float Esfera::getRadio() const {
 
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera
-double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
+/*double interseccion(const Vector3& origen, const Vector3& dir) const {
 	// sustituyendo en el sistema con:
 		// p = o+td
 		// |p|^2-r^2=0
@@ -88,33 +88,33 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 		return 0.0;
 	}
 	return delta; // intersecta
-}
+}*/
 
 
-int Esfera::HayInterseccionConEferas(const Vector3& origen, const Vector3& dir, double *distancia)
+double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const 
     {
    // printf (">>>%f,%f,%f<< \n",  ray.direccion.x,  ray.direccion.y,  ray.direccion.z);
-
+	double distancia=0;
     double a = dir*dir;
     Vector3 ro_sc = origen-getPos();
     double b = 2.0 *dir*ro_sc;
     double y = ro_sc*ro_sc - (getRadio()*getRadio()) ;
 
 
-    double discriminante = b*b - 4 * a * y;
+    double discriminante = b*b - 4.0 * a * y;
 
-    double RaizDiscriminante = sqrt(b*b - 4 * a * y);
+    double RaizDiscriminante = sqrt(b*b - 4.0 * a * y);
 
     if (discriminante >=0 ){
-        double t1 = (-b-RaizDiscriminante)/2*a;
-        double t2 = (-b+RaizDiscriminante)/2*a;
-        if (t1<t2){
-            *distancia =  t1;
+        double t1 = (-b-RaizDiscriminante)/(2.0*a);
+        double t2 = (-b+RaizDiscriminante)/(2.0*a);
+        if (t1<t2 && t1>0){
+            distancia =  t1;
         }
         else{
-            *distancia =  t2;
+            distancia =  t2;
         }
-        return 1;
+        return distancia;
     }
     else {
         return 0;

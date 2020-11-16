@@ -444,19 +444,20 @@ Vector3 operator * (const Vector3& v, const float& s) {
 
 
 // escalar v/s
-Vector3 operator / (const Vector3& v, const float& s) {
+/*Vector3 operator / (const Vector3& v, const float& s) {
 	if (s == 0) {
 		std::cerr << "no dividas entre 0..." << std::endl;
 		exit(1);
+		//return v;
 	}
 	Vector3 res(v[0] / s, v[1] / s, v[2] / s, v[3]/s);
 	return res;
-}
+}*/
 
 // escalar M/s
 Matriz4 operator / (const Matriz4& m, const float& s) {
 	if (s == 0) {
-		std::cerr << "no dividas entre 0..." << std::endl;
+		std::cerr << "no dividas entre 0...Matrix" << std::endl;
 		exit(1);
 	}
 	Matriz4 res(m[0] / s, m[1] / s, m[2] / s, m[3]/s);

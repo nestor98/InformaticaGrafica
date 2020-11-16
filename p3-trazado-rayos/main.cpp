@@ -28,19 +28,25 @@ void escenaBastanteGuay400prismas200esferas(char* argv[]) {
 	Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
 	//Camara c(posCam, dirCam);
 	//cout << c << endl;
-	int rayosPP = 100; // rayos por pixel
+	int rayosPP = 5; // rayos por pixel
 	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
-	int nThreads = 4; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+	int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 
 	Escena e(std::make_shared<Camara>(c), nThreads);
-	Vector3 posEsf(-2,3000,-0.5,true);
+	Vector3 posEsf/*(0,3000,0,true)*/=FRONT*1000;
 	//PRUEBAS TEXTURAS SIMPLE
 	Imagen t= Imagen("textura3.ppm", true);
-	Textura tex=Textura(t, 474.0, 474.0, posEsf-2.0*uCam+lCam+5.0*(0.2*fCam));
+	//Textura tex=Textura(t, 474.0, 474.0, posEsf-2.0*uCam+lCam+5.0*(0.2*fCam));
 	// std::make_shared<Esfera>(Esfera(algo)) ===  std::shared_ptr<Esfera>(new Esfera(algo))
-	Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*fCam), 474.0/2, std::make_shared<Textura>(tex));// 1*1
-	e.addFigura(std::make_shared<Esfera>(esf));
+	for(int i=0; i<20; i++){
+		double tam=50.0/12;
+		Esfera esf(posEsf+LEFT*(i-10)*tam*3+FRONT*(i-10)*tam/10.0, tam);// 1*1
+		e.addFigura(std::make_shared<Esfera>(esf));
+	}
+	Plano p(-FRONT, 1000);
+	p.setColor(0.5,0.5,0.5);
+	e.addFigura(std::make_shared<Plano>(p));
 	// for (int i=0; i<200; i++) {
 	// 	// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 	// 	Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*i*fCam), 0.5);// 1*1
@@ -75,7 +81,7 @@ void escenaBastanteGuay400prismas200esferas(char* argv[]) {
 
 	// cout<<e<<endl;
 	e.render("out/" + string(argv[1]));
-	// e.testBVHRender();
+	//e.testBVHRender();
 	cout << "en total hay "<<pixelesX*pixelesY<<endl;
 }
 
@@ -253,5 +259,6 @@ int main(int argc, char* argv[]) {
 	// escenaBastanteGuay400prismas200esferas(argv);
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
-	escenaBastanteGuay400prismas200esferas(argv);
+	//escenaBastanteGuay400prismas200esferas(argv);
+	escenaCornellBox(argv);
 }

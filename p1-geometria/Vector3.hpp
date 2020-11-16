@@ -192,7 +192,7 @@ Vector3 operator * (const Vector3& v, const float& s);
 float operator / (const Vector3& v1, const Vector3& v2);
 
 // escalar v/s
-Vector3 operator / (const Vector3& v, const float& s);
+//Vector3 operator / (const Vector3& v, const float& s);
 
 // escalar M/s
 Matriz4 operator / (const Matriz4& m, const float& s);

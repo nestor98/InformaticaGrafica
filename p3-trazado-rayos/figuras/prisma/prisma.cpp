@@ -165,17 +165,47 @@ double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
 	// return t1;
 ////////////////////////////////////////////////////////////// V2 ////////////////////////////////////////////777
 // Adaptado de https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
+	Vector3 invdir=1/dir;
 	Vector3 min =getPos();
 	Vector3 max =min+getTam();
-	float tmin = (min[0] - origen[0]) / dir[0];
+	float tmin=0;
+	float tmax=0;
+	float tymin=0;
+	float tymax=0;
+	float tzmin=0;
+	float tzmax=0;
+/*	float tmin = (min[0] - origen[0]) / dir[0];
   float tmax = (max[0] - origen[0]) / dir[0];
+	
+  if (tmin > tmax) std::swap(tmin, tmax);*/
+  if (invdir[0] >= 0) { 
+    tmin = (min[0] - origen[0]) * invdir[0]; 
+    tmax = (max[0] - origen[0]) * invdir[0]; 
+} 
+else { 
+    tmin = (max[0] - origen[0]) * invdir[0]; 
+    tmax = (min[0] - origen[0]) * invdir[0]; 
+} 
+  if (invdir[1] >= 0) { 
+    tymin = (min[1] - origen[1]) * invdir[1]; 
+    tymax = (max[1] - origen[1]) * invdir[1]; 
+} 
+else { 
+    tymin = (max[1] - origen[1]) * invdir[1]; 
+    tymax = (min[1] - origen[1]) * invdir[1]; 
+} 
+  if (invdir[2] >= 0) { 
+    tzmin = (min[2] - origen[2]) * invdir[2]; 
+    tzmax = (max[2] - origen[2]) * invdir[2]; 
+} 
+else { 
+    tzmin = (max[2] - origen[2]) * invdir[2]; 
+    tzmax = (min[2] - origen[2]) * invdir[2]; 
+} 
+  //float tymin = (min[1] - origen[1]) / dir[1];
+  //float tymax = (max[1] - origen[1]) / dir[1];
 
-  if (tmin > tmax) std::swap(tmin, tmax);
-
-  float tymin = (min[1] - origen[1]) / dir[1];
-  float tymax = (max[1] - origen[1]) / dir[1];
-
-  if (tymin > tymax) std::swap(tymin, tymax);
+  //if (tymin > tymax) std::swap(tymin, tymax);
 
   if ((tmin > tymax) || (tymin > tmax))
       return 0;
@@ -186,10 +216,10 @@ double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
   if (tymax < tmax)
       tmax = tymax;
 
-  float tzmin = (min[2] - origen[2]) / dir[2];
-  float tzmax = (max[2] - origen[2]) / dir[2];
+  //float tzmin = (min[2] - origen[2]) / dir[2];
+  //float tzmax = (max[2] - origen[2]) / dir[2];
 
-  if (tzmin > tzmax) std::swap(tzmin, tzmax);
+  //if (tzmin > tzmax) std::swap(tzmin, tzmax);
 
   if ((tmin > tzmax) || (tzmin > tmax))
       return 0;

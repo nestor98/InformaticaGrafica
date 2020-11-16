@@ -164,7 +164,7 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 			Color eFigCercana(0.2,0.2,0.2);
 			// for (auto figura : figuras) {
 			// for (auto figura = figurasIntersectables->begin(); figura!=figurasIntersectables->end(); figura++) {
-
+			double dist=0;
 			auto distFigura = bvh.interseccion(o, dir); // distancia
 			double t = distFigura.first;
 			// std::cout <<"vaya\n";

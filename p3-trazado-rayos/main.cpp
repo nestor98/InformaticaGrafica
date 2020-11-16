@@ -169,6 +169,42 @@ void escenaPlanos(char* argv[]) {
 }
 
 
+void escenaCornellBox2(char* argv[]) {
+
+		int pixelesX = 400;
+		int pixelesY = 400;//*9/16;
+		Vector3 posCam(0,0,0,true);
+		Vector3 fCam = FRONT;//(0,1,0,false);
+		Vector3 lCam = LEFT; //(1,0,0,false);
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+		cout << "mod fcam: " << fCam.getModulo() << endl;
+		//Camara c(posCam, dirCam);
+		//cout << c << endl;
+		int rayosPP = 50; // rayos por pixel
+		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		c.setFOV(0.4*PI);
+		// c.setFOV(PI);
+
+		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		//
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Distancia);
+
+		// std::cout << "front x left = " << cross(FRONT, LEFT) << "\nUP = " << UP << endl;
+		double d_prisma = 32;// * 10.0;
+		for (int i = 0; i<100; i++) {
+			Vector3 tamPrisma(1,1,1, false);
+			tamPrisma = d_prisma/2.0 * tamPrisma;
+			Prisma caja(0.5*LEFT + d_prisma * FRONT * (i-5), tamPrisma);// 1*1
+			// cout << esf.to_string() << endl;
+			caja.setRandomColor();
+			e.addFigura(std::make_shared<Prisma>(caja));
+		}
+
+		e.render("out/" + string(argv[1]));
+		// e.testBVHRender();
+		std::cout << "escena\n" <<e << '\n';
+}
+
 
 void escenaCornellBox(char* argv[]) {
 
@@ -234,7 +270,7 @@ void escenaCornellBox(char* argv[]) {
 		}
 		// std::cout << "front x left = " << cross(FRONT, LEFT) << "\nUP = " << UP << endl;
 		double d_prisma = 2.0*distanciaParedes / 10.0;
-		for (int i = 0; i<10; i++) {
+		for (int i = 0; i<100; i++) {
 
 			Vector3 tamPrisma(1,1,1, false);
 			tamPrisma = d_prisma/2.0 * tamPrisma;

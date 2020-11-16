@@ -105,7 +105,37 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	}
 	return delta; // intersecta
 }
+int HayInterseccionConEferas(Ray *rayo, ESFERA *esfera, double *distancia)
+    {
+    Ray ray = *rayo;
+   // printf (">>>%f,%f,%f<< \n",  ray.direccion.x,  ray.direccion.y,  ray.direccion.z);
 
+    double a = vectorProductoPunto(rayo->direccion, rayo->direccion);
+    VECTOR ro_sc = vectorResta(rayo->origen, esfera->punto);
+    double b = 2.0 * vectorProductoPunto(rayo->direccion, ro_sc);
+    double y = vectorProductoPunto(ro_sc, ro_sc) - (esfera->radio*esfera->radio) ;
+
+
+    double discriminante = b*b - 4 * a * y;
+
+    double RaizDiscriminante = sqrt(b*b - 4 * a * y);
+
+    if (discriminante >=0 ){
+        double t1 = (-b-RaizDiscriminante)/2*a;
+        double t2 = (-b+RaizDiscriminante)/2*a;
+        if (t1<t2){
+            *distancia =  t1;
+        }
+        else{
+            *distancia =  t2;
+        }
+        return 1;
+    }
+    else {
+        return 0;
+    }
+
+    }
 
 Vector3 Esfera::getNormal(const Vector3& pto) const {
 	Vector3 normal = pto-posicion;

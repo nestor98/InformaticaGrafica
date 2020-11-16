@@ -11,7 +11,6 @@
 
 
 #define hrc std::chrono::high_resolution_clock
-static bool noparar=true;
 
 Escena::Escena(const std::shared_ptr<Camara> _c, const int _nThreads, const Escena::TipoRender tipo)
 : c(_c), utils(), renderSeleccionado(tipo)//, threads(_nThreads)
@@ -155,7 +154,6 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
 void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
-	if(noparar){ //ESTOY CON EL DEBBUG DE LA ESFERA
 		bool interseccion = false;
 		Color color(0.0,0.0,0.0);
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
@@ -173,7 +171,6 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 			// double t = figura->interseccion(o,dir);
 			interseccion = t>0; // intersecta
 			if (interseccion && tMenor(t, tMin)) {
-				std::cout<<"interseciiono"<<std::endl;
 				tMin = t;
 				auto fig = distFigura.second; // Puntero a la Figura intersectada
 				// std::cout <<"uno\n";
@@ -186,7 +183,6 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 				} else if (renderSeleccionado == TipoRender::Distancia) {
 					eFigCercana.setFromDistancia(t, 1, 7); // Color para la normal
 				}
-				noparar=false;
 			}
 		// }
 			color = color + eFigCercana / double(nRayos);
@@ -201,7 +197,7 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		// 	std::cout << "MALLLLLLLLLLLLLL\n";
 		// 	exit(1);
 		// }
-	}
+	
 }
 
 

@@ -60,21 +60,12 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	double delta = b*b-4.0*a*c;
 	//std::cout << "INTERSECTANDO ESF\n";
 
-	std::cout<<"delta: "<<delta<<std::endl;
 	// si delta>0, dos soluciones (dos puntos de interseccion),
 	if (delta>0) {
 		double sqrtDelta = sqrt(delta);
 		//std::cout<<"raiz:"<<sqrtDelta<<std::endl;
 		double t = (-b+sqrtDelta)/(2*a);
 		//std::cout<<"t: "<<t<<std::endl;
-			 std::cout<<"a: "<<a<<std::endl;
-	 std::cout<<"b: "<<b<<std::endl;
-	std::cout<<"r: "<<r<<std::endl;
-	 std::cout<<"origen*origen: "<<origen.getModulo()*origen.getModulo()<<std::endl;
-	std::cout<<"c: "<<c<<std::endl;
-	std::cout << "INTERSECTANDO ESF\n";
-		std::cout<<"raiz:"<<sqrtDelta<<std::endl;
-		std::cout<<"t: "<<t<<std::endl;
 		if (t<=0) return (-b-sqrtDelta)/(2*a);
 		else return t;
 		// if (b<sqrtDelta) {
@@ -90,13 +81,6 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	}
 	// si delta==0, una solucion (pto tangente)
 	else if (delta==0) {
-	 std::cout<<"a: "<<a<<std::endl;
-	 std::cout<<"b: "<<b<<std::endl;
-	std::cout<<"r: "<<r<<std::endl;
-	 std::cout<<"origen*origen: "<<origen.getModulo()*origen.getModulo()<<std::endl;
-	std::cout<<"c: "<<c<<std::endl;
-	std::cout << "INTERSECTANDO ESF\n";
-		std::cout<<"t: "<<-b/(2*a)<<std::endl;
 		return -b/(2*a);
 	}
 	// si delta<0, no hay solucion (no intersecta)
@@ -105,15 +89,16 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	}
 	return delta; // intersecta
 }
-int HayInterseccionConEferas(Ray *rayo, ESFERA *esfera, double *distancia)
+
+
+int Esfera::HayInterseccionConEferas(const Vector3& origen, const Vector3& dir, double *distancia)
     {
-    Ray ray = *rayo;
    // printf (">>>%f,%f,%f<< \n",  ray.direccion.x,  ray.direccion.y,  ray.direccion.z);
 
-    double a = vectorProductoPunto(rayo->direccion, rayo->direccion);
-    VECTOR ro_sc = vectorResta(rayo->origen, esfera->punto);
-    double b = 2.0 * vectorProductoPunto(rayo->direccion, ro_sc);
-    double y = vectorProductoPunto(ro_sc, ro_sc) - (esfera->radio*esfera->radio) ;
+    double a = dir*dir;
+    Vector3 ro_sc = origen-getPos();
+    double b = 2.0 *dir*ro_sc;
+    double y = ro_sc*ro_sc - (getRadio()*getRadio()) ;
 
 
     double discriminante = b*b - 4 * a * y;

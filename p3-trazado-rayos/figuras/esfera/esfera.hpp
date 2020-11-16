@@ -30,6 +30,8 @@ public:
 	void addTextura(Textura _tex);
 	void setBoundingBox();
 	std::shared_ptr<Prisma> getBoundingBox() const override;
+	int HayInterseccionConEferas(const Vector3& origen, const Vector3& dir, double *distancia);
+
 
 
 	Vector3 getNormal(const Vector3& pto) const override;

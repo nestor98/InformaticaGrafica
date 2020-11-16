@@ -52,19 +52,29 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 	double b = 2.0*dir*o_centro; // 2d(o-c)
 	// std::cout<<"b: "<<b<<std::endl;
 	double r = getRadio();
-	// std::cout<<"r: "<<r<<std::endl;
+	//std::cout<<"r: "<<r<<std::endl;
 	// std::cout<<"origen*origen: "<<origen.getModulo()*origen.getModulo()<<std::endl;
 	double c = o_centro*o_centro-r*r; // (o)^2-r^2
-	// std::cout<<"c: "<<c<<std::endl;
+	//std::cout<<"c: "<<c<<std::endl;
 
 	double delta = b*b-4.0*a*c;
-	// std::cout << "INTERSECTANDO ESF\n";
+	//std::cout << "INTERSECTANDO ESF\n";
 
-	// std::cout<<"delta: "<<delta<<std::endl;
+	std::cout<<"delta: "<<delta<<std::endl;
 	// si delta>0, dos soluciones (dos puntos de interseccion),
 	if (delta>0) {
 		double sqrtDelta = sqrt(delta);
+		//std::cout<<"raiz:"<<sqrtDelta<<std::endl;
 		double t = (-b+sqrtDelta)/(2*a);
+		//std::cout<<"t: "<<t<<std::endl;
+			 std::cout<<"a: "<<a<<std::endl;
+	 std::cout<<"b: "<<b<<std::endl;
+	std::cout<<"r: "<<r<<std::endl;
+	 std::cout<<"origen*origen: "<<origen.getModulo()*origen.getModulo()<<std::endl;
+	std::cout<<"c: "<<c<<std::endl;
+	std::cout << "INTERSECTANDO ESF\n";
+		std::cout<<"raiz:"<<sqrtDelta<<std::endl;
+		std::cout<<"t: "<<t<<std::endl;
 		if (t<=0) return (-b-sqrtDelta)/(2*a);
 		else return t;
 		// if (b<sqrtDelta) {
@@ -73,9 +83,20 @@ double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const {
 		// else {
 		// 	return (-b-sqrtDelta)/(2*a);
 		// }
+
+
+
+
 	}
 	// si delta==0, una solucion (pto tangente)
 	else if (delta==0) {
+	 std::cout<<"a: "<<a<<std::endl;
+	 std::cout<<"b: "<<b<<std::endl;
+	std::cout<<"r: "<<r<<std::endl;
+	 std::cout<<"origen*origen: "<<origen.getModulo()*origen.getModulo()<<std::endl;
+	std::cout<<"c: "<<c<<std::endl;
+	std::cout << "INTERSECTANDO ESF\n";
+		std::cout<<"t: "<<-b/(2*a)<<std::endl;
 		return -b/(2*a);
 	}
 	// si delta<0, no hay solucion (no intersecta)

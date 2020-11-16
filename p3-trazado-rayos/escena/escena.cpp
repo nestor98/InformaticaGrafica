@@ -11,6 +11,7 @@
 
 
 #define hrc std::chrono::high_resolution_clock
+static bool noparar=true;
 
 Escena::Escena(const std::shared_ptr<Camara> _c, const int _nThreads, const Escena::TipoRender tipo)
 : c(_c), utils(), renderSeleccionado(tipo)//, threads(_nThreads)
@@ -154,49 +155,53 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
 void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
-	bool interseccion = false;
-	Color color(0.0,0.0,0.0);
-	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
-	for (int i=0; i<nRayos; i++) { // cada rayo
-		Vector3 dir(c->getRayoPixel(pixel)); // una direccion
-		double tMin = -1; // distancia a la figura mas cercana
-		// color de la figura mas cercana, por defecto el fondo:
-		Color eFigCercana(0.2,0.2,0.2);
-		// for (auto figura : figuras) {
-		// for (auto figura = figurasIntersectables->begin(); figura!=figurasIntersectables->end(); figura++) {
+	if(noparar){ //ESTOY CON EL DEBBUG DE LA ESFERA
+		bool interseccion = false;
+		Color color(0.0,0.0,0.0);
+		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
+		for (int i=0; i<nRayos; i++) { // cada rayo
+			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
+			double tMin = -1; // distancia a la figura mas cercana
+			// color de la figura mas cercana, por defecto el fondo:
+			Color eFigCercana(0.2,0.2,0.2);
+			// for (auto figura : figuras) {
+			// for (auto figura = figurasIntersectables->begin(); figura!=figurasIntersectables->end(); figura++) {
 
-		auto distFigura = bvh.interseccion(o, dir); // distancia
-		double t = distFigura.first;
-		// std::cout <<"vaya\n";
-		// double t = figura->interseccion(o,dir);
-		interseccion = t>0; // intersecta
-		if (interseccion && tMenor(t, tMin)) {
-			tMin = t;
-			auto fig = distFigura.second; // Puntero a la Figura intersectada
-			// std::cout <<"uno\n";
-			if (renderSeleccionado == TipoRender::Emision) {
-				eFigCercana = fig->getEmision(o+t*dir);// se le pasa el pto de interseccion // COLOR DE FIGURA
-			} else if (renderSeleccionado == TipoRender::Normales) {
-				Vector3 normal = fig->getNormal(o+t*dir); // Normal en el pto
-				// if (normal[0] ) std::cout << "PERO QUE\n";
-				eFigCercana.setFromNormal(normal); // Color para la normal
-			} else if (renderSeleccionado == TipoRender::Distancia) {
-				eFigCercana.setFromDistancia(t, 1, 7); // Color para la normal
+			auto distFigura = bvh.interseccion(o, dir); // distancia
+			double t = distFigura.first;
+			// std::cout <<"vaya\n";
+			// double t = figura->interseccion(o,dir);
+			interseccion = t>0; // intersecta
+			if (interseccion && tMenor(t, tMin)) {
+				std::cout<<"interseciiono"<<std::endl;
+				tMin = t;
+				auto fig = distFigura.second; // Puntero a la Figura intersectada
+				// std::cout <<"uno\n";
+				if (renderSeleccionado == TipoRender::Emision) {
+					eFigCercana = fig->getEmision(o+t*dir);// se le pasa el pto de interseccion // COLOR DE FIGURA
+				} else if (renderSeleccionado == TipoRender::Normales) {
+					Vector3 normal = fig->getNormal(o+t*dir); // Normal en el pto
+					// if (normal[0] ) std::cout << "PERO QUE\n";
+					eFigCercana.setFromNormal(normal); // Color para la normal
+				} else if (renderSeleccionado == TipoRender::Distancia) {
+					eFigCercana.setFromDistancia(t, 1, 7); // Color para la normal
+				}
+				noparar=false;
 			}
-		}
-	// }
-		color = color + eFigCercana / double(nRayos);
+		// }
+			color = color + eFigCercana / double(nRayos);
 
-		// for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
-		// 	color[j]+=eFigCercana[j]/nRayos;
+			// for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
+			// 	color[j]+=eFigCercana[j]/nRayos;
+			// }
+		}
+		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
+		// auto color2 = im.getPixel(pixel);
+		// if (color != color2) {
+		// 	std::cout << "MALLLLLLLLLLLLLL\n";
+		// 	exit(1);
 		// }
 	}
-	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
-	// auto color2 = im.getPixel(pixel);
-	// if (color != color2) {
-	// 	std::cout << "MALLLLLLLLLLLLLL\n";
-	// 	exit(1);
-	// }
 }
 
 

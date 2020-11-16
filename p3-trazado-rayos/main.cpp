@@ -175,7 +175,7 @@ void escenaCornellBox(char* argv[]) {
 		cout << "mod fcam: " << fCam.getModulo() << endl;
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP = 50; // rayos por pixel
+		int rayosPP = 1; // rayos por pixel
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		c.setFOV(0.4*PI);
 		// c.setFOV(PI);
@@ -253,5 +253,5 @@ int main(int argc, char* argv[]) {
 	// escenaBastanteGuay400prismas200esferas(argv);
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
-	escenaCornellBox(argv);
+	escenaBastanteGuay400prismas200esferas(argv);
 }

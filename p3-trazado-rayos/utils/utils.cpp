@@ -10,3 +10,17 @@ Utils::Utils() : gen(rd()), dis(0.0,1.0)
 double Utils::rand01() const {
 	return dis(gen);
 }
+
+// devuelve un nº aleatorio uniforme entre min y max
+double Utils::rand(const double min, const double max) const {
+	double r = rand01();
+	return r*(max-min)+min;
+	//return dis(gen);
+}
+
+// Devuelve un entero aleatorio entre [min..max), todos aprox. equiprobables
+int Utils::rand(const int min, const int max) const {
+	double r = rand(double(min), double(max+1));
+	if (int(r)==max) return int(r)-1; // que no devuelva max
+	return int(r);
+}

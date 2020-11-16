@@ -140,6 +140,8 @@ bool compAmayorCompB(const Vector3& a, const Vector3& b) {
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el Prisma
 // adaptado de: https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/implementing-reflections-with-a-local-cubemap/ray-box-intersection-algorithm
 double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
+
+	// std::cout << "aja\n";
 	// Vector3 a = getPos(); // primera esquina
 	// Vector3 b = a + getTam(); // segunda
 	// Vector3 tA = dividirComponentes((a - origen), dir); // Primera esquina
@@ -176,32 +178,33 @@ double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
 	float tzmax=0;
 /*	float tmin = (min[0] - origen[0]) / dir[0];
   float tmax = (max[0] - origen[0]) / dir[0];
-	
+
   if (tmin > tmax) std::swap(tmin, tmax);*/
-  if (invdir[0] >= 0) { 
-    tmin = (min[0] - origen[0]) * invdir[0]; 
-    tmax = (max[0] - origen[0]) * invdir[0]; 
-} 
-else { 
-    tmin = (max[0] - origen[0]) * invdir[0]; 
-    tmax = (min[0] - origen[0]) * invdir[0]; 
-} 
-  if (invdir[1] >= 0) { 
-    tymin = (min[1] - origen[1]) * invdir[1]; 
-    tymax = (max[1] - origen[1]) * invdir[1]; 
-} 
-else { 
-    tymin = (max[1] - origen[1]) * invdir[1]; 
-    tymax = (min[1] - origen[1]) * invdir[1]; 
-} 
-  if (invdir[2] >= 0) { 
-    tzmin = (min[2] - origen[2]) * invdir[2]; 
-    tzmax = (max[2] - origen[2]) * invdir[2]; 
-} 
-else { 
-    tzmin = (max[2] - origen[2]) * invdir[2]; 
-    tzmax = (min[2] - origen[2]) * invdir[2]; 
-} 
+
+  if (invdir[0] >= 0) {
+    tmin = (min[0] - origen[0]) * invdir[0];
+    tmax = (max[0] - origen[0]) * invdir[0];
+}
+else {
+    tmin = (max[0] - origen[0]) * invdir[0];
+    tmax = (min[0] - origen[0]) * invdir[0];
+}
+  if (invdir[1] >= 0) {
+    tymin = (min[1] - origen[1]) * invdir[1];
+    tymax = (max[1] - origen[1]) * invdir[1];
+}
+else {
+    tymin = (max[1] - origen[1]) * invdir[1];
+    tymax = (min[1] - origen[1]) * invdir[1];
+}
+  if (invdir[2] >= 0) {
+    tzmin = (min[2] - origen[2]) * invdir[2];
+    tzmax = (max[2] - origen[2]) * invdir[2];
+}
+else {
+    tzmin = (max[2] - origen[2]) * invdir[2];
+    tzmax = (min[2] - origen[2]) * invdir[2];
+}
   //float tymin = (min[1] - origen[1]) / dir[1];
   //float tymax = (max[1] - origen[1]) / dir[1];
 
@@ -229,6 +232,7 @@ else {
 
   if (tzmax < tmax)
       tmax = tzmax;
+		// std::cout << "aja\n";
 
   return tmin;
 }
@@ -259,6 +263,15 @@ int Prisma::getMaxEje() const {
 Vector3 Prisma::getCentroide() const {
 	return posicion + tam/2.0;
 }
+
+// Devuelve un pto aleatorio dentro del prisma
+Vector3 Prisma::getPtoAleatorio() const {
+	Utils utils;
+	double random01 = utils.rand01();
+	Vector3 pto = posicion + random01*tam;
+}
+
+
 
 // Devuelve el prisma minimo que envuelve a p1 y p2
 // Su primera esquina sera el minimo de cada coordenada de las primeras esquinas
@@ -291,6 +304,8 @@ std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> Prisma::partirEnEje(
 	Prisma segundo(pos2, nuevoTam);
 	return std::pair<std::shared_ptr<Prisma>,std::shared_ptr<Prisma>>(std::make_shared<Prisma>(primero), std::make_shared<Prisma>(segundo));
 } // return primero, segundo   <----- esto es lo de arriba en python :/
+
+
 
 
 

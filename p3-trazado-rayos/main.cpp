@@ -217,14 +217,14 @@ void escenaCornellBox(char* argv[]) {
 		cout << "mod fcam: " << fCam.getModulo() << endl;
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP = 1; // rayos por pixel
+		int rayosPP = 150; // rayos por pixel
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
-		int nThreads = 1; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
-		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Distancia);
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Normales);
 
 		float distanciaParedes = 3;
 		// Caja:
@@ -254,7 +254,7 @@ void escenaCornellBox(char* argv[]) {
 			esf.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esf));
 
-			Esfera esfdcha(centroSuelo + tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.2*tamEsfera);// 1*1
+			Esfera esfdcha(centroSuelo + tamEsfera*UP - 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
 			esfdcha.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esfdcha));
@@ -281,8 +281,8 @@ void escenaCornellBox(char* argv[]) {
 		}
 
 		e.render("out/" + string(argv[1]));
-		// e.testBVHRender();
-		std::cout << "escena\n" <<e << '\n';
+		//e.testBVHRender();
+		//std::cout << "escena\n" <<e << '\n';
 }
 
 

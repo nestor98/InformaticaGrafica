@@ -87,9 +87,20 @@ void Camara::setFOV(const double fov) {
 
 // Dada una anchura de una escena a renderizar, devuelve a que distancia tiene que estar
 // la camara actual del centro
-double Camara::distanciaParaAnchura(const double anchura) const {
-
+double Camara::setOrigenParaTarget(const Vector3& target)  {
+	posicion = target-front;
 }
+
+void Camara::rotarAlrededorDeTarget(const Matriz4& rotacion) {
+	Vector3 target = posicion + front;
+	rotacion[3] = target;
+	// TODO: algo asi????
+	posicion = rotacion*posicion;
+	front = rotacion*front;
+	up = rotacion*up;
+	left = rotacion*left;
+}
+
 
 
 // para evitar el to_string en cout

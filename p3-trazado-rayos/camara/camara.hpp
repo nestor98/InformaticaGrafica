@@ -48,7 +48,11 @@ public:
 
 	void setFOV(const double fov);
 
-	double distanciaParaAnchura(const double anchura) const;
+	double setOrigenParaTarget(const Vector3& target);
+	//double distanciaParaAnchura(const double anchura) const;
+
+	void rotarAlrededorDeTarget(const Matriz4& rotacion);
+
 
 	Vector3 getRayoPixel(const int i) const;
 	int getRayosPorPixel() const;

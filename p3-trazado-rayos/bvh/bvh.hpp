@@ -25,11 +25,16 @@ class BoundingVolumeH {
 	std::shared_ptr<BoundingVolumeH> right; // Rama izq
 
 	std::shared_ptr<Figura> figura; // Figura
+
+
+	Utils utils;
 	// ---------------------------
 
 	// Auxiliares de construirArbol e interseccion
 	void construirArbolRec(std::vector<std::shared_ptr<Figura>>& figuras);
 	std::pair<float, std::shared_ptr<Figura>> interseccionFinitas(const Vector3& origen, const Vector3& dir) const;
+	std::vector<std::shared_ptr<Figura> >::iterator casoParticular(std::vector<std::shared_ptr<Figura>>& figuras, const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it);
+
 public:
 	BoundingVolumeH();
 	// Constructor de nodo hoja:

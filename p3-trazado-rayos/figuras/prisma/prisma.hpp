@@ -50,6 +50,8 @@ public:
  	// bool interseccion(const Vector3& origen, const Vector3& dir) const;
 
 	Vector3 getCentroide() const;
+	Vector3 getPtoAleatorio() const;
+
 
 	// Devuelve el indice del eje mas grande (0, 1 o 2)
 	int getMaxEje() const;

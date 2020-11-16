@@ -39,6 +39,18 @@ void BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>>& figur
 		construirArbolRec(figsFinitas);
 	}
 }
+
+// devuelve un iterador que parta las figuras en algun punto
+std::vector<std::shared_ptr<Figura> >::iterator BoundingVolumeH::casoParticular(std::vector<std::shared_ptr<Figura>>& figuras, const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it) {
+	while (it == figuras.begin() || it == figuras.end()){ // prueba otro punto hasta encontrar una partición
+		std::cout << "Caso particular, buscando otro pto de corte...\n";
+		int eje = utils.rand(0,3); // eje aleatorio [0,2]
+		double ptoSep = box->getPtoAleatorio()[eje];
+		it = std::partition(figuras.begin(), figuras.end(), [eje, ptoSep](const std::shared_ptr<Figura> f){return f->getCentroide()[eje] < ptoSep;});
+	}
+	return it;
+}
+
 // Construccion del arbol adaptada de https://www.youtube.com/watch?v=xUszK2xNL3I
 void BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>>& figuras) {
 	tieneFigsFinitas = true;
@@ -57,17 +69,15 @@ void BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>>& fi
 		int eje = box->getMaxEje();
 		float ptoCentro = box->getCentroide()[eje];
     auto it = std::partition(figuras.begin(), figuras.end(), [eje, ptoCentro](const std::shared_ptr<Figura> f){return f->getCentroide()[eje] < ptoCentro;});
-		if (it == figuras.begin() || it == figuras.end()) { // TODO: problemas
-			std::cout << "Oh no\n" << *it << "\n" << *figuras.begin() << "\n" << *figuras.end()<<"\n";
-		}
-		else { // Se ha dividido:
-			std::vector<std::shared_ptr<Figura>> mitad;
-			mitad.insert(mitad.end(), figuras.begin(), it); // Tenemos la primera mitad
-			left = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitad));
-			std::vector<std::shared_ptr<Figura>> mitadDcha;
-			mitadDcha.insert(mitadDcha.end(), it, figuras.end());
-			right = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitadDcha));
-		}
+		it = casoParticular(figuras, box, it);
+	 // Se ha dividido:
+		std::vector<std::shared_ptr<Figura>> mitad;
+		mitad.insert(mitad.end(), figuras.begin(), it); // Tenemos la primera mitad
+		left = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitad));
+		std::vector<std::shared_ptr<Figura>> mitadDcha;
+		mitadDcha.insert(mitadDcha.end(), it, figuras.end());
+		right = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitadDcha));
+
 	}
 }
 
@@ -146,7 +156,7 @@ std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccionFinitas(c
 	return 	std::pair<float, std::shared_ptr<Figura>>(0,0);
 }
 
-// 
+//
 // // Devuelve el vector de figuras contenidas en cajas con las que intersecta el rayo
 // // TODO: revisar que intersecte con varias, devolver la mas cercana
 // BoundingVolumeH::vectorFigs BoundingVolumeH::puedenIntersectar(const Vector3& origen, const Vector3& dir) const

@@ -10,11 +10,12 @@ class Utils {
 	mutable std::mt19937 gen; //Standard mersenne_twister_engine seeded with rd()
 	mutable std::uniform_real_distribution<> dis;
 
-
 public:
 	Utils();
 
 	double rand01() const; // devuelve un nº aleatorio uniforme entre 0 y 1
+	double rand(const double min, const double max) const; // aleatorio uniforme entre min y max
+	int rand(const int min, const int max) const; // entero uniforme en [min, max-1]
 	std::string to_string() const;
 
 };

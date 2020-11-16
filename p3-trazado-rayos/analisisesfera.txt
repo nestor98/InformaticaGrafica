@@ -1,9 +1,0 @@
-delta: 13453.8
-a: 64.4059
-b: -48130.4
-r: 237
-origen*origen: 0
-c: 8.9919e+06
-INTERSECTANDO ESF
-raiz:115.99
-t: 374.55

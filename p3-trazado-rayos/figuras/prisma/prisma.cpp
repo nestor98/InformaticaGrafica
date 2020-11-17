@@ -139,7 +139,7 @@ bool compAmayorCompB(const Vector3& a, const Vector3& b) {
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el Prisma
 // adaptado de: https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/implementing-reflections-with-a-local-cubemap/ray-box-intersection-algorithm
-double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
+std::optional<Figura::InterseccionData> Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
 
 	// std::cout << "aja\n";
 	// Vector3 a = getPos(); // primera esquina
@@ -184,34 +184,34 @@ double Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
   if (invdir[0] >= 0) {
     tmin = (min[0] - origen[0]) * invdir[0];
     tmax = (max[0] - origen[0]) * invdir[0];
-}
-else {
-    tmin = (max[0] - origen[0]) * invdir[0];
-    tmax = (min[0] - origen[0]) * invdir[0];
-}
-  if (invdir[1] >= 0) {
-    tymin = (min[1] - origen[1]) * invdir[1];
-    tymax = (max[1] - origen[1]) * invdir[1];
-}
-else {
-    tymin = (max[1] - origen[1]) * invdir[1];
-    tymax = (min[1] - origen[1]) * invdir[1];
-}
-  if (invdir[2] >= 0) {
-    tzmin = (min[2] - origen[2]) * invdir[2];
-    tzmax = (max[2] - origen[2]) * invdir[2];
-}
-else {
-    tzmin = (max[2] - origen[2]) * invdir[2];
-    tzmax = (min[2] - origen[2]) * invdir[2];
-}
+	}
+	else {
+	    tmin = (max[0] - origen[0]) * invdir[0];
+	    tmax = (min[0] - origen[0]) * invdir[0];
+	}
+	  if (invdir[1] >= 0) {
+	    tymin = (min[1] - origen[1]) * invdir[1];
+	    tymax = (max[1] - origen[1]) * invdir[1];
+	}
+	else {
+	    tymin = (max[1] - origen[1]) * invdir[1];
+	    tymax = (min[1] - origen[1]) * invdir[1];
+	}
+	  if (invdir[2] >= 0) {
+	    tzmin = (min[2] - origen[2]) * invdir[2];
+	    tzmax = (max[2] - origen[2]) * invdir[2];
+	}
+	else {
+	    tzmin = (max[2] - origen[2]) * invdir[2];
+	    tzmax = (min[2] - origen[2]) * invdir[2];
+	}
   //float tymin = (min[1] - origen[1]) / dir[1];
   //float tymax = (max[1] - origen[1]) / dir[1];
 
   //if (tymin > tymax) std::swap(tymin, tymax);
 
   if ((tmin > tymax) || (tymin > tmax))
-      return 0;
+      return std::nullopt;
 
   if (tymin > tmin)
       tmin = tymin;
@@ -225,7 +225,7 @@ else {
   //if (tzmin > tzmax) std::swap(tzmin, tzmax);
 
   if ((tmin > tzmax) || (tzmin > tmax))
-      return 0;
+      return std::nullopt;
 
   if (tzmin > tmin)
       tmin = tzmin;
@@ -233,8 +233,8 @@ else {
   if (tzmax < tmax)
       tmax = tzmax;
 		// std::cout << "aja\n";
-
-  return tmin;
+	if (tmin<=0) return std::nullopt;
+  return InterseccionData{tmin, origen+tmin*dir};
 }
 
 
@@ -317,8 +317,8 @@ std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> Prisma::partirEnEje(
 /******** CAJAS INFINITAS **********/
 
 // Siempre intersecta
-double CajaInfinita::interseccion(const Vector3& origen, const Vector3& dir) const {
-	return true;
+std::optional<Figura::InterseccionData> CajaInfinita::interseccion(const Vector3& origen, const Vector3& dir) const {
+	return InterseccionData{1, Vector3()};
 }
 
 // Introspeccion a lo bestia:

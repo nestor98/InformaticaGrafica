@@ -217,12 +217,12 @@ void escenaCornellBox(char* argv[]) {
 		cout << "mod fcam: " << fCam.getModulo() << endl;
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP = 150; // rayos por pixel
+		int rayosPP = 1; // rayos por pixel
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
-		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		int nThreads = 1; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Normales);
 
@@ -280,8 +280,8 @@ void escenaCornellBox(char* argv[]) {
 			e.addFigura(std::make_shared<Prisma>(caja));
 		}
 
-		e.render("out/" + string(argv[1]));
-		//e.testBVHRender();
+		// e.render("out/" + string(argv[1]));
+		e.testBVHRender();
 		//std::cout << "escena\n" <<e << '\n';
 }
 

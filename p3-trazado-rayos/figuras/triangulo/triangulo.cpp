@@ -23,8 +23,9 @@ Vector3 Triangulo::getNormal() const {
 	return normal;
 }
 
+// TODO: todo 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el Triangulo
-double Triangulo::interseccion(const Vector3& origen, const Vector3& dir) const {
+std::optional<Figura::InterseccionData> Triangulo::interseccion(const Vector3& origen, const Vector3& dir) const {
 	double d_n = dir*normal;
 	if (d_n!=0) { // intersecta
 		return -(getDist()+origen*normal)/d_n; // t

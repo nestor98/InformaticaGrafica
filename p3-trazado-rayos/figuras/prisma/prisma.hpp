@@ -38,7 +38,7 @@ public:
 
 	bool contiene(const Vector3& p) const;
 
-	virtual double interseccion(const Vector3& origen, const Vector3& dir) const override;
+	virtual std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const override;
 
 	virtual bool esInfinito() const;
 
@@ -74,7 +74,7 @@ std::ostream& operator<<(std::ostream& os, const Prisma& c);
 
 class CajaInfinita : public Prisma {
 public:
-	virtual double interseccion(const Vector3& origen, const Vector3& dir) const override;
+	std::optional<Figura::InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const override;
 
 	bool esInfinito() const override;
 };

@@ -32,7 +32,7 @@ class BoundingVolumeH {
 
 	// Auxiliares de construirArbol e interseccion
 	void construirArbolRec(std::vector<std::shared_ptr<Figura>>& figuras);
-	std::pair<float, std::shared_ptr<Figura>> interseccionFinitas(const Vector3& origen, const Vector3& dir) const;
+	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFinitas(const Vector3& origen, const Vector3& dir) const;
 	std::vector<std::shared_ptr<Figura> >::iterator casoParticular(std::vector<std::shared_ptr<Figura>>& figuras, const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it);
 
 public:
@@ -44,7 +44,6 @@ public:
 
 	void construirArbol(std::vector<std::shared_ptr<Figura>>& figuras);
 
-
 	void setRightBranch(std::shared_ptr<BoundingVolumeH> _r);
 	void setLeftBranch(std::shared_ptr<BoundingVolumeH> _l);
 
@@ -54,10 +53,10 @@ public:
 	bool isLeaf() const;
 
 
-	std::pair<float, std::shared_ptr<Figura>> interseccion(const Vector3& origen, const Vector3& dir) const;
+	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccion(const Vector3& origen, const Vector3& dir) const;
 
 
-	vectorFigs puedenIntersectar(const Vector3& origen, const Vector3& dir) const;
+	//vectorFigs puedenIntersectar(const Vector3& origen, const Vector3& dir) const;
 
 
 	std::string to_string(const std::string prefijo="") const;

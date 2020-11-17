@@ -27,13 +27,15 @@ Vector3 Plano::getNormal(const Vector3& pto) const {
 }
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el plano
-double Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
+std::optional<Figura::InterseccionData> Plano::interseccion(const Vector3& origen, const Vector3& dir) const {
 	double d_n = dir*normal;
 	if (d_n!=0) { // intersecta
-		return -(getDist()+origen*normal)/d_n; // t
+		double t = -(getDist()+origen*normal)/d_n;
+		if (t<=0) return std::nullopt;
+		else return InterseccionData{t, origen+dir*t}; // t
 	}
 	// std::cout << "Interseccion con plano\n";
-	return 0;
+	return std::nullopt;
 }
 
 

@@ -60,8 +60,8 @@ void Figura::setRandomColor() {
 }
 
 // True sii el rayo desde <origen>, hacia <dir> intersecta con la esfera
-double Figura::interseccion(const Vector3& origen, const Vector3& dir) const {
-	return 0;
+std::optional<Figura::InterseccionData> Figura::interseccion(const Vector3& origen, const Vector3& dir) const {
+	return std::nullopt;
 }
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Figura& c) {

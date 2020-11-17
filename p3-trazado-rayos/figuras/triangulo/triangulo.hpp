@@ -22,7 +22,7 @@ public:
 
 	Vector3 getVertice(const int i) const;
 	Vector3 getNormal() const;
-	double interseccion(const Vector3& origen, const Vector3& dir) const override;
+	std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const override;
 	std::shared_ptr<Prisma> getBoundingBox() const override;
 };
 

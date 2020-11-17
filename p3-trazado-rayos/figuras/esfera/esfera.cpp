@@ -91,36 +91,37 @@ float Esfera::getRadio() const {
 }*/
 
 
-double Esfera::interseccion(const Vector3& origen, const Vector3& dir) const
-    {
+std::optional<Figura::InterseccionData> Esfera::interseccion(const Vector3& origen, const Vector3& dir) const
+{
    // printf (">>>%f,%f,%f<< \n",  ray.direccion.x,  ray.direccion.y,  ray.direccion.z);
 	double distancia=0;
-    double a = dir*dir;
-    Vector3 ro_sc = origen-getPos();
-    double b = 2.0 *dir*ro_sc;
-    double y = ro_sc*ro_sc - (getRadio()*getRadio()) ;
+  double a = dir*dir;
+  Vector3 ro_sc = origen-getPos();
+  double b = 2.0 *dir*ro_sc;
+  double y = ro_sc*ro_sc - (getRadio()*getRadio()) ;
 
 
-    double discriminante = b*b - 4.0 * a * y;
+  double discriminante = b*b - 4.0 * a * y;
 
-    double RaizDiscriminante = sqrt(b*b - 4.0 * a * y);
+  double RaizDiscriminante = sqrt(b*b - 4.0 * a * y);
 
-    if (discriminante >=0 ){
-        double t1 = (-b-RaizDiscriminante)/(2.0*a);
-        double t2 = (-b+RaizDiscriminante)/(2.0*a);
-        if (t1<t2 && t1>0){
-            distancia =  t1;
-        }
-        else{
-            distancia =  t2;
-        }
-        return distancia;
-    }
-    else {
-        return 0;
-    }
+  if (discriminante >=0 ){
+      double t1 = (-b-RaizDiscriminante)/(2.0*a);
+      double t2 = (-b+RaizDiscriminante)/(2.0*a);
+      if (t1<t2 && t1>0){
+          distancia =  t1;
+      }
+      else{
+          distancia =  t2;
+      }
+			if (distancia<=0) return std::nullopt; // intersecta detras del origen, como si no intersectara
+      return Figura::InterseccionData{distancia, origen+distancia*dir};
+  }
+  else {
+      return std::nullopt; // no intersecta
+  }
 
-    }
+}
 
 Vector3 Esfera::getNormal(const Vector3& pto) const {
 	Vector3 normal = pto-posicion;

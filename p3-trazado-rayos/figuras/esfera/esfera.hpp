@@ -26,7 +26,7 @@ public:
 	Vector3 getPos() const;
 	float getRadio() const;
 
-	double interseccion(const Vector3& origen, const Vector3& dir) const override;
+	std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const override;
 	void addTextura(Textura _tex);
 	void setBoundingBox();
 	std::shared_ptr<Prisma> getBoundingBox() const override;

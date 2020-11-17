@@ -6,6 +6,7 @@
 #include <cmath>
 #include <vector>
 #include <memory>
+#include <optional> // TODO: cambiar todas las subclases
 // cmath para sqrt
 #include "Vector3.hpp"
 #include "textura.hpp"
@@ -18,6 +19,15 @@
 class Prisma;
 
 class Figura {
+// ----------------------------- Interseccion:
+public:
+	struct InterseccionData {
+		double t; // distancia
+		Vector3 punto; // TODO: en realidad no se necesita siempre siempre, pero a veces sale gratis
+		//Vector3 normal; // no se necesita siempre (solo en la mas cercana), y se calcula aparte
+		//std::shared_ptr<Figura> figura; // figura intersectada, no se si hace falta
+		// TODO: mas cosas? Base en el punto...
+	};
 protected:
 	Color e; // emitividad emision o como se llame: RGB
 
@@ -45,7 +55,7 @@ public:
 	void setColor(Color e);
 	void setRandomColor();
 
-	virtual double interseccion(const Vector3& origen, const Vector3& dir) const;
+	virtual std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const;
 
 	// Devuelve la normal de la figura en el <pto>
 	virtual Vector3 getNormal(const Vector3& pto) const;

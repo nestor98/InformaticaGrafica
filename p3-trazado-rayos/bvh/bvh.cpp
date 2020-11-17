@@ -88,72 +88,123 @@ bool BoundingVolumeH::isLeaf() const {
 
 
 
-std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccion(const Vector3& origen, const Vector3& dir) const {
+std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> BoundingVolumeH::interseccion(const Vector3& origen, const Vector3& dir) const {
 	float tPlanosMin=0;
 	std::shared_ptr<Figura> intersectado; // plano
 		// std::cout << "intersectando\n";
 	for (auto plano : vectorPlanos) {
 		// std::cout << "intersectando plano\n";
-		float tPlano = plano->interseccion(origen, dir);
-		if (tPlano>0 && (tPlano < tPlanosMin || tPlanosMin==0)) {
-			intersectado = plano;
-			tPlanosMin = tPlano;
+		std::optional<Figura::InterseccionData> inter = plano->interseccion(origen, dir);
+		if (inter) { // intersecta
+			// std::cout << "intersecto plano\n";
+			float tPlano = inter->t;
+			if (tPlano < tPlanosMin || tPlanosMin==0) {
+				intersectado = plano;
+				tPlanosMin = tPlano;
+			}
 		}
+
 	}
 	// std::cout << "Intersectando figs\n";
 	if (tieneFigsFinitas) {
 			// std::cout << "intersectadas figs\n";
-			auto iFinitas = interseccionFinitas(origen, dir);
-			float tFinitas = iFinitas.first;
-			// if (tFinitas>0) {
-			//
-			// 	std::cout << tFinitas << "      "<< tPlanosMin<< std::endl;
-			// }
-			if (tFinitas < tPlanosMin && tFinitas>0 || tPlanosMin==0) {
-				return iFinitas;
+			auto iFinitas = interseccionFinitas(origen, dir); // optional<pair<InterseccionData,&Figura>>
+			if (iFinitas) { // intersecta
+
+					// std::cout << "intersecto finita\n";
+				Figura::InterseccionData iDataFinitas = iFinitas->first;
+				float tFinitas = iDataFinitas.t;
+				// if (tFinitas>0) {
+				//
+				// 	std::cout << tFinitas << "      "<< tPlanosMin<< std::endl;
+				// }
+				if (tFinitas < tPlanosMin || tPlanosMin==0) {
+					return iFinitas;
+				}
 			}
 			//else return std::pair<float, std::shared_ptr<Figura>>(tPlanosMin, intersectado);
 	} // Si llega aqui intersecta con un plano:
-	return std::pair<float, std::shared_ptr<Figura>>(tPlanosMin, intersectado);
+	return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(Figura::InterseccionData{tPlanosMin, origen+tPlanosMin*dir}, intersectado);
 
 }
 
 
 // Devuelve la distancia a la figura mas cercana intersectada y asigna a intersectada la figura intersectada
 // Devuelve 0 si no intersecta con ninguna
-std::pair<float, std::shared_ptr<Figura>> BoundingVolumeH::interseccionFinitas(const Vector3& origen, const Vector3& dir) const
+std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> BoundingVolumeH::interseccionFinitas(const Vector3& origen, const Vector3& dir) const
 {
 	// std::cout << "intersectando nodo de bvh...\n";
-	if (box->interseccion(origen, dir)) {
+	auto iData = box->interseccion(origen, dir);
+	if (iData) { // intersecta con la caja
+	// std::cout << "Interseccion con mi caja: " << iData->t << ", " <<iData->punto<< '\n';
 		// std::cout << "Pos no se\n";
 		if (isLeaf()) {
 			// if (figura->getBoundingBox()->esInfinito()) {
 			// 	std::cout << figura << "\ntiene una caja infinita!!\n";
 			// }
-			return std::pair<float, std::shared_ptr<Figura>>(figura->interseccion(origen, dir), figura);
+			auto iDataFigura = figura->interseccion(origen, dir);
+			if (!iDataFigura){
+				// std::cout << "Soy hoja pero mi fig no intersecta" << '\n';
+				return std::nullopt; // si no intersecta con la figura, nada
+			}
+			else {// si que intersecta, lo devolvemos
+				// std::cout << "intersectando figura" << '\n';
+
+				//std::cout << "inter: " << iLeft.t << " " <<iLeft.punto<< '\n';
+				return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(*iDataFigura, figura);
+			}
 		}
 		else { // caja padre:
-			std::shared_ptr<Figura> fLeft, fRight;
-			auto resLeft = left->interseccion(origen, dir); // Distancia de interseccion dcha
-			auto resRight = right->interseccion(origen, dir);
+			// std::cout << "No soy hoja, intersecto dcha e izq..." << '\n';
+			//std::shared_ptr<Figura> fLeft, fRight;
+			auto resLeft = left->interseccionFinitas(origen, dir); // Distancia de interseccion dcha
+			auto resRight = right->interseccionFinitas(origen, dir);
 			// std::cout << "intersectado algo..." << tLeft << "   ...    " << tRight<< "\n";
-			float tLeft = resLeft.first;
-			float tRight = resRight.first;
-			if ((tLeft < tRight || tRight == 0) && tLeft > 0) {
-				 // = fLeft;
-				// std::cout << "intersectada a la izq: \n";
-				// std::cout<<resLeft.second<< std::endl;
-				return resLeft;
+
+			if (resLeft) { // Intersecta a la izq
+
+				auto iLeft = resLeft->first;
+			// std::cout << "ileft: " << iLeft.t << " " <<iLeft.punto<< '\n';
+				if (!resRight) { // pero a la dcha no
+					return resLeft;
+				}
+				else { // a la izq Y a la dcha, hay que comparar distancias
+
+						// std::cout << "comparo distancias" << '\n';
+						auto iLeft = resLeft->first;
+					// std::cout << "ileft: " << iLeft.t << " " <<iLeft.punto<< '\n';
+					float tLeft = resLeft->first.t;
+					float tRight = resRight->first.t;
+					// std::cout << "VAYA: " << tLeft << " " << tRight<< '\n';
+					if (tLeft<tRight) {// izq mas cercano
+						// std::cout << "izq mas cerca" << '\n';
+						return resLeft;
+					}
+					else {// dcha:
+						return resRight;
+					}
+				}
 			}
-			else if ((tRight < tLeft || tLeft == 0) && tRight > 0) {
-				// std::cout << "intersectada a la dcha: " <<intersectada<< std::endl;
+			else { // no intersecta a la izq, la interseccion es la de la dcha
 				return resRight;
 			}
+			// float tLeft = resLeft.first;
+			// float tRight = resRight.first;
+			// if ((tLeft < tRight || tRight == 0) && tLeft > 0) {
+			// 	 // = fLeft;
+			// 	// std::cout << "intersectada a la izq: \n";
+			// 	// std::cout<<resLeft.second<< std::endl;
+			// 	return resLeft;
+			// }
+			// else if ((tRight < tLeft || tLeft == 0) && tRight > 0) {
+			// 	// std::cout << "intersectada a la dcha: " <<intersectada<< std::endl;
+			// 	return resRight;
+			// }
 		}
 	}
-
+	// std::cout << "fin intersec\n";
 	// No hay interseccion:
-	return 	std::pair<float, std::shared_ptr<Figura>>(0,0);
+	return std::nullopt;	//std::pair<float, std::shared_ptr<Figura>>(0,0);
 }
 
 //

@@ -43,12 +43,22 @@ Material::Material(const Tipo predeterminado) {
 }
 
 // base = T en las diapos
-std::optional<Vector3> Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const {
-	double rand1 = gen.rand01();
-	double rand2 = gen.rand01();
-	double theta = arccos(sqrt(1-rand1));
-	double phi = 2 * PI * rand2;
-	Vector3 wi = base * Vector3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta), false);
+Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, int evento) const {
+	switch (evento)
+	{
+	case 0: //difuso
+		/* code */
+			double rand1 = gen.rand01();
+			double rand2 = gen.rand01();
+			double theta = asin(sqrt(1-rand1)); //el arcoseno es asin 
+			double phi = 2 * PI * rand2;
+			Vector3 wi = base * Vector3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta), false);
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	}
 	return wi;
 }
 

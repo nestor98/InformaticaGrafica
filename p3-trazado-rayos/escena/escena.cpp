@@ -165,55 +165,29 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 		for (int i=0; i<nRayos; i++) { // cada rayo
 			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
-			// double tMin = -1; // distancia a la figura mas cercana
 			// color de la figura mas cercana, por defecto el fondo:
 			Color eFigCercana(0.2,0.2,0.2);
-			// for (auto figura : figuras) {
-			// for (auto figura = figurasIntersectables->begin(); figura!=figurasIntersectables->end(); figura++) {
 			double dist=0;
-			// std::cout << "Antes intersectar\n";
 			auto distFigura = bvh.interseccion(o, dir); // distancia
-			// std::cout << "Despues\n";
 			auto interseccionFigura = bvh.interseccion(o, dir); //
-			// double t = distFigura.first;
-			// // std::cout <<"vaya\n";
-			// // double t = figura->interseccion(o,dir);
-			// interseccion = t>0; // intersecta
-			// if (interseccion && tMenor(t, tMin)) {//  && tMenor(interseccionDataFigura->first, tMin)) {
 			if (interseccionFigura) { // intersecta con alguna
-
-				// std::cout << "antesfirst\n";
 				Figura::InterseccionData iData = interseccionFigura->first;
 				double t = iData.t;
 				Vector3 ptoInterseccion = iData.punto;
-				// tMin = t;
 				auto fig = interseccionFigura->second; // Puntero a la Figura intersectada
-								// std::cout << "despuessecond\n";
-				// std::cout <<"uno\n";
 				if (renderSeleccionado == TipoRender::Emision) {
 					eFigCercana = fig->getEmision(ptoInterseccion);//o+t*dir);// se le pasa el pto de interseccion // COLOR DE FIGURA
 				} else if (renderSeleccionado == TipoRender::Normales) {
 					Vector3 normal = fig->getNormal(ptoInterseccion);//o+t*dir); // Normal en el pto
-					// if (normal[0] ) std::cout << "PERO QUE\n";
 					eFigCercana.setFromNormal(normal); // Color para la normal
 				} else if (renderSeleccionado == TipoRender::Distancia) {
 					eFigCercana.setFromDistancia(t, 1, 7); // Color para la normal
 				}
 			}
-		// }
-			color = color + eFigCercana / double(nRayos);
-
-			// for (int j=0; j<3; j++) { // Se suma el color de la figura mas cercana /nRayos para hacer la media
-			// 	color[j]+=eFigCercana[j]/nRayos;
-			// }
+			color = color + eFigCercana;// suma de cada rayo / double(nRayos);
 		}
+		color = color / double(nRayos); // promedio
 		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
-		// auto color2 = im.getPixel(pixel);
-		// if (color != color2) {
-		// 	std::cout << "MALLLLLLLLLLLLLL\n";
-		// 	exit(1);
-		// }
-
 }
 
 

@@ -47,6 +47,9 @@ public:
 	void setCoeficientes(const std::array<Color, 3>& _coefs);
 
 	void setRandom();
+
+	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const;
+
 	//
 	// // Le cambia el color en funcion de la posicion
 	// void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);

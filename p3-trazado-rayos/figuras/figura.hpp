@@ -30,6 +30,9 @@ public:
 	};
 protected:
 	Color e; // emitividad emision o como se llame: RGB
+	Material m; // material
+
+	bool emite;
 
 
 	std::shared_ptr<Prisma> bbox;
@@ -37,11 +40,10 @@ protected:
 	std::shared_ptr<Textura> tex;
 	bool textura;
 
-
-
 public:
 	Figura();
 	Figura(const std::array<double, 3> _e);
+	Figura(const Material& _m);
 	Figura(std::shared_ptr<Textura> _tex);
 	virtual std::string to_string() const;
 
@@ -55,10 +57,18 @@ public:
 	void setColor(Color e);
 	void setRandomColor();
 
+	void setMaterial(const Material& _m);
+
 	virtual std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const;
 
 	// Devuelve la normal de la figura en el <pto>
 	virtual Vector3 getNormal(const Vector3& pto) const;
+
+	Matriz4 getBase(const Vector3& normal, const Vector3& pto);
+	Matriz4 getBase(const Vector3& pto);
+
+	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const;
+
 
 	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
 	virtual std::shared_ptr<Prisma> getBoundingBox() const;

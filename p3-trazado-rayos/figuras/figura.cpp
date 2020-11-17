@@ -4,11 +4,15 @@
 #include "figura.hpp"
 #include "prisma.hpp"
 
-Figura::Figura(const std::array<double, 3> _e) : e(_e), textura(false)
+Figura::Figura(const std::array<double, 3> _e) : e(_e), emite(true), textura(false)
+{}
+
+Figura::Figura(const Material& _m) : m(_m), textura(false), emite(false)
 {}
 
 
-Figura::Figura(std::shared_ptr<Textura> _tex): tex(_tex), textura(true)
+// TODO: revisar emite, gestionar texturas+materiales etc
+Figura::Figura(std::shared_ptr<Textura> _tex): tex(_tex), emite(true), textura(true)
 {
 	std::cout << "ah pos si\n";
 }
@@ -18,6 +22,12 @@ Figura::Figura() : Figura(std::array<double, 3>({0,0,0}))
 	setRandomColor();
 	// setColorFromPos();
 }
+
+void Figura::setMaterial(const Material& _m) {
+	emite = false;
+	m = _m;
+}
+
 
 std::string Figura::to_string() const {
 	return "Figura no tiene to_string";
@@ -34,6 +44,25 @@ Color Figura::getEmision(const Vector3& dir) const {
 	}else{
 		return tex->getEmision(dir);
 	}
+}
+
+Vector3 Figura::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const {
+	if (!emite) return m.getVectorSalida(base, gen);
+	else {
+		std::cerr << "No tengo material" << '\n';
+		exit(1);
+	}
+}
+
+
+Matriz4 Figura::getBase(const Vector3& pto) {
+	return getBase(this->getNormal(), pto);
+}
+
+Matriz4 Figura::getBase(const Vector3& normal, const Vector3& pto) {
+	Matriz4 base;
+	base.setBaseFromVector(normal, pto);
+	return base;
 }
 
 

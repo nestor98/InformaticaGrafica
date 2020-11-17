@@ -157,6 +157,44 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
 
+const Color COLOR_FONDO(0.2,0.2,0.2);
+
+
+Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto) const {
+	Material mat = fig->getMaterial();
+	const int evento = mat.ruletaRusa(); // devuelve un entero entre 0 y 4 en f de las probs
+	Color c;
+	if (evento == 3) { // absorcion
+		return c;
+	}
+	else { // se procesa el evento
+		Matriz4 base = fig->getBase(ptoInterseccion);
+		Vector3 otroPath = mat->getVectorSalida(base, gen, evento);
+		c = mat->getCoeficiente(evento);
+		c = c*pathTrace(ptoInterseccion, otroPath);
+	}
+	return c;
+}
+
+Color Escena::pathTrace(const Vector3& o, const Vector3& dir) const {
+	Color c = COLOR_FONDO;
+	double t = 1;
+	auto interseccionFigura = bvh.interseccion(o, dir); //
+	if (interseccionFigura) { // intersecta con alguna
+		Figura::InterseccionData iData = interseccionFigura->first;
+		t = iData.t;
+		Vector3 ptoInterseccion = iData.punto;
+		auto fig = interseccionFigura->second; // Puntero a la Figura intersectada
+		if (fig->emite()) {
+			return fig->getEmision();
+		}
+		else {
+			c = ruletaRusa(fig, ptoInterseccion);
+		}
+	}
+	return c/(t*t); // TODO: revisar
+}
+
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
 void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
@@ -165,10 +203,25 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 		for (int i=0; i<nRayos; i++) { // cada rayo
 			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
+			Color cPixel = pathTrace(dir, o);
+			color = color + cPixel;// suma de cada rayo / double(nRayos);
+		}
+		color = color / double(nRayos); // promedio
+		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
+}
+
+
+// Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
+void Escena::renderPixelViejo(Imagen& im, const Vector3& o, const int pixel) const {
+		bool interseccion = false;
+		Color color(0.0,0.0,0.0);
+		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
+		for (int i=0; i<nRayos; i++) { // cada rayo
+			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
 			// color de la figura mas cercana, por defecto el fondo:
 			Color eFigCercana(0.2,0.2,0.2);
 			double dist=0;
-			auto distFigura = bvh.interseccion(o, dir); // distancia
+			//auto distFigura = bvh.interseccion(o, dir); // distancia
 			auto interseccionFigura = bvh.interseccion(o, dir); //
 			if (interseccionFigura) { // intersecta con alguna
 				Figura::InterseccionData iData = interseccionFigura->first;
@@ -182,6 +235,15 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 					eFigCercana.setFromNormal(normal); // Color para la normal
 				} else if (renderSeleccionado == TipoRender::Distancia) {
 					eFigCercana.setFromDistancia(t, 1, 7); // Color para la normal
+				} else if (renderSeleccionado == TipoRender::Materiales) {
+					// Color
+					// for (int rebote = 0;rebote<MAXREBOTES; rebote++) {
+					// 	Vector3 origenRebote = ptoInterseccion;
+					// 	Vector3 dirRebote = fig->getRebote(ptoInterseccion);
+					// 	color+=
+					// }
+					// eFigCercana =
+					// eFigCercana.setFromDistancia(t, 1, 7); // Color para la normal
 				}
 			}
 			color = color + eFigCercana;// suma de cada rayo / double(nRayos);

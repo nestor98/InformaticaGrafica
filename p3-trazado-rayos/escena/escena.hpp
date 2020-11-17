@@ -54,7 +54,7 @@ class Escena {
 
 
 public:
-	enum TipoRender {Emision, Distancia, Normales};
+	enum TipoRender {Emision, Distancia, Normales, Materiales};
 private:
 	TipoRender renderSeleccionado;
 public:

@@ -1,4 +1,4 @@
-
+#include "math.h"
 #include "utils.hpp"
 #include "color.hpp"
 #include "material.hpp"
@@ -14,6 +14,9 @@ bool Material::coeficientesCorrectos() const {
 	return true;
 }
 
+Material::Material() {
+
+}
 
 Material::Material(bool aleatorio) {
 	if (aleatorio) {
@@ -24,11 +27,33 @@ Material::Material(bool aleatorio) {
 Material::Material(const Tipo predeterminado) {
 	if (predeterminado==Tipo::Plastico) {
 		// TODO
+		std::cerr << "TODO: tipo plastico" << '\n';
+		exit(1);
+	}
+	else if (predeterminado==Tipo::Difuso) {
+		coeficientes[0].setRandom();
+		while (!coeficientesCorrectos()) {
+			coeficientes[0].setRandom();
+		}
 	}
 	else {
-		// TODO
+		std::cerr << "TODO: otros materiales" << '\n';
+		exit(1);
 	}
 }
+
+// base = T en las diapos
+std::optional<Vector3> Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const {
+	double rand1 = gen.rand01();
+	double rand2 = gen.rand01();
+	double theta = arccos(sqrt(1-rand1));
+	double phi = 2 * PI * rand2;
+	Vector3 wi = base * Vector3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta), false);
+	return wi;
+}
+
+
+
 
 
 std::string Material::to_string() const {

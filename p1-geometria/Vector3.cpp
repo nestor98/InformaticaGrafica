@@ -540,3 +540,18 @@ Vector3 abs(const Vector3& v) {
 	}
 	return res;
 }
+
+
+
+Matriz4 setBaseFromVector(const Vector3& normal, const Vector3& pto) {
+	Vector3 i, j, k;
+	i = normal;
+	k = cross(UP, i);
+	if (k.getModulo()==0) {
+		k = cross(LEFT, i);
+	}
+	j = cross(k, i);
+	Matriz4 base;
+	base.setCambioBase(normalizar(i), normalizar(j), normalizar(k), pto);
+	return base;
+}

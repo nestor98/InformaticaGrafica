@@ -58,7 +58,7 @@ class Escena {
 
 	// ---------------------------------------
 	// --------- Aux de path tracer  ---------
-	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto) const;
+	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const bool primerRebote=false) const;
 	Color pathTrace(const Vector3& o, const Vector3& dir, const bool primerRebote=false) const;
 
 

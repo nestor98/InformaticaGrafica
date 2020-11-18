@@ -160,10 +160,10 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 const Color COLOR_FONDO(0.2,0.2,0.2);
 
 
-Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto) const {
+Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const bool primerRebote) const {
 	// std::cout << "En ruleta de escena" << '\n';
 	Material mat = fig->getMaterial();
-	int evento = mat.ruletaRusa(gen); // devuelve un entero entre 0 y 4 en f de las probs
+	int evento = mat.ruletaRusa(gen, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
 	Color c;
 	if (evento == 3) { // absorcion
 		return c;
@@ -201,7 +201,7 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const bool primerR
 		}
 		else {
 			// std::cout << "na que no emito" << '\n';
-			c = ruletaRusa(fig, ptoInterseccion);
+			c = ruletaRusa(fig, ptoInterseccion, primerRebote);
 			while (primerRebote && c==double(0)) { // solo si es el primer rebote, aseguramos que no absorba
 				c = ruletaRusa(fig, ptoInterseccion); // TODO: es un poco a lo bestia y muy poco eficiente, alternativas?
 			}

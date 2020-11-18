@@ -457,8 +457,8 @@ Vector3 operator * (const Vector3& v, const float& s) {
 Vector3 operator / (const Vector3& v, const float& s) {
 	if (s == 0) {
 		std::cerr << "no dividas entre 0..." << std::endl;
-		exit(1);
-		//return v;
+		//exit(1);
+		return v;
 	}
 	Vector3 res(v[0] / s, v[1] / s, v[2] / s, v[3]/s);
 	return res;

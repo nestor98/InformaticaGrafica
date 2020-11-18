@@ -22,6 +22,7 @@ Material::Material(const Color& c1, const Color& c2, const Color& c3)
 	coeficientes[0]=(c1);
 	coeficientes[1]=(c2);
 	coeficientes[2]=(c3);
+	setMaximos();
 }
 
 // Material::Material(bool aleatorio) {
@@ -140,6 +141,7 @@ void Material::setRandom() {
 		while (primerRebote && random >= 0.9) { // en el primer rebote no puede absorber
 			random -= 0.1;
 		}
+		//std::cout << "maxCoefs: " << maxCoefs[0] << " " << maxCoefs[1] << " "<< maxCoefs[2] << '\n';
 		if (random < maxCoefs[0]) {
 			return 0; // Difuso
 		}
@@ -154,6 +156,7 @@ void Material::setRandom() {
 			return 2; // Refraccion
 		}
 		else {
+			//std::cout << "Absorcion: " << random << '\n';
 			return 3; // Absorcion
 		}
 	}

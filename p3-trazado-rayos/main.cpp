@@ -339,7 +339,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 
 
 		Plano paredOculta(FRONT, distanciaParedes);
-		paredOculta.setColor(1,1,1);
+		paredOculta.setColor(0.65,0.65,0.65);
 		e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
 		// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
@@ -370,8 +370,8 @@ void escenaCornellBoxMateriales(char* argv[]) {
 			// e.addFigura(std::make_shared<Prisma>(caja));
 		}
 		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
-		tamPrismaLuz = tamPrismaLuz;
-		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.75 + LEFT * tamPrismaLuz[0]/2.0;
+		tamPrismaLuz = tamPrismaLuz*3;
+		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0;
 		Prisma luz(posPrismaLuz, tamPrismaLuz);
 		luz.setColor(1,1,1);
 		e.addFigura(std::make_shared<Prisma>(luz));

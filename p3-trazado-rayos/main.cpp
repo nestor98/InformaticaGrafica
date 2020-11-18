@@ -297,7 +297,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		cout << "mod fcam: " << fCam.getModulo() << endl;
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP = 50; // rayos por pixel
+		int rayosPP = 10; // rayos por pixel
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		c.setFOV(0.4*PI);
 		// c.setFOV(PI);
@@ -338,8 +338,9 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 
 
-		Plano paredOculta(FRONT, distanciaParedes);
-		paredOculta.setColor(0.65,0.65,0.65);
+		Plano paredOculta(FRONT, 8*distanciaParedes);
+		// paredOculta.setMaterial(difuso);
+		paredOculta.setColor(0,0,0);
 		e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
 		// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
@@ -363,14 +364,20 @@ void escenaCornellBoxMateriales(char* argv[]) {
 			esf2.setMaterial(difuso);
 			//esf2.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esf2));
-			// Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,2.0*tamEsfera, false);
-			// Prisma caja(centroSuelo - 0.5*distanciaParedes*LEFT, tamPrisma/2.0);// 1*1
-			// // cout << esf.to_string() << endl;
-			// caja.setRandomColor();
-			// e.addFigura(std::make_shared<Prisma>(caja));
+			Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,0.2*tamEsfera, false);
+			tamPrisma = tamPrisma/2.0;
+			Prisma caja(centroSuelo + 1.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
+			// cout << esf.to_string() << endl;
+			caja.setMaterial(difusoRojo);
+			e.addFigura(std::make_shared<Prisma>(caja));
+
+			Prisma caja2(centroSuelo + 0.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
+			// cout << esf.to_string() << endl;
+			caja2.setMaterial(difusoVerde);
+			e.addFigura(std::make_shared<Prisma>(caja2));
 		}
 		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
-		tamPrismaLuz = tamPrismaLuz*3;
+		tamPrismaLuz = tamPrismaLuz*3.0;
 		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0;
 		Prisma luz(posPrismaLuz, tamPrismaLuz);
 		luz.setColor(1,1,1);

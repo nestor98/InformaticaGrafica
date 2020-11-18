@@ -59,6 +59,14 @@ void Color::setFromNormal(const Vector3& normal) {
 }
 
 
+void Color::setFromNormalNoAbs(const Vector3& normal) {
+  // std::cout << "normal: "<< normal << '\n';
+  // setRGB((normal[0]+1.0)/2.0 - (normal[1]-1.0)/2.0, (normal[1]+1.0)/2.0 - (normal[2]-1.0)/2.0, (normal[2]+1.0)/2.0 - (normal[0]-1.0)/2.0);
+  setRGB((normal[0]+1.0)/2.0, (normal[1]+1.0)/2.0, (normal[2]+1.0)/2.0);
+}
+
+
+
 void Color::setFromDistancia(const double t, const double min, const double max) {
   double c = (max-t) / (max-min);
   setRGB(c,c,c);
@@ -78,6 +86,13 @@ double Color::getG() const {
 double Color::getB() const {
   return b;
 }
+
+
+std::string Color::to_string() const {
+  std::string s = std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b) + "\n";
+  return s;
+}
+
 
 void Color::setR(const double _r) {
   r = _r;
@@ -141,6 +156,18 @@ Color operator - (const Color& c1, const Color& c2) {
 Color operator * (const Color& c1, const double mult) {
   double d = 1/mult;
   return Color(c1.getR()/d, c1.getG() /d, c1.getB() /d);
+}
+
+
+// -
+Color operator * (const double mult, const Color& c1) {
+  double d = 1/mult;
+  return Color(c1.getR()/d, c1.getG() /d, c1.getB() /d);
+}
+
+
+Color operator * (const Color& c1, const Color& c2) {
+  return Color(c1[0]*c2[0], c1[1]*c2[1],c1[2]*c2[2]);
 }
 
 

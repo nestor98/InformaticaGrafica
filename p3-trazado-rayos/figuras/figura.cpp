@@ -29,6 +29,10 @@ void Figura::setMaterial(const Material& _m) {
 }
 
 
+Material Figura::getMaterial() const {
+	return m;
+}
+
 std::string Figura::to_string() const {
 	return "Figura no tiene to_string";
 }
@@ -40,28 +44,27 @@ Vector3 Figura::getNormal(const Vector3& pto) const {
 
 Color Figura::getEmision(const Vector3& dir) const {
 	if(!textura){
-			return e;
-	}else{
+		return e;
+	} else {
 		return tex->getEmision(dir);
 	}
 }
 
-Vector3 Figura::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const {
-	if (!emite) return m.getVectorSalida(base, gen);
-	else {
-		std::cerr << "No tengo material" << '\n';
-		exit(1);
-	}
-}
+// Vector3 Figura::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const {
+// 	if (!emite) return m.getVectorSalida(base, gen);
+// 	else {
+// 		std::cerr << "No tengo material" << '\n';
+// 		exit(1);
+// 	}
+// }
 
 
 Matriz4 Figura::getBase(const Vector3& pto) {
-	return getBase(this->getNormal(), pto);
+	return getBase(this->getNormal(pto), pto);
 }
 
 Matriz4 Figura::getBase(const Vector3& normal, const Vector3& pto) {
-	Matriz4 base;
-	base.setBaseFromVector(normal, pto);
+	Matriz4 base = baseFromVector(normal, pto);
 	return base;
 }
 
@@ -79,6 +82,11 @@ void Figura::setColor(const double r, const double g, const double b) {
 void Figura::setColor(const std::array<double, 3> _e = {1,0,0}) {
 	e.setRGB(_e);
 }
+
+bool Figura::esEmisor() const {
+	return emite;
+}
+
 
 
 // color aleatorio

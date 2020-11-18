@@ -11,12 +11,13 @@
 #include "Imagen.hpp"
 #include "camara.hpp"
 #include "figura.hpp"
-
+#include "material.hpp"
 #include "bvh.hpp"
 
 #include "utils.hpp"
 
 class Escena {
+	mutable int numerodePathsdedebugAcuerdateDeBorrarme;// = 0;
 	std::shared_ptr<Camara> c;
 	std::vector<std::shared_ptr<Figura>> figuras;
 
@@ -26,6 +27,10 @@ class Escena {
 
 	// Auxiliar de render
 	void renderPixel(Imagen& im, const Vector3& o, const int pixel) const;
+
+	// Ray tracer, normales, etc
+	void renderPixelViejo(Imagen& im, const Vector3& o, const int pixel) const;
+
 
 	// --------- Threads ---------
 	std::vector<std::thread> threads; // Vector con cada thread
@@ -50,6 +55,11 @@ class Escena {
 	void testRenderMethod(const Metodo metodo, const std::string fichero) const;
 
 	void renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const;
+
+	// ---------------------------------------
+	// --------- Aux de path tracer  ---------
+	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto) const;
+	Color pathTrace(const Vector3& o, const Vector3& dir) const;
 
 
 

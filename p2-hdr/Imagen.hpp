@@ -47,6 +47,7 @@ public:
 	void reinhard();
 	void extendedReinhard();
 
+	void setMaxFloat(const float max);
 	float getMaxFloat() const;
 	int getNumPixels() const;
 	int getNumPixelsX() const;

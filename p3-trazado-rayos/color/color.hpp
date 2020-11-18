@@ -21,6 +21,8 @@ public:
 
   std::array<double,3> toArray() const;
 
+  std::string to_string() const;
+
   double getR() const;
   double getG() const;
   double getB() const;
@@ -42,6 +44,7 @@ public:
   void setFromPosExp(const Vector3& pto, const Vector3& min, const Vector3& max);
 
   void setFromNormal(const Vector3& normal);
+  void setFromNormalNoAbs(const Vector3& normal);
 
   void setFromDistancia(const double t, const double min = 0, const double max = 4);
 
@@ -58,6 +61,10 @@ Color operator + (const Color& c1, const Color& c2);
 
 // -
 Color operator - (const Color& c1, const Color& c2);
+
+
+// -
+Color operator * (const Color& c1, const Color& c2);
 
 
 // -

@@ -543,7 +543,7 @@ Vector3 abs(const Vector3& v) {
 
 
 
-Matriz4 setBaseFromVector(const Vector3& normal, const Vector3& pto) {
+Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto) {
 	Vector3 i, j, k;
 	i = normal;
 	k = cross(UP, i);
@@ -551,7 +551,6 @@ Matriz4 setBaseFromVector(const Vector3& normal, const Vector3& pto) {
 		k = cross(LEFT, i);
 	}
 	j = cross(k, i);
-	Matriz4 base;
-	base.setCambioBase(normalizar(i), normalizar(j), normalizar(k), pto);
+	Matriz4 base(normalizar(i), normalizar(j), normalizar(k), pto);
 	return base;
 }

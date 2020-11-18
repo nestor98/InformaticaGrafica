@@ -1,4 +1,4 @@
-#include "math.h"
+#include <cmath>
 #include "utils.hpp"
 #include "color.hpp"
 #include "material.hpp"
@@ -14,15 +14,16 @@ bool Material::coeficientesCorrectos() const {
 	return true;
 }
 
-Material::Material() {
+Material::Material() : Material(Material::Difuso)
+{}
 
-}
-
-Material::Material(bool aleatorio) {
-	if (aleatorio) {
-		setRandom();
-	}
-}
+// Material::Material(bool aleatorio) {
+// 	if (aleatorio) {
+// 		setRandom();
+// 		setMaximos();
+// 	}
+//
+// }
 
 Material::Material(const Tipo predeterminado) {
 	if (predeterminado==Tipo::Plastico) {
@@ -31,39 +32,51 @@ Material::Material(const Tipo predeterminado) {
 		exit(1);
 	}
 	else if (predeterminado==Tipo::Difuso) {
-		coeficientes[0].setRandom();
-		while (!coeficientesCorrectos()) {
-			coeficientes[0].setRandom();
-		}
+		coeficientes[0].setRGB(0.9,0.9,0.9);
+		//coeficientes[0].setRandom();
+		// while (!coeficientesCorrectos()) {
+		// 	coeficientes[0].setRandom();
+		// }
 	}
 	else {
 		std::cerr << "TODO: otros materiales" << '\n';
 		exit(1);
 	}
+	setMaximos();
+}
+
+void Material::setMaximos() {
+	for (int i = 0; i < 3; i++) {
+		maxCoefs[i] = 0;
+		for (int j = 0; j < 3; j++) {
+			if (coeficientes[i][j]>maxCoefs[i]) {
+				maxCoefs[i] = coeficientes[i][j];
+			}
+		}
+	}
 }
 
 // base = T en las diapos
-Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, int evento) const {
-	switch (evento)
-	{
-	case 0: //difuso
-		/* code */
-			double rand1 = gen.rand01();
-			double rand2 = gen.rand01();
-			double theta = asin(sqrt(1-rand1)); //el arcoseno es asin 
-			double phi = 2 * PI * rand2;
-			Vector3 wi = base * Vector3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta), false);
-		break;
-	case 1:
-		break;
-	case 2:
-		break;
+Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento) const {
+	Vector3 wi;
+	if (evento==0) {
+		double rand1 = gen.rand01();
+		double rand2 = gen.rand01();
+		double theta = acos(sqrt(1-rand1)); //el arcoseno es asin
+		double phi = 2 * PI * rand2;
+		// std::cout << "---------------------------------" << '\n';
+		// std::cout << "theta: " << theta << "\nphi: " <<phi << '\n';
+		// std::cout << "base: " << base << '\n';
+		wi = base * Vector3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta), false);
+		// std::cout << "Dcha: "<<-LEFT << '\n'<< "wi:" << wi<<'\n';
+		// std::cout << "wiiiii: "<<wi << '\n';
+	}
+	else {
+		std::cerr << "Aun no has implementado otros materiales..." << '\n';
+		exit(1);
 	}
 	return wi;
 }
-
-
-
 
 
 std::string Material::to_string() const {
@@ -81,6 +94,7 @@ std::array<Color, 3> Material::getCoeficientes() const {
 
 void Material::setCoeficiente(const Color& coef, const int i) {
 	coeficientes[i] = coef;
+	setMaximos();
 }
 
 Color Material::getCoeficiente(const int i) const {
@@ -89,6 +103,7 @@ Color Material::getCoeficiente(const int i) const {
 
 void Material::setCoeficientes(const std::array<Color, 3>& _coefs) {
 	coeficientes = _coefs;
+	setMaximos();
 }
 
 void Material::setRandom() {
@@ -99,7 +114,32 @@ void Material::setRandom() {
 		}
 		fin = coeficientesCorrectos();
 	}
+	setMaximos();
 }
+
+
+	// devuelve un num de 0 a 4 (para difuso, especular, refraccion o absorcion, respectivamente)
+	// con probabilidades en funcion del coeficiente máximo de cada uno
+	int Material::ruletaRusa(const GeneradorAleatorio& gen) const {
+		double random = gen.rand01();
+		if (random < maxCoefs[0]) {
+			return 0; // Difuso
+		}
+		else if (random < maxCoefs[0]+maxCoefs[1]) {
+			std::cerr << "Aun no has implementado reflexiones xd" << '\n';
+			exit(1);
+			return 1; // Reflexion
+		}
+		else if (random < maxCoefs[0]+maxCoefs[1]+maxCoefs[2]) {
+			std::cerr << "Aun no has implementado refracciones xd" << '\n';
+			exit(1);
+			return 2; // Refraccion
+		}
+		else {
+			return 3; // Absorcion
+		}
+	}
+
 //
 // // Le cambia el color en funcion de la posicion
 // void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);

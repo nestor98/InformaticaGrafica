@@ -8,7 +8,7 @@
 #include <chrono> // tests
 
 #include "escena.hpp"
-
+#include "material.hpp"
 
 #define hrc std::chrono::high_resolution_clock
 
@@ -161,38 +161,55 @@ const Color COLOR_FONDO(0.2,0.2,0.2);
 
 
 Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto) const {
+	// std::cout << "En ruleta de escena" << '\n';
 	Material mat = fig->getMaterial();
-	const int evento = mat.ruletaRusa(); // devuelve un entero entre 0 y 4 en f de las probs
+	int evento = mat.ruletaRusa(gen); // devuelve un entero entre 0 y 4 en f de las probs
 	Color c;
 	if (evento == 3) { // absorcion
 		return c;
 	}
 	else { // se procesa el evento
-		Matriz4 base = fig->getBase(ptoInterseccion);
-		Vector3 otroPath = mat->getVectorSalida(base, gen, evento);
-		c = mat->getCoeficiente(evento);
-		c = c*pathTrace(ptoInterseccion, otroPath);
-	}
+		Matriz4 base = fig->getBase(pto);
+		Vector3 otroPath = mat.getVectorSalida(base, gen, evento);
+		c = mat.getCoeficiente(evento); // kd
+		c = c*pathTrace(pto, otroPath); // kd * Li
+		// std::cout << "c: "<<c.to_string() << '\n';
+	} // TODO: otros eventos
 	return c;
 }
 
 Color Escena::pathTrace(const Vector3& o, const Vector3& dir) const {
+	// std::cout << "Trazando un path" << '\n';
 	Color c = COLOR_FONDO;
 	double t = 1;
 	auto interseccionFigura = bvh.interseccion(o, dir); //
+	// std::cout << "Fin interseccion..........." << '\n';
 	if (interseccionFigura) { // intersecta con alguna
+		// std::cout << "Intersecto con algo loco" << '\n';
 		Figura::InterseccionData iData = interseccionFigura->first;
 		t = iData.t;
 		Vector3 ptoInterseccion = iData.punto;
+		// std::cout << "dist y pto: "  << t << ", " << ptoInterseccion << '\n';
 		auto fig = interseccionFigura->second; // Puntero a la Figura intersectada
-		if (fig->emite()) {
-			return fig->getEmision();
+		// std::cout << "antes de emisor y blabnanjasfobnabsodlnaikjnaspian: " << fig << '\n';
+		if (fig->esEmisor()) { // fin de la recursión, es un emisor
+			// std::cout << "a por emision" << '\n';
+			// return fig->getEmision();
+			c = fig->getEmision();
+
 		}
 		else {
+			// std::cout << "na que no emito" << '\n';
 			c = ruletaRusa(fig, ptoInterseccion);
+
+			// DEBUG: parece que los vectores los saca bien:
+			// Matriz4 base = fig->getBase(ptoInterseccion);
+			// Material mat = fig->getMaterial();
+			// Vector3 otroPath = mat.getVectorSalida(base, gen, 0);
+			// c.setFromNormalNoAbs(otroPath);
 		}
 	}
-	return c/(t*t); // TODO: revisar
+	return c;///(t*t);
 }
 
 
@@ -203,7 +220,7 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 		for (int i=0; i<nRayos; i++) { // cada rayo
 			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
-			Color cPixel = pathTrace(dir, o);
+			Color cPixel = pathTrace(o, dir);
 			color = color + cPixel;// suma de cada rayo / double(nRayos);
 		}
 		color = color / double(nRayos); // promedio
@@ -283,7 +300,7 @@ void Escena::render(const std::string fichero) {
 	}
 	initThreads(im, o); // inicializar los threads
 	waitThreads(); // y esperar a que terminen
-	//im.extendedReinhard();
+	im.extendedReinhard();
 	im.guardar(fichero); // guardar la imagen
 
 }

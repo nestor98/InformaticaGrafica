@@ -41,7 +41,7 @@ void BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>>& figur
 }
 
 // devuelve un iterador que parta las figuras en algun punto
-std::vector<std::shared_ptr<Figura> >::iterator BoundingVolumeH::casoParticular(std::vector<std::shared_ptr<Figura>>& figuras, const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it) {
+std::vector<std::shared_ptr<Figura>>::iterator BoundingVolumeH::casoParticular(std::vector<std::shared_ptr<Figura>>& figuras, const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it) {
 	while (it == figuras.begin() || it == figuras.end()){ // prueba otro punto hasta encontrar una partición
 		std::cout << "Caso particular, buscando otro pto de corte...\n";
 		int eje = gen.rand(0,3); // eje aleatorio [0,2]
@@ -123,7 +123,11 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Boun
 				}
 			}
 			//else return std::pair<float, std::shared_ptr<Figura>>(tPlanosMin, intersectado);
-	} // Si llega aqui intersecta con un plano:
+	}
+	if (tPlanosMin==0) {	// No intersecta con na de na de na
+		return std::nullopt;
+	}
+	// Si llega aqui intersecta con un plano:
 	return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(Figura::InterseccionData{tPlanosMin, origen+tPlanosMin*dir}, intersectado);
 
 }

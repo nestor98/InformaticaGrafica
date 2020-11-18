@@ -10,7 +10,7 @@
 
 #include <fstream>
 
-Imagen::Imagen() {}
+Imagen::Imagen() : maxFloat(10000) {}
 
 Imagen::Imagen(const Imagen& i2)
 : titulo(i2.titulo), filas(i2.filas), cols(i2.cols), maxFloat(i2.maxFloat), c(i2.c)
@@ -257,6 +257,11 @@ std::ostream& operator<<(std::ostream& os, const Imagen& i) {
 
 float Imagen::getMaxFloat() const {
 	return maxFloat;
+}
+
+
+void Imagen::setMaxFloat(const float max) {
+	maxFloat = max;
 }
 
 int Imagen::getNumPixels() const {

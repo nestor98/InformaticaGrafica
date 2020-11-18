@@ -220,3 +220,6 @@ Matriz4 operator * (const Matriz4& m1, const Matriz4& m2);
 
 // Valor absoluto de cada componente
 Vector3 abs(const Vector3& v);
+
+
+Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto);

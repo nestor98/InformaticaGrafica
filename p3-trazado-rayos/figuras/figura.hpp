@@ -10,6 +10,7 @@
 // cmath para sqrt
 #include "Vector3.hpp"
 #include "textura.hpp"
+#include "material.hpp"
 
 //#include "prisma.hpp"
 
@@ -48,17 +49,26 @@ public:
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;
-	Color getEmision(const Vector3& dir) const;
-	//Vector3 getDir() const;
 
+	// Emision -------------------------
+	Color getEmision(const Vector3& dir = Vector3()) const;
+	//Vector3 getDir() const;
 	void setColor(const double r, const double g, const double b);
 
 	void setColor(const std::array<double, 3> _e);
 	void setColor(Color e);
 	void setRandomColor();
+	// Le cambia el color en funcion de la posicion
+	void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);
+	bool esEmisor() const;
 
+
+	// Materiales -------------------------
 	void setMaterial(const Material& _m);
+	Material getMaterial() const;
 
+
+	// Geometria -------------------------
 	virtual std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const;
 
 	// Devuelve la normal de la figura en el <pto>
@@ -67,7 +77,7 @@ public:
 	Matriz4 getBase(const Vector3& normal, const Vector3& pto);
 	Matriz4 getBase(const Vector3& pto);
 
-	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const;
+	// Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const;
 
 
 	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
@@ -75,11 +85,6 @@ public:
 
 
 	Vector3 getCentroide() const;
-
-	// Le cambia el color en funcion de la posicion
-	void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);
-
-
 };
 
 	// para evitar el to_string en cout

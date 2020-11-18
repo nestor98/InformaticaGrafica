@@ -59,7 +59,7 @@ public:
 
 	// devuelve un num de 0 a 4 (para difuso, especular, refraccion o evento nulo, respectivamente)
 	// con probabilidades en funcion del coeficiente máximo de cada uno
-	int ruletaRusa(const GeneradorAleatorio& gen) const;
+	int ruletaRusa(const GeneradorAleatorio& gen, const bool primerRebote=false) const;
 
 	//
 	// // Le cambia el color en funcion de la posicion

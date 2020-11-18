@@ -137,8 +137,11 @@ void Material::setRandom() {
 
 	// devuelve un num de 0 a 4 (para difuso, especular, refraccion o absorcion, respectivamente)
 	// con probabilidades en funcion del coeficiente máximo de cada uno
-	int Material::ruletaRusa(const GeneradorAleatorio& gen) const {
+	int Material::ruletaRusa(const GeneradorAleatorio& gen, const bool primerRebote) const {
 		double random = gen.rand01();
+		while (primerRebote && random >= 0.9) { // en el primer rebote no puede absorber
+			random -= 0.1;
+		}
 		if (random < maxCoefs[0]) {
 			return 0; // Difuso
 		}

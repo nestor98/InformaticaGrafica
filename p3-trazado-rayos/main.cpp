@@ -322,7 +322,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		suelo.setMaterial(difusoGris);
 		e.addFigura(std::make_shared<Plano>(suelo));
 		Plano techo(-UP, distanciaParedes);
-		techo.setColor(1,1,1);
+		techo.setMaterial(difusoGris);
 		e.addFigura(std::make_shared<Plano>(techo));
 		Plano paredi(-LEFT, distanciaParedes);
 		// paredi.setColor(0.8,0,0);
@@ -340,9 +340,11 @@ void escenaCornellBoxMateriales(char* argv[]) {
 
 		Plano paredOculta(FRONT, distanciaParedes);
 		paredOculta.setColor(1,1,1);
+		e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
 		// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
+
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
 
@@ -367,6 +369,12 @@ void escenaCornellBoxMateriales(char* argv[]) {
 			// caja.setRandomColor();
 			// e.addFigura(std::make_shared<Prisma>(caja));
 		}
+		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
+		tamPrismaLuz = tamPrismaLuz;
+		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.75 + LEFT * tamPrismaLuz[0]/2.0;
+		Prisma luz(posPrismaLuz, tamPrismaLuz);
+		luz.setColor(1,1,1);
+		e.addFigura(std::make_shared<Prisma>(luz));
 		// std::cout << "front x left = " << cross(FRONT, LEFT) << "\nUP = " << UP << endl;
 		// double d_prisma = 2.0*distanciaParedes / 10.0;
 		// for (int i = 0; i<100; i++) {

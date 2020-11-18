@@ -91,6 +91,7 @@ void Vector3::normalizar() {
 	// No funciona:
 	float mod = getModulo();
 	c[0]/mod; c[1]/mod; c[2]/mod;
+	c[3] = 0; // Se hace vector
 }
 
 // Devuelve el vector v normalizado:
@@ -553,6 +554,7 @@ Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto) {
 		k = cross(LEFT, i);
 	}
 	j = cross(k, i);
-	Matriz4 base(normalizar(i), normalizar(j), normalizar(k), pto);
+	Matriz4 base;
+	base.setCambioBase(normalizar(j), normalizar(k), normalizar(i), pto);
 	return base;
 }

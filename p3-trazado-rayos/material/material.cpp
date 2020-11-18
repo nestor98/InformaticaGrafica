@@ -17,6 +17,13 @@ bool Material::coeficientesCorrectos() const {
 Material::Material() : Material(Material::Difuso)
 {}
 
+Material::Material(const Color& c1, const Color& c2, const Color& c3)
+{
+	coeficientes[0]=(c1);
+	coeficientes[1]=(c2);
+	coeficientes[2]=(c3);
+}
+
 // Material::Material(bool aleatorio) {
 // 	if (aleatorio) {
 // 		setRandom();
@@ -57,13 +64,13 @@ void Material::setMaximos() {
 }
 
 // base = T en las diapos
-Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento) const {
+Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento, const Vector3& incidente) const {
 	Vector3 wi;
 	if (evento==0) { //difuso
 		double rand1 = gen.rand01();
 		double rand2 = gen.rand01();
-		double theta = acos(sqrt(1-rand1)); 
-		double phi = 2 * PI * rand2;
+		double theta = acos(sqrt(1.0-rand1));
+		double phi = 2.0 * PI * rand2;
 		// std::cout << "---------------------------------" << '\n';
 		// std::cout << "theta: " << theta << "\nphi: " <<phi << '\n';
 		// std::cout << "base: " << base << '\n';
@@ -73,7 +80,7 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 	}else if(evento==1){		//especular
 		//angulo entre dir y normal
 		//double an=acos((base[3]*base[0])/(base[3].getModulo()*base[0].getModulo()));
-		Vector3 u=base.inversa()*base[3]; //inversa base* normal 
+		Vector3 u=base.inversa()*incidente; //inversa base* normal
 		wi=u;
 		wi[0]=-u[0];
 		wi=base*wi;

@@ -297,7 +297,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		cout << "mod fcam: " << fCam.getModulo() << endl;
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP = 800; // rayos por pixel
+		int rayosPP = 50; // rayos por pixel
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		c.setFOV(0.4*PI);
 		// c.setFOV(PI);

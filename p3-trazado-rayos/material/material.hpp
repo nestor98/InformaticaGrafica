@@ -33,6 +33,7 @@ protected:
 public:
 	enum Tipo {Plastico, Metal, Difuso};
 	Material();
+	Material(const Color& c1, const Color& c2, const Color& c3);
 	//Material(bool aleatorio = false);
 	Material(const Tipo predeterminado);
 	Material(std::shared_ptr<Textura> _tex);
@@ -54,7 +55,7 @@ public:
 
 	void setMaximos();
 
-	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento) const;
+	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento, const Vector3& incidente=Vector3()) const;
 
 	// devuelve un num de 0 a 4 (para difuso, especular, refraccion o evento nulo, respectivamente)
 	// con probabilidades en funcion del coeficiente máximo de cada uno
@@ -70,3 +71,7 @@ public:
 	std::ostream& operator<<(std::ostream& os, const Material& c);
 
 	std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Material> c);
+
+
+	// ---------------------- Prefabricados:
+	const Material DIFUSO_VERDE = Material(Color(0.05,0.9,0.05), Color(), Color());

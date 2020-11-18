@@ -44,6 +44,8 @@ Material::Material(const Tipo predeterminado) {
 		// while (!coeficientesCorrectos()) {
 		// 	coeficientes[0].setRandom();
 		// }
+	}else if(predeterminado==Tipo::Especular){
+		coeficientes[1].setRGB(0.9,0.9,0.9);
 	}
 	else {
 		std::cerr << "TODO: otros materiales" << '\n';
@@ -141,8 +143,6 @@ void Material::setRandom() {
 			return 0; // Difuso
 		}
 		else if (random < maxCoefs[0]+maxCoefs[1]) {
-			std::cerr << "Aun no has implementado reflexiones xd" << '\n';
-			exit(1);
 			return 1; // Reflexion
 		}
 		else if (random < maxCoefs[0]+maxCoefs[1]+maxCoefs[2]) {

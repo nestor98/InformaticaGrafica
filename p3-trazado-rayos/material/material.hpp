@@ -31,7 +31,7 @@ protected:
 	bool coeficientesCorrectos() const;
 
 public:
-	enum Tipo {Plastico, Metal, Difuso};
+	enum Tipo {Plastico, Metal, Difuso, Especular};
 	Material();
 	Material(const Color& c1, const Color& c2, const Color& c3);
 	//Material(bool aleatorio = false);

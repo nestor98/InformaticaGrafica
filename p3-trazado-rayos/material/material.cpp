@@ -59,10 +59,10 @@ void Material::setMaximos() {
 // base = T en las diapos
 Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento) const {
 	Vector3 wi;
-	if (evento==0) {
+	if (evento==0) { //difuso
 		double rand1 = gen.rand01();
 		double rand2 = gen.rand01();
-		double theta = acos(sqrt(1-rand1)); //el arcoseno es asin
+		double theta = acos(sqrt(1-rand1)); 
 		double phi = 2 * PI * rand2;
 		// std::cout << "---------------------------------" << '\n';
 		// std::cout << "theta: " << theta << "\nphi: " <<phi << '\n';
@@ -70,8 +70,16 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		wi = base * Vector3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta), false);
 		// std::cout << "Dcha: "<<-LEFT << '\n'<< "wi:" << wi<<'\n';
 		// std::cout << "wiiiii: "<<wi << '\n';
+	}else if(evento==1){		//especular
+		//angulo entre dir y normal
+		//double an=acos((base[3]*base[0])/(base[3].getModulo()*base[0].getModulo()));
+		Vector3 u=base.inversa()*base[3]; //inversa base* normal 
+		wi=u;
+		wi[0]=-u[0];
+		wi=base*wi;
 	}
-	else {
+	else {	//refraccion
+
 		std::cerr << "Aun no has implementado otros materiales..." << '\n';
 		exit(1);
 	}

@@ -96,7 +96,9 @@ void Vector3::normalizar() {
 // Devuelve el vector v normalizado:
 Vector3 normalizar(const Vector3& v) {
 	//Vector3 normalizado = v / v.getModulo();
-	return v/v.getModulo();
+	Vector3 u=v/v.getModulo();
+	u[3]=0;
+	return u;
 }
 
 // devuelve el modulo al cuadrado

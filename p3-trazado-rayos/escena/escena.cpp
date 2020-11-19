@@ -160,7 +160,7 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 const Color COLOR_FONDO(0.2,0.2,0.2);
 
 
-Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto,int nRebotes, const bool primerRebote) const {
+Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const int nRebotes, const bool primerRebote) const {
 	// std::cout << "En ruleta de escena" << '\n';
 	//nRebotes=nRebotes-1;
 	Material mat = fig->getMaterial();
@@ -176,7 +176,7 @@ Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto,i
 		if(nRebotes>0){
 			Vector3 otroPath = mat.getVectorSalida(base, otrorng, evento);
 			//c = mat.getCoeficiente(evento); // kd
-			 c = c*pathTrace(pto, otroPath, nRebotes--); // kd * Li
+			 c = c*pathTrace(pto, otroPath, nRebotes-1); // kd * Li
 			// std::cout << "c: "<<c.to_string() << '\n';
 		}
 	} // TODO: otros eventos
@@ -184,7 +184,7 @@ Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto,i
 	return c;
 }
 
-Color Escena::pathTrace(const Vector3& o, const Vector3& dir,int nRebotes, const bool primerRebote) const {
+Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes, const bool primerRebote) const {
 	// std::cout << "Trazando un path" << '\n';
 	Color c = COLOR_FONDO;
 	double t = 1;
@@ -206,9 +206,9 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir,int nRebotes, const
 		else {
 			// std::cout << "na que no emito" << '\n';
 			c = ruletaRusa(fig, ptoInterseccion, primerRebote, nRebotes);
-			while (primerRebote && c==double(0)) { // solo si es el primer rebote, aseguramos que no absorba
-				c = ruletaRusa(fig, ptoInterseccion, nRebotes); // TODO: es un poco a lo bestia y muy poco eficiente, alternativas?
-			}
+			// while (primerRebote && c==double(0)) { // solo si es el primer rebote, aseguramos que no absorba
+			// 	c = ruletaRusa(fig, ptoInterseccion, nRebotes); // TODO: es un poco a lo bestia y muy poco eficiente, alternativas?
+			// }
 
 
 			// DEBUG: parece que los vectores los saca bien:
@@ -229,7 +229,7 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 		for (int i=0; i<nRayos; i++) { // cada rayo
 			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
-			Color cPixel = pathTrace(o, dir,2, true); // true para que el primero siempre rebote
+			Color cPixel = pathTrace(o, dir, 2, true); // true para que el primero siempre rebote
 			color = color + cPixel;// suma de cada rayo / double(nRayos);
 		}
 		color = color / double(nRayos); // promedio

@@ -296,7 +296,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP =1; // rayos por pixel
+		int rayosPP =500; // rayos por pixel
 
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 

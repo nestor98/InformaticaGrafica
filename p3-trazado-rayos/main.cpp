@@ -306,7 +306,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 
-		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Normales);
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::MaterialesSinBVH);
 
 		float distanciaParedes = 3;
 
@@ -317,34 +317,34 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		Material difusoRojo = difuso;
 		difusoRojo.setCoeficiente(Color(0.8,0,0),0);
 		Material difusoGris = difuso;
-		difusoGris.setCoeficiente(Color(0.75,0.75,0.75),0);
-
-		// Caja:
-		Plano suelo(UP, distanciaParedes);
-		suelo.setColor(0.8,0.8,0.8);
-		//suelo.setMaterial(difusoGris);
-		e.addFigura(std::make_shared<Plano>(suelo));
-		Plano techo(-UP, distanciaParedes);
-		techo.setMaterial(difusoGris);
-		e.addFigura(std::make_shared<Plano>(techo));
-		Plano paredi(-LEFT, distanciaParedes);
-		 paredi.setColor(0.8,0,0);
-		//paredi.setMaterial(difusoVerde);
-		e.addFigura(std::make_shared<Plano>(paredi));
-		Plano paredd(LEFT, distanciaParedes);
-		//paredd.setMaterial(difusoRojo);
-		 paredd.setColor(0,0.8,0);
-		e.addFigura(std::make_shared<Plano>(paredd));
-		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
-		 paredFondo.setColor(0.75,0.75,0.75);
-		//paredFondo.setMaterial(difusoGris);
-		e.addFigura(std::make_shared<Plano>(paredFondo));
-
-
-		Plano paredOculta(FRONT, 8*distanciaParedes);
+		difusoGris.setCoeficiente(Color(0.95,0.95,0.95),0);
+		//
+		// // Caja:
+		// Plano suelo(UP, distanciaParedes);
+		// // suelo.setColor(0.8,0.8,0.8);
+		// suelo.setMaterial(difusoGris);
+		// e.addFigura(std::make_shared<Plano>(suelo));
+		// Plano techo(-UP, distanciaParedes);
+		// techo.setMaterial(difusoGris);
+		// e.addFigura(std::make_shared<Plano>(techo));
+		// Plano paredi(-LEFT, distanciaParedes);
+		//  // paredi.setColor(0.8,0,0);
+		// paredi.setMaterial(difusoVerde);
+		// e.addFigura(std::make_shared<Plano>(paredi));
+		// Plano paredd(LEFT, distanciaParedes);
+		// paredd.setMaterial(difusoRojo);
+		//  // paredd.setColor(0,0.8,0);
+		// e.addFigura(std::make_shared<Plano>(paredd));
+		// Plano paredFondo(-FRONT, 2.0*distanciaParedes);
+		//  // paredFondo.setColor(0.75,0.75,0.75);
+		// paredFondo.setMaterial(difusoGris);
+		// e.addFigura(std::make_shared<Plano>(paredFondo));
+		//
+		//
+		// Plano paredOculta(FRONT, 8*distanciaParedes);
 		// paredOculta.setMaterial(difuso);
-		paredOculta.setColor(0,0,0);
-		e.addFigura(std::make_shared<Plano>(paredOculta));
+		// // paredOculta.setColor(0,0,0);
+		// e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
 		// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
@@ -353,7 +353,8 @@ void escenaCornellBoxMateriales(char* argv[]) {
 
 			Esfera esf(centroSuelo + tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
-			esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLECCION
+			//esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLECCION
+			esf.setMaterial(difuso);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
 			Esfera esfdcha(centroSuelo + tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1
@@ -379,8 +380,8 @@ void escenaCornellBoxMateriales(char* argv[]) {
 			e.addFigura(std::make_shared<Prisma>(caja2));*/
 		}
 		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
-		tamPrismaLuz = tamPrismaLuz*3.0;
-		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0;
+		tamPrismaLuz = tamPrismaLuz*30.0;
+		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
 		Prisma luz(posPrismaLuz, tamPrismaLuz);
 		luz.setColor(1,1,1);
 		e.addFigura(std::make_shared<Prisma>(luz));
@@ -402,6 +403,69 @@ void escenaCornellBoxMateriales(char* argv[]) {
 }
 
 
+
+
+void fixIluminacion(char* argv[]) {
+
+		int pixelesX = 400;
+		int pixelesY = 400;//*9/16;
+		Vector3 posCam(0,0,0,true);
+		Vector3 fCam = FRONT;//(0,1,0,false);
+		Vector3 lCam = LEFT; //(1,0,0,false);
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+		//Camara c(posCam, dirCam);
+		//cout << c << endl;
+		int rayosPP =50; // rayos por pixel
+
+		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+
+		//c.setFOV(0.4*PI);
+		// c.setFOV(PI);
+
+		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		//
+
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Normales);
+
+		float distanciaParedes = 3;
+
+
+		Material difuso(Material::Difuso);
+		Material difusoVerde = difuso;
+		difusoVerde.setCoeficiente(Color(0.25,0.8,0.25),0);
+		Material difusoRojo = difuso;
+		difusoRojo.setCoeficiente(Color(0.8,0.25,0.25),0);
+		Material difusoGris = difuso;
+		difusoGris.setCoeficiente(Color(1,1,1),0);
+
+		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT;// - distanciaParedes*UP;
+		float tamEsfera =distanciaParedes/2.0*1.2;
+
+		Esfera esf(centroSuelo +0.55*distanciaParedes*LEFT, tamEsfera);// 1*1
+		// cout << esf.to_string() << endl;
+		esf.setColor(1,1,1);
+		//esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLECCION
+		// esf.setMaterial(difuso);
+		e.addFigura(std::make_shared<Esfera>(esf));
+		//
+		Esfera esfdcha(centroSuelo  - 0.55*distanciaParedes*LEFT, tamEsfera);// 1*1
+		// cout << esf.to_string() << endl;
+		esfdcha.setMaterial(difusoRojo);
+		// esfdcha.setRandomColor();
+		e.addFigura(std::make_shared<Esfera>(esfdcha));
+
+		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
+		// tamPrismaLuz = tamPrismaLuz*30.0;
+		// Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
+		// Prisma luz(posPrismaLuz, tamPrismaLuz);
+		// luz.setColor(1,1,1);
+		// e.addFigura(std::make_shared<Prisma>(luz));
+		e.render("out/" + string(argv[1]));
+		//e.testBVHRender();
+		//std::cout << "escena\n" <<e << '\n';
+}
+
+
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
 	if (argc < 2) {// <fichero de entrada>
@@ -413,4 +477,5 @@ int main(int argc, char* argv[]) {
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
 	escenaCornellBoxMateriales(argv);
+	// fixIluminacion(argv);
 }

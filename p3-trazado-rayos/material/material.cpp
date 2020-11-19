@@ -15,7 +15,9 @@ bool Material::coeficientesCorrectos() const {
 }
 
 Material::Material() : Material(Material::Difuso)
-{}
+{
+	setMaximos();
+}
 
 Material::Material(const Color& c1, const Color& c2, const Color& c3)
 {
@@ -40,7 +42,7 @@ Material::Material(const Tipo predeterminado) {
 		exit(1);
 	}
 	else if (predeterminado==Tipo::Difuso) {
-		coeficientes[0].setRGB(0.9,0.9,0.9);
+		coeficientes[0].setRGB(0.97,0.97,0.97);
 		//coeficientes[0].setRandom();
 		// while (!coeficientesCorrectos()) {
 		// 	coeficientes[0].setRandom();

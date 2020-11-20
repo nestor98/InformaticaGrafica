@@ -92,7 +92,7 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 	}else if(evento==1){		//especular
 		//angulo entre dir y normal
 		//double an=acos((base[3]*base[0])/(base[3].getModulo()*base[0].getModulo()));
-		Vector3 u=base.inversa()*incidente; //inversa base* normal
+		Vector3 u=base.inversa()*(incidente); //inversa base* normal
 		wi=u;
 		wi[0]=-u[0];
 		wi=base*wi;

@@ -303,7 +303,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		//c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
-		int nThreads = 12; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 
 		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Materiales);//MaterialesSinBVH
@@ -333,7 +333,8 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		paredi.setMaterial(difusoVerde);
 		e.addFigura(std::make_shared<Plano>(paredi));
 		Plano paredd(LEFT, distanciaParedes);
-		paredd.setMaterial(difusoRojo);
+		
+		paredd.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
 		 // paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
@@ -354,8 +355,8 @@ void escenaCornellBoxMateriales(char* argv[]) {
 
 			Esfera esf(centroSuelo + tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
-			//esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLECCION
-			esf.setMaterial(difusoRojo);
+			esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLECCION
+			//esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
 			Esfera esfdcha(centroSuelo + tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1

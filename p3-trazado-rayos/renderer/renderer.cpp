@@ -7,30 +7,21 @@
 
 #include <chrono> // tests
 
-#include "escena.hpp"
+#include "renderer.hpp"
 #include "material.hpp"
 
 #define hrc std::chrono::high_resolution_clock
 
-Escena::Escena(const std::shared_ptr<Camara> _c, const int _nThreads, const Escena::TipoRender tipo)
+Renderer::Renderer(const int _nThreads, const Renderer::TipoRender tipo)
 : c(_c), renderSeleccionado(tipo)//, threads(_nThreads)
 {
 	threads.reserve(_nThreads);
-	//std::cout << "Constructor de escena: " << c->to_string() << std::endl;
+	//std::cout << "Constructor de Renderer: " << c->to_string() << std::endl;
 	//c = std::make_shared<Camara> _c;
 }
 
-void Escena::addFigura(const std::shared_ptr<Figura> f)
-{
-	figuras.push_back(f);
-}
 
-void Escena::addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectFiguras) {
-	figuras.insert(figuras.end(), vectFiguras->begin(), vectFiguras->end());
-}
-
-
-void Escena::consumirTasks(Imagen& im, const Vector3& origen) {
+void Renderer::consumirTasks(Imagen& im, const Vector3& origen) {
 	//std::cout<<"Bueno"<<std::endl;
 	// int cuenta = 0;
 	while (true) {
@@ -44,26 +35,29 @@ void Escena::consumirTasks(Imagen& im, const Vector3& origen) {
 			pixel = tasks.back();
 			tasks.pop_back();
 		} // unlock
-		renderPixel(im, origen, pixel);
+		switch (Method) {
+			case /* value */:
+		}
+		renderPixelPath(im, origen, pixel);
 		// cuenta++;
 	}
 	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";
 }
 
-void Escena::initThreads(Imagen& im, const Vector3& origen) {
+void Renderer::initThreads(Imagen& im, const Vector3& origen) {
 	for (int i=0; i<threads.capacity(); i++) {
-		// std::thread t1(&Escena::consumirTasks, this, std::ref(im), std::ref(origen));
-		threads.emplace_back(std::thread(&Escena::consumirTasks, this, std::ref(im), std::ref(origen)));
+		// std::thread t1(&Renderer::consumirTasks, this, std::ref(im), std::ref(origen));
+		threads.emplace_back(std::thread(&Renderer::consumirTasks, this, std::ref(im), std::ref(origen)));
 	}
 }
 
-void Escena::waitThreads() {
+void Renderer::waitThreads() {
 	for (int i=0; i<threads.capacity(); i++) {
 		threads[i].join();
 	}
 }
 
-std::string Escena::to_string() const {
+std::string Renderer::to_string() const {
 	std::string s = "camara:\n" + c->to_string() + "\nfiguras:";
 	if (figuras.size()>50) {
 		s+= "Hay " + std::to_string(figuras.size()) +" figuras, no las listo todas\n";
@@ -86,7 +80,7 @@ bool tMenor (const Figura::InterseccionData& iData, const double min) {
 	return tMenor(iData.t, min);
 }
 
-void Escena::testBVHRender(const std::string f1, const std::string f2) {
+void Renderer::testBVHRender(const std::string f1, const std::string f2) {
 	hrc::time_point t1, t2;
 	std::string linea = "\n------------------------\n"; // para separarlo en cout
 	std::cout << "Test de render secuencial...\nSin estructuras de aceleración...\n";
@@ -103,7 +97,7 @@ void Escena::testBVHRender(const std::string f1, const std::string f2) {
 
 	std::cout << "Tiempo Construccion = " << tiempoConstruccion.count() << " segundos" << linea<<"Tiempo de render BVH...\n";
 	t1 = hrc::now();
-	testRenderMethod(Escena::BVH, f2);
+	testRenderMethod(Renderer::BVH, f2);
 	t2 = hrc::now();
 	std::chrono::duration<double> tiempoBVH = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 	std::cout << "Tiempo de render con BVH = " << tiempoBVH.count() <<" segundos"<<linea;
@@ -114,7 +108,7 @@ void Escena::testBVHRender(const std::string f1, const std::string f2) {
 }
 
 // metodo tiene que ser 0 para Vector o 1 para bvh
-void Escena::testRenderMethod(const Escena::Metodo metodo, const std::string fichero) const {
+void Renderer::testRenderMethod(const Renderer::Metodo metodo, const std::string fichero) const {
 	// iterar para cada pixel de la camara:
 		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
 	Vector3 o = c->getPos();
@@ -131,7 +125,7 @@ void Escena::testRenderMethod(const Escena::Metodo metodo, const std::string fic
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
 // Itera todo el vector de figuras
-void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const {
+void Renderer::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const {
 	bool interseccion = false;
 	Color color(0.0,0.0,0.0);
 	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
@@ -160,15 +154,15 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 const Color COLOR_FONDO(0,0,0);
 
 
-Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const int nRebotes, const bool primerRebote) const {
-	// std::cout << "En ruleta de escena" << '\n';
+Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const int nRebotes, const bool primerRebote) const {
+	// std::cout << "En ruleta de Renderer" << '\n';
 	//nRebotes=nRebotes-1;
 	Material mat = fig->getMaterial();
 	int evento = mat.ruletaRusa(gen, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
 	Color c;
-	// std::cout << "ruleta rusa" << '\n';
+	std::cout << "ruleta rusa" << '\n';
 	if (evento == 3){// || nRebotes == 0) { // absorcion
-		// std::cout << "absorcion.." << '\n';
+		std::cout << "absorcion.." << '\n';
 		return c;
 	}
 	else { // se procesa el evento
@@ -196,27 +190,19 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> inte
 	for (auto fig : vFigs) {
 		auto iFig = fig->interseccion(o, dir);
 		// std::cout << "Probando interseccion con " <<fig << '\n';
-		if (iFig) {
-			if (tMenor(iFig->t, t)) {
-				//std::cout << "Interseccion con  " <<fig << '\n';
-				std::cout << "he intersectado con..." << std::endl;
-				std::cout << fig << std::endl;
-				t = iFig->t;
-				pto = iFig->punto;
-				f = fig;
-				intersectado = true;
-				std::cout << "------------------" << '\n';
-//
-			}
+		if (intersectado = iFig && tMenor(iFig->t, t)) {
+			//std::cout << "Interseccion con  " <<fig << '\n';
+			t = iFig->t;
+			pto = iFig->punto;
+			f = fig;
 		}
-
 	}
 	if (!intersectado) return {}; // std::nullopt
 	return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(Figura::InterseccionData{t, pto}, f);
 }
 
 
-Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes, const bool primerRebote) const {
+Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes, const bool primerRebote) const {
 	// std::cout << "Trazando un path" << '\n';
 	Color c = COLOR_FONDO;
 	double t = 1;
@@ -231,12 +217,12 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes
 	// auto interseccionFigura = bvh.interseccion(o, dir); //
 	//auto interseccionFigura = interseccion(figuras, o, dir);
 	// std::cout << "Fin interseccion..........." << '\n';
-	// if (!primerRebote) {
-	// 	std::cout << "No soy el primer rebote, si intersecto te lo digo" << '\n';
-	// }
+	if (!primerRebote) {
+		std::cout << "No soy el primer rebote, si intersecto te lo digo" << '\n';
+	}
 	if (interseccionFigura) { // intersecta con alguna
 		if (!primerRebote) {
-			// std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
+			std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
 		}
 		// std::cout << "Intersecto con algo loco" << '\n';
 		// std::cout << "dist y pto: "  << t << ", " << ptoInterseccion << '\n';
@@ -246,22 +232,21 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes
 			// std::cout << "a por emision" << '\n';
 			// return fig->getEmision();
 			c = fig->getEmision();
-			//if (!primerRebote) return c*2.0; // TODO: multiplicacion bestia de la iluminacion, revisar
 		}
 		else {
-			//std::cout << "He intersectado con un no emisor" << '\n';
+			std::cout << "He intersectado con un no emisor" << '\n';
 			Figura::InterseccionData iData = interseccionFigura->first;
 			// t = iData.t;
 			Vector3 ptoInterseccion = iData.punto;
 			// std::cout << "na que no emito" << '\n';
-			c = ruletaRusa(fig, ptoInterseccion, primerRebote, nRebotes);
+			// c = ruletaRusa(fig, ptoInterseccion, primerRebote, nRebotes);
 
 			// if (colores == VectoresWi) { // TODO: algo asi?
 			// 	// DEBUG: parece que los vectores los saca bien:
-				// Matriz4 base = fig->getBase(ptoInterseccion);
-				// Material mat = fig->getMaterial();
-				// Vector3 otroPath = mat.getVectorSalida(base, gen, 0);
-				// c.setFromNormal(otroPath);
+				Matriz4 base = fig->getBase(ptoInterseccion);
+				Material mat = fig->getMaterial();
+				Vector3 otroPath = mat.getVectorSalida(base, gen, 0);
+				c.setFromNormal(otroPath);
 			// }
 		}
 	}
@@ -270,7 +255,7 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes
 
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
-void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
+void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		bool interseccion = false;
 		Color color(0.0,0.0,0.0);
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
@@ -280,13 +265,12 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 			color = color + cPixel;// suma de cada path / double(nRayos);
 		}
 		color = color / double(nRayos); // promedio
-		color.clamp(1.0); // TODO: revisar
 		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
 
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
-void Escena::renderPixelViejo(Imagen& im, const Vector3& o, const int pixel) const {
+void Renderer::renderPixelViejo(Imagen& im, const Vector3& o, const int pixel) const {
 		bool interseccion = false;
 		Color color(0.0,0.0,0.0);
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
@@ -333,11 +317,11 @@ void Escena::renderPixelViejo(Imagen& im, const Vector3& o, const int pixel) con
 // 	std::cout << fig << std::endl;
 // 	std::cout << fig->getBoundingBox()->to_string() << std::endl;
 // }
-// std::cout << "ESCENA\n " << this->to_string() << std::endl;
+// std::cout << "Renderer\n " << this->to_string() << std::endl;
 // std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
 
 
-void Escena::render(const std::string fichero) {
+void Renderer::render(const std::string fichero) {
 	hrc::time_point t1, t2;
 	t1 = hrc::now();
 
@@ -376,7 +360,7 @@ void Escena::render(const std::string fichero) {
 }
 
 /* Implementacion secuencial:
-void Escena::renderSecuencial(const std::string fichero) const {
+void Renderer::renderSecuencial(const std::string fichero) const {
 	// iterar para cada pixel de la camara:
 		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
 	Vector3 o = c->getPos();
@@ -391,7 +375,7 @@ void Escena::renderSecuencial(const std::string fichero) const {
 
 
 // para evitar el to_string en cout
-std::ostream& operator<<(std::ostream& os, const Escena& e) {
+std::ostream& operator<<(std::ostream& os, const Renderer& e) {
 	os << e.to_string();
 	return os;
 }

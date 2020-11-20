@@ -288,22 +288,22 @@ void escenaCornellBox(char* argv[]) {
 
 void escenaCornellBoxMateriales(char* argv[]) {
 
-		int pixelesX = 400;
-		int pixelesY = 400;//*9/16;
+		int pixelesX = 30;
+		int pixelesY = 30;//*9/16;
 		Vector3 posCam(0,0,0,true);
 		Vector3 fCam = FRONT;//(0,1,0,false);
 		Vector3 lCam = LEFT; //(1,0,0,false);
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP =50; // rayos por pixel
+		int rayosPP =1; // rayos por pixel
 
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
 		//c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
-		int nThreads = 12; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		int nThreads = 1; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 
 		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::MaterialesSinBVH);
@@ -316,14 +316,14 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		difusoVerde.setCoeficiente(Color(0,0.8,0),0);
 		Material difusoRojo = difuso;
 		difusoRojo.setCoeficiente(Color(0.8,0,0),0);
-		Material difusoGris = difuso;
-		difusoGris.setCoeficiente(Color(0.95,0.95,0.95),0);
+		Material difusoGris = DIFUSO_GRIS;
 		//
 		// // Caja:
-		// Plano suelo(UP, distanciaParedes);
-		// // suelo.setColor(0.8,0.8,0.8);
-		// suelo.setMaterial(difusoGris);
-		// e.addFigura(std::make_shared<Plano>(suelo));
+		Plano suelo(UP, 1.0*distanciaParedes);
+		// suelo.setColor(0.8,0.8,0.8);
+		suelo.setMaterial(difusoGris);
+		e.addFigura(std::make_shared<Plano>(suelo));
+
 		Plano techo(-UP, distanciaParedes);
 		techo.setColor(0.8,0.8,0.8);
 		// techo.setMaterial(difusoGris);
@@ -347,7 +347,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		// // paredOculta.setColor(0,0,0);
 		// e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
-		// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
+		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
@@ -355,17 +355,17 @@ void escenaCornellBoxMateriales(char* argv[]) {
 			Esfera esf(centroSuelo + tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
 			//esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLECCION
-			esf.setMaterial(difuso);
+			esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
 			Esfera esfdcha(centroSuelo + tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
-			esfdcha.setMaterial(difuso);
+			esfdcha.setMaterial(difusoVerde);
 			// esfdcha.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esfdcha));
 			Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
-			esf2.setMaterial(difuso);
+			esf2.setMaterial(difusoGris);
 			//esf2.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esf2));
 			/*Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,0.2*tamEsfera, false);
@@ -484,6 +484,6 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	// escenaCornellBoxMateriales(argv);
-	fixIluminacion(argv);
+	escenaCornellBoxMateriales(argv);
+	// fixIluminacion(argv);
 }

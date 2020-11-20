@@ -27,6 +27,9 @@ Material::Material(const Color& c1, const Color& c2, const Color& c3)
 	setMaximos();
 }
 
+
+
+
 // Material::Material(bool aleatorio) {
 // 	if (aleatorio) {
 // 		setRandom();
@@ -42,7 +45,7 @@ Material::Material(const Tipo predeterminado) {
 		exit(1);
 	}
 	else if (predeterminado==Tipo::Difuso) {
-		coeficientes[0].setRGB(0.97,0.97,0.97);
+		coeficientes[0].setRGB(0.9,0.9,0.9);
 		//coeficientes[0].setRandom();
 		// while (!coeficientesCorrectos()) {
 		// 	coeficientes[0].setRandom();
@@ -63,6 +66,10 @@ void Material::setMaximos() {
 		for (int j = 0; j < 3; j++) {
 			if (coeficientes[i][j]>maxCoefs[i]) {
 				maxCoefs[i] = coeficientes[i][j];
+				if (maxCoefs[i]>0.9) {
+					std::cerr << "El coeficiente maximo no puede ser mayor de 0.9!!" << '\n';
+					exit(1);
+				}
 			}
 		}
 	}

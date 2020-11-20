@@ -75,3 +75,6 @@ public:
 
 	// ---------------------- Prefabricados:
 	const Material DIFUSO_VERDE = Material(Color(0.05,0.9,0.05), Color(), Color());
+	const Material DIFUSO_ROJO = Material(Color(0.9,0.05,0.05), Color(), Color());
+	const Material DIFUSO_AZUL = Material(Color(0.05,0.05,0.9), Color(), Color());
+	const Material DIFUSO_GRIS = Material(Color(0.7,0.7,0.7), Color(), Color());

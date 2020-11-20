@@ -37,6 +37,8 @@ public:
 
   void setRGB(const double _r, const double _g, const double _b);
 
+  void clamp(const float max);
+
 
   void setRGB(const std::array<double,3> rgb);
 

@@ -31,7 +31,7 @@ std::optional<Figura::InterseccionData> Plano::interseccion(const Vector3& orige
 	double d_n = dir*normal;
 	if (d_n!=0) { // intersecta
 		double t = -(getDist()+origen*normal)/d_n;
-		if (t<0) return std::nullopt;
+		if (t<=0) return std::nullopt;
 		else return InterseccionData{t, origen+dir*t}; // t
 	}
 	// std::cout << "Interseccion con plano\n";

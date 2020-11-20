@@ -87,6 +87,12 @@ double Color::getB() const {
   return b;
 }
 
+void Color::clamp(const float max) {
+  if (r>max) r = max;
+  if (g>max) g = max;
+  if (b>max) b = max;
+}
+
 
 std::string Color::to_string() const {
   std::string s = std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b) + "\n";

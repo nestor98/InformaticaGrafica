@@ -114,7 +114,7 @@ std::optional<Figura::InterseccionData> Esfera::interseccion(const Vector3& orig
       else{
           distancia =  t2;
       }
-			if (distancia<0) return std::nullopt; // intersecta detras del origen, como si no intersectara
+			if (distancia<=0) return std::nullopt; // intersecta detras del origen, como si no intersectara
       return Figura::InterseccionData{distancia, origen+distancia*dir};
   }
   else {

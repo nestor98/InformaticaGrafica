@@ -296,7 +296,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP =100; // rayos por pixel
+		int rayosPP =50; // rayos por pixel
 
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
@@ -334,7 +334,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		e.addFigura(std::make_shared<Plano>(paredi));
 		Plano paredd(LEFT, distanciaParedes);
 		
-		paredd.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
+		paredd.setMaterial(difusoRojo);
 		 // paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
@@ -369,17 +369,17 @@ void escenaCornellBoxMateriales(char* argv[]) {
 			esf2.setMaterial(difusoGris);
 			//esf2.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esf2));
-			/*Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,0.2*tamEsfera, false);
+			Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,0.2*tamEsfera, false);
 			tamPrisma = tamPrisma/2.0;
 			Prisma caja(centroSuelo + 1.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
 			// cout << esf.to_string() << endl;
-			caja.setMaterial(difusoRojo);
+			caja.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
 			e.addFigura(std::make_shared<Prisma>(caja));
 
 			Prisma caja2(centroSuelo + 0.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
 			// cout << esf.to_string() << endl;
-			caja2.setMaterial(difusoVerde);
-			e.addFigura(std::make_shared<Prisma>(caja2));*/
+			caja2.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
+			e.addFigura(std::make_shared<Prisma>(caja2));
 		} // LUZ:
 		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
 		// tamPrismaLuz = tamPrismaLuz*30.0;

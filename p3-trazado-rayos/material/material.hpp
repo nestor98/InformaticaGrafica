@@ -81,3 +81,6 @@ public:
 
 	const Material METAL_GRIS = Material(Color(0.45,0.45,0.45), Color(0.45,0.45,0.45), Color());
 	const Material ESPEJO = Material(Color(), Color(0.9,0.9,0.9), Color());
+
+
+	const Material VIDRIO = Material(Color(), Color(), Color(0.9,0.9,0.9));

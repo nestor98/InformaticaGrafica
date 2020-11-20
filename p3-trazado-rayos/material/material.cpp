@@ -98,9 +98,20 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 
 	}
 	else {	//refraccion
-
-		std::cerr << "Aun no has implementado otros materiales..." << '\n';
-		exit(1);
+		double coefRefraccion = 1.45; // TODO: campo del material o algo
+		// Vector3 wo = base.inversa()*normalizar(incidente);
+		// // std::cout << "wo: " << wo << '\n';
+		// wi = wo;
+		// wi[1] = coefRefraccion * wo[1];
+		// wi[2] = (1.0/coefRefraccion) * wo[2];
+		// std::cout << "wi: " << wi << '\n';
+		// if (wo.getModulo() != wi.getModulo()) {
+		// 	std::cerr << "MALLLLLLL " << wo.getModulo() << " " << wi.getModulo() << '\n';
+		// }
+    float cosi = base[2]*incidente;
+    wi = (incidente * coefRefraccion - base[2] * (-cosi + coefRefraccion * cosi));
+		wi=base*wi;
+		// std::cout << "wi mundo: " << wi << '\n';
 	}
 	return normalizar(wi);
 }
@@ -160,8 +171,6 @@ void Material::setRandom() {
 			return 1; // Reflexion
 		}
 		else if (random < maxCoefs[0]+maxCoefs[1]+maxCoefs[2]) {
-			std::cerr << "Aun no has implementado refracciones xd" << '\n';
-			exit(1);
 			return 2; // Refraccion
 		}
 		else {

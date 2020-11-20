@@ -223,3 +223,6 @@ Vector3 abs(const Vector3& v);
 
 
 Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto);
+
+
+Matriz4 baseFromVectorYOrigen(const Vector3& normal, const Vector3& pto,  const Vector3& origen);

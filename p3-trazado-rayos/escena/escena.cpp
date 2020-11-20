@@ -170,6 +170,11 @@ Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, 
 	if (evento == 3){// || nRebotes == 0) { // absorcion
 		// std::cout << "absorcion.." << '\n';
 		return c;
+	} else if (evento == 2) { // REFRACCION
+		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
+		// c =mat.getCoeficiente(evento); // TODO: un poco mas majo
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
+		c = pathTrace(pto, otroPath, rngThread);
 	}
 	else { // se procesa el evento
 		Matriz4 base = fig->getBase(pto);
@@ -264,9 +269,11 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAle
 			// if (colores == VectoresWi) { // TODO: algo asi?
 			// 	// DEBUG: parece que los vectores los saca bien:
 				// Matriz4 base = fig->getBase(ptoInterseccion);
+				// Matriz4 base = baseFromVectorYOrigen(fig->getNormal(ptoInterseccion), ptoInterseccion, dir);
+				// // std::cout << base.inversa() * dir << std::endl;
 				// Material mat = fig->getMaterial();
-				// Vector3 otroPath = mat.getVectorSalida(base, gen, 1, dir);
-				// c.setFromNormal(otroPath);
+				// Vector3 otroPath = mat.getVectorSalida(base, gen, 2, dir);
+				// c.setFromNormalNoAbs(otroPath);
 			// }
 		}
 	}

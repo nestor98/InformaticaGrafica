@@ -558,3 +558,21 @@ Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto) {
 	base.setCambioBase(normalizar(j), normalizar(k), normalizar(i), pto);
 	return base;
 }
+
+
+
+
+Matriz4 baseFromVectorYOrigen(const Vector3& normal, const Vector3& pto,  const Vector3& origen) {
+	Vector3 i, j, k;
+	// j = origen - pto;
+	i = normal;
+
+	k = cross(normalizar(origen), i);
+	// if (k.getModulo()==0) {
+	// 	k = cross(LEFT, i);
+	// }
+	j = cross(k, i);
+	Matriz4 base;
+	base.setCambioBase(normalizar(k), normalizar(j), normalizar(i), pto);
+	return base;
+}

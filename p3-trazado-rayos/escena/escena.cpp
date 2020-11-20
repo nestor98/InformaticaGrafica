@@ -160,7 +160,7 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 const Color COLOR_FONDO(0,0,0);
 
 
-Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
+Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
 	// std::cout << "En ruleta de escena" << '\n';
 	//nRebotes=nRebotes-1;
 	Material mat = fig->getMaterial();
@@ -174,7 +174,7 @@ Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, 
 	else { // se procesa el evento
 		Matriz4 base = fig->getBase(pto);
 		c = mat.getCoeficiente(evento); // kd
-		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento);
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
 		//c = mat.getCoeficiente(evento); // kd
 		// std::cout << "Calculo otro path\n";// << pto << " hacia " << otroPath << '\n';
 		// Color radianza = pathTrace(pto, otroPath, nRebotes-1);
@@ -247,7 +247,7 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAle
 			// std::cout << "a por emision" << '\n';
 			// return fig->getEmision();
 			c = fig->getEmision();
-			if (!primerRebote) return c*2.0; // TODO: multiplicacion bestia de la iluminacion, revisar
+			if (!primerRebote) return c*1.75; // TODO: multiplicacion bestia de la iluminacion, revisar
 		}
 		else {
 			// std::cout << "He intersectado con un no emisor" << '\n';
@@ -258,14 +258,14 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAle
 			// std::cout << "na que no emito" << '\n';
 			// std::cout << "A ver la ruleta" << '\n';
 
-			c = ruletaRusa(fig, ptoInterseccion, rngThread, primerRebote);
+			c = ruletaRusa(fig, dir, ptoInterseccion, rngThread, primerRebote);
 			// std::cout << "Vuelvo de la ruleta" << '\n';
 
 			// if (colores == VectoresWi) { // TODO: algo asi?
 			// 	// DEBUG: parece que los vectores los saca bien:
 				// Matriz4 base = fig->getBase(ptoInterseccion);
 				// Material mat = fig->getMaterial();
-				// Vector3 otroPath = mat.getVectorSalida(base, gen, 0);
+				// Vector3 otroPath = mat.getVectorSalida(base, gen, 1, dir);
 				// c.setFromNormal(otroPath);
 			// }
 		}
@@ -376,7 +376,7 @@ void Escena::render(const std::string fichero) {
 	t2 = hrc::now();
 	std::chrono::duration<double> t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 	// t2 -> tRender2 = t2-t1
-	std::cout << "Render realizado en " << t.count() << " segundos" << std::endl;
+	std::cout << "Render realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
 
 
 }

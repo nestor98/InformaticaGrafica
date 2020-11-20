@@ -93,15 +93,16 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		//double an=acos((base[3]*base[0])/(base[3].getModulo()*base[0].getModulo()));
 		Vector3 u=base.inversa()*(incidente); //inversa base* normal
 		wi=u;
-		wi[0]=-u[0];
+		wi[2]=-u[2];
 		wi=base*wi;
+
 	}
 	else {	//refraccion
 
 		std::cerr << "Aun no has implementado otros materiales..." << '\n';
 		exit(1);
 	}
-	return wi;
+	return normalizar(wi);
 }
 
 

@@ -63,7 +63,7 @@ Vector3 Camara::getRayoPixel(const int i) const{
 	// std::cout << xLeft << "\t" << yUp << std::endl;
 	Vector3 dirCamara(xLeft, yUp, 1, false);
 	//std::cout << "Dircamara: " << dirCamara << std::endl;
-	return base*dirCamara; // se devuelve en coords del mundo
+	return normalizar(base*dirCamara); // se devuelve en coords del mundo
 }
 
 int Camara::getRayosPorPixel() const {

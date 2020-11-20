@@ -296,7 +296,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP =50; // rayos por pixel
+		int rayosPP =1200; // rayos por pixel
 
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
@@ -343,9 +343,9 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 		//
 		//
-		Plano paredOculta(FRONT, 2.0*distanciaParedes);
+		Plano paredOculta(FRONT, 0.1*distanciaParedes);
 		paredOculta.setMaterial(DIFUSO_AZUL);
-		// paredOculta.setColor(0,0,0);
+		// paredOculta.setColor(0.05,0.05,0.8);
 		e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
@@ -360,25 +360,28 @@ void escenaCornellBoxMateriales(char* argv[]) {
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
 			Esfera esfdcha(centroSuelo + tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1
-			// cout << esf.to_string() << endl;
-			esfdcha.setMaterial(difusoVerde);
+
+			esfdcha.setMaterial(METAL_GRIS);
 			// esfdcha.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esfdcha));
 			Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
-			esf2.setMaterial(difusoGris);
-			//esf2.setRandomColor();
+			// esf2.setMaterial(difusoGris);
+			esf2.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esf2));
 			Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,0.2*tamEsfera, false);
 			tamPrisma = tamPrisma/2.0;
 			Prisma caja(centroSuelo + 1.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
 			// cout << esf.to_string() << endl;
-			caja.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
+			// caja.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
+			// caja.setColor(0.32,0.2,0.2);
+			caja.setRandomColor();
 			e.addFigura(std::make_shared<Prisma>(caja));
 
 			Prisma caja2(centroSuelo + 0.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
 			// cout << esf.to_string() << endl;
 			caja2.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
+			// caja2.setColor(0.2,0.5,0.2);
 			e.addFigura(std::make_shared<Prisma>(caja2));
 		} // LUZ:
 		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;

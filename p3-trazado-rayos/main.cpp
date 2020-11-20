@@ -303,10 +303,10 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		//c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
-		int nThreads = 1; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		int nThreads = 12; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 
-		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Materiales);
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Materiales);//MaterialesSinBVH
 
 		float distanciaParedes = 3;
 
@@ -325,27 +325,27 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		e.addFigura(std::make_shared<Plano>(suelo));
 
 		Plano techo(-UP, distanciaParedes);
-		techo.setColor(0.8,0.8,0.8);
+		techo.setColor(1,1,1);
 		// techo.setMaterial(difusoGris);
 		e.addFigura(std::make_shared<Plano>(techo));
-		// Plano paredi(-LEFT, distanciaParedes);
-		//  // paredi.setColor(0.8,0,0);
-		// paredi.setMaterial(difusoVerde);
-		// e.addFigura(std::make_shared<Plano>(paredi));
-		// Plano paredd(LEFT, distanciaParedes);
-		// paredd.setMaterial(difusoRojo);
-		//  // paredd.setColor(0,0.8,0);
-		// e.addFigura(std::make_shared<Plano>(paredd));
-		// Plano paredFondo(-FRONT, 2.0*distanciaParedes);
-		//  // paredFondo.setColor(0.75,0.75,0.75);
-		// paredFondo.setMaterial(difusoGris);
-		// e.addFigura(std::make_shared<Plano>(paredFondo));
+		Plano paredi(-LEFT, distanciaParedes);
+		 // paredi.setColor(0.8,0,0);
+		paredi.setMaterial(difusoVerde);
+		e.addFigura(std::make_shared<Plano>(paredi));
+		Plano paredd(LEFT, distanciaParedes);
+		paredd.setMaterial(difusoRojo);
+		 // paredd.setColor(0,0.8,0);
+		e.addFigura(std::make_shared<Plano>(paredd));
+		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
+		 // paredFondo.setColor(0.75,0.75,0.75);
+		paredFondo.setMaterial(difusoGris);
+		e.addFigura(std::make_shared<Plano>(paredFondo));
 		//
 		//
-		// Plano paredOculta(FRONT, 8*distanciaParedes);
-		// paredOculta.setMaterial(difuso);
-		// // paredOculta.setColor(0,0,0);
-		// e.addFigura(std::make_shared<Plano>(paredOculta));
+		Plano paredOculta(FRONT, 2*distanciaParedes);
+		paredOculta.setMaterial(difusoGris);
+		// paredOculta.setColor(0,0,0);
+		e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;

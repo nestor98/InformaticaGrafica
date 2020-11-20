@@ -137,6 +137,8 @@ bool compAmayorCompB(const Vector3& a, const Vector3& b) {
 	return mayor; // si llega aqui es falso
 }
 
+
+// TODO: Muy optimizable (importante si queremos poner muchas figuras con el BVH)
 // True sii el rayo desde <origen>, hacia <dir> intersecta con el Prisma
 // adaptado de: https://developer.arm.com/documentation/100140/0302/advanced-graphics-techniques/implementing-reflections-with-a-local-cubemap/ray-box-intersection-algorithm
 std::optional<Figura::InterseccionData> Prisma::interseccion(const Vector3& origen, const Vector3& dir) const {
@@ -180,6 +182,9 @@ std::optional<Figura::InterseccionData> Prisma::interseccion(const Vector3& orig
   float tmax = (max[0] - origen[0]) / dir[0];
 
   if (tmin > tmax) std::swap(tmin, tmax);*/
+	if (contiene(origen)) { // si el origen está dentro del prisma, devolvemos el pto directamente
+  	return InterseccionData{0, origen};
+	}
 
   if (invdir[0] >= 0) {
     tmin = (min[0] - origen[0]) * invdir[0];

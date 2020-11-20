@@ -288,15 +288,15 @@ void escenaCornellBox(char* argv[]) {
 
 void escenaCornellBoxMateriales(char* argv[]) {
 
-		int pixelesX = 30;
-		int pixelesY = 30;//*9/16;
+		int pixelesX = 400;
+		int pixelesY = 400;//*9/16;
 		Vector3 posCam(0,0,0,true);
 		Vector3 fCam = FRONT;//(0,1,0,false);
 		Vector3 lCam = LEFT; //(1,0,0,false);
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP =1; // rayos por pixel
+		int rayosPP =100; // rayos por pixel
 
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
@@ -306,7 +306,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		int nThreads = 1; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 
-		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::MaterialesSinBVH);
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Materiales);
 
 		float distanciaParedes = 3;
 

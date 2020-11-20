@@ -233,7 +233,7 @@ std::optional<Figura::InterseccionData> Prisma::interseccion(const Vector3& orig
   if (tzmax < tmax)
       tmax = tzmax;
 		// std::cout << "aja\n";
-	if (tmin<=0) return std::nullopt;
+	if (tmin<0) return std::nullopt;
   return InterseccionData{tmin, origen+tmin*dir};
 }
 

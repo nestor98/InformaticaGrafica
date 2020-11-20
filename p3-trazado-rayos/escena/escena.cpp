@@ -160,7 +160,7 @@ void Escena::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) co
 const Color COLOR_FONDO(0,0,0);
 
 
-Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const int nRebotes, const bool primerRebote) const {
+Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const bool primerRebote) const {
 	// std::cout << "En ruleta de escena" << '\n';
 	//nRebotes=nRebotes-1;
 	Material mat = fig->getMaterial();
@@ -177,11 +177,11 @@ Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, 
 		c = mat.getCoeficiente(evento); // kd
 		Vector3 otroPath = mat.getVectorSalida(base, gen, evento);
 		//c = mat.getCoeficiente(evento); // kd
-		// std::cout << "Calculo otro path desde " << pto << " hacia " << otroPath << '\n';
-		Color radianza = pathTrace(pto+otroPath*0.0001, otroPath, nRebotes-1);
+		// std::cout << "Calculo otro path\n";// << pto << " hacia " << otroPath << '\n';
+		// Color radianza = pathTrace(pto, otroPath, nRebotes-1);
 		// if (!(radianza == double(0))) // TODO: esto siempre devuelve 0 :((((((((((((((
 		// 	std::cout << "Radianza (resultado de pathTrace): " << radianza.to_string() << '\n';
-		c = c*pathTrace(pto+otroPath*0.0001, otroPath, nRebotes-1); // kd * Li
+		c = c*pathTrace(pto, otroPath); // kd * Li
 		// std::cout << "c: "<<c.to_string() << '\n';
 	} // TODO: otros eventos
 	// TODO: tener en cuenta que pa refl y refr, wo es -vector, no +vector!!!!!!
@@ -199,13 +199,13 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> inte
 		if (iFig) {
 			if (tMenor(iFig->t, t)) {
 				//std::cout << "Interseccion con  " <<fig << '\n';
-				std::cout << "he intersectado con..." << std::endl;
-				std::cout << fig << std::endl;
+				// std::cout << "he intersectado con..." << std::endl;
+				// std::cout << fig << std::endl;
 				t = iFig->t;
 				pto = iFig->punto;
 				f = fig;
 				intersectado = true;
-				std::cout << "------------------" << '\n';
+				// std::cout << "------------------" << '\n';
 //
 			}
 		}
@@ -216,18 +216,20 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> inte
 }
 
 
-Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes, const bool primerRebote) const {
+Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const bool primerRebote) const {
 	// std::cout << "Trazando un path" << '\n';
 	Color c = COLOR_FONDO;
 	double t = 1;
 	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
+	// std::cout << "Voy a intersectar" << '\n';
 	if (renderSeleccionado == MaterialesSinBVH) { // Sin bvh
 		interseccionFigura = interseccion(figuras, o, dir);
 	}
 	else { // con bvh
-		std::cout << "Cuidado con la interseccion con bvh" << '\n';
+		// std::cout << "Cuidado con la interseccion con bvh" << '\n';
 		interseccionFigura = bvh.interseccion(o, dir);
 	}
+	// std::cout << "Hecho" << '\n';
 	// auto interseccionFigura = bvh.interseccion(o, dir); //
 	//auto interseccionFigura = interseccion(figuras, o, dir);
 	// std::cout << "Fin interseccion..........." << '\n';
@@ -249,12 +251,16 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes
 			//if (!primerRebote) return c*2.0; // TODO: multiplicacion bestia de la iluminacion, revisar
 		}
 		else {
-			//std::cout << "He intersectado con un no emisor" << '\n';
+			// std::cout << "He intersectado con un no emisor" << '\n';
 			Figura::InterseccionData iData = interseccionFigura->first;
+			// std::cout << "A ver el pto" << '\n';
 			// t = iData.t;
 			Vector3 ptoInterseccion = iData.punto;
 			// std::cout << "na que no emito" << '\n';
-			c = ruletaRusa(fig, ptoInterseccion, primerRebote, nRebotes);
+			// std::cout << "A ver la ruleta" << '\n';
+
+			c = ruletaRusa(fig, ptoInterseccion, primerRebote);
+			// std::cout << "Vuelvo de la ruleta" << '\n';
 
 			// if (colores == VectoresWi) { // TODO: algo asi?
 			// 	// DEBUG: parece que los vectores los saca bien:
@@ -276,7 +282,7 @@ void Escena::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 		for (int i=0; i<nRayos; i++) { // cada rayo
 			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
-			Color cPixel = pathTrace(o, dir, 10000, true); // true para que el primero siempre rebote
+			Color cPixel = pathTrace(o, dir, true); // true para que el primero siempre rebote
 			color = color + cPixel;// suma de cada path / double(nRayos);
 		}
 		color = color / double(nRayos); // promedio

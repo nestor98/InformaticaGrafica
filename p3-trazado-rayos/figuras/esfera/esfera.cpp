@@ -145,7 +145,7 @@ Vector3 Esfera::getNormal(const Vector3& pto) const {
 void Esfera::setBoundingBox() {
 	// la caja va del centro-{radio,radio,radio} hasta el centro+{radio,radio,radio}
 	Vector3 despl(radio); // 3 componentes radio, radio, radio
-	bbox = std::shared_ptr<Prisma>(new Prisma(posicion - despl, despl*2.0));
+	bbox = std::shared_ptr<Prisma>(new Prisma(posicion - despl, despl*2.0, true));
 }
 
 std::shared_ptr<Prisma> Esfera::getBoundingBox() const {

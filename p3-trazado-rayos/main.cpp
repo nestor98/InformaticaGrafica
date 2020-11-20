@@ -303,10 +303,10 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		//c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
-		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		int nThreads = 12; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 
-		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Materiales);//MaterialesSinBVH
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Materiales);//Materiales);//MaterialesSinBVH
 
 		float distanciaParedes = 3;
 
@@ -333,7 +333,128 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		paredi.setMaterial(difusoVerde);
 		e.addFigura(std::make_shared<Plano>(paredi));
 		Plano paredd(LEFT, distanciaParedes);
-		
+
+		paredd.setMaterial(difusoRojo);
+		 // paredd.setColor(0,0.8,0);
+		e.addFigura(std::make_shared<Plano>(paredd));
+		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
+		 // paredFondo.setColor(0.75,0.75,0.75);
+		paredFondo.setMaterial(ESPEJO);
+		e.addFigura(std::make_shared<Plano>(paredFondo));
+		//
+		//
+		Plano paredOculta(FRONT, 2.0*distanciaParedes);
+		paredOculta.setMaterial(DIFUSO_AZUL);
+		// paredOculta.setColor(0,0,0);
+		e.addFigura(std::make_shared<Plano>(paredOculta));
+		// Figuras:
+		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
+		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
+		for (int i = 0; i<1; i++) {
+			float tamEsfera =distanciaParedes/3.0*1.2;
+
+			Esfera esf(centroSuelo + tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
+			// cout << esf.to_string() << endl;
+			esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLEXION
+			//esf.setMaterial(difusoRojo);
+			e.addFigura(std::make_shared<Esfera>(esf));
+			//
+			Esfera esfdcha(centroSuelo + tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1
+			// cout << esf.to_string() << endl;
+			esfdcha.setMaterial(difusoVerde);
+			// esfdcha.setRandomColor();
+			e.addFigura(std::make_shared<Esfera>(esfdcha));
+			Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, tamEsfera);// 1*1
+			// cout << esf.to_string() << endl;
+			esf2.setMaterial(difusoGris);
+			//esf2.setRandomColor();
+			e.addFigura(std::make_shared<Esfera>(esf2));
+			Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,0.2*tamEsfera, false);
+			tamPrisma = tamPrisma/2.0;
+			Prisma caja(centroSuelo + 1.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
+			// cout << esf.to_string() << endl;
+			caja.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
+			e.addFigura(std::make_shared<Prisma>(caja));
+
+			Prisma caja2(centroSuelo + 0.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
+			// cout << esf.to_string() << endl;
+			caja2.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
+			e.addFigura(std::make_shared<Prisma>(caja2));
+		} // LUZ:
+		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
+		// tamPrismaLuz = tamPrismaLuz*30.0;
+		// Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
+		// Prisma luz(posPrismaLuz, tamPrismaLuz);
+		// luz.setColor(1,1,1);
+		// e.addFigura(std::make_shared<Prisma>(luz));
+
+		// 10 prismas equidistantes pequeñicos:
+		// double d_prisma = 2.0*distanciaParedes / 10.0;
+		// for (int i = 0; i<100; i++) {
+		//
+		// 	Vector3 tamPrisma(1,1,1, false);
+		// 	tamPrisma = d_prisma/2.0 * tamPrisma;
+		// 	Prisma caja(centroSuelo + 0.75*distanciaParedes*LEFT + d_prisma * FRONT * (i-5), tamPrisma);// 1*1
+		// 	// cout << esf.to_string() << endl;
+		// 	caja.setRandomColor();
+		// 	e.addFigura(std::make_shared<Prisma>(caja));
+		// }
+
+		e.render("out/" + string(argv[1]));
+		//e.testBVHRender();
+		//std::cout << "escena\n" <<e << '\n';
+}
+
+
+
+void debugReflexion(char* argv[]) {
+
+		int pixelesX = 400;
+		int pixelesY = 400;//*9/16;
+		Vector3 posCam(0,0,0,true);
+		Vector3 fCam = FRONT;//(0,1,0,false);
+		Vector3 lCam = LEFT; //(1,0,0,false);
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+		//Camara c(posCam, dirCam);
+		//cout << c << endl;
+		int rayosPP =50; // rayos por pixel
+
+		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+
+		//c.setFOV(0.4*PI);
+		// c.setFOV(PI);
+
+		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		//
+
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Materiales);//Materiales);//MaterialesSinBVH
+
+		float distanciaParedes = 3;
+
+
+		Material difuso(Material::Difuso);
+		Material difusoVerde = difuso;
+		difusoVerde.setCoeficiente(Color(0,0.8,0),0);
+		Material difusoRojo = difuso;
+		difusoRojo.setCoeficiente(Color(0.8,0,0),0);
+		Material difusoGris = DIFUSO_GRIS;
+		//
+		// // Caja:
+		Plano suelo(UP, 1.0*distanciaParedes);
+		// suelo.setColor(0.8,0.8,0.8);
+		suelo.setMaterial(difusoGris);
+		e.addFigura(std::make_shared<Plano>(suelo));
+
+		Plano techo(-UP, distanciaParedes);
+		techo.setColor(1,1,1);
+		// techo.setMaterial(difusoGris);
+		e.addFigura(std::make_shared<Plano>(techo));
+		Plano paredi(-LEFT, distanciaParedes);
+		 // paredi.setColor(0.8,0,0);
+		paredi.setMaterial(difusoVerde);
+		e.addFigura(std::make_shared<Plano>(paredi));
+		Plano paredd(LEFT, distanciaParedes);
+
 		paredd.setMaterial(difusoRojo);
 		 // paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
@@ -355,7 +476,7 @@ void escenaCornellBoxMateriales(char* argv[]) {
 
 			Esfera esf(centroSuelo + tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
-			esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLECCION
+			esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLEXION
 			//esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
@@ -439,7 +560,8 @@ void fixIluminacion(char* argv[]) {
 		Material difusoRojo = difuso;
 		difusoRojo.setCoeficiente(Color(0.8,0.25,0.25),0);
 		Material difusoGris = difuso;
-		difusoGris.setCoeficiente(Color(1,1,1),0);
+		difusoGris.setCoeficiente(Color(0.9,0.9,0.9),0);
+
 
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT;// - distanciaParedes*UP;
 		float tamEsfera =distanciaParedes/3.0;

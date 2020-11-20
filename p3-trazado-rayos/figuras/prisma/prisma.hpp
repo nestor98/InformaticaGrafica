@@ -18,12 +18,12 @@ class Prisma : public Figura {
 	Vector3 tam; // tamaño xyz
 	Vector3 posicion; // posicion de la esquina mas cercana al origen
 	// std::array<Plano, 4> caras;
-
+	bool esAABB; // Axis aligned BB
 	// bool esInfinito;
 
 public:
 	Prisma();
-	Prisma(const Vector3& _posicion, const Vector3& _tam);
+	Prisma(const Vector3& _posicion, const Vector3& _tam, const bool _esAABB=false);
 
 	// Constructor del prisma bounding box del vector de figuras
 	Prisma(const std::vector<std::shared_ptr<Figura>>& bboxes);

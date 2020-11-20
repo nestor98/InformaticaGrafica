@@ -35,7 +35,6 @@ Material::Material(const Color& c1, const Color& c2, const Color& c3)
 // 		setRandom();
 // 		setMaximos();
 // 	}
-//
 // }
 
 Material::Material(const Tipo predeterminado) {

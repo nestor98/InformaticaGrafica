@@ -9,8 +9,8 @@ Prisma::Prisma() :posicion(0,0,0,true), tam(0,0,0,true)
 {}
 
 // Prisma normal
-Prisma::Prisma(const Vector3& _posicion, const Vector3& _tam) :
-	posicion(_posicion), tam(_tam)//, caras[0]()
+Prisma::Prisma(const Vector3& _posicion, const Vector3& _tam, const bool _esAABB) :
+	posicion(_posicion), tam(_tam), esAABB(_esAABB)//, caras[0]()
 {}
 
 
@@ -53,7 +53,7 @@ float maxPos2(const std::vector<std::shared_ptr<Figura>>& prismas, const int i) 
 
 // Constructor del prisma bounding box del vector de figuras
 Prisma::Prisma(const std::vector<std::shared_ptr<Figura>>& bboxes)
-: posicion(minPos(bboxes, 0), minPos(bboxes, 1), minPos(bboxes, 2), true)
+: posicion(minPos(bboxes, 0), minPos(bboxes, 1), minPos(bboxes, 2), true), esAABB(true)
 {
 	tam.setCoords({maxPos2(bboxes, 0)-posicion[0], maxPos2(bboxes, 1)-posicion[1], maxPos2(bboxes, 2)-posicion[2]});
 	// std::cout << "posicion......y tam......." << posicion<<std::endl << tam<< std::endl;
@@ -182,7 +182,7 @@ std::optional<Figura::InterseccionData> Prisma::interseccion(const Vector3& orig
   float tmax = (max[0] - origen[0]) / dir[0];
 
   if (tmin > tmax) std::swap(tmin, tmax);*/
-	if (contiene(origen)) { // si el origen está dentro del prisma, devolvemos el pto directamente
+	if (esAABB && contiene(origen)) { // si el origen está dentro del prisma, devolvemos el pto directamente
   	return InterseccionData{0, origen};
 	}
 
@@ -247,6 +247,7 @@ std::optional<Figura::InterseccionData> Prisma::interseccion(const Vector3& orig
 std::shared_ptr<Prisma> Prisma::getBoundingBox() const {
 	// TODO: actualizar cuando se implementen prismas rotados
 	Prisma box = *this;
+	box.esAABB = true;
 	return std::make_shared<Prisma>(box);
 }
 
@@ -301,7 +302,7 @@ std::shared_ptr<Prisma> combinar(const std::shared_ptr<Prisma> p1, const std::sh
 	// float minz = minI(pos1, pos2, 2);
 	Vector3 posCombinacion(minI(pos1, pos2, 0),minI(pos1, pos2, 1),minI(pos1, pos2, 2), true);
 	Vector3 pos2Combinacion(maxI(pos1_2, pos2_2, 0),maxI(pos1_2, pos2_2, 1),maxI(pos1_2, pos2_2, 2), true);
-	return std::make_shared<Prisma>(Prisma(posCombinacion, pos2Combinacion-posCombinacion));
+	return std::make_shared<Prisma>(Prisma(posCombinacion, pos2Combinacion-posCombinacion, true));
 }
 
 std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> Prisma::partirEnEje(const int eje) const {
@@ -309,9 +310,11 @@ std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> Prisma::partirEnEje(
 	nuevoTam[eje] -= tam[eje]/2.0; // Tamaño de las dos, el mismo con un eje a la mitad
 	// std::cout << tam << " .... " << nuevoTam << std::endl << tam[eje]/2.0;
 	Prisma primero(posicion, nuevoTam); // Empieza en la misma esquina
+	primero.esAABB = true;
 	Vector3 pos2 = posicion;
 	pos2[eje] += tam[eje]/2.0; // desplazado la mitad de su tam en el eje dado
 	Prisma segundo(pos2, nuevoTam);
+	segundo.esAABB = true;
 	return std::pair<std::shared_ptr<Prisma>,std::shared_ptr<Prisma>>(std::make_shared<Prisma>(primero), std::make_shared<Prisma>(segundo));
 } // return primero, segundo   <----- esto es lo de arriba en python :/
 

@@ -166,7 +166,9 @@ Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, 
 	Material mat = fig->getMaterial();
 	int evento = mat.ruletaRusa(gen, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
 	Color c;
+	std::cout << "ruleta rusa" << '\n';
 	if (evento == 3){// || nRebotes == 0) { // absorcion
+		std::cout << "absorcion.." << '\n';
 		return c;
 	}
 	else { // se procesa el evento
@@ -187,16 +189,19 @@ Color Escena::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, 
 }
 
 std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccion(std::vector<std::shared_ptr<Figura>> vFigs, const Vector3& o, const Vector3& dir) {
-	float t = 0;
+	float t = -1;
 	Vector3 pto;
 	std::shared_ptr<Figura> f;
 	bool intersectado = false;
 	for (auto fig : vFigs) {
 		auto iFig = fig->interseccion(o, dir);
-		if (intersectado = iFig && tMenor(t, iFig->t)) {
+		// std::cout << "Probando interseccion con " <<fig << '\n';
+		if (iFig && tMenor(iFig->t, t)) {
+			//std::cout << "Interseccion con  " <<fig << '\n';
 			t = iFig->t;
 			pto = iFig->punto;
 			f = fig;
+			intersectado = true;
 		}
 	}
 	if (!intersectado) return {}; // std::nullopt
@@ -213,14 +218,18 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes
 		interseccionFigura = interseccion(figuras, o, dir);
 	}
 	else { // con bvh
+		std::cout << "Cuidado con la interseccion con bvh" << '\n';
 		interseccionFigura = bvh.interseccion(o, dir);
 	}
 	// auto interseccionFigura = bvh.interseccion(o, dir); //
 	//auto interseccionFigura = interseccion(figuras, o, dir);
 	// std::cout << "Fin interseccion..........." << '\n';
+	// if (!primerRebote) {
+	// 	std::cout << "No soy el primer rebote, si intersecto te lo digo" << '\n';
+	// }
 	if (interseccionFigura) { // intersecta con alguna
 		if (!primerRebote) {
-			//std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
+			std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
 		}
 		// std::cout << "Intersecto con algo loco" << '\n';
 		// std::cout << "dist y pto: "  << t << ", " << ptoInterseccion << '\n';
@@ -232,21 +241,20 @@ Color Escena::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes
 			c = fig->getEmision();
 		}
 		else {
+			//std::cout << "He intersectado con un no emisor" << '\n';
 			Figura::InterseccionData iData = interseccionFigura->first;
 			// t = iData.t;
 			Vector3 ptoInterseccion = iData.punto;
 			// std::cout << "na que no emito" << '\n';
 			c = ruletaRusa(fig, ptoInterseccion, primerRebote, nRebotes);
-			// while (primerRebote && c==double(0)) { // solo si es el primer rebote, aseguramos que no absorba
-			// 	c = ruletaRusa(fig, ptoInterseccion, nRebotes); // TODO: es un poco a lo bestia y muy poco eficiente, alternativas?
+
+			// if (colores == VectoresWi) { // TODO: algo asi?
+			// 	// DEBUG: parece que los vectores los saca bien:
+				// Matriz4 base = fig->getBase(ptoInterseccion);
+				// Material mat = fig->getMaterial();
+				// Vector3 otroPath = mat.getVectorSalida(base, gen, 0);
+				// c.setFromNormal(otroPath);
 			// }
-
-
-			// DEBUG: parece que los vectores los saca bien:
-			// Matriz4 base = fig->getBase(ptoInterseccion);
-			// Material mat = fig->getMaterial();
-			// Vector3 otroPath = mat.getVectorSalida(base, gen, 0);
-			// c.setFromNormal(otroPath);
 		}
 	}
 	return c;///(t*t);

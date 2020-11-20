@@ -17,7 +17,7 @@ using namespace std;
 
 
 
-void escenaBastanteGuay400prismas200esferas(char* argv[]) {
+void escena20esferas(char* argv[]) {
 
 	// std::shared_ptr<Utils> utils = make_shared<Utils>(Utils());
 	int pixelesX = 720;
@@ -296,14 +296,14 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
 		//Camara c(posCam, dirCam);
 		//cout << c << endl;
-		int rayosPP =500; // rayos por pixel
+		int rayosPP =50; // rayos por pixel
 
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
 		//c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
-		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		int nThreads = 12; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 
 		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::MaterialesSinBVH);
@@ -324,9 +324,10 @@ void escenaCornellBoxMateriales(char* argv[]) {
 		// // suelo.setColor(0.8,0.8,0.8);
 		// suelo.setMaterial(difusoGris);
 		// e.addFigura(std::make_shared<Plano>(suelo));
-		// Plano techo(-UP, distanciaParedes);
+		Plano techo(-UP, distanciaParedes);
+		techo.setColor(0.8,0.8,0.8);
 		// techo.setMaterial(difusoGris);
-		// e.addFigura(std::make_shared<Plano>(techo));
+		e.addFigura(std::make_shared<Plano>(techo));
 		// Plano paredi(-LEFT, distanciaParedes);
 		//  // paredi.setColor(0.8,0,0);
 		// paredi.setMaterial(difusoVerde);
@@ -378,14 +379,15 @@ void escenaCornellBoxMateriales(char* argv[]) {
 			// cout << esf.to_string() << endl;
 			caja2.setMaterial(difusoVerde);
 			e.addFigura(std::make_shared<Prisma>(caja2));*/
-		}
-		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
-		tamPrismaLuz = tamPrismaLuz*30.0;
-		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
-		Prisma luz(posPrismaLuz, tamPrismaLuz);
-		luz.setColor(1,1,1);
-		e.addFigura(std::make_shared<Prisma>(luz));
-		// std::cout << "front x left = " << cross(FRONT, LEFT) << "\nUP = " << UP << endl;
+		} // LUZ:
+		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
+		// tamPrismaLuz = tamPrismaLuz*30.0;
+		// Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
+		// Prisma luz(posPrismaLuz, tamPrismaLuz);
+		// luz.setColor(1,1,1);
+		// e.addFigura(std::make_shared<Prisma>(luz));
+
+		// 10 prismas equidistantes pequeñicos:
 		// double d_prisma = 2.0*distanciaParedes / 10.0;
 		// for (int i = 0; i<100; i++) {
 		//
@@ -422,10 +424,10 @@ void fixIluminacion(char* argv[]) {
 		//c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
-		int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
+		int nThreads = 12; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
 		//
 
-		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::Normales);
+		Escena e(std::make_shared<Camara>(c), nThreads, Escena::TipoRender::MaterialesSinBVH);
 
 		float distanciaParedes = 3;
 
@@ -439,20 +441,26 @@ void fixIluminacion(char* argv[]) {
 		difusoGris.setCoeficiente(Color(1,1,1),0);
 
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT;// - distanciaParedes*UP;
-		float tamEsfera =distanciaParedes/2.0*1.2;
+		float tamEsfera =distanciaParedes/3.0;
 
-		Esfera esf(centroSuelo +0.55*distanciaParedes*LEFT, tamEsfera);// 1*1
+		Esfera esf(centroSuelo +0.55*distanciaParedes*LEFT, 1.75*tamEsfera);// Luzzzz
 		// cout << esf.to_string() << endl;
 		esf.setColor(1,1,1);
 		//esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLECCION
 		// esf.setMaterial(difuso);
 		e.addFigura(std::make_shared<Esfera>(esf));
 		//
-		Esfera esfdcha(centroSuelo  - 0.55*distanciaParedes*LEFT, tamEsfera);// 1*1
+		Esfera esfdcha(centroSuelo  - 0.55*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1
 		// cout << esf.to_string() << endl;
 		esfdcha.setMaterial(difusoRojo);
 		// esfdcha.setRandomColor();
 		e.addFigura(std::make_shared<Esfera>(esfdcha));
+
+		Esfera esfAbajo(centroSuelo - 1.0* distanciaParedes * UP, 1.7*tamEsfera);
+		esfAbajo.setMaterial(difusoVerde);
+		// esfdcha.setRandomColor();
+		e.addFigura(std::make_shared<Esfera>(esfAbajo));
+
 
 		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
 		// tamPrismaLuz = tamPrismaLuz*30.0;
@@ -476,6 +484,6 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	escenaCornellBoxMateriales(argv);
-	// fixIluminacion(argv);
+	// escenaCornellBoxMateriales(argv);
+	fixIluminacion(argv);
 }

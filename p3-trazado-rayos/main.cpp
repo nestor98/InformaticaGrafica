@@ -119,7 +119,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			for (auto f : *figuras) {
 				f->setMaterial(METAL_GRIS);
 			}
-			e.addFiguras(figuras);
+			//e.addFiguras(figuras);
 			// Prisma test(centroSuelo-LEFT*tamEsfera, tamEsponja);
 			// test.setRandomColor();
 			// e.addFigura(std::make_shared<Prisma>(test));
@@ -148,7 +148,7 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 600); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(400, 400, 200); // pixX, pixY, rayosPP
 	int nThreads = 12;
   auto tipo = Renderer::TipoRender::Materiales;
 	bool usarBVH = true;

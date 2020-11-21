@@ -75,7 +75,7 @@ void Material::setMaximos() {
 }
 
 // base = T en las diapos
-Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento, const Vector3& incidente) const {
+Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento,const bool inside, const Vector3& incidente) const {
 	Vector3 wi;
 	if (evento==0) { //difuso
 		double rand1 = gen.rand01();
@@ -98,7 +98,7 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 
 	}
 	else {	//refraccion
-		double coefRefraccion = 1.45; // TODO: campo del material o algo
+		//double coefRefraccion = 1.45; // TODO: campo del material o algo
 		// Vector3 wo = base.inversa()*normalizar(incidente);
 		// // std::cout << "wo: " << wo << '\n';
 		// wi = wo;
@@ -108,10 +108,14 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		// if (wo.getModulo() != wi.getModulo()) {
 		// 	std::cerr << "MALLLLLLL " << wo.getModulo() << " " << wi.getModulo() << '\n';
 		// }
-    float cosi = base[2]*incidente;
-    wi = (incidente * coefRefraccion - base[2] * (-cosi + coefRefraccion * cosi));
-		wi=base*wi;
+    //float cosi = base[2]*incidente;
+    //wi = (incidente * coefRefraccion - base[2] * (-cosi + coefRefraccion * cosi));
+		//wi=base*wi;
 		// std::cout << "wi mundo: " << wi << '\n';
+		float ior = 1.45, eta = (inside) ? ior : 1 / ior; // are we inside or outside the surface? //pasar inside
+            float cosi = -base[2]*incidente; 
+            float k = 1 - eta * eta * (1 - cosi * cosi); 
+            Vector3 refrdir = incidente * eta + base[2] * (eta *  cosi - sqrt(k)); 
 	}
 	return normalizar(wi);
 }

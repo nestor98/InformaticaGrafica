@@ -112,7 +112,7 @@ std::string Renderer::to_string() const {
 }
 
 
-Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
+Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread,bool inside, const bool primerRebote) const {
 	Material mat = fig->getMaterial();
 	int evento = mat.ruletaRusa(rngThread, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
 	Color c;
@@ -124,14 +124,15 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
 		c = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
 		c = c/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
-		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
-		c = c*pathTrace(pto, otroPath, rngThread);
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
+		c = c*pathTrace(pto, otroPath, rngThread, inside);
 	}
 	else { // REFLEXION o DIFUSO:
+		inside=!inside;
 		Matriz4 base = fig->getBase(pto);
 		c = mat.getCoeficiente(evento); // kd
-		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
-		c = c*pathTrace(pto, otroPath, rngThread); // kd * Li
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
+		c = c*pathTrace(pto, otroPath, rngThread, inside); // kd * Li
 	}
 	return c;
 }
@@ -145,15 +146,15 @@ Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::share
 		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(ptoInterseccion), ptoInterseccion, dir);
 		// std::cout << base.inversa() * dir << std::endl;
 		Material mat = fig->getMaterial();
-		return mat.getVectorSalida(base, gen, 2, dir);
+		return mat.getVectorSalida(base, gen, 2,false, dir);
 	}
 	else if (tipoRender == Renderer::VectoresWiReflexion) {
 		Matriz4 base = fig->getBase(ptoInterseccion);
-		return mat.getVectorSalida(base, gen, 1, dir);
+		return mat.getVectorSalida(base, gen, 1,false, dir);
 	}
 	else if (tipoRender == Renderer::VectoresWiDifusos) {
 		Matriz4 base = fig->getBase(ptoInterseccion);
-		return mat.getVectorSalida(base, gen, 0, dir);
+		return mat.getVectorSalida(base, gen, 0,false, dir);
 	}
 	else if (tipoRender == Renderer::Normales) {
 		return fig->getNormal(ptoInterseccion);
@@ -165,7 +166,7 @@ Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::share
 }
 
 
-Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
+Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread,bool inside, const bool primerRebote) const {
 	// std::cout << "Trazando un path" << '\n';
 	Color c = COLOR_FONDO;
 	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
@@ -196,7 +197,7 @@ Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorA
 			Vector3 ptoInterseccion = iData.punto;
 			if (renderSeleccionado == Materiales) { // Path trace normal
 				// std::cout << "He intersectado con un no emisor" << '\n';
-				c = ruletaRusa(fig, dir, ptoInterseccion, rngThread, primerRebote);
+				c = ruletaRusa(fig, dir, ptoInterseccion, rngThread, primerRebote, inside);
 			}
 			else { // otro tipo de render:
 				Vector3 vector = vectorTipoRender(renderSeleccionado, fig, ptoInterseccion, dir, rngThread);
@@ -214,9 +215,10 @@ void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const 
 		auto c = e.getCamara();
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
 		GeneradorAleatorio rngThread; // generador para el thread
+		bool inside=false;
 		for (int i=0; i<nRayos; i++) { // cada rayo
 			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
-			Color cPixel = pathTrace(o, dir, rngThread, true); // true para que el primero siempre rebote
+			Color cPixel = pathTrace(o, dir, rngThread, true, inside); // true para que el primero siempre rebote
 			color = color + cPixel;// suma de cada path / double(nRayos);
 		}
 		color = color / double(nRayos); // promedio

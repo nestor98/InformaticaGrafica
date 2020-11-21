@@ -54,8 +54,7 @@ public:
 	void setRandom();
 
 	void setMaximos();
-
-	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento, const Vector3& incidente=Vector3()) const;
+	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento,const bool inside=false, const Vector3& incidente=Vector3()) const ;
 
 	// devuelve un num de 0 a 4 (para difuso, especular, refraccion o evento nulo, respectivamente)
 	// con probabilidades en funcion del coeficiente máximo de cada uno

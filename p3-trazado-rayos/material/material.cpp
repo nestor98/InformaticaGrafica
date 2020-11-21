@@ -97,7 +97,7 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		wi=base*wi;
 
 	}
-	else {	//refraccion
+	else {	//refraccion   https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
 		//double coefRefraccion = 1.45; // TODO: campo del material o algo
 		// Vector3 wo = base.inversa()*normalizar(incidente);
 		// // std::cout << "wo: " << wo << '\n';

@@ -32,14 +32,22 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		return c;
 	}
 	else if (evento == 2) { // REFRACCION
-		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
+		// Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
+		Matriz4 base = fig->getBase(pto);
+
 		c = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
 		c = c/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
+		// std::cout << "c: " << c.to_string() << '\n';
+		// inside = dir * normal;
+		inside = false;
+		if (dir * base[2] > 0) {
+			base[2] = -base[2];
+			inside = true;
+		}
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
-		c = c*pathTrace(pto, otroPath, rngThread, inside);
+		c = pathTrace(pto+0.01*dir, otroPath, rngThread, !inside);
 	}
 	else { // REFLEXION o DIFUSO:
-		inside=!inside;
 		Matriz4 base = fig->getBase(pto);
 		c = mat.getCoeficiente(evento); // kd
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
@@ -54,10 +62,17 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& ptoInterseccion, const GeneradorAleatorio& gen) {
 	Material mat = fig->getMaterial();
 	if (tipoRender == Renderer::VectoresWiRefraccion){
-		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(ptoInterseccion), ptoInterseccion, dir);
+		// Matriz4 base = baseFromVectorYOrigen(fig->getNormal(ptoInterseccion), ptoInterseccion, dir);
+			Matriz4 base = fig->getBase(ptoInterseccion);
+		bool inside = false;
+		if (dir * base[2] > 0) {
+			base[2] = -base[2];
+			inside = true;
+		}
+		// Vector3 otroPath =
 		// std::cout << base.inversa() * dir << std::endl;
 		Material mat = fig->getMaterial();
-		return mat.getVectorSalida(base, gen, 2,false, dir);
+		return mat.getVectorSalida(base, gen, 2, inside, dir);
 	}
 	else if (tipoRender == Renderer::VectoresWiReflexion) {
 		Matriz4 base = fig->getBase(ptoInterseccion);
@@ -77,7 +92,7 @@ Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::share
 }
 
 
-Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread,bool inside, const bool primerRebote) const {
+Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, bool inside, const bool primerRebote) const {
 	// std::cout << "Trazando un path" << '\n';
 	Color c = COLOR_FONDO;
 	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;

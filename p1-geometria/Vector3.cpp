@@ -297,18 +297,22 @@ void Matriz4::setRotarZ(const float theta) {
 // para cambiar un vector a una nueva base
 void Matriz4::setCambioBase(const Vector3& eje1, const Vector3& eje2, const Vector3& eje3, const Vector3& origen) {
 	// comprobaciones...
-	if (!eje1.esVector() || !eje2.esVector() || !eje3.esVector()) {
-		std::cerr << "Los tres primeros parametros del cambio de base deben ser vectores" << std::endl;
-		exit(1);
-	}
-	if (origen.esVector()) {
-		std::cerr << "El origen del cambio de base debe ser un punto" << std::endl;
-		exit(1);
-	}
+	// if (!eje1.esVector() || !eje2.esVector() || !eje3.esVector()) {
+	// 	std::cerr << "Los tres primeros parametros del cambio de base deben ser vectores" << std::endl;
+	// 	exit(1);
+	// }
+	// if (origen.esVector()) {
+	// 	std::cerr << "El origen del cambio de base debe ser un punto" << std::endl;
+	// 	exit(1);
+	// }
 	m[0] = eje1;
 	m[1] = eje2;
 	m[2] = eje3;
 	m[3] = origen;
+	m[0][3] = 0;
+	m[1][3] = 0;
+	m[2][3] = 0;
+	m[3][3] = 1;
 }
 
 // Devuelve el determinante de la matriz
@@ -573,6 +577,8 @@ Matriz4 baseFromVectorYOrigen(const Vector3& normal, const Vector3& pto,  const 
 	// }
 	j = cross(k, i);
 	Matriz4 base;
-	base.setCambioBase(normalizar(k), normalizar(j), normalizar(i), pto);
+	Vector3 ptoBase = pto;
+	ptoBase[3] = 1;
+	base.setCambioBase(normalizar(k), normalizar(j), normalizar(i), ptoBase);
 	return base;
 }

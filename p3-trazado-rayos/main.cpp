@@ -29,7 +29,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 
 		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 
-		//c.setFOV(0.4*PI);
+		// c.setFOV(0.4*PI);
 		// c.setFOV(PI);
 
 		//
@@ -87,12 +87,12 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			//esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
-			Esfera esfdcha(centroSuelo + 0.25*tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1
+			Esfera esfdcha(centroSuelo - 0.25*tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1
 
 			esfdcha.setMaterial(VIDRIO);
 			// esfdcha.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esfdcha));
-			Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, tamEsfera);// 1*1
+			Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, 0.75*tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
 			// esf2.setMaterial(difusoGris);
 			esf2.setRandomColor();
@@ -148,9 +148,9 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 200); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(400, 400, 30); // pixX, pixY, rayosPP
 	int nThreads = 12;
-  auto tipo = Renderer::TipoRender::Materiales;
+  auto tipo = Renderer::TipoRender::Materiales;//Materiales;//VectoresWiRefraccion;
 	bool usarBVH = true;
 	Renderer rend(*escena, nThreads, tipo, usarBVH);
 	rend.render(argv[1]);

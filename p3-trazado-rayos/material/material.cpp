@@ -112,10 +112,11 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
     //wi = (incidente * coefRefraccion - base[2] * (-cosi + coefRefraccion * cosi));
 		//wi=base*wi;
 		// std::cout << "wi mundo: " << wi << '\n';
-		float ior = 1.45, eta = (inside) ? ior : 1 / ior; // are we inside or outside the surface? //pasar inside
-            float cosi = -base[2]*incidente;
-            float k = 1 - eta * eta * (1 - cosi * cosi);
-            wi = incidente * eta + base[2] * (eta *  cosi - sqrt(k)); 
+		float ior = 1.45;
+		float eta = (inside) ? ior : 1.0 / ior; // are we inside or outside the surface? //pasar inside
+    float cosi = -base[2]*incidente;
+    float k = 1.0 - eta * eta * (1.0 - cosi * cosi);
+    wi = incidente * eta + base[2] * (eta *  cosi - sqrt(k));
 	}
 	return normalizar(wi);
 }
@@ -175,6 +176,7 @@ void Material::setRandom() {
 			return 1; // Reflexion
 		}
 		else if (random < maxCoefs[0]+maxCoefs[1]+maxCoefs[2]) {
+			// std::cout << "hola" << '\n';
 			return 2; // Refraccion
 		}
 		else {

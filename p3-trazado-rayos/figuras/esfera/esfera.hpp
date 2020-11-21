@@ -14,8 +14,8 @@
 
 
 class Esfera : public Figura {
-	float radio;
 	Vector3 posicion;
+	float radio;
 
 public:
 	Esfera(const Vector3& _posicion, const float _radio);

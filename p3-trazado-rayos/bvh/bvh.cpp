@@ -10,7 +10,7 @@
 
 
 
-BoundingVolumeH::BoundingVolumeH(std::shared_ptr<Figura> fig) : figura(fig), vectorPlanos(), tieneFigsFinitas(true) {
+BoundingVolumeH::BoundingVolumeH(std::shared_ptr<Figura> fig) : vectorPlanos(), tieneFigsFinitas(true), figura(fig) {
 	// figura = fig;
 	box = figura->getBoundingBox();
 }
@@ -168,7 +168,7 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Boun
 
 			if (resLeft) { // Intersecta a la izq
 
-				auto iLeft = resLeft->first;
+				// auto iLeft = resLeft->first;
 			// std::cout << "ileft: " << iLeft.t << " " <<iLeft.punto<< '\n';
 				if (!resRight) { // pero a la dcha no
 					return resLeft;
@@ -176,7 +176,7 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Boun
 				else { // a la izq Y a la dcha, hay que comparar distancias
 
 						// std::cout << "comparo distancias" << '\n';
-						auto iLeft = resLeft->first;
+						// auto iLeft = resLeft->first;
 					// std::cout << "ileft: " << iLeft.t << " " <<iLeft.punto<< '\n';
 					float tLeft = resLeft->first.t;
 					float tRight = resRight->first.t;

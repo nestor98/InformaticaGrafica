@@ -20,7 +20,7 @@ void GeneradorEstructuras::setMengerSponge(const Vector3& pos, const Vector3& ta
       for (int j = 0; j<3; j++) {
         if (!(i==1 && j==i)) { // si coinciden las dos coordenadas es el central y no se hace
           for (int k = 0; k<3; k++) {
-            if (!(i==1 && k==i || j==1 && k==j)) { // si coincide k con cualquier otra coord y es la central, no se hace
+            if (!( (i==1 && k==i) || (j==1 && k==j) )) { // si coincide k con cualquier otra coord y es la central, no se hace
               Vector3 desplazamiento(i*tamSubCubos[0], j*tamSubCubos[1], k*tamSubCubos[2], false);
               setMengerSponge(pos + desplazamiento, tamSubCubos, iteraciones-1);
             }
@@ -34,7 +34,7 @@ void GeneradorEstructuras::setMengerSponge(const Vector3& pos, const Vector3& ta
 
 // Genera la estructura a partir del punto pos
 GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura, const Vector3& _pos, const Vector3& _tam, const int iteraciones) :
-tipo(_estructura), pos(_pos), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>())
+pos(_pos), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>()), tipo(_estructura)
 {
   if (_estructura != GeneradorEstructuras::Estructura::MengerSponge) {
     std::cout << "Estructura desconocida (de momento solo tenemos MengerSponge)\n";

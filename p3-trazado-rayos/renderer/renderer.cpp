@@ -17,7 +17,7 @@ const Color COLOR_FONDO(0,0,0); // TODO: mirar como ponerlo mas bonito
 
 
 Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo, const bool _usarBVH)
-: e(_e), renderSeleccionado(tipo), usarBVH(_usarBVH)//, threads(_nThreads)
+: usarBVH(_usarBVH), e(_e), renderSeleccionado(tipo)//, threads(_nThreads)
 {
 	threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }

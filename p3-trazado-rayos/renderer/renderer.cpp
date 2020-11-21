@@ -12,12 +12,14 @@
 
 #define hrc std::chrono::high_resolution_clock
 
-Renderer::Renderer(const int _nThreads, const Renderer::TipoRender tipo)
-: c(_c), renderSeleccionado(tipo)//, threads(_nThreads)
+const Color COLOR_FONDO(0,0,0); // TODO: mirar como ponerlo mas bonito
+
+
+
+Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo, const bool _usarBVH)
+: e(_e), renderSeleccionado(tipo), usarBVH(_usarBVH)//, threads(_nThreads)
 {
-	threads.reserve(_nThreads);
-	//std::cout << "Constructor de Renderer: " << c->to_string() << std::endl;
-	//c = std::make_shared<Camara> _c;
+	threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }
 
 
@@ -35,20 +37,54 @@ void Renderer::consumirTasks(Imagen& im, const Vector3& origen) {
 			pixel = tasks.back();
 			tasks.pop_back();
 		} // unlock
-		switch (Method) {
-			case /* value */:
-		}
-		renderPixelPath(im, origen, pixel);
+		renderPixel(im, origen, pixel);
 		// cuenta++;
 	}
 	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";
 }
 
-void Renderer::initThreads(Imagen& im, const Vector3& origen) {
-	for (int i=0; i<threads.capacity(); i++) {
-		// std::thread t1(&Renderer::consumirTasks, this, std::ref(im), std::ref(origen));
+void dibujarBarraProgreso(double porcentaje) {
+	int longitudBarra = 50;
+	int nCaracteres = porcentaje*longitudBarra; // numero de veces que se repite el caracter de la barra
+	std::string caracter = "█"; // caracter de completado
+
+	// std::cout  << "[" << std::flush;
+	for (int i=0; i<longitudBarra; i++) {
+		if (i<nCaracteres) { // Completados
+			std::cout << caracter;
+		}
+		else {
+			std::cout << "░";
+		}
+	}
+	std::cout << " " << int(porcentaje*100) << '%'<< "\r" << std::flush;
+}
+
+void Renderer::progressBar(const int nPixeles) {
+	while (true) {
+		int nRestantes;
+		{ //Lock
+			// Las llaves son para que la guarda solo este entre ellas (scope):
+			std::lock_guard<std::mutex> guarda(mtx); // asegura la SC
+			if (tasks.empty()) { // Fin cuando no quedan tasks
+				break;
+			}
+			nRestantes = tasks.size();
+
+		} // unlock
+		int nTerminados = nPixeles - nRestantes;
+		double porcentaje = double(nTerminados)/double(nPixeles);
+		dibujarBarraProgreso(porcentaje);
+		std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // Duerme 2 s
+	}
+}
+
+void Renderer::initThreads(Imagen& im, const Vector3& origen, const int nPixeles) {
+	for (int i=0; i<threads.capacity()-1; i++) {
+		// std::thread t1(&Escena::consumirTasks, this, std::ref(im), std::ref(origen));
 		threads.emplace_back(std::thread(&Renderer::consumirTasks, this, std::ref(im), std::ref(origen)));
 	}
+	threads.emplace_back(std::thread(&Renderer::progressBar, this, nPixeles));
 }
 
 void Renderer::waitThreads() {
@@ -58,28 +94,171 @@ void Renderer::waitThreads() {
 }
 
 std::string Renderer::to_string() const {
-	std::string s = "camara:\n" + c->to_string() + "\nfiguras:";
-	if (figuras.size()>50) {
-		s+= "Hay " + std::to_string(figuras.size()) +" figuras, no las listo todas\n";
-	}
-	else {
-		for (auto f : figuras) {
-			s += "\n" + f->to_string();
-		}
-	}
-	s += "El arbol es:\n" + bvh.to_string();
+	std::string s = "No has implementado el to_string de Renderer\n";
 	return s;
 }
 
 
-bool tMenor (const double t, const double min) {
-	return (t<min || min==-1);
+
+
+Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
+	Material mat = fig->getMaterial();
+	int evento = mat.ruletaRusa(rngThread, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
+	Color c;
+	if (evento == 3) {// absorcion
+		// std::cout << "absorcion.." << '\n';
+		return c;
+	}
+	else if (evento == 2) { // REFRACCION
+		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
+		c = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
+		c = c/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
+		c = c*pathTrace(pto, otroPath, rngThread);
+	}
+	else { // REFLEXION o DIFUSO:
+		Matriz4 base = fig->getBase(pto);
+		c = mat.getCoeficiente(evento); // kd
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
+		c = c*pathTrace(pto, otroPath, rngThread); // kd * Li
+	}
+	return c;
 }
 
-bool tMenor (const Figura::InterseccionData& iData, const double min) {
-	return tMenor(iData.t, min);
+
+
+// Aux de path trace, solo para tipos de renders raros basados en vectores
+Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& ptoInterseccion, const GeneradorAleatorio& gen) {
+	Material mat = fig->getMaterial();
+	if (tipoRender == Renderer::VectoresWiRefraccion){
+		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(ptoInterseccion), ptoInterseccion, dir);
+		// std::cout << base.inversa() * dir << std::endl;
+		Material mat = fig->getMaterial();
+		return mat.getVectorSalida(base, gen, 2, dir);
+	}
+	else if (tipoRender == Renderer::VectoresWiReflexion) {
+		Matriz4 base = fig->getBase(ptoInterseccion);
+		return mat.getVectorSalida(base, gen, 1, dir);
+	}
+	else if (tipoRender == Renderer::VectoresWiDifusos) {
+		Matriz4 base = fig->getBase(ptoInterseccion);
+		return mat.getVectorSalida(base, gen, 0, dir);
+	}
+	else if (tipoRender == Renderer::Normales) {
+		return fig->getNormal(ptoInterseccion);
+	}
+	else {
+		std::cerr << "ERROR: Tipo de render desconocido" << '\n';
+		exit(1);
+	}
 }
 
+
+Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
+	// std::cout << "Trazando un path" << '\n';
+	Color c = COLOR_FONDO;
+	double t = 1;
+	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
+	// std::cout << "Voy a intersectar" << '\n';
+	if (!usarBVH) { // Sin bvh
+		interseccionFigura = e.interseccion(o, dir);
+	}
+	else { // con bvh
+		// std::cout << "Cuidado con la interseccion con bvh" << '\n';
+		interseccionFigura = bvh.interseccion(o, dir);
+	}
+	if (interseccionFigura) { // intersecta con alguna
+		if (!primerRebote) {
+			// std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
+		}
+		auto fig = interseccionFigura->second; // Puntero a la Figura intersectada
+		// std::cout << "antes de emisor y blabnanjasfobnabsodlnaikjnaspian: " << fig << '\n';
+		if (fig->esEmisor()) { // fin de la recursión, es un emisor
+			// std::cout << "a por emision" << '\n';
+			// return fig->getEmision();
+			c = fig->getEmision();
+			if (!primerRebote) return c*1.75; // TODO: multiplicacion bestia de la iluminacion, revisar
+		}
+		else {
+			Figura::InterseccionData iData = interseccionFigura->first;
+			// std::cout << "A ver el pto" << '\n';
+			// t = iData.t;
+			Vector3 ptoInterseccion = iData.punto;
+			if (renderSeleccionado == Materiales) { // Path trace normal
+				// std::cout << "He intersectado con un no emisor" << '\n';
+				c = ruletaRusa(fig, dir, ptoInterseccion, rngThread, primerRebote);
+			}
+			else { // otro tipo de render:
+				Vector3 vector = vectorTipoRender(renderSeleccionado, fig, ptoInterseccion, dir, rngThread);
+				c.setFromNormalNoAbs(vector); // color del vector, cada comp en un canal rgb
+			}
+		}
+	}
+	return c;///(t*t);
+}
+
+
+// Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
+void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
+		bool interseccion = false;
+		Color color(0.0,0.0,0.0);
+		auto c = e.getCamara();
+		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
+		GeneradorAleatorio rngThread; // generador para el thread
+		for (int i=0; i<nRayos; i++) { // cada rayo
+			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
+			Color cPixel = pathTrace(o, dir, rngThread, true); // true para que el primero siempre rebote
+			color = color + cPixel;// suma de cada path / double(nRayos);
+		}
+		color = color / double(nRayos); // promedio
+		color.clamp(1.0); // TODO: revisar
+		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
+}
+
+
+void Renderer::render(const std::string fichero) {
+	hrc::time_point t1, t2;
+	t1 = hrc::now();
+	// std::cout<<"a construir el arbol\n";
+	if (usarBVH){
+		std::vector<std::shared_ptr<Figura>> figs;
+		e.getFiguras(figs);
+		bvh.construirArbol(figs);//figuras);
+		std::cout<<"arbol bvh construido\n";
+	}
+	auto c = e.getCamara();
+	Vector3 o = c->getPos();
+	Imagen im(c->getPixelesY(), c->getPixelesX());
+	for (int pixel = 0; pixel<c->getNumPixeles(); pixel++) {
+		tasks.push_back(pixel); // encolar cada pixel
+		//renderPixel(im, o, pixel);
+	}
+	std::cout << "Inicializando threads... " << std::endl;
+	initThreads(im, o, c->getNumPixeles()); // inicializar los threads
+	// std::cout << "hecho" << '\n';
+	waitThreads(); // y esperar a que terminen
+	std::cout << std::endl;
+	// im.setMaxFloat(1); // TODO: entender esta vaina
+	// im.extendedReinhard();
+	im.guardar(fichero); // guardar la imagen
+
+	t2 = hrc::now();
+	std::chrono::duration<double> t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+	// t2 -> tRender2 = t2-t1
+	std::cout << "\nRender realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
+}
+
+
+
+// para evitar el to_string en cout
+std::ostream& operator<<(std::ostream& os, const Renderer& e) {
+	os << e.to_string();
+	return os;
+}
+
+
+// Tests:
+/* TODO: Mover los tests a un programa de tests o algo, no tiene sentido que este acoplado a esta clase
 void Renderer::testBVHRender(const std::string f1, const std::string f2) {
 	hrc::time_point t1, t2;
 	std::string linea = "\n------------------------\n"; // para separarlo en cout
@@ -151,122 +330,6 @@ void Renderer::renderPixelVector(Imagen& im, const Vector3& o, const int pixel) 
 	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
 
-const Color COLOR_FONDO(0,0,0);
-
-
-Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto, const int nRebotes, const bool primerRebote) const {
-	// std::cout << "En ruleta de Renderer" << '\n';
-	//nRebotes=nRebotes-1;
-	Material mat = fig->getMaterial();
-	int evento = mat.ruletaRusa(gen, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
-	Color c;
-	std::cout << "ruleta rusa" << '\n';
-	if (evento == 3){// || nRebotes == 0) { // absorcion
-		std::cout << "absorcion.." << '\n';
-		return c;
-	}
-	else { // se procesa el evento
-		Matriz4 base = fig->getBase(pto);
-		GeneradorAleatorio otrorng;
-		c = mat.getCoeficiente(evento); // kd
-		Vector3 otroPath = mat.getVectorSalida(base, gen, evento);
-		//c = mat.getCoeficiente(evento); // kd
-		// std::cout << "Calculo otro path desde " << pto << " hacia " << otroPath << '\n';
-		Color radianza = pathTrace(pto+otroPath*0.0001, otroPath, nRebotes-1);
-		// if (!(radianza == double(0))) // TODO: esto siempre devuelve 0 :((((((((((((((
-		// 	std::cout << "Radianza (resultado de pathTrace): " << radianza.to_string() << '\n';
-		c = c*pathTrace(pto+otroPath*0.0001, otroPath, nRebotes-1); // kd * Li
-		// std::cout << "c: "<<c.to_string() << '\n';
-	} // TODO: otros eventos
-	// TODO: tener en cuenta que pa refl y refr, wo es -vector, no +vector!!!!!!
-	return c;
-}
-
-std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccion(std::vector<std::shared_ptr<Figura>> vFigs, const Vector3& o, const Vector3& dir) {
-	float t = -1;
-	Vector3 pto;
-	std::shared_ptr<Figura> f;
-	bool intersectado = false;
-	for (auto fig : vFigs) {
-		auto iFig = fig->interseccion(o, dir);
-		// std::cout << "Probando interseccion con " <<fig << '\n';
-		if (intersectado = iFig && tMenor(iFig->t, t)) {
-			//std::cout << "Interseccion con  " <<fig << '\n';
-			t = iFig->t;
-			pto = iFig->punto;
-			f = fig;
-		}
-	}
-	if (!intersectado) return {}; // std::nullopt
-	return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(Figura::InterseccionData{t, pto}, f);
-}
-
-
-Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const int nRebotes, const bool primerRebote) const {
-	// std::cout << "Trazando un path" << '\n';
-	Color c = COLOR_FONDO;
-	double t = 1;
-	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
-	if (renderSeleccionado == MaterialesSinBVH) { // Sin bvh
-		interseccionFigura = interseccion(figuras, o, dir);
-	}
-	else { // con bvh
-		std::cout << "Cuidado con la interseccion con bvh" << '\n';
-		interseccionFigura = bvh.interseccion(o, dir);
-	}
-	// auto interseccionFigura = bvh.interseccion(o, dir); //
-	//auto interseccionFigura = interseccion(figuras, o, dir);
-	// std::cout << "Fin interseccion..........." << '\n';
-	if (!primerRebote) {
-		std::cout << "No soy el primer rebote, si intersecto te lo digo" << '\n';
-	}
-	if (interseccionFigura) { // intersecta con alguna
-		if (!primerRebote) {
-			std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
-		}
-		// std::cout << "Intersecto con algo loco" << '\n';
-		// std::cout << "dist y pto: "  << t << ", " << ptoInterseccion << '\n';
-		auto fig = interseccionFigura->second; // Puntero a la Figura intersectada
-		// std::cout << "antes de emisor y blabnanjasfobnabsodlnaikjnaspian: " << fig << '\n';
-		if (fig->esEmisor()) { // fin de la recursión, es un emisor
-			// std::cout << "a por emision" << '\n';
-			// return fig->getEmision();
-			c = fig->getEmision();
-		}
-		else {
-			std::cout << "He intersectado con un no emisor" << '\n';
-			Figura::InterseccionData iData = interseccionFigura->first;
-			// t = iData.t;
-			Vector3 ptoInterseccion = iData.punto;
-			// std::cout << "na que no emito" << '\n';
-			// c = ruletaRusa(fig, ptoInterseccion, primerRebote, nRebotes);
-
-			// if (colores == VectoresWi) { // TODO: algo asi?
-			// 	// DEBUG: parece que los vectores los saca bien:
-				Matriz4 base = fig->getBase(ptoInterseccion);
-				Material mat = fig->getMaterial();
-				Vector3 otroPath = mat.getVectorSalida(base, gen, 0);
-				c.setFromNormal(otroPath);
-			// }
-		}
-	}
-	return c;///(t*t);
-}
-
-
-// Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
-void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
-		bool interseccion = false;
-		Color color(0.0,0.0,0.0);
-		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
-		for (int i=0; i<nRayos; i++) { // cada rayo
-			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
-			Color cPixel = pathTrace(o, dir, 10000, true); // true para que el primero siempre rebote
-			color = color + cPixel;// suma de cada path / double(nRayos);
-		}
-		color = color / double(nRayos); // promedio
-		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
-}
 
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
@@ -309,73 +372,4 @@ void Renderer::renderPixelViejo(Imagen& im, const Vector3& o, const int pixel) c
 		color = color / double(nRayos); // promedio
 		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
-
-
-// CODIGO viejo pa enseñar las figuras y el arbol correspondiente
-// for (auto fig : figuras) {
-// 	std::cout << "figura y caja: " << std::endl;
-// 	std::cout << fig << std::endl;
-// 	std::cout << fig->getBoundingBox()->to_string() << std::endl;
-// }
-// std::cout << "Renderer\n " << this->to_string() << std::endl;
-// std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
-
-
-void Renderer::render(const std::string fichero) {
-	hrc::time_point t1, t2;
-	t1 = hrc::now();
-
-
-	// std::cout<<"a construir el arbol\n";
-	bvh.construirArbol(figuras);
-	std::cout<<"arbol bvh construido\n";
-		//
-		// std::cout << "----------------------------------Arbol\n" << bvh.to_string() << "\n----------------------------------\n"<< std::endl;
-
-	// std::cout << bvh << std::endl;
-	// iterar para cada pixel de la camara:
-		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
-	Vector3 o = c->getPos();
-	// Vector3 ultimaDir(c->getRayoPixel(0)); // DEBUG
-	Imagen im(c->getPixelesY(), c->getPixelesX());
-	// std::cout <<" P3\n#MAX=1\n# out/rayos.ppm\n400 400\n255";
-	for (int pixel = 0; pixel<c->getNumPixeles(); pixel++) {
-		tasks.push_back(pixel); // encolar cada pixel
-		//renderPixel(im, o, pixel);
-	}
-	std::cout << "Inicializando threads... " << std::flush;
-	initThreads(im, o); // inicializar los threads
-	std::cout << "hecho" << '\n';
-	waitThreads(); // y esperar a que terminen
-	// im.setMaxFloat(1); // TODO: entender esta vaina
-	// im.extendedReinhard();
-	im.guardar(fichero); // guardar la imagen
-
-	t2 = hrc::now();
-	std::chrono::duration<double> t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
-	// t2 -> tRender2 = t2-t1
-	std::cout << "Render realizado en " << t.count() << " segundos" << std::endl;
-
-
-}
-
-/* Implementacion secuencial:
-void Renderer::renderSecuencial(const std::string fichero) const {
-	// iterar para cada pixel de la camara:
-		// lanzar un rayo y colorear ese pixel del color del objeto con el que intersecte
-	Vector3 o = c->getPos();
-	// Vector3 ultimaDir(c->getRayoPixel(0)); // DEBUG
-	Imagen im(c->getPixelesY(), c->getPixelesX());
-	// std::cout <<" P3\n#MAX=1\n# out/rayos.ppm\n400 400\n255";
-	for (int pixel = 0; pixel<c->getNumPixeles(); pixel++) {
-		renderPixel(im, o, pixel);
-	}
-	im.guardar(fichero);
-}*/
-
-
-// para evitar el to_string en cout
-std::ostream& operator<<(std::ostream& os, const Renderer& e) {
-	os << e.to_string();
-	return os;
-}
+*/

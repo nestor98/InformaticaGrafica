@@ -7,7 +7,7 @@
 #include <thread>
 #include <mutex>
 
-
+#include "escena.hpp"
 #include "Imagen.hpp"
 #include "camara.hpp"
 #include "figura.hpp"
@@ -17,11 +17,10 @@
 #include "utils.hpp"
 
 class Renderer {
-
-
-	GeneradorAleatorio gen;
-
+	bool usarBVH;
 	BoundingVolumeH bvh;
+
+	Escena e;
 
 	// Auxiliar de render
 	void renderPixel(Imagen& im, const Vector3& o, const int pixel) const;
@@ -37,7 +36,7 @@ class Renderer {
 	std::vector<int> tasks; // cola de pixeles a renderizar
 
 	// Inicializa los threads:
-	void initThreads(Imagen& im, const Vector3& origen);
+	void initThreads(Imagen& im,  const Vector3& origen, const int nPixeles);
 
 	void waitThreads();
 
@@ -45,36 +44,30 @@ class Renderer {
 	void enQueueTask(const int pixel);
 
 	// funcion que ejecutan los threads
-	void consumirTasks(Imagen& im, const Vector3& origen);
-	// ---------------------------
-	// --------- TESTS  ---------
-	enum Metodo {Original, BVH};
-
-	void testRenderMethod(const Metodo metodo, const std::string fichero) const;
-
-	void renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const;
+	void consumirTasks(Imagen& im,  const Vector3& origen);
 
 	// ---------------------------------------
 	// --------- Aux de path tracer  ---------
-	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& pto,int nRebotes, const bool primerRebote=false) const;
-	Color pathTrace(const Vector3& o, const Vector3& dir,int nRebotes, const bool primerRebote=false) const;
+	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote=false) const;
+	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote = false) const;
 
-
+	// ---------------------------------------
+	// --------- Barra de progreso  ---------
+	void progressBar(const int nPixeles);
 
 public:
-	enum TipoRender {Emision, Distancia, Normales, Materiales};
+	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion, VectoresWiRefraccion};
 private:
 	TipoRender renderSeleccionado;
 public:
 	// Renderer(const Camara& _c, const TipoRender tipo = BVHEmision);
-	Renderer(const std::shared_ptr<Camara> _c, const int _nThreads = 16, const TipoRender tipo = Emision);
+	Renderer(const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
+	Renderer(const Escena& _e, const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
 
 	std::string to_string() const;
-	void addFigura(const std::shared_ptr<Figura> f);
-
-	void addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectFiguras);
 
 	void render(const std::string fichero);
+	//
 
 	// Compara los tiempos de render (secuencial, sin threads) de la Renderer con
 	// el metodo original y el bvh. Muestra los resultados por salida estandar.
@@ -83,3 +76,11 @@ public:
 
 	// para evitar el to_string en cout
 	std::ostream& operator<<(std::ostream& os, const Renderer& e);
+
+	// ---------------------------
+	// --------- TESTS  ---------
+	// enum Metodo {Original, BVH};
+	//
+	// void testRenderMethod(const Metodo metodo, const std::string fichero) const;
+	//
+	// void renderPixelVector(Imagen& im, const Vector3& o, const int pixel) const;

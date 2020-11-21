@@ -222,6 +222,11 @@ Matriz4 operator * (const Matriz4& m1, const Matriz4& m2);
 Vector3 abs(const Vector3& v);
 
 
+// Devuelve el vector resultante de reflejar in en la normal de la base
+// la normal debe ser la tercera componente
+Vector3 reflejar(const Vector3& in, const Matriz4& base);
+
+
 Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto);
 
 

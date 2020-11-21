@@ -45,7 +45,7 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 			inside = true;
 		}
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
-		c = pathTrace(pto+0.01*dir, otroPath, rngThread, !inside);
+		c = c*pathTrace(pto+0.01*dir, otroPath, rngThread, !inside);
 	}
 	else { // REFLEXION o DIFUSO:
 		Matriz4 base = fig->getBase(pto);
@@ -192,11 +192,11 @@ void dibujarBarraProgreso(double porcentaje, int longitudBarra, hrc::time_point 
 		}
 	}
 	double t_elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(t_ahora - t_ini).count();
-	double min_restantes = 10;
+	double s_restantes = 10;
 	if (porcentaje>0) {
-		min_restantes = (1.0-porcentaje)/porcentaje * t_elapsed / 60.0;
+		s_restantes = (1.0-porcentaje)/porcentaje * t_elapsed;
 	}
-	std::cout << " " << int(porcentaje*100) << '%'<< " (quedan unos " << min_restantes << " min)          \r" << std::flush;
+	std::cout << " " << int(porcentaje*100) << '%'<< " (quedan unos " << int(s_restantes)/60 << ":"<< int(s_restantes)%60 << " min)          \r" << std::flush;
 }
 
 

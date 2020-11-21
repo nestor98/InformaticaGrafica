@@ -548,6 +548,11 @@ Vector3 abs(const Vector3& v) {
 	return res;
 }
 
+Vector3 reflejar(const Vector3& in, const Matriz4& base) {
+	Vector3 wi=base.inversa()*in;
+	wi[2] = -wi[2];
+	return base*wi;
+}
 
 
 Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto) {

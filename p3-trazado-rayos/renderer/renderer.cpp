@@ -23,6 +23,124 @@ Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRe
 }
 
 
+Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread,bool inside, const bool primerRebote) const {
+	Material mat = fig->getMaterial();
+	int evento = mat.ruletaRusa(rngThread, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
+	Color c;
+	if (evento == 3) {// absorcion
+		// std::cout << "absorcion.." << '\n';
+		return c;
+	}
+	else if (evento == 2) { // REFRACCION
+		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
+		c = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
+		c = c/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
+		c = c*pathTrace(pto, otroPath, rngThread, inside);
+	}
+	else { // REFLEXION o DIFUSO:
+		inside=!inside;
+		Matriz4 base = fig->getBase(pto);
+		c = mat.getCoeficiente(evento); // kd
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
+		c = c*pathTrace(pto, otroPath, rngThread, inside); // kd * Li
+	}
+	return c;
+}
+
+
+
+// Aux de path trace, solo para tipos de renders raros basados en vectores
+Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& ptoInterseccion, const GeneradorAleatorio& gen) {
+	Material mat = fig->getMaterial();
+	if (tipoRender == Renderer::VectoresWiRefraccion){
+		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(ptoInterseccion), ptoInterseccion, dir);
+		// std::cout << base.inversa() * dir << std::endl;
+		Material mat = fig->getMaterial();
+		return mat.getVectorSalida(base, gen, 2,false, dir);
+	}
+	else if (tipoRender == Renderer::VectoresWiReflexion) {
+		Matriz4 base = fig->getBase(ptoInterseccion);
+		return mat.getVectorSalida(base, gen, 1,false, dir);
+	}
+	else if (tipoRender == Renderer::VectoresWiDifusos) {
+		Matriz4 base = fig->getBase(ptoInterseccion);
+		return mat.getVectorSalida(base, gen, 0,false, dir);
+	}
+	else if (tipoRender == Renderer::Normales) {
+		return fig->getNormal(ptoInterseccion);
+	}
+	else {
+		std::cerr << "ERROR: Tipo de render desconocido" << '\n';
+		exit(1);
+	}
+}
+
+
+Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread,bool inside, const bool primerRebote) const {
+	// std::cout << "Trazando un path" << '\n';
+	Color c = COLOR_FONDO;
+	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
+	// std::cout << "Voy a intersectar" << '\n';
+	if (!usarBVH) { // Sin bvh
+		interseccionFigura = e.interseccion(o, dir);
+	}
+	else { // con bvh
+		// std::cout << "Cuidado con la interseccion con bvh" << '\n';
+		interseccionFigura = bvh.interseccion(o, dir);
+	}
+	if (interseccionFigura) { // intersecta con alguna
+		if (!primerRebote) {
+			// std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
+		}
+		auto fig = interseccionFigura->second; // Puntero a la Figura intersectada
+		// std::cout << "antes de emisor y blabnanjasfobnabsodlnaikjnaspian: " << fig << '\n';
+		if (fig->esEmisor()) { // fin de la recursión, es un emisor
+			// std::cout << "a por emision" << '\n';
+			// return fig->getEmision();
+			c = fig->getEmision();
+			if (!primerRebote) return c*1.75; // TODO: multiplicacion bestia de la iluminacion, revisar
+		}
+		else {
+			Figura::InterseccionData iData = interseccionFigura->first;
+			// std::cout << "A ver el pto" << '\n';
+			// t = iData.t;
+			Vector3 ptoInterseccion = iData.punto;
+			if (renderSeleccionado == Materiales) { // Path trace normal
+				// std::cout << "He intersectado con un no emisor" << '\n';
+				c = ruletaRusa(fig, dir, ptoInterseccion, rngThread, inside, primerRebote);
+			}
+			else { // otro tipo de render:
+				Vector3 vector = vectorTipoRender(renderSeleccionado, fig, ptoInterseccion, dir, rngThread);
+				c.setFromNormalNoAbs(vector); // color del vector, cada comp en un canal rgb
+			}
+		}
+	}
+	return c;///(t*t);
+}
+
+
+// Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
+void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
+		Color color(0.0,0.0,0.0);
+		auto c = e.getCamara();
+		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
+		GeneradorAleatorio rngThread; // generador para el thread
+		bool inside=false;
+		for (int i=0; i<nRayos; i++) { // cada rayo
+			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
+			Color cPixel = pathTrace(o, dir, rngThread, true, inside); // true para que el primero siempre rebote
+			color = color + cPixel;// suma de cada path / double(nRayos);
+		}
+		color = color / double(nRayos); // promedio
+		color.clamp(1.0); // TODO: revisar
+		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
+}
+
+
+
+
+
 void Renderer::consumirTasks(Imagen& im, const Vector3& origen) {
 	//std::cout<<"Bueno"<<std::endl;
 	// int cuenta = 0;
@@ -109,121 +227,6 @@ void Renderer::waitThreads() {
 std::string Renderer::to_string() const {
 	std::string s = "No has implementado el to_string de Renderer\n";
 	return s;
-}
-
-
-Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread,bool inside, const bool primerRebote) const {
-	Material mat = fig->getMaterial();
-	int evento = mat.ruletaRusa(rngThread, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
-	Color c;
-	if (evento == 3) {// absorcion
-		// std::cout << "absorcion.." << '\n';
-		return c;
-	}
-	else if (evento == 2) { // REFRACCION
-		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
-		c = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
-		c = c/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
-		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
-		c = c*pathTrace(pto, otroPath, rngThread, inside);
-	}
-	else { // REFLEXION o DIFUSO:
-		inside=!inside;
-		Matriz4 base = fig->getBase(pto);
-		c = mat.getCoeficiente(evento); // kd
-		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir);
-		c = c*pathTrace(pto, otroPath, rngThread, inside); // kd * Li
-	}
-	return c;
-}
-
-
-
-// Aux de path trace, solo para tipos de renders raros basados en vectores
-Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& ptoInterseccion, const GeneradorAleatorio& gen) {
-	Material mat = fig->getMaterial();
-	if (tipoRender == Renderer::VectoresWiRefraccion){
-		Matriz4 base = baseFromVectorYOrigen(fig->getNormal(ptoInterseccion), ptoInterseccion, dir);
-		// std::cout << base.inversa() * dir << std::endl;
-		Material mat = fig->getMaterial();
-		return mat.getVectorSalida(base, gen, 2,false, dir);
-	}
-	else if (tipoRender == Renderer::VectoresWiReflexion) {
-		Matriz4 base = fig->getBase(ptoInterseccion);
-		return mat.getVectorSalida(base, gen, 1,false, dir);
-	}
-	else if (tipoRender == Renderer::VectoresWiDifusos) {
-		Matriz4 base = fig->getBase(ptoInterseccion);
-		return mat.getVectorSalida(base, gen, 0,false, dir);
-	}
-	else if (tipoRender == Renderer::Normales) {
-		return fig->getNormal(ptoInterseccion);
-	}
-	else {
-		std::cerr << "ERROR: Tipo de render desconocido" << '\n';
-		exit(1);
-	}
-}
-
-
-Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread,bool inside, const bool primerRebote) const {
-	// std::cout << "Trazando un path" << '\n';
-	Color c = COLOR_FONDO;
-	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
-	// std::cout << "Voy a intersectar" << '\n';
-	if (!usarBVH) { // Sin bvh
-		interseccionFigura = e.interseccion(o, dir);
-	}
-	else { // con bvh
-		// std::cout << "Cuidado con la interseccion con bvh" << '\n';
-		interseccionFigura = bvh.interseccion(o, dir);
-	}
-	if (interseccionFigura) { // intersecta con alguna
-		if (!primerRebote) {
-			// std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
-		}
-		auto fig = interseccionFigura->second; // Puntero a la Figura intersectada
-		// std::cout << "antes de emisor y blabnanjasfobnabsodlnaikjnaspian: " << fig << '\n';
-		if (fig->esEmisor()) { // fin de la recursión, es un emisor
-			// std::cout << "a por emision" << '\n';
-			// return fig->getEmision();
-			c = fig->getEmision();
-			if (!primerRebote) return c*1.75; // TODO: multiplicacion bestia de la iluminacion, revisar
-		}
-		else {
-			Figura::InterseccionData iData = interseccionFigura->first;
-			// std::cout << "A ver el pto" << '\n';
-			// t = iData.t;
-			Vector3 ptoInterseccion = iData.punto;
-			if (renderSeleccionado == Materiales) { // Path trace normal
-				// std::cout << "He intersectado con un no emisor" << '\n';
-				c = ruletaRusa(fig, dir, ptoInterseccion, rngThread, primerRebote, inside);
-			}
-			else { // otro tipo de render:
-				Vector3 vector = vectorTipoRender(renderSeleccionado, fig, ptoInterseccion, dir, rngThread);
-				c.setFromNormalNoAbs(vector); // color del vector, cada comp en un canal rgb
-			}
-		}
-	}
-	return c;///(t*t);
-}
-
-
-// Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
-void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
-		Color color(0.0,0.0,0.0);
-		auto c = e.getCamara();
-		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
-		GeneradorAleatorio rngThread; // generador para el thread
-		bool inside=false;
-		for (int i=0; i<nRayos; i++) { // cada rayo
-			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
-			Color cPixel = pathTrace(o, dir, rngThread, true, inside); // true para que el primero siempre rebote
-			color = color + cPixel;// suma de cada path / double(nRayos);
-		}
-		color = color / double(nRayos); // promedio
-		color.clamp(1.0); // TODO: revisar
-		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
 
 

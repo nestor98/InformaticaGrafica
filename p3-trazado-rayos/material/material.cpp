@@ -113,9 +113,9 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		//wi=base*wi;
 		// std::cout << "wi mundo: " << wi << '\n';
 		float ior = 1.45, eta = (inside) ? ior : 1 / ior; // are we inside or outside the surface? //pasar inside
-            float cosi = -base[2]*incidente; 
-            float k = 1 - eta * eta * (1 - cosi * cosi); 
-            Vector3 refrdir = incidente * eta + base[2] * (eta *  cosi - sqrt(k)); 
+            float cosi = -base[2]*incidente;
+            float k = 1 - eta * eta * (1 - cosi * cosi);
+            wi = incidente * eta + base[2] * (eta *  cosi - sqrt(k)); 
 	}
 	return normalizar(wi);
 }

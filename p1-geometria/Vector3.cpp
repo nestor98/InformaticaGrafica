@@ -80,19 +80,19 @@ float Vector3::getModulo() const {
 
 // Devuelve el modulo del vector
 // TODO: comprobar!!
-float Vector3::setModulo(const float mod) {
+void Vector3::setModulo(const float mod) {
 	Vector3 temp = mod*((*this)/getModulo());
 	setCoords(temp[0], temp[1], temp[2], 0);
 }
 
-void Vector3::normalizar() {
-	std::cerr << "HOLA SOY Vector3::normalizar() Y NO FUNCIONO, USA normalizar(Vector3) O ARREGLAME\n";
-	exit(1);
-	// No funciona:
-	float mod = getModulo();
-	c[0]/mod; c[1]/mod; c[2]/mod;
-	c[3] = 0; // Se hace vector
-}
+// void Vector3::normalizar() {
+// 	std::cerr << "HOLA SOY Vector3::normalizar() Y NO FUNCIONO, USA normalizar(Vector3) O ARREGLAME\n";
+// 	exit(1);
+// 	// No funciona:
+// 	float mod = getModulo();
+// 	c[0]/mod; c[1]/mod; c[2]/mod;
+// 	c[3] = 0; // Se hace vector
+// }
 
 // Devuelve el vector v normalizado:
 Vector3 normalizar(const Vector3& v) {
@@ -209,7 +209,7 @@ Matriz4 Matriz4::adj() const {
 			std::cout << std::endl;
 			*/
 			s = (fila+col) % 2 == 0 ? 1 : -1;
-			float det = determinante(cols, filas);
+			// float det = determinante(cols, filas);
 			res[fila][col] = s * determinante(cols, filas); // indices al reves para traspuesta
 			//std::cout << res[fila][col] << ".........." << det << std::endl;
 		}

@@ -43,8 +43,9 @@ void Renderer::consumirTasks(Imagen& im, const Vector3& origen) {
 	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";
 }
 
-void dibujarBarraProgreso(double porcentaje) {
-	int longitudBarra = 50;
+
+// Barra de progreso adaptada de: https://stackoverflow.com/a/14539953
+void dibujarBarraProgreso(double porcentaje, int longitudBarra, hrc::time_point t_ini, hrc::time_point t_ahora) {
 	int nCaracteres = porcentaje*longitudBarra; // numero de veces que se repite el caracter de la barra
 	std::string caracter = "█"; // caracter de completado
 
@@ -57,10 +58,19 @@ void dibujarBarraProgreso(double porcentaje) {
 			std::cout << "░";
 		}
 	}
-	std::cout << " " << int(porcentaje*100) << '%'<< "\r" << std::flush;
+	double t_elapsed = std::chrono::duration_cast<std::chrono::duration<double>>(t_ahora - t_ini).count();
+	double min_restantes = 10;
+	if (porcentaje>0) {
+		min_restantes = (1.0-porcentaje)/porcentaje * t_elapsed / 60.0;
+	}
+	std::cout << " " << int(porcentaje*100) << '%'<< " (quedan unos " << min_restantes << " min)          \r" << std::flush;
 }
 
+
 void Renderer::progressBar(const int nPixeles) {
+	hrc::time_point t1, t2;
+	t1 = hrc::now();
+	int longitudBarra = 50;
 	while (true) {
 		int nRestantes;
 		{ //Lock
@@ -70,13 +80,16 @@ void Renderer::progressBar(const int nPixeles) {
 				break;
 			}
 			nRestantes = tasks.size();
-
 		} // unlock
 		int nTerminados = nPixeles - nRestantes;
 		double porcentaje = double(nTerminados)/double(nPixeles);
-		dibujarBarraProgreso(porcentaje);
+		t2 = hrc::now();
+		dibujarBarraProgreso(porcentaje, longitudBarra, t1, t2);
+		// dibujarBarraProgreso(porcentaje, longitudBarra);
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000)); // Duerme 2 s
 	}
+	dibujarBarraProgreso(1, longitudBarra, t1, t2);
+	std::cout << std::endl;
 }
 
 void Renderer::initThreads(Imagen& im, const Vector3& origen, const int nPixeles) {
@@ -97,8 +110,6 @@ std::string Renderer::to_string() const {
 	std::string s = "No has implementado el to_string de Renderer\n";
 	return s;
 }
-
-
 
 
 Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
@@ -157,7 +168,6 @@ Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::share
 Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
 	// std::cout << "Trazando un path" << '\n';
 	Color c = COLOR_FONDO;
-	double t = 1;
 	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
 	// std::cout << "Voy a intersectar" << '\n';
 	if (!usarBVH) { // Sin bvh
@@ -200,7 +210,6 @@ Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorA
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
 void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
-		bool interseccion = false;
 		Color color(0.0,0.0,0.0);
 		auto c = e.getCamara();
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
@@ -223,6 +232,7 @@ void Renderer::render(const std::string fichero) {
 	if (usarBVH){
 		std::vector<std::shared_ptr<Figura>> figs;
 		e.getFiguras(figs);
+		// std::cout << "A construir el bvh.." << '\n';
 		bvh.construirArbol(figs);//figuras);
 		std::cout<<"arbol bvh construido\n";
 	}
@@ -237,10 +247,9 @@ void Renderer::render(const std::string fichero) {
 	initThreads(im, o, c->getNumPixeles()); // inicializar los threads
 	// std::cout << "hecho" << '\n';
 	waitThreads(); // y esperar a que terminen
-	std::cout << std::endl;
 	// im.setMaxFloat(1); // TODO: entender esta vaina
 	// im.extendedReinhard();
-	im.guardar(fichero); // guardar la imagen
+	im.guardar("out/" + fichero); // guardar la imagen
 
 	t2 = hrc::now();
 	std::chrono::duration<double> t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);

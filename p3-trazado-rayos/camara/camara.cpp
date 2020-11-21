@@ -89,7 +89,7 @@ void Camara::setFOV(const double fov) {
 
 // Dada una anchura de una escena a renderizar, devuelve a que distancia tiene que estar
 // la camara actual del centro
-double Camara::setOrigenParaTarget(const Vector3& target)  {
+void Camara::setOrigenParaTarget(const Vector3& target)  {
 	posicion = target-front;
 }
 

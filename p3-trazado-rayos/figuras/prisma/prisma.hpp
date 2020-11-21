@@ -15,8 +15,8 @@
 
 // enable_shared_from_this, de https://en.cppreference.com/w/cpp/memory/enable_shared_from_this
 class Prisma : public Figura {
-	Vector3 tam; // tamaño xyz
 	Vector3 posicion; // posicion de la esquina mas cercana al origen
+	Vector3 tam; // tamaño xyz
 	// std::array<Plano, 4> caras;
 	bool esAABB; // Axis aligned BB
 	// bool esInfinito;

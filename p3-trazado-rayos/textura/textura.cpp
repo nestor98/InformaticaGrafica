@@ -17,11 +17,11 @@ Textura::Textura(Imagen& i, float _ancho, float _largo, Vector3 _pos)
     //  ancho=_ancho;
     // largo=_largo;
     // pos=_pos;
-    std::cout << "imagen tiene "<< tex.to_string();
-    // tex.guardar("out/vamohave.ppm");
-    for (int i = 0; i<100; i++) {
-      auto color = tex.getPixel(i) ;
-    }
+    // std::cout << "imagen tiene "<< tex.to_string();
+    // // tex.guardar("out/vamohave.ppm");
+    // for (int i = 0; i<100; i++) {
+    //   auto color = tex.getPixel(i) ;
+    // }
 }
 
 Textura::Textura(): ancho(0), largo(0)
@@ -31,7 +31,7 @@ Textura::Textura(): ancho(0), largo(0)
 
 Color Textura::getEmision(const Vector3& pto) const{
   // std::cout <<"por si acaso\n";
-    double ptox=pto[0]; // [0, tex.getPixelesX)
+    // double ptox=pto[0]; // [0, tex.getPixelesX)
     double x = pto[0];
     double y=pto[2]; // [0, tex.getPixelesY)
     x = pto[0]-pos[0];

@@ -17,6 +17,8 @@
 #include "utils.hpp"
 
 class Renderer {
+
+protected:
 	bool usarBVH;
 	BoundingVolumeH bvh;
 
@@ -54,11 +56,13 @@ class Renderer {
 	// ---------------------------------------
 	// --------- Barra de progreso  ---------
 	void progressBar(const int nPixeles);
-
+	
 public:
 	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion, VectoresWiRefraccion};
-private:
+protected:
 	TipoRender renderSeleccionado;
+
+
 public:
 	// Renderer(const Camara& _c, const TipoRender tipo = BVHEmision);
 	Renderer(const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
@@ -69,9 +73,6 @@ public:
 	void render(const std::string fichero);
 	//
 
-	// Compara los tiempos de render (secuencial, sin threads) de la Renderer con
-	// el metodo original y el bvh. Muestra los resultados por salida estandar.
-	void testBVHRender(const std::string f1 = "out/testRenderOriginal.ppm", const std::string f2 = "out/testRenderBVH.ppm");
 };
 
 	// para evitar el to_string en cout
@@ -79,6 +80,11 @@ public:
 
 	// ---------------------------
 	// --------- TESTS  ---------
+
+		// Compara los tiempos de render (secuencial, sin threads) de la Renderer con
+		// el metodo original y el bvh. Muestra los resultados por salida estandar.
+		// void testBVHRender(const std::string f1 = "out/testRenderOriginal.ppm", const std::string f2 = "out/testRenderBVH.ppm");
+
 	// enum Metodo {Original, BVH};
 	//
 	// void testRenderMethod(const Metodo metodo, const std::string fichero) const;

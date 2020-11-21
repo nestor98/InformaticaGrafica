@@ -103,7 +103,7 @@ Imagen::Imagen(const std::string nombreFichero, bool ldr) {
 
 
 Imagen::Imagen(const int _filas, const int _cols, const long _c, const float _maxFloat, const std::string _titulo)
-						: filas(_filas), cols(_cols), c(_c), maxFloat(_maxFloat), titulo(_titulo)
+						: titulo(_titulo), filas(_filas), cols(_cols), maxFloat(_maxFloat), c(_c)
 {
 	pixeles.reserve(filas * cols);
 }

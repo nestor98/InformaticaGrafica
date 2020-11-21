@@ -44,7 +44,7 @@ public:
 
 	void setFOV(const double fov);
 
-	double setOrigenParaTarget(const Vector3& target);
+	void setOrigenParaTarget(const Vector3& target);
 	//double distanciaParaAnchura(const double anchura) const;
 
 	void rotarAlrededorDeTarget(const Matriz4& rotacion);

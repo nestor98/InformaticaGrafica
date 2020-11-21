@@ -42,9 +42,9 @@ public:
 	// TODO: comprobar!!
 	float getModulo() const;
 	float getModuloSq() const;
-	float setModulo(const float mod);
+	void setModulo(const float mod);
 
-	void normalizar();
+	// void normalizar();
 
 	double getMaxComponente() const;
 	double getMinComponente() const;

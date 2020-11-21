@@ -111,6 +111,19 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			caja2.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
 			// caja2.setColor(0.2,0.5,0.2);
 			// e.addFigura(std::make_shared<Prisma>(caja2));
+			// ESPONJA:
+			Vector3 tamEsponja(tamEsfera);
+			Vector3 posEsponja = centroSuelo + 3.0*tamEsfera*UP + distanciaParedes*LEFT;
+			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posEsponja, tamEsponja, 4);
+			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+			for (auto f : *figuras) {
+				f->setMaterial(METAL_GRIS);
+			}
+			e.addFiguras(figuras);
+			// Prisma test(centroSuelo-LEFT*tamEsfera, tamEsponja);
+			// test.setRandomColor();
+			// e.addFigura(std::make_shared<Prisma>(test));
+
 		} // LUZ:
 		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
 		// tamPrismaLuz = tamPrismaLuz*30.0;
@@ -118,6 +131,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// Prisma luz(posPrismaLuz, tamPrismaLuz);
 		// luz.setColor(1,1,1);
 		// e.addFigura(std::make_shared<Prisma>(luz));
+
 
 		return std::make_unique<Escena>(e);
 }
@@ -134,7 +148,7 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 200); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(400, 400, 600); // pixX, pixY, rayosPP
 	int nThreads = 12;
   auto tipo = Renderer::TipoRender::Materiales;
 	bool usarBVH = true;

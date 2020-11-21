@@ -10,9 +10,9 @@
 class GeneradorEstructuras {
   typedef std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectorFigs;
 
-  vectorFigs figuras;
   Vector3 pos;
   Vector3 tam;
+  vectorFigs figuras;
 
   void setMengerSponge(const Vector3& pos, const Vector3& tam, const int iteraciones = 10);
 

@@ -7,12 +7,12 @@
 Figura::Figura(const std::array<double, 3> _e) : e(_e), emite(true), textura(false)
 {}
 
-Figura::Figura(const Material& _m) : m(_m), textura(false), emite(false)
+Figura::Figura(const Material& _m) : m(_m), emite(false), textura(false)
 {}
 
 
 // TODO: revisar emite, gestionar texturas+materiales etc
-Figura::Figura(std::shared_ptr<Textura> _tex): tex(_tex), emite(true), textura(true)
+Figura::Figura(std::shared_ptr<Textura> _tex): emite(true), tex(_tex), textura(true)
 {
 	std::cout << "ah pos si\n";
 }

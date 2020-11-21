@@ -275,12 +275,13 @@ Vector3 Prisma::getPtoAleatorio() const {
 	GeneradorAleatorio gen;
 	double random01 = gen.rand01();
 	Vector3 pto = posicion + random01*tam;
+	return pto;
 }
 
 // Devuelve un pto aleatorio dentro del prisma
 Vector3 Prisma::getPtoAleatorio(const GeneradorAleatorio& gen) const {
 	double random01 = gen.rand01();
-	Vector3 pto = posicion + random01*tam;
+	return posicion + random01*tam;
 }
 
 

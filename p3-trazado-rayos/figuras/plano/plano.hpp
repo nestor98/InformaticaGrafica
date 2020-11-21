@@ -13,8 +13,8 @@
 
 
 class Plano : public Figura {
-	Vector3 normal;
 	double dist; // distancia al origen
+	Vector3 normal;
 public:
 	Plano(const Vector3& _normal, const double _dist);
 	std::string to_string() const override;

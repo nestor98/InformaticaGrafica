@@ -14,8 +14,88 @@
 #include "generador.hpp"
 
 using namespace std;
+std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int pixelesY, const int rayosPP) {
+
+		double distanciaParedes = 3;
+		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
+		Vector3 fCam = FRONT;//(0,1,0,false);
+		Vector3 lCam = LEFT; //(1,0,0,false);
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+		//Camara c(posCam, dirCam);
+		//cout << c << endl;
+		// int rayosPP =500; // rayos por pixel
+
+		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+
+		// c.setFOV(0.4*PI);
+		// c.setFOV(PI);
+
+		//
+
+		Escena e(std::make_shared<Camara>(c));//Materiales);//MaterialesSinBVH
+		//
+		// // Caja:
+		Plano suelo(UP, 1.0*distanciaParedes);
+		suelo.setColor(0.8,0.8,0.8);
+		e.addFigura(std::make_shared<Plano>(suelo));
+
+		Plano techo(-UP, distanciaParedes);
+		techo.setColor(1,1,1);
+		// techo.setMaterial(difusoGris);
+		e.addFigura(std::make_shared<Plano>(techo));
+		Plano paredi(-LEFT, distanciaParedes);
+		paredi.setColor(0.8,0,0);
+		//paredi.setMaterial(difusoVerde);
+		e.addFigura(std::make_shared<Plano>(paredi));
+		Plano paredd(LEFT, distanciaParedes);
+
+		//paredd.setMaterial(difusoRojo);
+		 paredd.setColor(0,0.8,0);
+		e.addFigura(std::make_shared<Plano>(paredd));
+		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
+		 paredFondo.setColor(0.3,0.75,0.9);
+		e.addFigura(std::make_shared<Plano>(paredFondo));
+		//
+		//
+		Plano paredOculta(FRONT, 0.1*distanciaParedes);
+		paredOculta.setColor(0.05,0.05,0.8);
+		e.addFigura(std::make_shared<Plano>(paredOculta));
+		// Figuras:
+		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
+		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
+		for (int i = 0; i<1; i++) {
+			float tamEsfera =distanciaParedes/3.0*1.2;
+
+			/*Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
+			e.addFigura(std::make_shared<Esfera>(esf));*/
+			//
+			Vector3 posEsfDcha = centroSuelo - 1.0*tamEsfera*FRONT+ 0.5*tamEsfera*UP - 0.45*distanciaParedes*LEFT;
+			Esfera esfdcha(posEsfDcha, 1.0*tamEsfera);// 1*1
+
+			esfdcha.setRandomColor();
+			e.addFigura(std::make_shared<Esfera>(esfdcha));
+
+				Vector3 posEsf/*(0,3000,0,true)*/=FRONT*1000;
+			//PRUEBAS TEXTURAS SIMPLE
+			Imagen t= Imagen("textura1.ppm", true);
+			Textura tex=Textura(t, tamEsfera*2, tamEsfera*2, centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT);
+			Esfera esfT(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera, std::make_shared<Textura> (tex));// 1*1
+			esfT.setMaterial(Material(Color(0,0.8,0), Color(), Color()));
+			e.addFigura(std::make_shared<Esfera>(esfT));
 
 
+		} // LUZ:
+		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
+		// tamPrismaLuz = tamPrismaLuz*30.0;
+		// Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
+		// Prisma luz(posPrismaLuz, tamPrismaLuz);
+		// luz.setColor(1,1,1);
+		// e.addFigura(std::make_shared<Prisma>(luz));
+
+
+		return std::make_unique<Escena>(e);
+}
 
 std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int pixelesY, const int rayosPP) {
 
@@ -64,9 +144,12 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		Plano paredd(LEFT, distanciaParedes);
 
 		paredd.setMaterial(difusoRojo);
+		Imagen t= Imagen("textura1.ppm", true);
+		Textura tex=Textura(t,2.0*distanciaParedes,2.0*distanciaParedes, 2.0*distanciaParedes+FRONT);
 		 // paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
+		paredFondo.setTextura(std::make_shared<Textura>(tex));
 		// paredFondo.setColor(0.3,0.75,0.9);
 		paredFondo.setMaterial(DIFUSO_AZUL);
 		e.addFigura(std::make_shared<Plano>(paredFondo));
@@ -81,6 +164,8 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
+
+		
 
 			Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
@@ -162,7 +247,7 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 500); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(500, 500, 1000); // pixX, pixY, rayosPP
 	int nThreads = 12;
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;

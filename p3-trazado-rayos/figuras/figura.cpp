@@ -28,6 +28,10 @@ void Figura::setMaterial(const Material& _m) {
 	m = _m;
 }
 
+void Figura::setTextura(std::shared_ptr<Textura> _tex){
+	textura=true;
+	tex=_tex;
+}
 
 Material Figura::getMaterial() const {
 	return m;
@@ -46,9 +50,14 @@ Color Figura::getEmision(const Vector3& dir) const {
 	if(!textura){
 		return e;
 	} else {
-		return tex->getEmision(dir);
+		auto textura= tex->getEmision(dir);
+		return textura;
 	}
 }
+
+	bool Figura::tieneTextura() const{
+		return textura;
+	}
 
 // Vector3 Figura::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen) const {
 // 	if (!emite) return m.getVectorSalida(base, gen);

@@ -231,3 +231,9 @@ Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto);
 
 
 Matriz4 baseFromVectorYOrigen(const Vector3& normal, const Vector3& pto,  const Vector3& origen);
+
+
+
+double gradosARad(const double grados);
+
+double radianesAGrados(const double rad);

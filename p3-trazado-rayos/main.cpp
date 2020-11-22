@@ -14,6 +14,9 @@
 #include "generador.hpp"
 
 using namespace std;
+
+
+/*
 std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int pixelesY, const int rayosPP) {
 
 		double distanciaParedes = 3;
@@ -26,7 +29,8 @@ std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int p
 		//cout << c << endl;
 		// int rayosPP =500; // rayos por pixel
 
-		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		double fov = PI/4;
+		Camara c = Camara(posCam, uCam, fov, pixelesX,pixelesY,rayosPP);
 
 		// c.setFOV(0.4*PI);
 		// c.setFOV(PI);
@@ -67,8 +71,8 @@ std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int p
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
 
-			/*Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
-			e.addFigura(std::make_shared<Esfera>(esf));*/
+			Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
+			e.addFigura(std::make_shared<Esfera>(esf));
 			//
 			Vector3 posEsfDcha = centroSuelo - 1.0*tamEsfera*FRONT+ 0.5*tamEsfera*UP - 0.45*distanciaParedes*LEFT;
 			Esfera esfdcha(posEsfDcha, 1.0*tamEsfera);// 1*1
@@ -76,7 +80,7 @@ std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int p
 			esfdcha.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esfdcha));
 
-				Vector3 posEsf/*(0,3000,0,true)*/=FRONT*1000;
+				Vector3 posEsf/*(0,3000,0,true)=FRONT*1000;
 			//PRUEBAS TEXTURAS SIMPLE
 			Imagen t= Imagen("textura1.ppm", true);
 			Textura tex=Textura(t, tamEsfera*2, tamEsfera*2, centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT);
@@ -95,11 +99,12 @@ std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int p
 
 
 		return std::make_unique<Escena>(e);
-}
+}*/
 
 std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int pixelesY, const int rayosPP) {
 
 		double distanciaParedes = 3;
+		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
 		Vector3 posCam(0,0,0,true);
 		posCam = posCam - UP * distanciaParedes/4.0;
 		Vector3 fCam = FRONT;//(0,1,0,false);
@@ -109,7 +114,12 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		//cout << c << endl;
 		// int rayosPP =500; // rayos por pixel
 
-		Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+	std::cout << gradosARad(45) << '\n';
+		double fov = gradosARad(45) * PI; //0.475 * PI;
+		Camara c = Camara(posCam, centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+
 
 		// c.setFOV(0.4*PI);
 		// c.setFOV(PI);
@@ -135,7 +145,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 
 		Plano techo(-UP, distanciaParedes);
 		// techo.setColor(2.5,2.5,2.5);
-		techo.setMaterial(difusoGris);
+		techo.setMaterial(DIFUSO_BLANCO);
 		e.addFigura(std::make_shared<Plano>(techo));
 		Plano paredi(-LEFT, distanciaParedes);
 		 // paredi.setColor(0.8,0,0);
@@ -143,7 +153,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		e.addFigura(std::make_shared<Plano>(paredi));
 		Plano paredd(LEFT, distanciaParedes);
 
-		paredd.setMaterial(difusoRojo);
+		paredd.setMaterial(ESPEJO);
 		Imagen t= Imagen("textura2.ppm", true);
 		Textura tex=Textura(t,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
 		 // paredd.setColor(0,0.8,0);
@@ -161,9 +171,8 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
-		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
-		Color emisionLuces(5);
+		Color emisionLuces(2);
 		LuzPuntual luz(posLuz, emisionLuces);
 		e.addLuz(luz);
 
@@ -187,10 +196,10 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			//esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
-			Vector3 posEsfDcha = centroSuelo + distanciaParedes*UP ;
+			Vector3 posEsfDcha = centroSuelo + tamEsfera;
 			Esfera esfdcha(posEsfDcha, 1.0*tamEsfera);// 1*1
 
-			esfdcha.setMaterial(VIDRIO);
+			esfdcha.setMaterial(DIFUSO_AZUL);
 			// esfdcha.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esfdcha));
 			// double tamEsferaInterior = tamEsfera *0.95;
@@ -231,20 +240,20 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posPrsima - (2.0*distanciaParedes-tamEsponja[0])*LEFT, tamEsponja, 4);
 			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 			for (auto f : *figuras) {
-				f->setMaterial(METAL_DORADO);
+				f->setMaterial(METAL_GRIS);
 			}
-			// e.addFiguras(figuras);
-			Prisma test(posPrsima - distanciaParedes / 5.0 * LEFT, tamEsponja);
-			test.setMaterial(VIDRIO);
-			e.addFigura(std::make_shared<Prisma>(test));
+			e.addFiguras(figuras);
+			// Prisma test(posPrsima - distanciaParedes / 5.0 * LEFT, tamEsponja);
+			// test.setMaterial(VIDRIO);
+			// e.addFigura(std::make_shared<Prisma>(test));
 
 		} // LUZ:
-		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
-		// tamPrismaLuz = tamPrismaLuz*30.0;
-		// Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
-		// Prisma luz(posPrismaLuz, tamPrismaLuz);
-		// luz.setColor(1,1,1);
-		// e.addFigura(std::make_shared<Prisma>(luz));
+		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
+		tamPrismaLuz = tamPrismaLuz;
+		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
+		Prisma prismaLuz(posPrismaLuz, tamPrismaLuz);
+		prismaLuz.setColor(Color(4));
+		e.addFigura(std::make_shared<Prisma>(prismaLuz));
 
 
 		return std::make_unique<Escena>(e);
@@ -262,7 +271,7 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 200); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(400, 400, 20); // pixX, pixY, rayosPP
 	int nThreads = 12;
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;

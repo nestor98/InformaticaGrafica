@@ -56,7 +56,7 @@ public:
 	void setColor(const double r, const double g, const double b);
 
 	void setColor(const std::array<double, 3> _e);
-	void setColor(Color e);
+	void setColor(const Color& _e);
 	void setRandomColor();
 	// Le cambia el color en funcion de la posicion
 	void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);

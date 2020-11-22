@@ -28,6 +28,8 @@ class Camara {
 
 
 public:
+	Camara(const Vector3& _posicion, const Vector3& objetivo, const Vector3& _up, const double fov,
+		const int _pixelesX = 720, const int _pixelesY = 720*9/16, const int _rayosPixel = 4);
 	Camara(const Vector3& _posicion, const Vector3& _front, const Vector3& _left, const Vector3& _up,
 		const int _pixelesX = 720, const int _pixelesY = 720*9/16, const int _rayosPixel = 4);
 

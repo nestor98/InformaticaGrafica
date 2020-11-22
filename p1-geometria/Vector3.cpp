@@ -587,3 +587,13 @@ Matriz4 baseFromVectorYOrigen(const Vector3& normal, const Vector3& pto,  const 
 	base.setCambioBase(normalizar(k), normalizar(j), normalizar(i), ptoBase);
 	return base;
 }
+
+
+double gradosARad(const double grados) {
+	return grados * (2.0*PI) / 360.0;
+}
+
+
+double radianesAGrados(const double rad) {
+	return rad / (2.0*PI) * 360.0;
+}

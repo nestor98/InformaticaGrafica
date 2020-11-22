@@ -14,7 +14,7 @@ Figura::Figura(const Material& _m) : m(_m), emite(false), textura(false)
 // TODO: revisar emite, gestionar texturas+materiales etc
 Figura::Figura(std::shared_ptr<Textura> _tex): emite(true), tex(_tex), textura(true)
 {
-	std::cout << "ah pos si\n";
+	// std::cout << "ah pos si\n";
 }
 
 Figura::Figura() : Figura(std::array<double, 3>({0,0,0}))
@@ -82,6 +82,11 @@ std::shared_ptr<Prisma> Figura::getBoundingBox() const {
 	std::cout << "CUIDAOOOOOOOOOOOOOOOOOOOOOOOOOOOO------------------------------------------------------\n";
 	return bbox;
 }
+
+void Figura::setColor(const Color& _e) {
+	e = _e;
+}
+
 
 
 void Figura::setColor(const double r, const double g, const double b) {

@@ -23,6 +23,23 @@ Camara::Camara(const Vector3& _posicion, const Vector3& _front, const Vector3& _
 }
 
 
+Camara::Camara(const Vector3& _posicion, const Vector3& objetivo, const Vector3& _up, const double fov, const int _pixelesX,
+	const int _pixelesY, const int _rayosPixel) :
+		posicion(_posicion), up(_up),
+		pixelesX(_pixelesX), pixelesY(_pixelesY),rayosPixel(_rayosPixel)
+		{
+			left = cross(up, normalizar(objetivo)) * (double(pixelesX)/double(pixelesY));
+			std::cout << "up x objetivo = " << cross(up, objetivo) << '\n';
+			std::cout << "left: " << left << "\nLEFT:" << LEFT << '\n';
+			std::cout << "up: " << up << "\nUP:" << UP << '\n';
+			front = cross(left, up);
+			std::cout << "front: " << front << "\nFRONT:" << FRONT << '\n';
+			setFOV(fov);
+
+		}
+
+
+
 std::string Camara::to_string() const {
 	return "posicion: " + posicion.to_string() + "\nbase: " + base.to_string();
 }

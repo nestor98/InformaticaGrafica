@@ -77,7 +77,8 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 	}
 	else if (evento == 1) { // ------------------------ REFLEXION
 		Matriz4 base = fig->getBase(pto);
-		c = mat.getCoeficiente(evento);
+		c = mat.getCoeficiente(0); // usamos el coeficiente del difuso
+		if (c == double(0)) c = mat.getCoeficiente(1);
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
 		c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
 	}

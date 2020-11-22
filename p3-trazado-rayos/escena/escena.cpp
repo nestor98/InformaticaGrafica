@@ -22,6 +22,11 @@ void Escena::addFigura(const std::shared_ptr<Figura> f)
 	figuras.push_back(f);
 }
 
+void Escena::addLuz(const LuzPuntual& luz)
+{
+	luces.emplace_back(luz);
+}
+
 void Escena::addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectFiguras) {
 	figuras.insert(figuras.end(), vectFiguras->begin(), vectFiguras->end());
 }
@@ -84,6 +89,22 @@ void Escena::getFiguras(std::vector<std::shared_ptr<Figura>>& v) const {
 	v = figuras;
 }
 
+int Escena::getNumLuces() const {
+	return luces.size();
+}
+
+void Escena::getLuz(LuzPuntual& luz, const int i) const {
+	luz = luces[i];
+}
+
+
+LuzPuntual Escena::getLuz(const int i) const {
+	return luces[i];
+}
+
+void Escena::getLuces(std::vector<LuzPuntual>& vLuces) const {
+	vLuces = luces;
+}
 
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Escena& e) {

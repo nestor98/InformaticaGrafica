@@ -134,8 +134,8 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		e.addFigura(std::make_shared<Plano>(suelo));
 
 		Plano techo(-UP, distanciaParedes);
-		techo.setColor(2.5,2.5,2.5);
-		// techo.setMaterial(difusoGris);
+		// techo.setColor(2.5,2.5,2.5);
+		techo.setMaterial(difusoGris);
 		e.addFigura(std::make_shared<Plano>(techo));
 		Plano paredi(-LEFT, distanciaParedes);
 		 // paredi.setColor(0.8,0,0);
@@ -162,10 +162,24 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
+		Color emisionLuces(5);
+		LuzPuntual luz(posLuz, emisionLuces);
+		e.addLuz(luz);
+
+		LuzPuntual luz2(posLuz - FRONT * distanciaParedes /2, emisionLuces);
+		e.addLuz(luz2);
+
+
+		LuzPuntual luz3(posLuz + FRONT * distanciaParedes /3, emisionLuces);
+		e.addLuz(luz3);
+
+
+
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
 
-		
+
 
 			Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
@@ -220,7 +234,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 				f->setMaterial(METAL_DORADO);
 			}
 			// e.addFiguras(figuras);
-			Prisma test(posPrsima, tamEsponja);
+			Prisma test(posPrsima - distanciaParedes / 5.0 * LEFT, tamEsponja);
 			test.setMaterial(VIDRIO);
 			e.addFigura(std::make_shared<Prisma>(test));
 
@@ -248,7 +262,7 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(500, 500, 200); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(400, 400, 200); // pixX, pixY, rayosPP
 	int nThreads = 12;
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;

@@ -177,7 +177,7 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		// compute fresnel
 		float coefRefraccion = 1.45; // TODO: de momento es vidrio
 		kr = krFresnel(incidente, base[2], coefRefraccion); // Devuelve la probabilidad de reflexion
-		// if (kr>0.5) std::cout << "kr:" << kr << '\n';
+		// if (kr>0.9) std::cout << "kr:" << kr << '\n';
 		if (gen.rand01() < kr) { // Reflexion:
 			// Matriz4 basePrueba = base;
 			// basePrueba[2] = -base[2];

@@ -36,6 +36,11 @@ CAMARA=${CAMARA_DIR}/camara
 ### escena:
 ESCENA_DIR=escena
 ESCENA=${ESCENA_DIR}/escena
+
+LUZ_DIR=${ESCENA_DIR}/luces
+LUZ=${LUZ_DIR}/luzpuntual
+
+
 ### renderer:
 RENDERER_DIR=renderer
 RENDERER=${RENDERER_DIR}/renderer
@@ -52,7 +57,7 @@ TEX=${TEX_DIR}/textura
 ### main:
 MAIN=main
 
-CPPFLAGS=-MMD -Wall -Wno-sign-compare -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${COLOR_DIR} -I${TEX_DIR} -I${FIGURAS_DIR} -I${MATERIAL_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${RENDERER_DIR} -I${BVH_DIR} -std=c++17 -pthread -O2
+CPPFLAGS=-MMD -Wall -Wno-sign-compare -I. -I${VECTOR_DIR} -I${IMAGEN_DIR} -I${COLOR_DIR} -I${TEX_DIR} -I${FIGURAS_DIR} -I${MATERIAL_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${LUZ_DIR} -I${RENDERER_DIR} -I${BVH_DIR} -std=c++17 -pthread -O2
 
 src = $(wildcard *.cpp) \
         $(wildcard ../p1-geometria/Vector3.cpp) \
@@ -60,6 +65,7 @@ src = $(wildcard *.cpp) \
 				$(wildcard textura/*.cpp) \
         $(wildcard camara/*.cpp) \
         $(wildcard escena/*.cpp)\
+        $(wildcard escena/luces/*.cpp)\
         $(wildcard renderer/*.cpp)\
         $(wildcard bvh/*.cpp)\
         $(wildcard figuras/*.cpp)\

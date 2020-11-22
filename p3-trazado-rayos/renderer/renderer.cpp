@@ -10,6 +10,8 @@
 #include "renderer.hpp"
 #include "material.hpp"
 
+#include "luzpuntual.hpp"
+
 #define hrc std::chrono::high_resolution_clock
 
 const Color COLOR_FONDO(0,0,0); // TODO: mirar como ponerlo mas bonito
@@ -22,11 +24,36 @@ Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRe
 	threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }
 
+Color Renderer::shadowRay(const Vector3& pto, const int indiceluz) const {
+	Color c;
+	LuzPuntual luz=	e.getLuz(indiceluz);
+	Vector3 rayoSombra = luz.getPos() - pto;
+	// std::cout << "ueyueya" << '\n';
+	double distLuz = rayoSombra.getModulo();
+	rayoSombra = normalizar(rayoSombra);
+	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
+	// std::cout << "ueyueya" << '\n';
+	if (!usarBVH) { // Sin bvh
+		interseccionFigura = e.interseccion(pto, rayoSombra);
+	}
+	else { // con bvh
+		// std::cout << "Cuidado con la interseccion con bvh" << '\n';
+		interseccionFigura = bvh.interseccion(pto, rayoSombra);
+	}
+	if (interseccionFigura) {
+		if (distLuz < interseccionFigura->first.t) {
+			return luz.getEmision();
+		}
+	}
+	return c;
+}
+
 
 Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
 	Material mat = fig->getMaterial();
-	int evento = mat.ruletaRusa(rngThread, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
 	Color c;
+
+	int evento = mat.ruletaRusa(rngThread, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
 	if (evento == 3) {// absorcion
 		// std::cout << "absorcion.." << '\n';
 		return c;
@@ -48,20 +75,40 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir, kr);
 		c = pathTrace(pto+0.01*otroPath, otroPath, rngThread);// * kr; //
 	}
-	else { // REFLEXION o DIFUSO:
+	else if (evento == 1) { // ------------------------ REFLEXION
 		Matriz4 base = fig->getBase(pto);
-		if(evento==1){
-			c = mat.getCoeficiente(evento);
-		}else{
-			if(fig->tieneTextura()){
-				c= fig->getEmision(pto);
-			}else{
-				c = mat.getCoeficiente(evento);
-			}
-		}
+		c = mat.getCoeficiente(evento);
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
 		c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
 	}
+	else { // --------------------------- DIFUSO
+		if (fig->tieneTextura()) { // con textura
+			c = fig->getEmision(pto);
+		}
+		else { // difuso sin textura
+			c = mat.getCoeficiente(evento);
+		}
+		// Solo queda elegir entre iluminacion directa e indirecta:
+		float probRayoSombra = 0.1; // TODO: ???????????????
+		int numLuces = e.getNumLuces();
+		if (numLuces > 0 && rngThread.rand01() < probRayoSombra) { // Iluminacion directa
+			// int indiceluz = rngThread.rand(0, numLuces);
+			// std::cout << "1" << '\n';
+			Color ilum;
+			for (int i = 0; i<numLuces; i++) {
+				ilum = ilum + shadowRay(pto, i);
+			}
+			c = c*ilum/double(numLuces);
+			// std::cout << "2" << '\n';
+		}
+		else { // iluminacion indirecta
+			Matriz4 base = fig->getBase(pto);
+			Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
+			c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
+		}
+	}
+
+
 	return c;
 }
 

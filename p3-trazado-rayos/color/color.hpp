@@ -11,6 +11,7 @@ class Color {
   //inline static Utils utils; // random, etc
 public:
   Color();
+  Color(const double rgb); // pone las tres a ese color
   Color(const double _r, const double _g, const double _b);
 
   Color(const std::array<double,3> rgb);

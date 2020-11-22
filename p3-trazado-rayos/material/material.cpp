@@ -76,7 +76,7 @@ void Material::setMaximos() {
 
 // Devuelve un kr (porcentaje de reflexion) en 0..1, representa la proporción de energia que se reflecta
 // Tb adaptado de https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
-double krFresnel(const Vector3& normal, const Vector3& wo, const double coefRefraccion) {
+double Material::krFresnel(const Vector3& normal, const Vector3& wo, const double coefRefraccion) const {
   float cosI = wo * normal; //clamp(-1, 1, dotProduct(I, N));
 	if (cosI < -1.0) cosI = -1.0;
 	else if (cosI > 1.0) cosI = 1.0;

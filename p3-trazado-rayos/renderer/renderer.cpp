@@ -46,13 +46,13 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		// }
 		float kr;
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir, kr);
-		c = pathTrace(pto+0.01*otroPath, otroPath, rngThread) * kr;
+		c = pathTrace(pto+0.01*otroPath, otroPath, rngThread);// * kr; //
 	}
 	else { // REFLEXION o DIFUSO:
 		Matriz4 base = fig->getBase(pto);
 		c = mat.getCoeficiente(evento); // kd
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
-		c = c*pathTrace(pto, otroPath, rngThread); // kd * Li
+		c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
 	}
 	return c;
 }
@@ -125,6 +125,10 @@ Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorA
 			if (renderSeleccionado == Materiales) { // Path trace normal
 				// std::cout << "He intersectado con un no emisor" << '\n';
 				c = ruletaRusa(fig, dir, ptoInterseccion, rngThread, primerRebote);
+			}
+			else if (renderSeleccionado == krFresnel) {
+				double kr = fig->getMaterial().krFresnel(dir, fig->getNormal(ptoInterseccion), 1.45);
+				c = Color(kr); // ya va de 0 a 1
 			}
 			else { // otro tipo de render:
 				Vector3 vector = vectorTipoRender(renderSeleccionado, fig,  dir, ptoInterseccion,rngThread);

@@ -6,6 +6,10 @@
 Color::Color() : Color(0,0,0)
 {}
 
+
+Color::Color(const double rgb) : Color(rgb,rgb,rgb)
+{}
+
 Color::Color(const double _r, const double _g, const double _b)
 : r(_r), g(_g), b(_b)
 {}

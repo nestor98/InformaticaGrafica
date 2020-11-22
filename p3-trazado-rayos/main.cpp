@@ -19,7 +19,9 @@ using namespace std;
 
 std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int pixelesY, const int rayosPP) {
 
+		double distanciaParedes = 3;
 		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
 		Vector3 fCam = FRONT;//(0,1,0,false);
 		Vector3 lCam = LEFT; //(1,0,0,false);
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
@@ -36,7 +38,6 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 
 		Escena e(std::make_shared<Camara>(c));//Materiales);//MaterialesSinBVH
 
-		float distanciaParedes = 3;
 
 
 		Material difuso(Material::Difuso);
@@ -67,7 +68,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		e.addFigura(std::make_shared<Plano>(paredd));
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
 		// paredFondo.setColor(0.3,0.75,0.9);
-		paredFondo.setMaterial(DIFUSO_BLANCO);
+		paredFondo.setMaterial(DIFUSO_AZUL);
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 		//
 		//
@@ -81,23 +82,30 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
 
-			Esfera esf(centroSuelo + tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
+			Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
 			esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLEXION
 			//esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
-			Vector3 posEsfDcha = centroSuelo - 1.0*tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT;
-			Esfera esfdcha(posEsfDcha, 1.25*tamEsfera);// 1*1
+			Vector3 posEsfDcha = centroSuelo - 1.0*tamEsfera*FRONT+ 0.5*tamEsfera*UP - 0.45*distanciaParedes*LEFT;
+			Esfera esfdcha(posEsfDcha, 1.0*tamEsfera);// 1*1
 
 			esfdcha.setMaterial(VIDRIO);
 			// esfdcha.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esfdcha));
-			// Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, 0.75*tamEsfera);// 1*1
+			// double tamEsferaInterior = tamEsfera *0.95;
+			// std::cout << "tam:" << tamEsferaInterior << '\n';
+			// Esfera esfdchaInterior(posEsfDcha, tamEsferaInterior);// 1*1
+			//
+			// esfdchaInterior.setMaterial(DIFUSO_VERDE);
+			// // esfdcha.setRandomColor();
+			// e.addFigura(std::make_shared<Esfera>(esfdchaInterior));
+			Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, 0.75*tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
-			// esf2.setMaterial(difusoGris);
-			// esf2.setRandomColor();
-			// e.addFigura(std::make_shared<Esfera>(esf2));
+			esf2.setMaterial(difusoGris);
+			esf2.setRandomColor();
+			e.addFigura(std::make_shared<Esfera>(esf2));
 
 			Esfera esfLuz(posEsfDcha + tamEsfera * 2.0 * FRONT + tamEsfera * LEFT, tamEsfera);
 			// esfLuz.setRandomColor();
@@ -119,16 +127,16 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			// e.addFigura(std::make_shared<Prisma>(caja2));
 			// ESPONJA:
 			Vector3 tamEsponja(tamEsfera);
-			Vector3 posEsponja = centroSuelo + 3.0*tamEsfera*UP + distanciaParedes*LEFT;
-			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posEsponja, tamEsponja, 4);
+			Vector3 posPrsima = centroSuelo + 3.0*tamEsfera*UP + distanciaParedes*LEFT;
+			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posPrsima - (2.0*distanciaParedes-tamEsponja[0])*LEFT, tamEsponja, 4);
 			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 			for (auto f : *figuras) {
-				f->setMaterial(VIDRIO);
+				f->setMaterial(METAL_DORADO);
 			}
-			e.addFiguras(figuras);
-			// Prisma test(posEsponja, tamEsponja);
-			// test.setMaterial(VIDRIO);
-			// e.addFigura(std::make_shared<Prisma>(test));
+			// e.addFiguras(figuras);
+			Prisma test(posPrsima, tamEsponja);
+			test.setMaterial(VIDRIO);
+			e.addFigura(std::make_shared<Prisma>(test));
 
 		} // LUZ:
 		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
@@ -154,9 +162,9 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 50); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(400, 400, 500); // pixX, pixY, rayosPP
 	int nThreads = 12;
-  auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;
+  auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
 	Renderer rend(*escena, nThreads, tipo, usarBVH);
 	rend.render(argv[1]);

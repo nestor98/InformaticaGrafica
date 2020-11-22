@@ -62,6 +62,8 @@ public:
 	// con probabilidades en funcion del coeficiente máximo de cada uno
 	int ruletaRusa(const GeneradorAleatorio& gen, const bool primerRebote=false) const;
 
+	double krFresnel(const Vector3& normal, const Vector3& wo, const double coefRefraccion) const;
+
 	//
 	// // Le cambia el color en funcion de la posicion
 	// void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);

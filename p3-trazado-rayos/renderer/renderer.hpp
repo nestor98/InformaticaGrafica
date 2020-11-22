@@ -58,7 +58,7 @@ protected:
 	void progressBar(const int nPixeles);
 
 public:
-	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion, VectoresWiRefraccion};
+	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion, VectoresWiRefraccion, krFresnel};
 protected:
 	TipoRender renderSeleccionado;
 

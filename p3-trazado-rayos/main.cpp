@@ -144,8 +144,8 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		Plano paredd(LEFT, distanciaParedes);
 
 		paredd.setMaterial(difusoRojo);
-		Imagen t= Imagen("textura1.ppm", true);
-		Textura tex=Textura(t,2.0*distanciaParedes,2.0*distanciaParedes, 2.0*distanciaParedes+FRONT);
+		Imagen t= Imagen("textura2.ppm", true);
+		Textura tex=Textura(t,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
 		 // paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
@@ -173,7 +173,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			//esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
-			Vector3 posEsfDcha = centroSuelo - 1.0*tamEsfera*FRONT+ 0.5*tamEsfera*UP - 0.45*distanciaParedes*LEFT;
+			Vector3 posEsfDcha = centroSuelo + distanciaParedes*UP ;
 			Esfera esfdcha(posEsfDcha, 1.0*tamEsfera);// 1*1
 
 			esfdcha.setMaterial(VIDRIO);
@@ -191,8 +191,9 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			esf2.setMaterial(difusoGris);
 			esf2.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esf2));
-
-			Esfera esfLuz(posEsfDcha + tamEsfera * 2.0 * FRONT + tamEsfera * LEFT, tamEsfera);
+			Vector3 posesfTex=(posEsfDcha + tamEsfera * 1.75 * FRONT + tamEsfera * LEFT);
+			Textura tex=Textura(t,2.0*tamEsfera,2.0*tamEsfera, posesfTex);
+			Esfera esfLuz(posesfTex, tamEsfera, std::make_shared<Textura>(tex));
 			// esfLuz.setRandomColor();
 			esfLuz.setMaterial(METAL_DORADO);
 			e.addFigura(std::make_shared<Esfera>(esfLuz));
@@ -247,7 +248,7 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(500, 500, 1000); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(500, 500, 200); // pixX, pixY, rayosPP
 	int nThreads = 12;
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;

@@ -122,8 +122,9 @@ Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorA
 		if (fig->esEmisor()) { // fin de la recursión, es un emisor
 			// std::cout << "a por emision" << '\n';
 			// return fig->getEmision();
+			// if (fig->)
 			c = fig->getEmision(interseccionFigura->first.punto);
-			if (!primerRebote) return c*2.0; // TODO: multiplicacion bestia de la iluminacion, revisar
+			// if (!primerRebote) return c*2.0; // TODO: multiplicacion bestia de la iluminacion, revisar
 		}
 		else {
 			Figura::InterseccionData iData = interseccionFigura->first;

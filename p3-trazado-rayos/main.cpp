@@ -134,7 +134,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		e.addFigura(std::make_shared<Plano>(suelo));
 
 		Plano techo(-UP, distanciaParedes);
-		techo.setColor(1,1,1);
+		techo.setColor(2.5,2.5,2.5);
 		// techo.setMaterial(difusoGris);
 		e.addFigura(std::make_shared<Plano>(techo));
 		Plano paredi(-LEFT, distanciaParedes);

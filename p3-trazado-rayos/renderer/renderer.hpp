@@ -50,13 +50,13 @@ protected:
 
 	// ---------------------------------------
 	// --------- Aux de path tracer  ---------
-	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, bool inside, const bool primerRebote=false) const;
-	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread,bool inside,  const bool primerRebote = false) const;
+	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote=false) const;
+	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote = false) const;
 
 	// ---------------------------------------
 	// --------- Barra de progreso  ---------
 	void progressBar(const int nPixeles);
-	
+
 public:
 	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion, VectoresWiRefraccion};
 protected:

@@ -32,11 +32,13 @@ void BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>>& figur
 	}
 	else { // Figuras y planos
 		std::cout << "Hay planos y figuras finitas\n";
+			// std::cout << "Casos particulares: ";
 		vectorPlanos.insert(vectorPlanos.end(), figuras.begin(), it); // Tenemos la primera mitad
 		// left = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitad));
 		std::vector<std::shared_ptr<Figura>> figsFinitas;
 		figsFinitas.insert(figsFinitas.end(), it, figuras.end());
 		construirArbolRec(figsFinitas);
+		// std::cout << std::endl;
 	}
 }
 
@@ -48,7 +50,7 @@ std::vector<std::shared_ptr<Figura>>::iterator BoundingVolumeH::casoParticular(s
 		double ptoSep = box->getPtoAleatorio(gen)[eje];
 		it = std::partition(figuras.begin(), figuras.end(), [eje, ptoSep](const std::shared_ptr<Figura> f){return f->getCentroide()[eje] < ptoSep;});
 	}
-	std::cout << "Encontrado nuevo pto de corte en caso particular" << '\n';
+	// std::cout << "|"; // TODO: hay... bastantes casos "particulares"
 	return it;
 }
 

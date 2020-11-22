@@ -66,8 +66,8 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		 // paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
-		 // paredFondo.setColor(0.75,0.75,0.75);
-		paredFondo.setMaterial(METAL_GRIS);
+		// paredFondo.setColor(0.3,0.75,0.9);
+		paredFondo.setMaterial(DIFUSO_BLANCO);
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 		//
 		//
@@ -87,16 +87,22 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			//esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
-			Esfera esfdcha(centroSuelo - 0.25*tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT, 1.25*tamEsfera);// 1*1
+			Vector3 posEsfDcha = centroSuelo - 1.0*tamEsfera*FRONT+tamEsfera*UP - 0.45*distanciaParedes*LEFT;
+			Esfera esfdcha(posEsfDcha, 1.25*tamEsfera);// 1*1
 
 			esfdcha.setMaterial(VIDRIO);
 			// esfdcha.setRandomColor();
 			e.addFigura(std::make_shared<Esfera>(esfdcha));
-			Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, 0.75*tamEsfera);// 1*1
+			// Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, 0.75*tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
 			// esf2.setMaterial(difusoGris);
-			esf2.setRandomColor();
-			e.addFigura(std::make_shared<Esfera>(esf2));
+			// esf2.setRandomColor();
+			// e.addFigura(std::make_shared<Esfera>(esf2));
+
+			Esfera esfLuz(posEsfDcha + tamEsfera * 2.0 * FRONT + tamEsfera * LEFT, tamEsfera);
+			// esfLuz.setRandomColor();
+			esfLuz.setMaterial(METAL_DORADO);
+			e.addFigura(std::make_shared<Esfera>(esfLuz));
 			// Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,0.2*tamEsfera, false);
 			// tamPrisma = tamPrisma/2.0;
 			// Prisma caja(centroSuelo + 1.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
@@ -114,15 +120,15 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			// ESPONJA:
 			Vector3 tamEsponja(tamEsfera);
 			Vector3 posEsponja = centroSuelo + 3.0*tamEsfera*UP + distanciaParedes*LEFT;
-			// GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posEsponja, tamEsponja, 4);
-			// auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
-			// for (auto f : *figuras) {
-			// 	f->setMaterial(VIDRIO);
-			// }
-			// e.addFiguras(figuras);
-			Prisma test(posEsponja, tamEsponja);
-			test.setMaterial(VIDRIO);
-			e.addFigura(std::make_shared<Prisma>(test));
+			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posEsponja, tamEsponja, 4);
+			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+			for (auto f : *figuras) {
+				f->setMaterial(VIDRIO);
+			}
+			e.addFiguras(figuras);
+			// Prisma test(posEsponja, tamEsponja);
+			// test.setMaterial(VIDRIO);
+			// e.addFigura(std::make_shared<Prisma>(test));
 
 		} // LUZ:
 		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
@@ -150,7 +156,7 @@ int main(int argc, char* argv[]) {
 	//escenaBastanteGuay400prismas200esferas(argv);
 	auto escena = escenaCornellBoxMateriales(400, 400, 50); // pixX, pixY, rayosPP
 	int nThreads = 12;
-  auto tipo = Renderer::TipoRender::Materiales;//Materiales;//VectoresWiRefraccion;
+  auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;
 	bool usarBVH = true;
 	Renderer rend(*escena, nThreads, tipo, usarBVH);
 	rend.render(argv[1]);

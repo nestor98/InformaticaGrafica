@@ -56,6 +56,8 @@ public:
 	void setMaximos();
 	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento,const bool inside=false, const Vector3& incidente=Vector3()) const ;
 
+	Vector3 getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento,const bool inside, const Vector3& incidente, float& kr) const ;
+
 	// devuelve un num de 0 a 4 (para difuso, especular, refraccion o evento nulo, respectivamente)
 	// con probabilidades en funcion del coeficiente máximo de cada uno
 	int ruletaRusa(const GeneradorAleatorio& gen, const bool primerRebote=false) const;
@@ -77,8 +79,10 @@ public:
 	const Material DIFUSO_ROJO = Material(Color(0.9,0.05,0.05), Color(), Color());
 	const Material DIFUSO_AZUL = Material(Color(0.05,0.05,0.9), Color(), Color());
 	const Material DIFUSO_GRIS = Material(Color(0.7,0.7,0.7), Color(), Color());
+	const Material DIFUSO_BLANCO = Material(Color(0.9,0.9,0.9), Color(), Color());
 
 	const Material METAL_GRIS = Material(Color(0.45,0.45,0.45), Color(0.45,0.45,0.45), Color());
+	const Material METAL_DORADO = Material(Color(0.6,0.6,0.1), Color(0.3,0.3,0.3), Color());
 	const Material ESPEJO = Material(Color(), Color(0.9,0.9,0.9), Color());
 
 

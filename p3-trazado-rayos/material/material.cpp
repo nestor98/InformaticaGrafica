@@ -74,7 +74,7 @@ void Material::setMaximos() {
 	}
 }
 
-// Devuelve un kr en 0..1, representa la proporción de energia que se refracta
+// Devuelve un kr (porcentaje de reflexion) en 0..1, representa la proporción de energia que se reflecta
 // Tb adaptado de https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
 double krFresnel(const Vector3& normal, const Vector3& wo, const double coefRefraccion) {
   float cosI = wo * normal; //clamp(-1, 1, dotProduct(I, N));
@@ -92,6 +92,7 @@ double krFresnel(const Vector3& normal, const Vector3& wo, const double coefRefr
 		senoT = cRefrMedio1 / cRefrMedio2 * sqrt(1 - cosIsq);
 	}
   if (senoT >= 1) { // Mas del angulo critico: reflexion interna total
+		std::cout << "reflexion interna total" << '\n';
     return 1;
   }
   else {
@@ -103,11 +104,36 @@ double krFresnel(const Vector3& normal, const Vector3& wo, const double coefRefr
   }
 }
 
-
+Vector3 refraccion(const Vector3& incidente, const Vector3& normal, const float indice)
+{
+	float cosI = incidente * normal; //clamp(-1, 1, dotProduct(I, N));
+	if (cosI < -1.0) cosI = -1.0;
+	else if (cosI > 1.0) cosI = 1.0;
+  float etai = 1, etat = indice;
+  Vector3 n = normal;
+  if (cosI < 0) {
+		cosI = -cosI;
+	}
+	else {
+		std::swap(etai, etat);
+		n = -normal;
+	}
+  float eta = etai / etat;
+  float k = 1 - eta * eta * (1 - cosI * cosI);
+  return k < 0 ? 0 : eta * incidente + (eta * cosI - sqrt(k)) * n;
+}
 
 
 // base = T en las diapos
 Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento,const bool inside, const Vector3& incidente) const {
+	float nada;
+	return getVectorSalida(base, gen, evento, inside, incidente, nada);
+}
+
+
+
+// base = T en las diapos
+Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento,const bool inside, const Vector3& incidente, float& kr) const {
 	Vector3 wi;
 	if (evento==0) { //difuso
 		double rand1 = gen.rand01();
@@ -149,17 +175,25 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		// ------------------ Fresnel:
 		// Vec3f refractionColor = 0;
 		// compute fresnel
-		float coefRefraccion = 1.25; // TODO: de momento es vidrio
-		float kr = krFresnel(incidente, base[2], coefRefraccion);
-		if (gen.rand01() < kr) { // Refraccion:
-			float ior = 1.45;
-			float eta = (inside) ? ior : 1.0 / ior; // are we inside or outside the surface? //pasar inside
-	    float cosi = -base[2]*incidente;
-	    float k = 1.0 - eta * eta * (1.0 - cosi * cosi);
-	    wi = incidente * eta + base[2] * (eta *  cosi - sqrt(k));
-		}
-		else { // Reflexion:
+		float coefRefraccion = 1.45; // TODO: de momento es vidrio
+		kr = krFresnel(incidente, base[2], coefRefraccion); // Devuelve la probabilidad de reflexion
+		// if (kr>0.5) std::cout << "kr:" << kr << '\n';
+		if (gen.rand01() < kr) { // Reflexion:
+			// Matriz4 basePrueba = base;
+			// basePrueba[2] = -base[2];
 			wi = reflejar(incidente, base);
+		}
+		else { // Refraccion:
+			// std::cout << "reflexion" << '\n';
+			wi = refraccion(incidente, base[2], coefRefraccion);
+			kr = 1-kr; // Se devuelve kt
+				// std::cout << "refraccion" << '\n';
+				// float coefRefraccion = 1.45;
+				// float eta = (inside) ? coefRefraccion : 1.0 / coefRefraccion; // are we inside or outside the surface? //pasar inside
+		    // float cosi = -base[2]*incidente;
+		    // float k = 1.0 - eta * eta * (1.0 - cosi * cosi);
+		    // wi = incidente * eta + base[2] * (eta *  cosi - sqrt(k));
+
 		}
 		//
 		//

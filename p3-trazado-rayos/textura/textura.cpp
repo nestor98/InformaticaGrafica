@@ -9,10 +9,11 @@
 
 
 Textura::Textura(Imagen& i, float _ancho, float _largo, Vector3 _pos)
-  : tex(i), ancho(_ancho), largo(_largo), pos(_pos-Vector3(_ancho/2.0, 0, -_largo/2.0,false))
+  : tex(i), ancho(_ancho), largo(_largo), pos(_pos+LEFT*_ancho/2.0-UP*_ancho/2.0)
 {
   // std::cout << "_pos << pos" << std::endl;
-  // std::cout << _pos << std::endl << pos << std::endl;
+   std::cout << _pos << std::endl << pos << std::endl;
+   std::cout<<ancho<<"  ,   "<<largo<<std::endl;
     //  tex=i;
     //  ancho=_ancho;
     // largo=_largo;

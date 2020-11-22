@@ -128,12 +128,15 @@ int modBien(const int algo, const int mod) {
 }
 
 std::array<double, 3> Imagen::getPixel(const int fila, const int col)const{
-	if (fila>=filas || col>=cols || fila <0 || col<0) {
+	int filamod=modBien(fila, filas);
+	int colmod=modBien(col, cols);
+	/*if (fila>=filas || col>=cols || fila <0 || col<0) {
 		std::cout <<"indice equivocado\n" << fila<<" " << col <<std::endl << "Tengo " << filas << " " <<cols << std::endl;
 		exit(1);
 	}
 	// return {pixeles[modBien((fila*cols+col),(filas*cols))][0], pixeles[modBien((fila*cols+col),(filas*cols))][1], pixeles[modBien((fila*cols+col),(filas*cols))][2]};
-	return getPixel(fila*cols+col);
+	return getPixel(fila*cols+col);*/
+	return getPixel(filamod*cols+colmod);
 }
 
 std::array<double, 3> Imagen::getPixel(const int i)const{

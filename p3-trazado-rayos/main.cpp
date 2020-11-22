@@ -14,74 +14,6 @@
 #include "generador.hpp"
 
 using namespace std;
-
-void escena20esferas(char* argv[]) {
-
-	// std::shared_ptr<Utils> utils = make_shared<Utils>(Utils());
-	int pixelesX = 720;
-	int pixelesY = 720*9/16;
-	Vector3 posCam(0,0,0,true);
-	Vector3 fCam(0,8,0,false);
-	Vector3 lCam(1,0,0,false);
-	Vector3 uCam(0,0,double(pixelesY)/double(pixelesX),false);
-	//Camara c(posCam, dirCam);
-	//cout << c << endl;
-	int rayosPP = 5; // rayos por pixel
-	Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
-
-	int nThreads = 16; // TODO: CAMBIAR!!!!!!!!!!!!!!!!!
-
-	Escena e(std::make_shared<Camara>(c), nThreads);
-	Vector3 posEsf/*(0,3000,0,true)*/=FRONT*1000;
-	//PRUEBAS TEXTURAS SIMPLE
-	Imagen t= Imagen("textura3.ppm", true);
-	//Textura tex=Textura(t, 474.0, 474.0, posEsf-2.0*uCam+lCam+5.0*(0.2*fCam));
-	// std::make_shared<Esfera>(Esfera(algo)) ===  std::shared_ptr<Esfera>(new Esfera(algo))
-	for(int i=0; i<20; i++){
-		double tam=50.0/12;
-		Esfera esf(posEsf+LEFT*(i-10)*tam*3+FRONT*(i-10)*tam/10.0, tam);// 1*1
-		e.addFigura(std::make_shared<Esfera>(esf));
-	}
-	Plano p(-FRONT, 1000);
-	p.setColor(0.5,0.5,0.5);
-	e.addFigura(std::make_shared<Plano>(p));
-	// for (int i=0; i<200; i++) {
-	// 	// Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
-	// 	Esfera esf(posEsf-2.0*uCam+lCam+5.0*(0.2*i*fCam), 0.5);// 1*1
-	//
-	// 	// cout << esf.to_string() << endl;
-	// 	esf.setRandomColor();
-	// 	e.addFigura(std::make_shared<Esfera>(esf));
-	// 	// cout << "----\n";
-	// }
-	// // for (int i=0; i<1; i++) {
-	// // 	// Esfera esf(posEsf+5.0*(0.2*(i+1)*fCam)+(0.3*i*lCam), 0.5);
-	// // 	Esfera esf(posEsf+4*(0.3*(i+1)*lCam), 0.5);
-	// //
-	// // 	// cout << esf.to_string() << endl;
-	// // 	esf.setRandomColor();
-	// // 	e.addFigura(std::make_shared<Esfera>(esf));
-	// // 	// cout << "----\n";
-	// // }
-	// // Suelo (normal, distancia al origen):
-	// // Plano suelo(uCam/uCam.getModulo(), 3);
-	// // suelo.setColor(0,0,0.8);
-	// // e.addFigura(std::make_shared<Plano>(suelo));
-	// for (int i=0; i<400; i++) {
-	// 	Vector3 posPrisma = posEsf + lCam*3+ 2*fCam*(i-10)/3.0 - lCam*4*(i%2);// a la dcha de la esfera
-	// 	Vector3 tamPrisma(1-0.5*(i%2),1,3,false);
-	// 	Prisma prisma(posPrisma, tamPrisma);
-	// 	prisma.setRandomColor();
-	// 	// prisma.setColor(0,0.7,0);
-	// 	e.addFigura(std::make_shared<Prisma>(prisma));
-	// }
-	//e.addFigura(std::make_shared<Plano>(Plano(posEsf, -fCam))); // plano en la pos de la esfera con la normal hacia la camara
-
-	// cout<<e<<endl;
-	e.render("out/" + string(argv[1]));
-	//e.testBVHRender();
-	cout << "en total hay "<<pixelesX*pixelesY<<endl;
-}
 std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int pixelesY, const int rayosPP) {
 
 		double distanciaParedes = 3;
@@ -127,7 +59,7 @@ std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int p
 		//
 		//
 		Plano paredOculta(FRONT, 0.1*distanciaParedes);
-/		paredOculta.setColor(0.05,0.05,0.8);
+		paredOculta.setColor(0.05,0.05,0.8);
 		e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
@@ -135,8 +67,8 @@ std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int p
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
 
-			Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
-			e.addFigura(std::make_shared<Esfera>(esf));
+			/*Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
+			e.addFigura(std::make_shared<Esfera>(esf));*/
 			//
 			Vector3 posEsfDcha = centroSuelo - 1.0*tamEsfera*FRONT+ 0.5*tamEsfera*UP - 0.45*distanciaParedes*LEFT;
 			Esfera esfdcha(posEsfDcha, 1.0*tamEsfera);// 1*1
@@ -146,10 +78,11 @@ std::unique_ptr<Escena> escenaCornellBoxTexturas(const int pixelesX, const int p
 
 				Vector3 posEsf/*(0,3000,0,true)*/=FRONT*1000;
 			//PRUEBAS TEXTURAS SIMPLE
-			Imagen t= Imagen("textura3.ppm", true);
-			Textura tex=Textura(t, tamEsfera, tamEsfera, centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT);
-			Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
-			e.addFigura(std::make_shared<Esfera>(esf));
+			Imagen t= Imagen("textura1.ppm", true);
+			Textura tex=Textura(t, tamEsfera*2, tamEsfera*2, centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT);
+			Esfera esfT(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera, std::make_shared<Textura> (tex));// 1*1
+			esfT.setMaterial(Material(Color(0,0.8,0), Color(), Color()));
+			e.addFigura(std::make_shared<Esfera>(esfT));
 
 
 		} // LUZ:
@@ -211,9 +144,12 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		Plano paredd(LEFT, distanciaParedes);
 
 		paredd.setMaterial(difusoRojo);
+		Imagen t= Imagen("textura1.ppm", true);
+		Textura tex=Textura(t,2.0*distanciaParedes,2.0*distanciaParedes, 2.0*distanciaParedes+FRONT);
 		 // paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
+		paredFondo.setTextura(std::make_shared<Textura>(tex));
 		// paredFondo.setColor(0.3,0.75,0.9);
 		paredFondo.setMaterial(DIFUSO_AZUL);
 		e.addFigura(std::make_shared<Plano>(paredFondo));
@@ -228,6 +164,8 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		Vector3 centroSuelo = 1.5*distanciaParedes*FRONT - distanciaParedes*UP;
 		for (int i = 0; i<1; i++) {
 			float tamEsfera =distanciaParedes/3.0*1.2;
+
+		
 
 			Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
@@ -309,7 +247,7 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 500); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(500, 500, 1000); // pixX, pixY, rayosPP
 	int nThreads = 12;
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;

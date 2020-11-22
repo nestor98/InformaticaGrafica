@@ -50,7 +50,15 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 	}
 	else { // REFLEXION o DIFUSO:
 		Matriz4 base = fig->getBase(pto);
-		c = mat.getCoeficiente(evento); // kd
+		if(evento==1){
+			c = mat.getCoeficiente(evento);
+		}else{
+			if(fig->tieneTextura()){
+				c= fig->getEmision(pto);
+			}else{
+				c = mat.getCoeficiente(evento);
+			}
+		}
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
 		c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
 	}
@@ -114,7 +122,7 @@ Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorA
 		if (fig->esEmisor()) { // fin de la recursión, es un emisor
 			// std::cout << "a por emision" << '\n';
 			// return fig->getEmision();
-			c = fig->getEmision();
+			c = fig->getEmision(interseccionFigura->first.punto);
 			if (!primerRebote) return c*2.0; // TODO: multiplicacion bestia de la iluminacion, revisar
 		}
 		else {

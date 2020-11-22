@@ -61,6 +61,8 @@ public:
 	// Le cambia el color en funcion de la posicion
 	void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);
 	bool esEmisor() const;
+	bool tieneTextura() const;
+	void setTextura(std::shared_ptr<Textura> _tex);
 
 
 	// Materiales -------------------------

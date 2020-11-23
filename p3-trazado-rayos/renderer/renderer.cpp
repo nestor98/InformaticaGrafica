@@ -42,7 +42,7 @@ Color Renderer::shadowRay(const Vector3& pto, const int indiceluz) const {
 	}
 	if (interseccionFigura) {
 		if (distLuz < interseccionFigura->first.t) {
-			return luz.getEmision();
+			return luz.getEmision() / (distLuz * distLuz); // Se devuelve su color entre la distancia al cuadrado
 		}
 	}
 	return c;
@@ -90,23 +90,33 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 			c = mat.getCoeficiente(evento);
 		}
 		// Solo queda elegir entre iluminacion directa e indirecta:
-		float probRayoSombra = 0.1; // TODO: ???????????????
+		float probRayoSombra = 0.5; // TODO: ???????????????
 		int numLuces = e.getNumLuces();
-		if (numLuces > 0 && rngThread.rand01() < probRayoSombra) { // Iluminacion directa
-			// int indiceluz = rngThread.rand(0, numLuces);
+		/*if (numLuces > 0 && rngThread.rand01() < probRayoSombra) { // Iluminacion directa
+			// Opcion 1 ------  ruleta rusa, una al azar
+			int indiceluz = rngThread.rand(0, numLuces);
+			c = c * shadowRay(pto, indiceLuz);
 			// std::cout << "1" << '\n';
-			Color ilum;
-			for (int i = 0; i<numLuces; i++) {
-				ilum = ilum + shadowRay(pto, i);
-			}
-			c = c*ilum/double(numLuces);
+			// Opcion 2 ------ Promedio:
+			// Color ilum;
+			// for (int i = 0; i<numLuces; i++) {
+			// 	ilum = ilum + shadowRay(pto, i);
+			// }
+			// c = c*ilum/double(numLuces);
 			// std::cout << "2" << '\n';
 		}
 		else { // iluminacion indirecta
 			Matriz4 base = fig->getBase(pto);
 			Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
 			c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
-		}
+		}*/
+		// Otra opcion, ambas a la vez:
+		int indiceLuz = rngThread.rand(0, numLuces);
+		Color iDirecta = shadowRay(pto, indiceLuz);
+		Matriz4 base = fig->getBase(pto);
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
+		c = c*(iDirecta + pathTrace(pto+0.01*otroPath, otroPath, rngThread)); // kd * Li
+
 	}
 
 

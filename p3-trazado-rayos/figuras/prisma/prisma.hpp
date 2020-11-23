@@ -15,11 +15,13 @@
 
 // enable_shared_from_this, de https://en.cppreference.com/w/cpp/memory/enable_shared_from_this
 class Prisma : public Figura {
+protected:
 	Vector3 posicion; // posicion de la esquina mas cercana al origen
 	Vector3 tam; // tamaño xyz
 	// std::array<Plano, 4> caras;
 	bool esAABB; // Axis aligned BB
 	// bool esInfinito;
+
 
 public:
 	Prisma();
@@ -64,6 +66,30 @@ std::shared_ptr<Prisma> combinar(const std::shared_ptr<Prisma> p1, const std::sh
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Prisma& c);
 
+
+// Prismas que se pueden rotar
+class PrismaRotable : public Prisma {
+	Matriz4 base; // base del prisma
+	Matriz4 baseInversa; // inversa (del prisma al mundo)
+public:
+	PrismaRotable(const Vector3& _posicion, const Vector3& _tam);
+
+
+	Vector3 getPos() const;
+
+
+	// Devuelve la normal de la figura en el <pto>
+	Vector3 getNormal(const Vector3& pto) const override;
+
+	bool contiene(const Vector3& p) const;
+
+
+
+	std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const override;
+
+	void rotar(const Matriz4& rotacion);
+
+};
 
 
 

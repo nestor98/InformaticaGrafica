@@ -83,8 +83,8 @@ public:
 	const Material DIFUSO_GRIS = Material(Color(0.7,0.7,0.7), Color(), Color());
 	const Material DIFUSO_BLANCO = Material(Color(0.9,0.9,0.9), Color(), Color());
 
-	const Material METAL_GRIS = Material(Color(0.45,0.45,0.45), Color(0.45,0.45,0.45), Color());
-	const Material METAL_DORADO = Material(Color(0.6,0.6,0.1), Color(0.3,0.3,0.3), Color());
+	const Material PLASTICO_GRIS = Material(Color(0.45,0.45,0.45), Color(0.45,0.45,0.45), Color());
+	const Material PLASTICO_DORADO = Material(Color(0.6,0.6,0.1), Color(0.3,0.3,0.3), Color());
 	const Material ESPEJO = Material(Color(), Color(0.9,0.9,0.9), Color());
 
 

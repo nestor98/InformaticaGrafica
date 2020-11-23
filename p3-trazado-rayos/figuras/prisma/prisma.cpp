@@ -14,6 +14,8 @@ Prisma::Prisma(const Vector3& _posicion, const Vector3& _tam, const bool _esAABB
 {}
 
 
+
+
 // Devuelve el minimo de la coord i
 float minPos(const std::vector<std::shared_ptr<Figura>>& prismas, const int i) {
 	// std::cout <<"si\n";
@@ -318,6 +320,44 @@ std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> Prisma::partirEnEje(
 	segundo.esAABB = true;
 	return std::pair<std::shared_ptr<Prisma>,std::shared_ptr<Prisma>>(std::make_shared<Prisma>(primero), std::make_shared<Prisma>(segundo));
 } // return primero, segundo   <----- esto es lo de arriba en python :/
+
+/********************* Rotables **************************/
+
+PrismaRotable::PrismaRotable(const Vector3& _posicion, const Vector3& _tam) :
+Prisma(Vector3(0), _tam), base(FRONT,LEFT,UP,posicion)
+{
+	baseInversa = base.inversa(); // mas eficiente, supongo
+}
+
+
+void PrismaRotable::rotar(const Matriz4& rotacion) {
+	base = rotacion * base;
+	baseInversa = base.inversa();
+}
+
+
+
+Vector3 PrismaRotable::getPos() const {
+	return base[3];
+}
+
+
+// Devuelve la normal de la figura en el <pto>
+Vector3 PrismaRotable::getNormal(const Vector3& pto) const {
+	return Prisma::getNormal(base * pto);
+}
+//
+// bool PrismaRotable::contiene(const Vector3& p) const {
+// 	return
+// }
+
+std::optional<Figura::InterseccionData> PrismaRotable::interseccion(const Vector3& origen, const Vector3& dir) const {
+	auto interseccion = Prisma::interseccion(base * origen, base * dir);
+	if (interseccion) {
+		interseccion->punto = baseInversa * interseccion->punto;
+	}
+	return interseccion;
+}
 
 
 

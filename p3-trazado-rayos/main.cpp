@@ -277,10 +277,10 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 1200); // pixX, pixY, rayosPP
-	int nThreads = 12;
+	auto escena = escenaCornellBoxMateriales(400, 400, 20); // pixX, pixY, rayosPP
+	int nThreads = 1;
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
-	bool usarBVH = false;
+	bool usarBVH = true;
 	Renderer rend(*escena, nThreads, tipo, usarBVH);
 	rend.render(argv[1]);
 

@@ -90,6 +90,7 @@ Vector3 normalDeCara(const int cara) {
 // TODO: comprobar!!!!
 Vector3 Prisma::getNormal(const Vector3& pto) const {
 	Vector3 p1 = getPos(); // esquina 1
+	std::cout << "p1: "<< p1 << '\n';
 	Vector3 p2 = p1 + getTam(); // esquina 2
 	Vector3 p1_pto = abs(pto-p1); // Distancia al pto 1
 	Vector3 p2_pto = abs(p2-pto); // Dist al 2
@@ -357,7 +358,29 @@ Vector3 PrismaRotable::getPos() const {
 
 // Devuelve la normal de la figura en el <pto>
 Vector3 PrismaRotable::getNormal(const Vector3& pto) const {
-	return Prisma::getNormal(baseInversa * pto);
+	Vector3 p1(0);// 0 en local// = getPos(); // esquina 1
+	// std::cout << "p1: "<< p1 << '\n';
+	Vector3 ptoLocal = baseInversa*pto;
+	Vector3 p2 = p1 + getTam(); // esquina 2
+	Vector3 p1_pto = abs(ptoLocal-p1); // Distancia al pto 1
+	Vector3 p2_pto = abs(p2-ptoLocal); // Dist al 2
+	double min = p1_pto[0]; // Buscamos la minima en las 6 posibilidades:
+	int minIdx = 0; // indice del minimo
+	for (int i = 1; i < 3; i++) {
+		if (p1_pto[i] < min) {
+			min = p1_pto[i];
+			minIdx = i;
+		}
+	}
+	for (int i = 0; i < 3; i++) {
+		if (p2_pto[i] < min) {
+			min = p2_pto[i];
+			minIdx = i+3;
+		}
+	}
+	// std::cout << "normalDeCara(0): " << normalDeCara(0) << '\n'
+	// 			<< "base*normalDeCara(0): " << base*normalDeCara(0) << '\n';
+	return base * normalDeCara(minIdx);
 }
 //
 // bool PrismaRotable::contiene(const Vector3& p) const {
@@ -443,9 +466,39 @@ std::optional<Figura::InterseccionData> PrismaRotable::interseccion(const Vector
 
 }
 
+// i de 0 a 8
+Vector3 PrismaRotable::getVertice(const int x,const int y,const int z) const {
+	Vector3 tamVertice = getTam();
+	if (x==0) tamVertice[0]=0;
+	if (y==0) tamVertice[1]=0;
+	if (z==0) tamVertice[2]=0;
+	tamVertice[3] = 1;
+
+	return base*( tamVertice); // origen local mas el tam
+}
+
 
 // Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
 std::shared_ptr<Prisma> PrismaRotable::getBoundingBox() const {
+	Vector3 pmin, pmax;
+	bool primera=true;
+	// for (int i=0; i<3; i++) {
+	for (int x=0; x<2; x++) {
+		for (int y=0; y<2; y++) {
+			for (int z=0; z<2; z++) {
+				Vector3 vert = getVertice(x,y,z);
+				for (int i=0; i<3; i++) {
+					if (vert[i]<pmin[i] || primera) pmin[i]=vert[i];
+					else if (vert[i]>pmax[i]||primera) pmax[i]=vert[i];
+					primera=false;
+				}
+			}
+		}
+	} // POST: pmin y pmax tienen las coord globales min y maximas resp.
+	pmin[3] = pmax[3] = 1;
+	std::cout << "pmin: "<< pmin <<"\npmax: "<<pmax << '\n';
+
+	return std::make_shared<Prisma>(Prisma(pmin, pmax-pmin, true));
 	// TODO: actualizar cuando se implementen prismas rotados
 	//
 	// Prisma box = *this;

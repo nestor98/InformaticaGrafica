@@ -71,6 +71,9 @@ std::ostream& operator<<(std::ostream& os, const Prisma& c);
 class PrismaRotable : public Prisma {
 	Matriz4 base; // base del prisma
 	Matriz4 baseInversa; // inversa (del prisma al mundo)
+
+	Vector3 getVertice(const int x,const int y,const int z) const;
+
 public:
 	PrismaRotable(const Vector3& _posicion, const Vector3& _tam);
 

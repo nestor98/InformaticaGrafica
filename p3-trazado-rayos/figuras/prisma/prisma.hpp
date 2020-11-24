@@ -29,14 +29,14 @@ public:
 
 	// Constructor del prisma bounding box del vector de figuras
 	Prisma(const std::vector<std::shared_ptr<Figura>>& bboxes);
-	std::string to_string() const override;
+	virtual std::string to_string() const override;
 
-	Vector3 getPos() const;
+	virtual Vector3 getPos() const;
 	Vector3 getTam() const;
 
 
 	// Devuelve la normal de la figura en el <pto>
-	Vector3 getNormal(const Vector3& pto) const override;
+	virtual Vector3 getNormal(const Vector3& pto) const override;
 
 	bool contiene(const Vector3& p) const;
 
@@ -45,7 +45,7 @@ public:
 	virtual bool esInfinito() const;
 
 	// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
-	std::shared_ptr<Prisma> getBoundingBox() const override;
+	virtual std::shared_ptr<Prisma> getBoundingBox() const override;
 
 	std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> partirEnEje(const int eje) const;
 
@@ -75,13 +75,17 @@ public:
 	PrismaRotable(const Vector3& _posicion, const Vector3& _tam);
 
 
-	Vector3 getPos() const;
+	Vector3 getPos() const override;
+
+	std::string to_string() const override;
 
 
 	// Devuelve la normal de la figura en el <pto>
 	Vector3 getNormal(const Vector3& pto) const override;
 
-	bool contiene(const Vector3& p) const;
+	//	bool contiene(const Vector3& p) const override;
+	virtual std::shared_ptr<Prisma> getBoundingBox() const override;
+
 
 
 

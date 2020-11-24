@@ -174,7 +174,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
 		Color emisionLuces(4);
 		LuzPuntual luz(posLuz, emisionLuces);
-		e.addLuz(luz);
+		// e.addLuz(luz);
 
 		// LuzPuntual luz2(posLuz - FRONT * distanciaParedes /2, emisionLuces);
 		// e.addLuz(luz2);
@@ -243,17 +243,23 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 				f->setMaterial(PLASTICO_GRIS);
 			}
 			// e.addFiguras(figuras);
-			Prisma test(posPrsima - distanciaParedes / 5.0 * LEFT, tamEsponja);
+			PrismaRotable test(posPrsima - (2.0*distanciaParedes-2.0*tamEsponja[0])*LEFT+2.0*tamEsponja[0]*UP-distanciaParedes/2.0*FRONT, tamEsponja);
+			Matriz4 rotacion, tmp;
+			rotacion.setRotarZ(PI/4.0);
+			tmp.setRotarX(PI/4.0);
+			rotacion = tmp * rotacion;
+			test.rotar(rotacion);
+			std::cout << "rotable: \n" << test.to_string()<<'\n';
 			test.setMaterial(PLASTICO_GRIS);
-			e.addFigura(std::make_shared<Prisma>(test));
+			e.addFigura(std::make_shared<PrismaRotable>(test));
 
 		} // LUZ:
 		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
-		tamPrismaLuz = tamPrismaLuz;
-		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.95 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
+		tamPrismaLuz = tamPrismaLuz*3;
+		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.99 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
 		Prisma prismaLuz(posPrismaLuz, tamPrismaLuz);
-		prismaLuz.setColor(Color(4));
-		// e.addFigura(std::make_shared<Prisma>(prismaLuz));
+		prismaLuz.setColor(Color(8));
+		e.addFigura(std::make_shared<Prisma>(prismaLuz));
 
 
 		return std::make_unique<Escena>(e);
@@ -271,10 +277,10 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(400, 400, 20); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(400, 400, 1200); // pixX, pixY, rayosPP
 	int nThreads = 12;
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
-	bool usarBVH = true;
+	bool usarBVH = false;
 	Renderer rend(*escena, nThreads, tipo, usarBVH);
 	rend.render(argv[1]);
 

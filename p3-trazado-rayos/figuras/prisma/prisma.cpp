@@ -324,15 +324,28 @@ std::pair<std::shared_ptr<Prisma>, std::shared_ptr<Prisma>> Prisma::partirEnEje(
 /********************* Rotables **************************/
 
 PrismaRotable::PrismaRotable(const Vector3& _posicion, const Vector3& _tam) :
-Prisma(Vector3(0), _tam), base(FRONT,LEFT,UP,posicion)
+Prisma(Vector3(), _tam), base(FRONT,LEFT,UP,_posicion)
 {
+	base.setCambioBase(FRONT, -LEFT, UP, _posicion);
+	std::cout << "base: "<< base << '\n';
 	baseInversa = base.inversa(); // mas eficiente, supongo
 }
 
 
 void PrismaRotable::rotar(const Matriz4& rotacion) {
-	base = rotacion * base;
+	// Vector3 centroideMundo = base * tam/2; // 0+tam/2
+	// centroideMundo[3]=1;
+	// base[3] = centroideMundo;
+	Matriz4 baseCentroide = base;
+	baseCentroide[3] = base[3]+baseInversa*tam/2;	baseCentroide[3][3] = 1;
+	base = baseCentroide * rotacion * baseCentroide.inversa() * base;
+	//base[3] = //centroideMundo - tam/2; // para rotar alrededor del centroide
 	baseInversa = base.inversa();
+}
+
+
+std::string PrismaRotable::to_string() const {
+	return "--- Prisma:\nposicion: " + getPos().to_string() + "\ntam: " + (tam).to_string() + "\nbase:\n" + base.to_string();
 }
 
 
@@ -344,7 +357,7 @@ Vector3 PrismaRotable::getPos() const {
 
 // Devuelve la normal de la figura en el <pto>
 Vector3 PrismaRotable::getNormal(const Vector3& pto) const {
-	return Prisma::getNormal(base * pto);
+	return Prisma::getNormal(baseInversa * pto);
 }
 //
 // bool PrismaRotable::contiene(const Vector3& p) const {
@@ -352,13 +365,93 @@ Vector3 PrismaRotable::getNormal(const Vector3& pto) const {
 // }
 
 std::optional<Figura::InterseccionData> PrismaRotable::interseccion(const Vector3& origen, const Vector3& dir) const {
-	auto interseccion = Prisma::interseccion(base * origen, base * dir);
-	if (interseccion) {
-		interseccion->punto = baseInversa * interseccion->punto;
+	// std::cout << "aja" << '\n';
+	Vector3 origenMisCoords = baseInversa * origen;
+	Vector3 dirMisCoords = baseInversa * dir;
+	Vector3 invdir=1/dirMisCoords;
+	Vector3 min(0);
+	Vector3 max = min+getTam();
+	float tmin=0;
+	float tmax=0;
+	float tymin=0;
+	float tymax=0;
+	float tzmin=0;
+	float tzmax=0;
+/*	float tmin = (min[0] - origen[0]) / dir[0];
+	float tmax = (max[0] - origen[0]) / dir[0];
+
+	if (tmin > tmax) std::swap(tmin, tmax);*/
+	if (esAABB && contiene(origenMisCoords)) { // si el origen está dentro del prisma, devolvemos el pto directamente
+		return InterseccionData{0, origenMisCoords};
 	}
-	return interseccion;
+
+	if (invdir[0] >= 0) {
+		tmin = (min[0] - origenMisCoords[0]) * invdir[0];
+		tmax = (max[0] - origenMisCoords[0]) * invdir[0];
+	}
+	else {
+			tmin = (max[0] - origenMisCoords[0]) * invdir[0];
+			tmax = (min[0] - origenMisCoords[0]) * invdir[0];
+	}
+		if (invdir[1] >= 0) {
+			tymin = (min[1] - origenMisCoords[1]) * invdir[1];
+			tymax = (max[1] - origenMisCoords[1]) * invdir[1];
+	}
+	else {
+			tymin = (max[1] - origenMisCoords[1]) * invdir[1];
+			tymax = (min[1] - origenMisCoords[1]) * invdir[1];
+	}
+		if (invdir[2] >= 0) {
+			tzmin = (min[2] - origenMisCoords[2]) * invdir[2];
+			tzmax = (max[2] - origenMisCoords[2]) * invdir[2];
+	}
+	else {
+			tzmin = (max[2] - origenMisCoords[2]) * invdir[2];
+			tzmax = (min[2] - origenMisCoords[2]) * invdir[2];
+	}
+	//float tymin = (min[1] - origen[1]) / dir[1];
+	//float tymax = (max[1] - origen[1]) / dir[1];
+
+	//if (tymin > tymax) std::swap(tymin, tymax);
+
+	if ((tmin > tymax) || (tymin > tmax))
+			return std::nullopt;
+
+	if (tymin > tmin)
+			tmin = tymin;
+
+	if (tymax < tmax)
+			tmax = tymax;
+
+	//float tzmin = (min[2] - origen[2]) / dir[2];
+	//float tzmax = (max[2] - origen[2]) / dir[2];
+
+	//if (tzmin > tzmax) std::swap(tzmin, tzmax);
+
+	if ((tmin > tzmax) || (tzmin > tmax))
+			return std::nullopt;
+
+	if (tzmin > tmin)
+			tmin = tzmin;
+
+	if (tzmax < tmax)
+			tmax = tzmax;
+		// std::cout << "aja\n";
+	if (tmin<0) return std::nullopt;
+	// std::cout << "pto: " << origen+tmin*dir << '\n';
+	return InterseccionData{tmin, origen+tmin*dir};
+
 }
 
+
+// Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
+std::shared_ptr<Prisma> PrismaRotable::getBoundingBox() const {
+	// TODO: actualizar cuando se implementen prismas rotados
+	//
+	// Prisma box = *this;
+	// box.esAABB = true;
+	// return std::make_shared<Prisma>(box);
+}
 
 
 

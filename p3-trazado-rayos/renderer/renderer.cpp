@@ -111,8 +111,11 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 			c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
 		}*/
 		// Otra opcion, ambas a la vez:
-		int indiceLuz = rngThread.rand(0, numLuces);
-		Color iDirecta = shadowRay(pto, indiceLuz);
+		Color iDirecta;
+		if (numLuces>0){
+			int indiceLuz = rngThread.rand(0, numLuces);
+			iDirecta = shadowRay(pto, indiceLuz);
+		}
 		Matriz4 base = fig->getBase(pto);
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
 		c = c*(iDirecta + pathTrace(pto+0.01*otroPath, otroPath, rngThread)); // kd * Li

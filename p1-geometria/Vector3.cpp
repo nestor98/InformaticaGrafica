@@ -336,12 +336,12 @@ Matriz4 Matriz4::inversa() const {
 	return inv;
 }
 
-// como string
+// como string (vectores son las columnas)
 std::string Matriz4::to_string() const {
 	std::string s = "";
 	for (int col = 0; col < 4; col++) {
 		for (int i = 0; i < 4; i++) {
-			s += std::to_string(m[col][i]) + "\t";
+			s += std::to_string(m[i][col]) + "\t";
 		}
 		s += "\n";
 		//s += m[i].to_string() + "\n";

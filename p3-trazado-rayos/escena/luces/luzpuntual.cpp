@@ -33,6 +33,12 @@ void LuzPuntual::setEmision(const double r, const double g, const double b) {
 }
 
 
+Vector3 LuzPuntual::samplePunto(const GeneradorAleatorio& rng, const double radio) const {
+	Vector3 pto = pos + radio*rng.vectorNormalAleatorio();
+	pto[3] = 1; // Punto
+	return pto;
+}
+
 void LuzPuntual::setEmision(const Color& e) {
 	emision = e;
 }

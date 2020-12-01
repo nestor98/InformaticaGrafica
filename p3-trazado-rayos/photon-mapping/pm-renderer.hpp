@@ -6,31 +6,34 @@
 #include <memory>
 #include <thread>
 #include <mutex>
+//
+// #include "escena.hpp"
+// #include "Imagen.hpp"
+// #include "camara.hpp"
+// #include "figura.hpp"
+// #include "material.hpp"
+// #include "bvh.hpp"
+//
+// #include "utils.hpp"
+#include "renderer.hpp"
+#include "Foton.hpp"
+#include "KDTree.h"
 
-#include "escena.hpp"
-#include "Imagen.hpp"
-#include "camara.hpp"
-#include "figura.hpp"
-#include "material.hpp"
-#include "bvh.hpp"
+const unsigned int MAX_FOTONES = 100000;
 
-#include "utils.hpp"
-
-class Renderer {
-
-protected:
-	bool usarBVH;
-	BoundingVolumeH bvh;
-
-	Escena e;
-
-	float rangoDinamico; // maxFloat del hdr
+class PMRenderer : public Renderer {
+	int maxNumFotones, maxFotonesGlobales, maxFotonesCausticos;
+	int fotonesActuales;
+	KDTree<Foton, MAX_FOTONES> kdTreeFotones;
+//
+// protected:
+// 	bool usarBVH;
+// 	BoundingVolumeH bvh;
+//
+// 	Escena e;
 
 	// Auxiliar de render
 	void renderPixel(Imagen& im, const Vector3& o, const int pixel) const;
-
-	// Ray tracer, normales, etc
-	void renderPixelViejo(Imagen& im, const Vector3& o, const int pixel) const;
 
 
 	// --------- Threads ---------
@@ -51,7 +54,7 @@ protected:
 	void consumirTasks(Imagen& im,  const Vector3& origen);
 
 	// ---------------------------------------
-	// --------- Aux de path tracer  ---------
+	// --------- Aux de path tracer  --------- // TODO: Se quedan??
 	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote=false) const;
 	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote = false) const;
 	Color shadowRay(const Vector3& pto, const int indiceluz) const;
@@ -60,6 +63,14 @@ protected:
 	// --------- Barra de progreso  ---------
 	void progressBar(const int nPixeles);
 
+	// ---------------------------------------
+	// --------- Photon mapping...  ---------
+	bool trace_ray(const Escena& e, const Vector3& origen, const Vector3& dir, const Color &p,
+  			   std::list<Foton> &fotonesGlobales, std::list<Foton> &fotonesCausticos, bool directo,
+ 			 	const GeneradorAleatorio& rng);
+
+	void preprocess(const Escena& e);
+
 public:
 	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion, VectoresWiRefraccion, krFresnel};
 protected:
@@ -67,9 +78,9 @@ protected:
 
 
 public:
-	// Renderer(const Camara& _c, const TipoRender tipo = BVHEmision);
-	Renderer(const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
-	Renderer(const Escena& _e, const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true, const float _rangoDinamico=20);
+	// PMRenderer(const Camara& _c, const TipoRender tipo = BVHEmision);
+	PMRenderer(const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
+	PMRenderer(const Escena& _e, const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
 
 	std::string to_string() const;
 
@@ -79,12 +90,12 @@ public:
 };
 
 	// para evitar el to_string en cout
-	std::ostream& operator<<(std::ostream& os, const Renderer& e);
+	std::ostream& operator<<(std::ostream& os, const PMRenderer& e);
 
 	// ---------------------------
 	// --------- TESTS  ---------
 
-		// Compara los tiempos de render (secuencial, sin threads) de la Renderer con
+		// Compara los tiempos de render (secuencial, sin threads) de la PMRenderer con
 		// el metodo original y el bvh. Muestra los resultados por salida estandar.
 		// void testBVHRender(const std::string f1 = "out/testRenderOriginal.ppm", const std::string f2 = "out/testRenderBVH.ppm");
 

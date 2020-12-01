@@ -466,13 +466,13 @@ std::optional<Figura::InterseccionData> PrismaRotable::interseccion(const Vector
 
 }
 
-// i de 0 a 8
+// Devuelve el vertice en la pos local x,y,z siendo cada comp 0 o 1
 Vector3 PrismaRotable::getVertice(const int x,const int y,const int z) const {
 	Vector3 tamVertice = getTam();
 	if (x==0) tamVertice[0]=0;
 	if (y==0) tamVertice[1]=0;
 	if (z==0) tamVertice[2]=0;
-	tamVertice[3] = 1;
+	tamVertice[3] = 1; // punto
 
 	return base*( tamVertice); // origen local mas el tam
 }
@@ -480,30 +480,23 @@ Vector3 PrismaRotable::getVertice(const int x,const int y,const int z) const {
 
 // Devuelve la AABB (prisma alineado con los ejes) que envuelve a la figura
 std::shared_ptr<Prisma> PrismaRotable::getBoundingBox() const {
-	Vector3 pmin, pmax;
+	Vector3 pmin, pmax; // ptos min y max globales
 	bool primera=true;
-	// for (int i=0; i<3; i++) {
+	// minima y max coordenadas de cada vertice:
 	for (int x=0; x<2; x++) {
 		for (int y=0; y<2; y++) {
 			for (int z=0; z<2; z++) {
-				Vector3 vert = getVertice(x,y,z);
-				for (int i=0; i<3; i++) {
-					if (vert[i]<pmin[i] || primera) pmin[i]=vert[i];
-					else if (vert[i]>pmax[i]||primera) pmax[i]=vert[i];
-					primera=false;
+				Vector3 vert = getVertice(x,y,z); // vertice global
+				for (int i=0; i<3; i++) { // cada componente
+					if (vert[i]<pmin[i] || primera) pmin[i]=vert[i]; // min
+					if (vert[i]>pmax[i] || primera) pmax[i]=vert[i]; // max
 				}
+				primera=false;
 			}
 		}
 	} // POST: pmin y pmax tienen las coord globales min y maximas resp.
-	pmin[3] = pmax[3] = 1;
-	std::cout << "pmin: "<< pmin <<"\npmax: "<<pmax << '\n';
-
+	pmin[3] = pmax[3] = 1; // puntos
 	return std::make_shared<Prisma>(Prisma(pmin, pmax-pmin, true));
-	// TODO: actualizar cuando se implementen prismas rotados
-	//
-	// Prisma box = *this;
-	// box.esAABB = true;
-	// return std::make_shared<Prisma>(box);
 }
 
 

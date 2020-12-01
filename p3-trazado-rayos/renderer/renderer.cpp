@@ -18,8 +18,8 @@ const Color COLOR_FONDO(0,0,0); // TODO: mirar como ponerlo mas bonito
 
 
 
-Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo, const bool _usarBVH)
-: usarBVH(_usarBVH), e(_e), renderSeleccionado(tipo)//, threads(_nThreads)
+Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo, const bool _usarBVH, const float _rangoDinamico)
+: usarBVH(_usarBVH), e(_e), renderSeleccionado(tipo), rangoDinamico(_rangoDinamico)//, threads(_nThreads)
 {
 	threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }
@@ -222,7 +222,7 @@ void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const 
 			color = color + cPixel;// suma de cada path / double(nRayos);
 		}
 		color = color / double(nRayos); // promedio
-		color.clamp(1.0); // TODO: revisar
+		// color.clamp(1.0); // TODO: revisar
 		im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
 }
 
@@ -341,8 +341,8 @@ void Renderer::render(const std::string fichero) {
 	initThreads(im, o, c->getNumPixeles()); // inicializar los threads
 	// std::cout << "hecho" << '\n';
 	waitThreads(); // y esperar a que terminen
-	// im.setMaxFloat(1); // TODO: entender esta vaina
-	// im.extendedReinhard();
+	im.setMaxFloat(rangoDinamico); // TODO: entender esta vaina
+	im.extendedReinhard();
 	im.guardar("out/" + fichero); // guardar la imagen
 
 	t2 = hrc::now();

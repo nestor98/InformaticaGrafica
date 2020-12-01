@@ -40,6 +40,10 @@ public:
 	// void setEmision(const std::array<double, 3> _e);
 	void setEmision(const Color& e);
 
+	// Devuelve un pto aleatorio en la esfera de radio <radio> alrededor de la luz
+	Vector3 samplePunto(const GeneradorAleatorio& rng, const double radio=1e-4) const;
+
+
 };
 
 	// para evitar el to_string en cout

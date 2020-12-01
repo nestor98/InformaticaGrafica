@@ -588,6 +588,13 @@ Matriz4 baseFromVectorYOrigen(const Vector3& normal, const Vector3& pto,  const 
 	return base;
 }
 
+Vector3 alejarDeNormal(const Vector3& punto, const Vector3& normal) {
+	Vector3 pto = punto + EPSILON_NORMAL*normal;
+	pto[3] = 1;
+	return pto;
+}
+
+
 
 double gradosARad(const double grados) {
 	return grados * (2.0*PI) / 360.0;

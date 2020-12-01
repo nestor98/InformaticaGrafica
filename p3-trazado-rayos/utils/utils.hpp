@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <random>
+#include "Vector3.hpp"
 
 class GeneradorAleatorio {
 	// Para generacion de nums aleatorios, //(de https://en.cppreference.com/w/cpp/numeric/random/uniform_real_distribution)
@@ -17,6 +18,9 @@ public:
 	double rand(const double min, const double max) const; // aleatorio uniforme entre min y max
 	int rand(const int min, const int max) const; // entero uniforme en [min, max-1]
 	std::string to_string() const;
+
+	Vector3 vectorNormalAleatorio() const;
+
 
 };
 

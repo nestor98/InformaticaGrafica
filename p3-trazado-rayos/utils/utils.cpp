@@ -24,3 +24,7 @@ int GeneradorAleatorio::rand(const int min, const int max) const {
 	if (int(r)==max) return int(r)-1; // que no devuelva max
 	return int(r);
 }
+
+Vector3 GeneradorAleatorio::vectorNormalAleatorio() const {
+	return normalizar(Vector3(rand01(), rand01(), rand01(), false));
+}

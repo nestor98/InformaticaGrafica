@@ -64,6 +64,9 @@ public:
 
 	double krFresnel(const Vector3& normal, const Vector3& wo, const double coefRefraccion) const;
 
+	// nuse jajajaajj
+	bool esDelta() const;
+
 	//
 	// // Le cambia el color en funcion de la posicion
 	// void setColorFromPos(const Vector3& pto, const Vector3& min, const Vector3& max);

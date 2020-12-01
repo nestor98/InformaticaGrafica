@@ -149,6 +149,10 @@ double Color::operator [](int i) const {
   }
 }
 
+double Color::getPromedio() const {
+  double prom = r + g + b;
+  return prom/3.0;
+}
 
 
 // +

@@ -40,6 +40,7 @@ public:
 
   void clamp(const float max);
 
+  double getPromedio() const;
 
   void setRGB(const std::array<double,3> rgb);
 

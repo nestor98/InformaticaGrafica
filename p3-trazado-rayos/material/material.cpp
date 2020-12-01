@@ -29,6 +29,9 @@ Material::Material(const Color& c1, const Color& c2, const Color& c3)
 
 
 
+bool Material::esDelta() const {
+	return true; // TODO: Son NO delta si son difusos (si son parte difusos parte especulares ni idea)
+}
 
 // Material::Material(bool aleatorio) {
 // 	if (aleatorio) {
@@ -282,6 +285,11 @@ void Material::setRandom() {
 			return 3; // Absorcion
 		}
 	}
+
+	// int Material::ruletaRusaPM(const GeneradorAleatorio& gen, const bool primerRebote) const {
+	// 	double random = gen.rand01();
+
+
 
 //
 // // Le cambia el color en funcion de la posicion

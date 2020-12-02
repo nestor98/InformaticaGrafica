@@ -183,6 +183,90 @@ void PMRenderer::preprocess(const Escena& e)
 	guardarFotones<Foton, MAX_FOTONES>(KDTFotones, fotonesCausticos);
 }
 
+
+//*********************************************************************
+// TODO: Implement the function that computes the rendering equation
+// using radiance estimation with photon mapping, using the photon
+// maps computed as a proprocess. Note that you will need to handle
+// both direct and global illumination, together with the
+// recursive evaluation of delta materials. For an optimal implemen-
+// tation you should be able to do it iteratively.
+// In principle, the class is prepared to perform radiance estimation
+// using k-nearest neighbors ('m_nb_photons') to define the bandwidth
+// of the kernel.
+//---------------------------------------------------------------------
+Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
+  const std::shared_ptr<Figura>& figIntersectada) const
+{
+	Color L(0);
+	//Intersection it(it0);
+
+	//**********************************************************************
+	// The following piece of code is included here for two reasons: first
+	// it works as a 'hello world' code to check that everthing compiles
+	// just fine, and second, to illustrate some of the functions that you
+	// will need when doing the work. Goes without saying: remove the
+	// pieces of code that you won't be using.
+	//
+	// unsigned int debug_mode = 1;
+  Material mat = figIntersectada->getMaterial();
+	switch ((int) renderSeleccionado)
+	{
+	case Renderer::TipoRender::Albedo:
+		// ----------------------------------------------------------------
+		// Display Albedo Only
+		L = mat.getCoeficiente(0);
+    // it.intersected()->material()->get_albedo(it);
+		break;
+	case Renderer::TipoRender::Normales:
+    {
+      // ----------------------------------------------------------------
+  		// Display Normal Buffer
+      Vector3 normal = figIntersectada->getNormal(interseccion.punto);
+      L.setFromNormalVector(normal);
+      // L = interseccion.
+  		// L = it.get_normal();
+  		break;
+    }
+
+	case Renderer::TipoRender::Delta:
+		// ----------------------------------------------------------------
+		// Display whether the material is specular (or refractive)
+    L.setRGB((!figIntersectada->esEmisor() && mat.esDelta()) ? 1 : 0); // Si es delta blanco, si no, negro
+		// L = Vector3(it.intersected()->material()->is_delta());
+		break;
+
+	case Renderer::TipoRender::IluminacionLuz0:
+		// ----------------------------------------------------------------
+		// Display incoming illumination from light(0)
+    L = Renderer::shadowRay(interseccion.punto, 0);
+		// L = world->light(0).get_incoming_light(it.get_position());
+		break;
+
+	case Renderer::TipoRender::DireccionLuz0:
+		// ----------------------------------------------------------------
+		// Display incoming direction from light(0)
+    L.setFromNormalVector(normalizar(e.getLuz(0).getPos() - interseccion.punto));
+		// L = world->light(0).get_incoming_direction(it.get_position());
+		break;
+
+	case Renderer::TipoRender::VisibilidadLuz0:
+		// ----------------------------------------------------------------
+		// Check Visibility from light(0)
+		if (!(Renderer::shadowRay(interseccion.punto, 0) == 0))
+			L.setRGB(1);
+		break;
+  default:
+    std::cerr << "Tipo render sin implementar en PM" << '\n';
+    exit(1);
+	}
+	// End of exampled code
+	//**********************************************************************
+
+	return L;
+}
+
+
 // TODO: constructor..........................
 
 // Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo, const bool _usarBVH)
@@ -199,7 +283,7 @@ void PMRenderer::preprocess(const Escena& e)
 // 	threads.reserve(_nThreads+1); // +1 por la barra de progreso
 // }
 //
-// Color Renderer::shadowRay(const Vector3& pto, const int indiceluz) const {
+// Color Renderer::Renderer::shadowRay(const Vector3& pto, const int indiceluz) const {
 // 	Color c;
 // 	LuzPuntual luz=	e.getLuz(indiceluz);
 // 	Vector3 rayoSombra = luz.getPos() - pto;
@@ -270,12 +354,12 @@ void PMRenderer::preprocess(const Escena& e)
 // 		/*if (numLuces > 0 && rngThread.rand01() < probRayoSombra) { // Iluminacion directa
 // 			// Opcion 1 ------  ruleta rusa, una al azar
 // 			int indiceluz = rngThread.rand(0, numLuces);
-// 			c = c * shadowRay(pto, indiceLuz);
+// 			c = c * Renderer::shadowRay(pto, indiceLuz);
 // 			// std::cout << "1" << '\n';
 // 			// Opcion 2 ------ Promedio:
 // 			// Color ilum;
 // 			// for (int i = 0; i<numLuces; i++) {
-// 			// 	ilum = ilum + shadowRay(pto, i);
+// 			// 	ilum = ilum + Renderer::shadowRay(pto, i);
 // 			// }
 // 			// c = c*ilum/double(numLuces);
 // 			// std::cout << "2" << '\n';
@@ -289,7 +373,7 @@ void PMRenderer::preprocess(const Escena& e)
 // 		Color iDirecta;
 // 		if (numLuces>0){
 // 			int indiceLuz = rngThread.rand(0, numLuces);
-// 			iDirecta = shadowRay(pto, indiceLuz);
+// 			iDirecta = Renderer::shadowRay(pto, indiceLuz);
 // 		}
 // 		Matriz4 base = fig->getBase(pto);
 // 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
@@ -377,7 +461,7 @@ void PMRenderer::preprocess(const Escena& e)
 // 			}
 // 			else { // otro tipo de render:
 // 				Vector3 vector = vectorTipoRender(renderSeleccionado, fig,  dir, ptoInterseccion,rngThread);
-// 				c.setFromNormalNoAbs(vector); // color del vector, cada comp en un canal rgb
+// 				c.setFromNormalVector(vector); // color del vector, cada comp en un canal rgb
 // 			}
 // 		}
 // 	}

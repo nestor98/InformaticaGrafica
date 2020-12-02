@@ -202,7 +202,7 @@ Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorA
 			}
 			else { // otro tipo de render:
 				Vector3 vector = vectorTipoRender(renderSeleccionado, fig,  dir, ptoInterseccion,rngThread);
-				c.setFromNormalNoAbs(vector); // color del vector, cada comp en un canal rgb
+				c.setFromNormalVector(vector); // color del vector, cada comp en un canal rgb
 			}
 		}
 	}

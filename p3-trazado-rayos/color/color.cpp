@@ -63,7 +63,7 @@ void Color::setFromNormal(const Vector3& normal) {
 }
 
 
-void Color::setFromNormalNoAbs(const Vector3& normal) {
+void Color::setFromNormalVector(const Vector3& normal) {
   // std::cout << "normal: "<< normal << '\n';
   // setRGB((normal[0]+1.0)/2.0 - (normal[1]-1.0)/2.0, (normal[1]+1.0)/2.0 - (normal[2]-1.0)/2.0, (normal[2]+1.0)/2.0 - (normal[0]-1.0)/2.0);
   setRGB((normal[0]+1.0)/2.0, (normal[1]+1.0)/2.0, (normal[2]+1.0)/2.0);
@@ -119,6 +119,11 @@ void Color::setRGB(const double _r, const double _g, const double _b) {
   g = _g;
   b = _b;
 }
+
+void Color::setRGB(const double rgb) {
+  setRGB(rgb, rgb, rgb);
+}
+
 
 void Color::setRGB(const std::array<double,3> rgb) {
   setRGB(rgb[0], rgb[1], rgb[2]);

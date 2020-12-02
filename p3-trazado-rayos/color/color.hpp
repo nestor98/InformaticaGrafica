@@ -36,6 +36,9 @@ public:
   void setG(const double g);
   void setB(const double b);
 
+  void setRGB(const double rgb);
+
+
   void setRGB(const double _r, const double _g, const double _b);
 
   void clamp(const float max);
@@ -48,7 +51,7 @@ public:
   void setFromPosExp(const Vector3& pto, const Vector3& min, const Vector3& max);
 
   void setFromNormal(const Vector3& normal);
-  void setFromNormalNoAbs(const Vector3& normal);
+  void setFromNormalVector(const Vector3& normal);
 
   void setFromDistancia(const double t, const double min = 0, const double max = 4);
 

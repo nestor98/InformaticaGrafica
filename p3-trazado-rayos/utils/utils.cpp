@@ -26,5 +26,5 @@ int GeneradorAleatorio::rand(const int min, const int max) const {
 }
 
 Vector3 GeneradorAleatorio::vectorNormalAleatorio() const {
-	return normalizar(Vector3(rand01(), rand01(), rand01(), false));
+	return normalizar(Vector3(rand01()-0.5, rand01()-0.5, rand01()-0.5, false));
 }

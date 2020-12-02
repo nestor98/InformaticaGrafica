@@ -4,9 +4,9 @@ Copyright (C) 2014 Diego Gutierrez (diegog@unizar.es)
 All rights reserved.
 
 This is an educational Ray Tracer developed for the course 'Informatica Grafica'
-(Computer Graphics) tought at Universidad de Zaragoza (Spain). As such, it does not 
+(Computer Graphics) tought at Universidad de Zaragoza (Spain). As such, it does not
 intend to be fast or general, but just to provide an educational tool for undergraduate
-students. 
+students.
 
 This software is provided as is, and any express or implied warranties are disclaimed.
 In no event shall copyright holders be liable for any damage.
@@ -15,9 +15,9 @@ In no event shall copyright holders be liable for any damage.
 #define _KDTREE_H_
 
 /*********************************************************************************
-This code has been adapted from Adolfo Munoz's Mjolnir-RT, developed at Universidad 
+This code has been adapted from Adolfo Munoz's Mjolnir-RT, developed at Universidad
 de Zaragoza (Spain).
-Particularly, the functions to find the N-closest nearest neighbors have been added 
+Particularly, the functions to find the N-closest nearest neighbors have been added
 to the original code.
 **********************************************************************************/
 #include <vector>
@@ -45,7 +45,7 @@ public:
 		T d;
 	public:
 		Node() :p(N),axis(-1) {}
-		Node(const std::vector<Real>& _p, const T& _data) : p(_p), d(_data),axis(-1) { if (_p.size()!=N) throw("Wrong dimension number in kd-tree"); }
+		Node(const std::vector<Real>& _p, const T& _data) : axis(-1),p(_p), d(_data) { if (_p.size()!=N) throw("Wrong dimension number in kd-tree"); }
 		const std::vector<Real>& point() const {return p;}
 		const T& data() const { return d; }
 
@@ -58,7 +58,7 @@ private:
 
 public:
 	KDTree() {}
-	
+
 	void clear(){ nodes.clear(); balanced.clear(); }
 	void store(const std::vector<Real>& point, const T& data) { nodes.push_back(Node(point,data)); }
 private:
@@ -79,7 +79,7 @@ private:
 	int closest(const std::vector<Real>& p, int index, int best) const;
 	void find(const std::vector<Real>& p, int index, Real radius, list<const Node*> &nodes) const;
 	void find(const std::vector<Real>& p, int index, int nb_elements, float &dist_worst, std::vector<const Node*> &nodes, std::vector<pair<int,float> > &dist) const;
-	//I've removed static for compiling problems 
+	//I've removed static for compiling problems
 	//static class HeapComparison
 	class HeapComparison
 	{
@@ -89,7 +89,7 @@ private:
 			return val1.second < val2.second;
 		}
 	};
-	void update_heap_nodes(const Node &node, const float distance, int nb_elements, 
+	void update_heap_nodes(const Node &node, const float distance, int nb_elements,
 									std::vector<const Node*> &nodes, std::vector<pair<int,float> > &dist)const;
 public:
 	//========================================================================================================
@@ -112,9 +112,9 @@ public:
 	// Nearest Neighbor search
 	void find(const std::vector<Real>& p, int nb_elements, std::vector<const Node*> &nodes, Real &max_distance) const
 	{
-		nodes.clear(); 
+		nodes.clear();
 		max_distance = std::numeric_limits<Real>::infinity();
-		
+
 		if( balanced.empty() )
 			return;
 
@@ -128,10 +128,10 @@ public:
 
 	inline const Node& operator[](const unsigned int idx)const
 	{
-		#ifdef _SAFE_CHECK_		
+		#ifdef _SAFE_CHECK_
 		if ( idx > balanced.size()-1) throw("Out-of-range");
-		#endif 
-		
+		#endif
+
 		return balanced[idx];
 	}
 	inline int nb_elements()const{ return balanced.size(); }
@@ -142,7 +142,7 @@ public:
 //Private Find(radius)
 template <class T, unsigned int N >
 void KDTree<T,N>::find(const std::vector<Real>& p, int index, Real radius, list<const Node*>& nodes) const
-	{ 
+	{
 		//We check if our node enters
 		if (distance(balanced[index].point(),p)<radius) { nodes.push_back(&balanced[index]); }
 		//Now we check that this is not a leaf node
@@ -161,7 +161,7 @@ void KDTree<T,N>::find(const std::vector<Real>& p, int index, Real radius, list<
 				if (radius > fabs(distaxis)) // Maybe we can find more nodes on the other child
 					find(p,2*index,radius,nodes);
 			}
-		}	
+		}
 	}
 
 
@@ -169,14 +169,14 @@ void KDTree<T,N>::find(const std::vector<Real>& p, int index, Real radius, list<
 //--------------------------------------------------------------------------------------------------
 //Private Find(N-Nearest Neighbors)
 template <class T, unsigned int N>
-void KDTree<T,N>::update_heap_nodes(const Node &node, const float distance, int nb_elements, 
+void KDTree<T,N>::update_heap_nodes(const Node &node, const float distance, int nb_elements,
 									std::vector<const Node*> &nodes, std::vector<pair<int,float> > &dist)const
 	{
 		// If there's still buffer for  more, don't bother with heaps...
 		if( nodes.size() < nb_elements )
 		{
 			dist.push_back(pair<int,float>(nodes.size(), distance));
-			nodes.push_back(&node); 
+			nodes.push_back(&node);
 
 			//...unless you've reach max size, then prepare the heap...
 			if( nodes.size() == nb_elements )
@@ -185,7 +185,7 @@ void KDTree<T,N>::update_heap_nodes(const Node &node, const float distance, int 
 		else
 		{
 			int idx = dist.front().first;
-			nodes[idx] = &node;			
+			nodes[idx] = &node;
 			// Pop removed element
 			pop_heap(dist.begin(), dist.end(), HeapComparison()); dist.pop_back();
 			// Push new one
@@ -212,17 +212,17 @@ void KDTree<T,N>::update_heap_nodes(const Node &node, const float distance, int 
 		//}
 	}
 template <class T, unsigned int N>
-void KDTree<T,N>::find(const std::vector<Real>& p, int index, int nb_elements, float &dist_worst, 
+void KDTree<T,N>::find(const std::vector<Real>& p, int index, int nb_elements, float &dist_worst,
 					   std::vector<const Node*> &nodes, std::vector<pair<int,float> > &dist) const
-	{ 
+	{
 		Real aux;
 		//We check if our node is better
 		if ((aux=distance(balanced[index].point(),p))<dist_worst)
-		{	
-			update_heap_nodes(balanced[index], aux, nb_elements, nodes, dist); 
-			dist_worst = (nodes.size()<nb_elements)? numeric_limits<float>::infinity():dist.front().second; 
+		{
+			update_heap_nodes(balanced[index], aux, nb_elements, nodes, dist);
+			dist_worst = (nodes.size()<nb_elements)? numeric_limits<float>::infinity():dist.front().second;
 		}
-		
+
 		//Now we check that this is not a leaf node
 		if (index<((balanced.size()-1)/2))
 		{
@@ -242,14 +242,14 @@ void KDTree<T,N>::find(const std::vector<Real>& p, int index, int nb_elements, f
 				if (dist_worst > fabs(distaxis)) // Maybe we can find more nodes on the other child
 					find(p,2*index,nb_elements,dist_worst,nodes, dist);
 			}
-		}	
+		}
   	}
 
 //--------------------------------------------------------------------------------------------------
 // Closest
 template <class T, unsigned int N >
 int KDTree<T,N>::closest(const std::vector<Real>& p, int index, int best) const
-	{ 
+	{
 		int sol=best;
 		Real distbest=distance(p,balanced[best].point());
 		Real aux;
@@ -267,7 +267,7 @@ int KDTree<T,N>::closest(const std::vector<Real>& p, int index, int best) const
 				{
 					candidate=closest(p,2*index + 1,sol);
 					if ((aux=distance(balanced[candidate].point(),p))<distbest) { sol=candidate; distbest=aux; }
-				}			
+				}
 			}
 			else //right node first
 			{
@@ -277,10 +277,10 @@ int KDTree<T,N>::closest(const std::vector<Real>& p, int index, int best) const
 				{
 					candidate=closest(p,2*index,sol);
 					if ((aux=distance(balanced[candidate].point(),p))<distbest) { sol=candidate; distbest=aux; }
-				}			
+				}
 			}
 		}
-		return sol;	
+		return sol;
 	}
 
 
@@ -334,7 +334,7 @@ void KDTree<T,N>::balanceSegment(std::vector<Node>& pbal, std::vector<Node>& por
 			if ((bbmax[i]-bbmin[i]) > (bbmax[axis]-bbmin[axis]))
 				axis = i;
 
-		// partimos el bloque de fotones por la mediana	
+		// partimos el bloque de fotones por la mediana
 		median_split(porg, start, end, median, axis);
 
 		pbal[index]=porg[median];

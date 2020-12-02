@@ -71,6 +71,9 @@ class PMRenderer : public Renderer {
 
 	void preprocess(const Escena& e);
 
+	Color shade(const Figura::InterseccionData& interseccion,
+	  const std::shared_ptr<Figura>& figIntersectada) const;
+
 public:
 	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion, VectoresWiRefraccion, krFresnel};
 protected:

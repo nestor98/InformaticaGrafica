@@ -53,6 +53,8 @@ public:
 
 
 	Vector3 getRayoPixel(const int i) const;
+	Vector3 getRayoCentroPixel(const int i) const;
+
 	int getRayosPorPixel() const;
 };
 

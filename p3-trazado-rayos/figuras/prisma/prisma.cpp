@@ -90,7 +90,7 @@ Vector3 normalDeCara(const int cara) {
 // TODO: comprobar!!!!
 Vector3 Prisma::getNormal(const Vector3& pto) const {
 	Vector3 p1 = getPos(); // esquina 1
-	std::cout << "p1: "<< p1 << '\n';
+	//std::cout << "p1: "<< p1 << '\n';
 	Vector3 p2 = p1 + getTam(); // esquina 2
 	Vector3 p1_pto = abs(pto-p1); // Distancia al pto 1
 	Vector3 p2_pto = abs(p2-pto); // Dist al 2

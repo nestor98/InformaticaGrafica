@@ -9,7 +9,7 @@
 #include "Vector3.hpp"
 //#include "Matriz4.cpp"
 #include "renderer.hpp"
-
+#include "pm-renderer.hpp"
 
 #include "generador.hpp"
 
@@ -179,7 +179,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
 		Color emisionLuces(4);
 		LuzPuntual luz(posLuz, emisionLuces);
-		// e.addLuz(luz);
+		e.addLuz(luz);
 
 		// LuzPuntual luz2(posLuz - FRONT * distanciaParedes /2, emisionLuces);
 		// e.addLuz(luz2);
@@ -284,10 +284,11 @@ int main(int argc, char* argv[]) {
 	//escenaBastanteGuay400prismas200esferas(argv);
 	auto escena = escenaCornellBoxMateriales(500, 500, atoi(argv[3])); // pixX, pixY, rayosPP
 	int nThreads = atoi(argv[2]);
-  auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
+  auto tipo = Renderer::TipoRender::Normales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
-	Renderer rend(*escena, nThreads, tipo, usarBVH);
-	rend.render(argv[1]);
-	// fixIluminacion(argv);
+	// Renderer rend(*escena, nThreads, tipo, usarBVH);
+	PMRenderer pmrend(*escena, 1, tipo, false);
+	pmrend.render(argv[1]);
+
 	return 0;
 }

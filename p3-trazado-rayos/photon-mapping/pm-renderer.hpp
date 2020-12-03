@@ -65,25 +65,21 @@ class PMRenderer : public Renderer {
 
 	// ---------------------------------------
 	// --------- Photon mapping...  ---------
-	bool trace_ray(const Escena& e, const Vector3& origen, const Vector3& dir, const Color &p,
+	bool trace_ray(const Vector3& origen, const Vector3& dir, const Color &p,
   			   std::list<Foton> &fotonesGlobales, std::list<Foton> &fotonesCausticos, bool directo,
  			 	const GeneradorAleatorio& rng);
 
-	void preprocess(const Escena& e);
+	void preprocess();
 
 	Color shade(const Figura::InterseccionData& interseccion,
-	  const std::shared_ptr<Figura>& figIntersectada) const;
-
-public:
-	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion, VectoresWiRefraccion, krFresnel};
-protected:
-	TipoRender renderSeleccionado;
-
+  	const std::shared_ptr<Figura>& figIntersectada) const;
 
 public:
 	// PMRenderer(const Camara& _c, const TipoRender tipo = BVHEmision);
-	PMRenderer(const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
-	PMRenderer(const Escena& _e, const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
+	// PMRenderer(const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
+	PMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo, const bool _usarBVH, const float _rangoDinamico=18);
+
+	// PMRenderer(const Escena& _e, const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
 
 	std::string to_string() const;
 

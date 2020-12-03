@@ -104,14 +104,9 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		// std::cout << "pdf: "<<pdf << '\n';
 		// Aqui, c es kd
 		c = c/pdf *(iDirecta + pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread)); // kd * Li
-
 	}
-
-
 	return c;
 }
-
-
 
 // Aux de path trace, solo para tipos de renders raros basados en vectores
 Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& ptoInterseccion, const GeneradorAleatorio& gen) {

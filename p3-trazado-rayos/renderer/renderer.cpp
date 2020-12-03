@@ -84,41 +84,26 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 	}
 	else { // --------------------------- DIFUSO
 		if (fig->tieneTextura()) { // con textura
-			c = fig->getEmision(pto);
+			c = fig->getEmision(pto); // El coeficiente es el de la textura
 		}
 		else { // difuso sin textura
-			c = mat.getCoeficiente(evento);
+			c = mat.getCoeficiente(evento); // Coef difuso
 		}
-		// Solo queda elegir entre iluminacion directa e indirecta:
-		float probRayoSombra = 0.5; // TODO: ???????????????
-		int numLuces = e.getNumLuces();
-		/*if (numLuces > 0 && rngThread.rand01() < probRayoSombra) { // Iluminacion directa
-			// Opcion 1 ------  ruleta rusa, una al azar
-			int indiceluz = rngThread.rand(0, numLuces);
-			c = c * shadowRay(pto, indiceLuz);
-			// std::cout << "1" << '\n';
-			// Opcion 2 ------ Promedio:
-			// Color ilum;
-			// for (int i = 0; i<numLuces; i++) {
-			// 	ilum = ilum + shadowRay(pto, i);
-			// }
-			// c = c*ilum/double(numLuces);
-			// std::cout << "2" << '\n';
-		}
-		else { // iluminacion indirecta
-			Matriz4 base = fig->getBase(pto);
-			Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
-			c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
-		}*/
-		// Otra opcion, ambas a la vez:
+		// Iluminacion directa:
 		Color iDirecta;
-		if (numLuces>0){
+		int numLuces = e.getNumLuces();
+		if (numLuces>0) { // Se muestrea una sola luz
+			// Si hay varias con intensidad muy distinta se deberia hacer importance sampling!!
 			int indiceLuz = rngThread.rand(0, numLuces);
 			iDirecta = shadowRay(pto, indiceLuz);
 		}
+		// Iluminacion indirecta:
 		Matriz4 base = fig->getBase(pto);
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
-		c = c*(iDirecta + pathTrace(pto+0.01*otroPath, otroPath, rngThread)); // kd * Li
+		float pdf = mat.getPDF(evento, primerRebote);
+		// std::cout << "pdf: "<<pdf << '\n';
+		// Aqui, c es kd
+		c = c/pdf *(iDirecta + pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread)); // kd * Li
 
 	}
 

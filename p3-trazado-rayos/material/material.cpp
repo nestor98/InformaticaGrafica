@@ -261,6 +261,22 @@ void Material::setRandom() {
 	setMaximos();
 }
 
+float Material::getPDF(const int evento, const bool primerRebote) const {
+	float pdf = 0;
+	if (0 <= evento || evento < 3) {
+		return maxCoefs[evento];
+
+	}
+	else {
+		if (primerRebote) {
+			std::cout << "QUE: " << evento << " " << primerRebote << '\n';
+			return 0;
+		}
+		else return 1-std::accumulate(maxCoefs.begin(), maxCoefs.end(), 0.0);
+	}
+
+}
+
 
 	// devuelve un num de 0 a 4 (para difuso, especular, refraccion o absorcion, respectivamente)
 	// con probabilidades en funcion del coeficiente máximo de cada uno

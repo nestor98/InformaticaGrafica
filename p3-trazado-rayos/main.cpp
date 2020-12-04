@@ -271,6 +271,98 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 }
 
 
+std::unique_ptr<Escena> escenaSimpleDePrueba(const int pixelesX, const int pixelesY, const int rayosPP) {
+		// ----------------------- Constantes de la escena:
+		double distanciaParedes = 3;
+		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
+		Vector3 fCam = FRONT;//(0,1,0,false);
+		Vector3 lCam = LEFT; //(1,0,0,false);
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+		//Camara c(posCam, dirCam);
+		//cout << c << endl;
+		// int rayosPP =500; // rayos por pixel
+		Imagen t= Imagen("textura1.ppm", true);
+		Textura tex=Textura(t,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+
+
+		// ----------------------- Camara:
+		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
+		double fov = gradosARad(90); //0.475 * PI;
+		Camara c = Camara(posCam, centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+
+
+		//
+
+		Escena e(std::make_shared<Camara>(c));//Materiales);//MaterialesSinBVH
+
+
+
+		Material difuso(Material::Difuso);
+		Material difusoVerde = difuso;
+		difusoVerde.setCoeficiente(Color(0,0.8,0),0);
+		Material difusoRojo = difuso;
+		difusoRojo.setCoeficiente(Color(0.8,0,0),0);
+		Material difusoGris = DIFUSO_GRIS;
+		//
+		// Caja:
+		Plano suelo(UP, 1.0*distanciaParedes);
+		// suelo.setColor(0.8,0.8,0.8);
+		Textura texRotada = tex;
+		Matriz4 rotaciontex;
+		rotaciontex.setRotarX(gradosARad(90));
+		texRotada.rotar(rotaciontex);
+		suelo.setTextura(std::make_shared<Textura>(texRotada));
+		suelo.setMaterial(difusoGris);
+		e.addFigura(std::make_shared<Plano>(suelo));
+
+		Plano techo(-UP, distanciaParedes);
+		// techo.setColor(2.5,2.5,2.5);
+		techo.setMaterial(DIFUSO_BLANCO);
+		e.addFigura(std::make_shared<Plano>(techo));
+		Plano paredi(-LEFT, distanciaParedes);
+		 // paredi.setColor(0.8,0,0);
+		paredi.setMaterial(difusoRojo);
+		e.addFigura(std::make_shared<Plano>(paredi));
+		Plano paredd(LEFT, distanciaParedes);
+
+		paredd.setMaterial(DIFUSO_ROJO);
+		 // paredd.setColor(0,0.8,0);
+		e.addFigura(std::make_shared<Plano>(paredd));
+		//  -----------------
+		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
+		// paredFondo.setTextura(std::make_shared<Textura>(tex));
+		// paredFondo.setColor(0.3,0.75,0.9);
+		paredFondo.setMaterial(DIFUSO_AZUL);
+		e.addFigura(std::make_shared<Plano>(paredFondo));
+		// --------------------
+		//
+		Plano paredOculta(FRONT, distanciaParedes);
+		paredOculta.setMaterial(DIFUSO_AZUL);
+		// paredOculta.setColor(0.05,0.05,0.8);
+		e.addFigura(std::make_shared<Plano>(paredOculta));
+		// Figuras:
+		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
+		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
+		Color emisionLuces(4);
+		LuzPuntual luz(posLuz, emisionLuces);
+		e.addLuz(luz);
+
+		float tamEsfera = distanciaParedes/0.00060;
+
+		Esfera esfVidrio(centroHabitacion, tamEsfera);
+		// esfLuz.setRandomColor();
+		esfVidrio.setMaterial(DIFUSO_BLANCO);
+		e.addFigura(std::make_shared<Esfera>(esfVidrio));
+		std::cout << "escena: " << e << '\n';
+
+		return std::make_unique<Escena>(e);
+}
+
+
 
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
@@ -282,9 +374,10 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(500, 500, atoi(argv[3])); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(100, 100, atoi(argv[3])); // pixX, pixY, rayosPP
+	escena->setMaterialFiguras(DIFUSO_ROJO);
 	int nThreads = atoi(argv[2]);
-  auto tipo = Renderer::TipoRender::Normales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
+  auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
 	// Renderer rend(*escena, nThreads, tipo, usarBVH);
 	PMRenderer pmrend(*escena, 1, tipo, false);

@@ -72,15 +72,15 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		// 	inside = true;
 		// }
 		float kr;
-		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, inside, dir, kr);
-		c = pathTrace(pto+0.01*otroPath, otroPath, rngThread);// * kr; //
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir, kr);
+		c = pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread);// * kr; //
 	}
 	else if (evento == 1) { // ------------------------ REFLEXION
 		Matriz4 base = fig->getBase(pto);
 		c = mat.getCoeficiente(0); // usamos el coeficiente del difuso
 		if (c == double(0)) c = mat.getCoeficiente(1);
-		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
-		c = c*pathTrace(pto+0.01*otroPath, otroPath, rngThread); // kd * Li
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
+		c = c*pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread); // kd * Li
 	}
 	else { // --------------------------- DIFUSO
 		if (fig->tieneTextura()) { // con textura
@@ -99,7 +99,7 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		}
 		// Iluminacion indirecta:
 		Matriz4 base = fig->getBase(pto);
-		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, false, dir);
+		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
 		float pdf = mat.getPDF(evento, primerRebote);
 		// std::cout << "pdf: "<<pdf << '\n';
 		// Aqui, c es kd
@@ -122,15 +122,15 @@ Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::share
 		// Vector3 otroPath =
 		// std::cout << base.inversa() * dir << std::endl;
 		Material mat = fig->getMaterial();
-		return mat.getVectorSalida(base, gen, 2, inside, dir);
+		return mat.getVectorSalida(base, gen, 2, dir);
 	}
 	else if (tipoRender == Renderer::VectoresWiReflexion) {
 		Matriz4 base = fig->getBase(ptoInterseccion);
-		return mat.getVectorSalida(base, gen, 1,false, dir);
+		return mat.getVectorSalida(base, gen, 1, dir);
 	}
 	else if (tipoRender == Renderer::VectoresWiDifusos) {
 		Matriz4 base = fig->getBase(ptoInterseccion);
-		return mat.getVectorSalida(base, gen, 0,false, dir);
+		return mat.getVectorSalida(base, gen, 0, dir);
 	}
 	else if (tipoRender == Renderer::Normales) {
 		return fig->getNormal(ptoInterseccion);

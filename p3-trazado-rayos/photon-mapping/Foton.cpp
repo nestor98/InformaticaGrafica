@@ -11,3 +11,7 @@ Foton::Foton(const Vector3& _pos, const Vector3& _dir, const Color& _e)
 Vector3 Foton::getPos() const {
   return pos;
 }
+
+Color Foton::getEmision() const {
+  return e;
+}

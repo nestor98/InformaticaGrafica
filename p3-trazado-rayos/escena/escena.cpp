@@ -106,6 +106,13 @@ void Escena::getLuces(std::vector<LuzPuntual>& vLuces) const {
 	vLuces = luces;
 }
 
+void Escena::setMaterialFiguras(const Material& mat) {
+	for (auto fig: figuras) {
+		fig->setMaterial(mat);
+	}
+}
+
+
 // para evitar el to_string en cout
 std::ostream& operator<<(std::ostream& os, const Escena& e) {
 	os << e.to_string();

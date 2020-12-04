@@ -126,6 +126,10 @@ float& Vector3::operator [](int i) {
 	return c[i];
 }
 
+void Vector3::toKDTreePoint(std::vector<float> &pto) const
+{
+ 	pto = {c[0], c[1], c[2]};
+}
 
 
 // Clase matriz4, para las transformaciones de vectores

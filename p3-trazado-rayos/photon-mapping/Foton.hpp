@@ -12,4 +12,6 @@ public:
   Foton(const Vector3& _pos, const Vector3& _dir, const Color& _e);
 
   Vector3 getPos() const;
+  Color getEmision() const;
+
 };

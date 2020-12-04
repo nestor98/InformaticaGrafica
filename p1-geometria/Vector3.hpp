@@ -5,6 +5,7 @@
 #include <string>
 #include <cmath>
 #include <list>
+#include <vector>
 // cmath para sqrt
 const double PI = 3.141592653589793115997963468544185161590576171875;
 
@@ -55,6 +56,8 @@ public:
 	double getMinComponente() const;
 
 	bool esPositivo() const;
+
+	void toKDTreePoint(std::vector<float> &pto) const;
 
 	// Cambio de sentido
 	Vector3 operator - () const;

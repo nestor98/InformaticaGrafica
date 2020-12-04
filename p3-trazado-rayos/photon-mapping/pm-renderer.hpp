@@ -24,6 +24,7 @@ const unsigned int MAX_FOTONES = 100000;
 class PMRenderer : public Renderer {
 	int maxNumFotones, maxFotonesGlobales, maxFotonesCausticos;
 	int fotonesActuales;
+	int nFotonesCercanos;
 	KDTree<Foton, MAX_FOTONES> kdTreeFotones;
 //
 // protected:
@@ -55,8 +56,10 @@ class PMRenderer : public Renderer {
 
 	// ---------------------------------------
 	// --------- Aux de path tracer  --------- // TODO: Se quedan??
-	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote=false) const;
-	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote = false) const;
+	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir,
+		const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote=false) const;
+	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread,
+		const bool primerRebote = false) const;
 	Color shadowRay(const Vector3& pto, const int indiceluz) const;
 
 	// ---------------------------------------
@@ -66,10 +69,14 @@ class PMRenderer : public Renderer {
 	// ---------------------------------------
 	// --------- Photon mapping...  ---------
 	bool trace_ray(const Vector3& origen, const Vector3& dir, const Color &p,
-  			   std::list<Foton> &fotonesGlobales, std::list<Foton> &fotonesCausticos, bool directo,
- 			 	const GeneradorAleatorio& rng);
+			   std::list<Foton> &fotonesGlobales, std::list<Foton> &fotonesCausticos,
+				 bool directo, const GeneradorAleatorio& rng);
 
 	void preprocess();
+
+	// Auxiliar de shade para separar la parte de PM del debug
+	Color shadePM(const Figura::InterseccionData& interseccion,
+  	const std::shared_ptr<Figura>& figIntersectada) const;
 
 	Color shade(const Figura::InterseccionData& interseccion,
   	const std::shared_ptr<Figura>& figIntersectada) const;
@@ -77,7 +84,10 @@ class PMRenderer : public Renderer {
 public:
 	// PMRenderer(const Camara& _c, const TipoRender tipo = BVHEmision);
 	// PMRenderer(const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
-	PMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo, const bool _usarBVH, const float _rangoDinamico=18);
+	PMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo,
+		const bool _usarBVH, const float _rangoDinamico=18, const int _maxNumFotones= 100000,
+	  const int _maxFotonesGlobales= 10000, const int _maxFotonesCausticos= 10000,
+		const int _nFotonesCercanos = 10);
 
 	// PMRenderer(const Escena& _e, const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
 

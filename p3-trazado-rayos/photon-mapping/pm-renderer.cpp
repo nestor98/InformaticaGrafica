@@ -18,8 +18,14 @@
 #define hrc std::chrono::high_resolution_clock
 
 
-PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo, const bool _usarBVH, const float _rangoDinamico)
-: Renderer(_e, _nThreads, tipo, _usarBVH, _rangoDinamico)
+PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo,
+  const bool _usarBVH, const float _rangoDinamico, const int _maxNumFotones,
+  const int _maxFotonesGlobales, const int _maxFotonesCausticos,
+  const int _nFotonesCercanos)
+: Renderer(_e, _nThreads, tipo, _usarBVH, _rangoDinamico),
+  maxNumFotones(_maxNumFotones), maxFotonesGlobales(_maxFotonesGlobales),
+  maxFotonesCausticos(_maxFotonesCausticos), fotonesActuales(0),
+  nFotonesCercanos(_nFotonesCercanos)
 {
 	// threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }
@@ -116,7 +122,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 		// // while (epsilon2 < 0.)
 		// // 	epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
 
-		if (evento == 0 || nivel > 1 ) // Absorcion
+		if (evento == 0 || nivel > 20 ) // Absorcion
 			break;
 
 		// Random walk's next step
@@ -124,7 +130,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 		auto fig = inter->second;
 		Matriz4 base = fig->getBase(iData.punto);
 
-		dirFoton = mat.getVectorSalida(base, rng, 0, false, dirFoton);
+		dirFoton = mat.getVectorSalida(base, rng, 0, dirFoton);
 		oFoton = alejarDeNormal(iData.punto, base[2]); // Nuevo pto
 		nivel++; // Un rebote mas
 
@@ -152,7 +158,8 @@ template <class T, unsigned int N>
 void guardarFotones(KDTree<T, N>& KDTFotones, const std::list<Foton>& fotones) {
 	for (auto foton : fotones) {
 		Vector3 pos = foton.getPos();
-		std::vector<float> pto = {pos[0], pos[1], pos[2]};
+		std::vector<float> pto;
+    pos.toKDTreePoint(pto); // = {pos[0], pos[1], pos[2]};
 		KDTFotones.store(pto, foton);
 	}
 }
@@ -196,6 +203,41 @@ void PMRenderer::preprocess()
 	guardarFotones<Foton, MAX_FOTONES>(KDTFotones, fotonesCausticos);
 }
 
+Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
+  const std::shared_ptr<Figura>& figIntersectada) const
+{
+  Color L;
+  Material mat = figIntersectada->getMaterial();
+  GeneradorAleatorio rngThread; //TODO: threads y tal
+  int evento = mat.ruletaRusa(rngThread); // devuelve un entero entre 0 y 4 en f de las probs
+  if (evento == 3) { // Absorcion
+    return L;
+  }
+  else if (evento == 0) { // DIFUSO
+    std::vector<float> pto; // pto para buscar en el KDTree
+    interseccion.punto.toKDTreePoint(pto);
+    std::vector<const KDTree<Foton, MAX_FOTONES>::Node*> nodes;
+    float maxDist;
+    kdTreeFotones.find(pto, nFotonesCercanos, nodes, maxDist);
+    // POST: nodes tiene los fotones, maxDist la dist maxima
+    for (auto node : nodes) { // para cada foton
+      Foton foton = node->data();
+      float r = (foton.getPos()-interseccion.punto).getModulo();
+      L = L + foton.getEmision() / (PI * r*r); // sum(flujo/(PI*r^2))
+    }
+    L = L * mat.getCoeficiente(0); // L = kd
+    // ...
+  }
+  else if (evento == 1) { // ESPECULAR
+    std::cerr << "Aun no tienes especulares en PM!" << '\n';
+    exit(1);
+  }
+  else if (evento == 2) { // REFRACCION
+    std::cerr << "Aun no tienes refraccion en PM!" << '\n';
+    exit(1);
+  }
+  return L;
+}
 
 //*********************************************************************
 // TODO: Implement the function that computes the rendering equation
@@ -225,6 +267,9 @@ Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
   Material mat = figIntersectada->getMaterial();
 	switch ((int) renderSeleccionado)
 	{
+  case Renderer::TipoRender::Materiales:
+    L = shadePM(interseccion, figIntersectada);
+    break;
 	case Renderer::TipoRender::Albedo:
 		// ----------------------------------------------------------------
 		// Display Albedo Only
@@ -310,7 +355,9 @@ void PMRenderer::render(const std::string fichero) {
 	Imagen im(c->getPixelesY(), c->getPixelesX());
   // ---------------- PREPROCESS:
   std::cout << "Voy a hacer el preprocess" << '\n';
-  //preprocess();
+  preprocess();
+  int kdTreeNFotones = 0; //TODO: ?????????????????????????
+  std::cout << "El kdtree tiene " << kdTreeNFotones << " fotones" << '\n';
 	t2 = hrc::now();
 	std::chrono::duration<double> t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 	// t2 -> tRender2 = t2-t1

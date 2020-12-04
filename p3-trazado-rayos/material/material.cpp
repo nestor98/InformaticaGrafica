@@ -128,15 +128,15 @@ Vector3 refraccion(const Vector3& incidente, const Vector3& normal, const float 
 
 
 // base = T en las diapos
-Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento,const bool inside, const Vector3& incidente) const {
+Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento, const Vector3& incidente) const {
 	float nada;
-	return getVectorSalida(base, gen, evento, inside, incidente, nada);
+	return getVectorSalida(base, gen, evento, incidente, nada);
 }
 
 
 
 // base = T en las diapos
-Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento,const bool inside, const Vector3& incidente, float& kr) const {
+Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio& gen, const int evento, const Vector3& incidente, float& kr) const {
 	Vector3 wi;
 	if (evento==0) { //difuso
 		double rand1 = gen.rand01();

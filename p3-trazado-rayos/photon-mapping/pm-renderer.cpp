@@ -71,7 +71,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 	Vector3 oFoton = origen;
 	Vector3 dirFoton = dir;
 
-	int nivel = 0; // num de rebotes // TODO: ir aumentandolo!!!!!!!!!!!!!!!!!1111
+	int nivel = 1; // num de rebotes // TODO: ir aumentandolo!!!!!!!!!!!!!!!!!1111
 
 	bool esCaustica = false;
 
@@ -85,6 +85,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 
 		if(!inter)
 			break;
+    //std::cout << "he intersectado" << '\n';
 		Figura::InterseccionData iData = inter->first;
 		Material mat = inter->second->getMaterial();
 		//Check if has hit a delta material...
@@ -100,14 +101,18 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 			if( esCaustica )
 			{
 				//If caustic particle, store in caustics
-				if( fotonesCausticos.size() < maxFotonesCausticos )
-					fotonesCausticos.emplace_back( Foton(iData.punto, dirFoton, energia ));
+				if( fotonesCausticos.size() < maxFotonesCausticos ) {
+          // std::cout << "meto un foton caustico" << '\n';
+          fotonesCausticos.emplace_back( Foton(iData.punto, dirFoton, energia ));
+        }
 			}
 			else
 			{ // TODO: DE AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				//If non-caustic particle, store in global
-				if( fotonesGlobales.size() < maxFotonesGlobales )
-					fotonesGlobales.emplace_back( Foton(iData.punto, dirFoton, energia ));
+				if( fotonesGlobales.size() < maxFotonesGlobales ) {
+          // std::cout << "meto un foton global" << '\n';
+  				fotonesGlobales.emplace_back( Foton(iData.punto, dirFoton, energia ));
+        }
 			}
 			esCaustica = false;
 		}
@@ -157,6 +162,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 template <class T, unsigned int N>
 void guardarFotones(KDTree<T, N>& KDTFotones, const std::list<Foton>& fotones) {
 	for (auto foton : fotones) {
+    //std::cout << "Guardando foton" << '\n';
 		Vector3 pos = foton.getPos();
 		std::vector<float> pto;
     pos.toKDTreePoint(pto); // = {pos[0], pos[1], pos[2]};
@@ -184,10 +190,11 @@ void PMRenderer::preprocess()
 	e.getLuces(vLuces);
 	GeneradorAleatorio rng;
 	std::list<Foton> fotonesGlobales, fotonesCausticos;
-	KDTree<Foton, MAX_FOTONES> KDTFotones;
+	//KDTree<Foton, 3> KDTFotones;
 	bool fin = false;
+  int i = 0;
 	while (!fin) {
-    // std::cout << "iteracion: " << vLuces.size() << '\n';
+    i++; // DEBUG
 		// sample
 		int iLuz = rng.rand(0, vLuces.size()); // luz aleatoria
 		LuzPuntual luz = e.getLuz(iLuz);
@@ -198,9 +205,13 @@ void PMRenderer::preprocess()
 		fin = !trace_ray(origen, dir, luz.getEmision(), fotonesGlobales,
 							fotonesCausticos,	true, rng);
 	}
+  std::cout << i << " iteraciones de trace_ray (en preprocess)" << '\n';
 	// store
-	guardarFotones<Foton, MAX_FOTONES>(KDTFotones, fotonesGlobales);
-	guardarFotones<Foton, MAX_FOTONES>(KDTFotones, fotonesCausticos);
+  std::cout << "globales: " << fotonesGlobales.size() << "\ncausticos: "
+            << fotonesCausticos.size() << '\n';
+	guardarFotones<Foton, 3>(kdTreeFotones, fotonesGlobales);
+	guardarFotones<Foton, 3>(kdTreeFotones, fotonesCausticos);
+  kdTreeFotones.balance();
 }
 
 Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
@@ -216,16 +227,23 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   else if (evento == 0) { // DIFUSO
     std::vector<float> pto; // pto para buscar en el KDTree
     interseccion.punto.toKDTreePoint(pto);
-    std::vector<const KDTree<Foton, MAX_FOTONES>::Node*> nodes;
+    //std::cout << "pto: " << pto[0] << " " << pto[1] << " " << pto[2] << '\n';
+    std::vector<const KDTree<Foton, 3>::Node*> nodes;
     float maxDist;
+    //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
     kdTreeFotones.find(pto, nFotonesCercanos, nodes, maxDist);
+    //std::cout << "maxDist: " << maxDist << '\n';
+    // std::list<const KDTree<Foton, 3>::Node*> nodes;
+    // kdTreeFotones.find(pto, 100, &nodes);
     // POST: nodes tiene los fotones, maxDist la dist maxima
+    //if (nodes.size() > 0) std::cout << "fotones cercanos: " << nodes.size() << '\n';
     for (auto node : nodes) { // para cada foton
       Foton foton = node->data();
-      float r = (foton.getPos()-interseccion.punto).getModulo();
-      L = L + foton.getEmision() / (PI * r*r); // sum(flujo/(PI*r^2))
+      float rCuadrado = (foton.getPos()-interseccion.punto).getModuloSq();
+      L = L + foton.getEmision() / (PI * maxDist*maxDist); // sum(flujo/(PI*r^2))
     }
-    L = L * mat.getCoeficiente(0); // L = kd
+    L = L * mat.getCoeficiente(0); // L = kd * sum(flujo/(PI*r^2))
+    //std::cout << "L: " << L.to_string() << '\n';
     // ...
   }
   else if (evento == 1) { // ESPECULAR

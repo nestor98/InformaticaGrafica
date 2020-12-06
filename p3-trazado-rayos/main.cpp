@@ -374,7 +374,7 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
-	auto escena = escenaCornellBoxMateriales(100, 100, atoi(argv[3])); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(500, 500, atoi(argv[3])); // pixX, pixY, rayosPP
 	escena->setMaterialFiguras(DIFUSO_ROJO);
 	int nThreads = atoi(argv[2]);
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel

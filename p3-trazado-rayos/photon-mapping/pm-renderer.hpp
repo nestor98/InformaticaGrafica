@@ -19,13 +19,13 @@
 #include "Foton.hpp"
 #include "KDTree.h"
 
-const unsigned int MAX_FOTONES = 100000;
+// const unsigned int MAX_FOTONES = 100000;
 
 class PMRenderer : public Renderer {
 	int maxNumFotones, maxFotonesGlobales, maxFotonesCausticos;
 	int fotonesActuales;
 	int nFotonesCercanos;
-	KDTree<Foton, MAX_FOTONES> kdTreeFotones;
+	KDTree<Foton, 3> kdTreeFotones;
 //
 // protected:
 // 	bool usarBVH;

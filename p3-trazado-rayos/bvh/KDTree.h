@@ -115,8 +115,10 @@ public:
 		nodes.clear();
 		max_distance = std::numeric_limits<Real>::infinity();
 
-		if( balanced.empty() )
-			return;
+		if( balanced.empty() ){
+			// std::cout << "yup" << '\n';
+				return;
+		}
 
 		nodes.reserve(nb_elements);
 		std::vector<pair<int,float> > dist; dist.reserve(nb_elements);

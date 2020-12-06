@@ -30,7 +30,7 @@ Material::Material(const Color& c1, const Color& c2, const Color& c3)
 
 
 bool Material::esDelta() const {
-	return true; // TODO: Son NO delta si son difusos (si son parte difusos parte especulares ni idea)
+	return maxCoefs[0]==0; // TODO: Son NO delta si son difusos (si son parte difusos parte especulares ni idea)
 }
 
 // Material::Material(bool aleatorio) {

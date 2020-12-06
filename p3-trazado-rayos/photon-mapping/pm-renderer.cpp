@@ -225,8 +225,8 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
     return L;
   }
   else if (evento == 0) { // DIFUSO
-    std::vector<float> pto; // pto para buscar en el KDTree
-    interseccion.punto.toKDTreePoint(pto);
+    std::vector<float> pto;
+    interseccion.punto.toKDTreePoint(pto);// pto para buscar en el KDTree
     //std::cout << "pto: " << pto[0] << " " << pto[1] << " " << pto[2] << '\n';
     std::vector<const KDTree<Foton, 3>::Node*> nodes;
     float maxDist;

@@ -58,6 +58,7 @@ public:
 	bool esPositivo() const;
 
 	void toKDTreePoint(std::vector<float> &pto) const;
+	const std::vector<float>& toKDTreePoint() const;
 
 	// Cambio de sentido
 	Vector3 operator - () const;

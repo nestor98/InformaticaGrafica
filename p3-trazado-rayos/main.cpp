@@ -366,8 +366,8 @@ std::unique_ptr<Escena> escenaSimpleDePrueba(const int pixelesX, const int pixel
 
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
-	if (argc < 4) {// <fichero de entrada>
-		cerr << "invocar como:\n" << argv[0] << " <fichero de salida> <numero de threads> <rayospp>\n";
+	if (argc < 5) {// <fichero de entrada>
+		cerr << "invocar como:\n" << argv[0] << " <fichero de salida> <numero de threads> <rayospp> <resolColor>\n";
 		exit(1);
 	}
 	// escenaBastanteGuay400prismas200esferas(argv);
@@ -379,8 +379,9 @@ int main(int argc, char* argv[]) {
 	int nThreads = atoi(argv[2]);
   auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
+	int resColor = atoi(argv[4]); // maxFloat de hdr
 	// Renderer rend(*escena, nThreads, tipo, usarBVH);
-	PMRenderer pmrend(*escena, 1, tipo, false);
+	PMRenderer pmrend(*escena, 1, tipo, false, resColor);
 	pmrend.render(argv[1]);
 
 	return 0;

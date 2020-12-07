@@ -177,7 +177,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
-		Color emisionLuces(4);
+		Color emisionLuces(8);
 		LuzPuntual luz(posLuz, emisionLuces);
 		e.addLuz(luz);
 
@@ -375,9 +375,9 @@ int main(int argc, char* argv[]) {
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
 	auto escena = escenaCornellBoxMateriales(500, 500, atoi(argv[3])); // pixX, pixY, rayosPP
-	escena->setMaterialFiguras(DIFUSO_ROJO);
+	escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_VERDE});
 	int nThreads = atoi(argv[2]);
-  auto tipo = Renderer::TipoRender::Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
+  auto tipo = Renderer::TipoRender::Materiales;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 	// Renderer rend(*escena, nThreads, tipo, usarBVH);

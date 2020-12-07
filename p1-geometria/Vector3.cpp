@@ -469,7 +469,7 @@ Vector3 operator * (const Vector3& v, const float& s) {
 // escalar v/s
 Vector3 operator / (const Vector3& v, const float& s) {
 	if (s == 0) {
-		// std::cerr << "no dividas entre 0..." << std::endl;
+		std::cerr << "no dividas entre 0..." << std::endl;
 		//exit(1);
 		return Vector3();
 	}

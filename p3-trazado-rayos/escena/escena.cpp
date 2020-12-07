@@ -106,8 +106,11 @@ void Escena::getLuces(std::vector<LuzPuntual>& vLuces) const {
 	vLuces = luces;
 }
 
-void Escena::setMaterialFiguras(const Material& mat) {
+void Escena::setMaterialFiguras(const std::vector<Material>& materiales){
+	GeneradorAleatorio rng;
 	for (auto fig: figuras) {
+		int i = rng.rand(0,materiales.size());
+		Material mat = materiales[i];
 		fig->setMaterial(mat);
 	}
 }

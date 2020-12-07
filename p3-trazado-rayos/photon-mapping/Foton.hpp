@@ -14,5 +14,6 @@ public:
 
   Vector3 getPos() const;
   Color getEmision() const;
+  Vector3 getDir() const;
 
 };

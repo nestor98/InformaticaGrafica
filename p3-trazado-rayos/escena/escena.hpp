@@ -46,7 +46,7 @@ public:
 	void getLuz(LuzPuntual& luz, const int i) const;
 	LuzPuntual getLuz(const int i) const;
 
-	void setMaterialFiguras(const Material& mat);
+	void setMaterialFiguras(const std::vector<Material>& materiales);
 
 
 	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccion(const Vector3& o, const Vector3& dir) const;

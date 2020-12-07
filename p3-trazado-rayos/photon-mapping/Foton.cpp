@@ -17,6 +17,10 @@ Vector3 Foton::getPos() const {
   return pos;
 }
 
+Vector3 Foton::getDir() const {
+  return dir;
+}
+
 Color Foton::getEmision() const {
   return e;
 }

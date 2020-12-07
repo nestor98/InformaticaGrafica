@@ -62,7 +62,8 @@ protected:
 
 public:
 	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion,
-		VectoresWiRefraccion, krFresnel, Albedo, Delta, IluminacionLuz0, DireccionLuz0,VisibilidadLuz0};
+		VectoresWiRefraccion, krFresnel, Albedo, Delta, IluminacionLuz0, DireccionLuz0,
+		FotonesRadioFijo, VisibilidadLuz0, VectoresAleatorios};
 protected:
 	TipoRender renderSeleccionado;
 

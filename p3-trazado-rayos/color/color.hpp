@@ -65,6 +65,8 @@ public:
 
 bool operator == (const Color& c1, const double val);
 
+bool operator >= (const Color& c1, const Color& c2);
+
 // +
 Color operator + (const Color& c1, const Color& c2);
 

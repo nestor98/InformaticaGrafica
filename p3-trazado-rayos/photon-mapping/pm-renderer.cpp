@@ -71,7 +71,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 	Vector3 oFoton = origen;
 	Vector3 dirFoton = dir;
 
-	int nivel = 1; // num de rebotes // TODO: ir aumentandolo!!!!!!!!!!!!!!!!!1111
+	int nivel = 0; // num de rebotes // TODO: ir aumentandolo!!!!!!!!!!!!!!!!!1111
 
 	bool esCaustica = false;
 
@@ -107,54 +107,76 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
         }
 			}
 			else
-			{ // TODO: DE AQUI!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			{
 				//If non-caustic particle, store in global
 				if( fotonesGlobales.size() < maxFotonesGlobales ) {
           // std::cout << "meto un foton global" << '\n';
   				fotonesGlobales.emplace_back( Foton(iData.punto, dirFoton, energia ));
         }
+        else{
+          // std::cout << "lista llena" << '\n';
+        }
 			}
 			esCaustica = false;
 		}
 
-		double pdf = 1; // TODO: ??????????????????????????????????????????????????
 
 		// Color surf_albedo = mat.getCoeficiente(0); // Nos interesa el difuso //it.intersected()->material()->get_albedo(it);
 		int evento = mat.ruletaRusa(rng, nivel==0);
+    double pdf = mat.getPDF(evento, nivel==0); // probabilidad del evento
 		// Real avg_surf_albedo = surf_albedo.avg();
 		//
 		// Real epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
 		// // while (epsilon2 < 0.)
 		// // 	epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
 
-		if (evento == 0 || nivel > 20 ) // Absorcion
-			break;
+		if (evento == 3 || nivel >= 5 || energia == 0 ) {// Absorcion 20
+      // std::cout << "absorcion" << '\n';
+      if (energia == 0) std::cout << "energia 0" << '\n';
+    	break;
+
+    }
+    // TODO: borrar esto
+    if (evento == 1 || evento == 2) {
+      std::cerr << "DELTA sin implementar!!!!" << '\n';
+      exit(1);
+    }
+
 
 		// Random walk's next step
 		// Get sampled direction plus pdf, and update attenuation
 		auto fig = inter->second;
 		Matriz4 base = fig->getBase(iData.punto);
 
-		dirFoton = mat.getVectorSalida(base, rng, 0, dirFoton);
+		dirFoton = mat.getVectorSalida(base, rng, evento, dirFoton);
+    // TODO: al añadir refraccion cuidado con alejar el pto de la normal en este
+    // sentido!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 		oFoton = alejarDeNormal(iData.punto, base[2]); // Nuevo pto
 		nivel++; // Un rebote mas
+    // if (nivel > 3) std::cout << "nivel>3" << '\n';
 
 		// Shade...
-		double albedo = mat.getCoeficiente(0).getPromedio();
+		Color albedo = mat.getCoeficiente(evento);
+    double albedoPromedio = albedo.getPromedio();
+    Color eAntes = energia;
 		energia = energia*albedo;
 		if( !mat.esDelta() )
 			energia = energia * std::abs(base[2] * dirFoton)/PI;// base[2] es la normal
 
-		energia = energia /(pdf*albedo);// pdf? :(
-	}
+		energia = energia /(pdf*albedoPromedio);// pdf? :(
 
+    // std::cout << "antes: " << eAntes.to_string() << " despues: " << energia.to_string() << '\n';
+    // if (energia >= eAntes   ) {
+    //   std::cerr << "deberia haber disminuido" << '\n';
+    // }
+	}
 	if( fotonesCausticos.size() == maxFotonesCausticos &&
 		fotonesGlobales.size() == maxFotonesGlobales )
 	{
 		maxNumFotones = fotonesActuales-1; // ??????????????????????????????????
 		return false;
 	}
-
+  // std::cout << nivel << " iteraciones en trace_ray, en preprocess" << '\n';
 	return true;
 }
 
@@ -185,7 +207,7 @@ void guardarFotones(KDTree<T, N>& KDTFotones, const std::list<Foton>& fotones) {
 //		NOTE: Careful with function
 //---------------------------------------------------------------------
 void PMRenderer::preprocess()
-{ // TODO: ejecutarlo D:
+{
 	std::vector<LuzPuntual> vLuces;
 	e.getLuces(vLuces);
 	GeneradorAleatorio rng;
@@ -193,16 +215,18 @@ void PMRenderer::preprocess()
 	//KDTree<Foton, 3> KDTFotones;
 	bool fin = false;
   int i = 0;
+
 	while (!fin) {
     i++; // DEBUG
 		// sample
 		int iLuz = rng.rand(0, vLuces.size()); // luz aleatoria
 		LuzPuntual luz = e.getLuz(iLuz);
 		Vector3 origen = luz.samplePunto(rng);
+    // std::cout << "muestra pto luz: "<<origen << '\n';
 		Vector3 dir = rng.vectorNormalAleatorio();
 		// trace
     // std::cout << "a trace..." << '\n';
-		fin = !trace_ray(origen, dir, luz.getEmision(), fotonesGlobales,
+		fin = !trace_ray(origen, dir, luz.getEmision()/float(maxNumFotones/50.0), fotonesGlobales,
 							fotonesCausticos,	true, rng);
 	}
   std::cout << i << " iteraciones de trace_ray (en preprocess)" << '\n';
@@ -220,8 +244,9 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   Color L;
   Material mat = figIntersectada->getMaterial();
   GeneradorAleatorio rngThread; //TODO: threads y tal
-  int evento = mat.ruletaRusa(rngThread); // devuelve un entero entre 0 y 4 en f de las probs
-  if (evento == 3) { // Absorcion
+  // true pq es el primer rebote:
+  int evento = mat.ruletaRusa(rngThread, true); // devuelve un entero entre 0 y 4 en f de las probs
+  if (evento == 3) { // Absorcion, imposible en el 1er rebote
     return L;
   }
   else if (evento == 0) { // DIFUSO
@@ -232,18 +257,19 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
     float maxDist;
     //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
     kdTreeFotones.find(pto, nFotonesCercanos, nodes, maxDist);
-    //std::cout << "maxDist: " << maxDist << '\n';
-    // std::list<const KDTree<Foton, 3>::Node*> nodes;
-    // kdTreeFotones.find(pto, 100, &nodes);
-    // POST: nodes tiene los fotones, maxDist la dist maxima
-    //if (nodes.size() > 0) std::cout << "fotones cercanos: " << nodes.size() << '\n';
     for (auto node : nodes) { // para cada foton
       Foton foton = node->data();
-      float rCuadrado = (foton.getPos()-interseccion.punto).getModuloSq();
-      L = L + foton.getEmision() / (PI * maxDist*maxDist); // sum(flujo/(PI*r^2))
+    //  float rCuadrado = (foton.getPos()-interseccion.punto).getModuloSq();
+      Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
+      // ha chocado con esta cara de la fig (normal*dir < 0)
+      if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
+        L = L + foton.getEmision() / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+      }
     }
-    L = L * mat.getCoeficiente(0); // L = kd * sum(flujo/(PI*r^2))
-    //std::cout << "L: " << L.to_string() << '\n';
+
+    if(nFotonesCercanos != nodes.size()) std::cerr << "????????" << '\n';
+    L = L * mat.getCoeficiente(0) ; // L = kd * sum(flujo/(PI*r^2))
+    // std::cout << "L: " << L.to_string() << '\n';
     // ...
   }
   else if (evento == 1) { // ESPECULAR
@@ -288,6 +314,20 @@ Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
   case Renderer::TipoRender::Materiales:
     L = shadePM(interseccion, figIntersectada);
     break;
+  case Renderer::TipoRender::FotonesRadioFijo:
+  {
+    std::vector<float> pto;
+    interseccion.punto.toKDTreePoint(pto);// pto para buscar en el KDTree
+    std::list<const KDTree<Foton, 3>::Node*> nodes;
+    float maxDist;
+    //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
+    float radioAOjo = 2  * 1e-2;
+    int cercanos = kdTreeFotones.find(pto, radioAOjo, &nodes);
+    // kdTreeFotones.find(pto, nFotonesCercanos, nodes, maxDist);
+    // std::cout << "cercanos: " <<cercanos << '\n';
+    L.setRGB(cercanos);
+    break;
+  }
 	case Renderer::TipoRender::Albedo:
 		// ----------------------------------------------------------------
 		// Display Albedo Only
@@ -300,6 +340,16 @@ Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
   		// Display Normal Buffer
       Vector3 normal = figIntersectada->getNormal(interseccion.punto);
       L.setFromNormalVector(normal);
+      // L = interseccion.
+  		// L = it.get_normal();
+  		break;
+    }
+  case Renderer::TipoRender::VectoresAleatorios:
+    {
+      // ----------------------------------------------------------------
+  		// Muestra la dir de los vectores de la luz 0
+      GeneradorAleatorio rng;
+      L.setFromNormalVector(rng.vectorNormalAleatorio());
       // L = interseccion.
   		// L = it.get_normal();
   		break;

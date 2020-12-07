@@ -174,6 +174,11 @@ bool operator == (const Color& c1, const double val) {
   return c1.getR() == c1.getG() && c1.getG()==c1.getB() && c1.getB()==val;
 }
 
+
+bool operator >= (const Color& c1, const Color& c2) {
+  return c1.getR() >= c2.getR() && c1.getG() >= c2.getG() && c1.getB() >= c2.getB();
+}
+
 // -
 Color operator * (const Color& c1, const double mult) {
   double d = 1/mult;

@@ -25,6 +25,19 @@ int GeneradorAleatorio::rand(const int min, const int max) const {
 	return int(r);
 }
 
+// Vector3 GeneradorAleatorio::vectorNormalAleatorio() const {
+// 	double rand1 = gen.rand01();
+// 	double rand2 = gen.rand01();
+// 	double theta = acos(sqrt(1.0-rand01()));
+// 	double phi = 2.0 * PI * rand2;
+// 	// std::cout << "---------------------------------" << '\n';
+// 	// std::cout << "theta: " << theta << "\nphi: " <<phi << '\n';
+// 	// std::cout << "base: " << base << '\n';
+// 	wi = base * Vector3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta), false);
+// 	return normalizar(Vector3(rand01()-0.5, rand01()-0.5, rand01()-0.5, false));
+// }
+
+
 Vector3 GeneradorAleatorio::vectorNormalAleatorio() const {
 	return normalizar(Vector3(rand01()-0.5, rand01()-0.5, rand01()-0.5, false));
 }

@@ -1,5 +1,6 @@
 #include <cmath> // seno
-
+#include <algorithm>
+#include <initializer_list>
 #include "color.hpp"
 #include "utils.hpp"
 
@@ -159,6 +160,9 @@ double Color::getPromedio() const {
   return prom/3.0;
 }
 
+double Color::getMax() const {
+  return std::max({r,g,b});
+}
 
 // +
 Color operator + (const Color& c1, const Color& c2) {
@@ -201,4 +205,10 @@ Color operator * (const Color& c1, const Color& c2) {
 // -
 Color operator / (const Color& c1, const double d) {
   return Color(c1.getR()/d, c1.getG() /d, c1.getB() /d);
+}
+
+
+std::ostream& operator<<(std::ostream& os, const Color& c) {
+  os << c.to_string();
+	return os;
 }

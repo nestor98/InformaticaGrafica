@@ -44,6 +44,8 @@ public:
   void clamp(const float max);
 
   double getPromedio() const;
+  double getMax() const;
+
 
   void setRGB(const std::array<double,3> rgb);
 
@@ -62,6 +64,7 @@ public:
 	double& operator [](int i);
 
 };
+std::ostream& operator<<(std::ostream& os, const Color& c);
 
 bool operator == (const Color& c1, const double val);
 

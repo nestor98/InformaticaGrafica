@@ -54,7 +54,9 @@ protected:
 	// --------- Aux de path tracer  ---------
 	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote=false) const;
 	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote = false) const;
-	Color shadowRay(const Vector3& pto, const int indiceluz) const;
+	Color shadowRay(const Vector3& pto, const Vector3& normal, const int indiceluz) const;
+	Color luzDirecta(const Vector3& pto, const Vector3& normal) const;
+ 	Color muestraLuzDirecta(const Vector3& pto, const Vector3& normal, const GeneradorAleatorio& rng) const;
 
 	// ---------------------------------------
 	// --------- Barra de progreso  ---------
@@ -63,7 +65,7 @@ protected:
 public:
 	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion,
 		VectoresWiRefraccion, krFresnel, Albedo, Delta, IluminacionLuz0, DireccionLuz0,
-		FotonesRadioFijo, VisibilidadLuz0, VectoresAleatorios};
+		FotonesRadioFijo, VisibilidadLuz0, VectoresAleatorios, FotonMasCercano};
 protected:
 	TipoRender renderSeleccionado;
 

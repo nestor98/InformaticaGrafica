@@ -24,7 +24,7 @@ Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRe
 	threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }
 
-Color Renderer::shadowRay(const Vector3& pto, const int indiceluz) const {
+Color Renderer::shadowRay(const Vector3& pto, const Vector3& normal, const int indiceluz) const {
 	Color c;
 	LuzPuntual luz=	e.getLuz(indiceluz);
 	Vector3 rayoSombra = luz.getPos() - pto;
@@ -37,15 +37,39 @@ Color Renderer::shadowRay(const Vector3& pto, const int indiceluz) const {
 		interseccionFigura = e.interseccion(pto, rayoSombra);
 	}
 	else { // con bvh
-		// std::cout << "Cuidado con la interseccion con bvh" << '\n';
 		interseccionFigura = bvh.interseccion(pto, rayoSombra);
 	}
 	if (interseccionFigura) {
 		if (distLuz < interseccionFigura->first.t) {
-			return luz.getEmision() / (distLuz * distLuz); // Se devuelve su color entre la distancia al cuadrado
+			// c = eluz / |distLuz|^2 / |normal * rayoSombra|
+			c = luz.getEmision() / (distLuz * distLuz);
+			return c * (std::abs(normal * rayoSombra)); // Se devuelve su color entre la distancia al cuadrado
 		}
 	}
 	return c;
+}
+
+Color Renderer::luzDirecta(const Vector3& pto, const Vector3& normal) const {
+	Color L;
+	int numLuces = e.getNumLuces();
+	for (int i = 0; i<numLuces; i++) {
+		L = L + shadowRay(pto, normal, i);
+	}
+	return L;
+}
+
+
+// Si muestrearTodas, se suman todas, si no, se muestrea una aleatoriamente
+Color Renderer::muestraLuzDirecta(const Vector3& pto, const Vector3& normal,
+	const GeneradorAleatorio& rng) const
+{
+	int numLuces = e.getNumLuces();
+	if (numLuces>0) { // Se muestrea una sola luz
+		// Si hay varias con intensidad muy distinta se deberia hacer importance sampling!!
+		int indiceLuz = rng.rand(0, numLuces);
+		return shadowRay(pto, normal, indiceLuz);
+  }
+	return Color();
 }
 
 
@@ -90,15 +114,10 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 			c = mat.getCoeficiente(evento); // Coef difuso
 		}
 		// Iluminacion directa:
-		Color iDirecta;
-		int numLuces = e.getNumLuces();
-		if (numLuces>0) { // Se muestrea una sola luz
-			// Si hay varias con intensidad muy distinta se deberia hacer importance sampling!!
-			int indiceLuz = rngThread.rand(0, numLuces);
-			iDirecta = shadowRay(pto, indiceLuz);
-		}
-		// Iluminacion indirecta:
 		Matriz4 base = fig->getBase(pto);
+		Color iDirecta = muestraLuzDirecta(pto, base[2], rngThread);
+
+		// Iluminacion indirecta:
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
 		float pdf = mat.getPDF(evento, primerRebote);
 		// std::cout << "pdf: "<<pdf << '\n';

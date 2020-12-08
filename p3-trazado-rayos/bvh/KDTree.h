@@ -44,7 +44,7 @@ public:
 		std::vector<Real> p;
 		T d;
 	public:
-		Node() :p(N),axis(-1) {}
+		Node() :axis(-1), p(N) {}
 		Node(const std::vector<Real>& _p, const T& _data) : axis(-1),p(_p), d(_data) { if (_p.size()!=N) throw("Wrong dimension number in kd-tree"); }
 		const std::vector<Real>& point() const {return p;}
 		const T& data() const { return d; }

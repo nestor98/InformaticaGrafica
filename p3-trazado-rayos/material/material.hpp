@@ -64,7 +64,7 @@ public:
 
 	double krFresnel(const Vector3& normal, const Vector3& wo, const double coefRefraccion) const;
 
-	float getPDF(const int evento, const bool primerRebote) const;
+	float getPDF(const int evento, const bool primerRebote=false) const;
 
 	// nuse jajajaajj
 	bool esDelta() const;

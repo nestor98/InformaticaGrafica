@@ -25,7 +25,8 @@ class PMRenderer : public Renderer {
 	int maxNumFotones, maxFotonesGlobales, maxFotonesCausticos;
 	int fotonesActuales;
 	int nFotonesCercanos;
-	KDTree<Foton, 3> kdTreeFotones;
+	bool guardarDirectos;
+	KDTree<Foton, 3> kdTreeGlobal, kdTreeCaustico;
 //
 // protected:
 // 	bool usarBVH;
@@ -60,7 +61,7 @@ class PMRenderer : public Renderer {
 		const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote=false) const;
 	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread,
 		const bool primerRebote = false) const;
-	Color shadowRay(const Vector3& pto, const int indiceluz) const;
+
 
 	// ---------------------------------------
 	// --------- Barra de progreso  ---------
@@ -78,6 +79,13 @@ class PMRenderer : public Renderer {
 	Color shadePM(const Figura::InterseccionData& interseccion,
   	const std::shared_ptr<Figura>& figIntersectada) const;
 
+	// Aux de shadePM, devuelve la luminosidad correspondiente a fotones globales
+	Color iluminacionGlobal(const Figura::InterseccionData& interseccion,
+		const Vector3& normal) const;
+
+	// Aux de shadePM, devuelve la luminosidad correspondiente a fotones causticos
+	Color causticas(const Figura::InterseccionData& interseccion) const;
+
 	Color shade(const Figura::InterseccionData& interseccion,
   	const std::shared_ptr<Figura>& figIntersectada) const;
 
@@ -87,7 +95,7 @@ public:
 	PMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo,
 		const bool _usarBVH, const float _rangoDinamico=18, const int _maxNumFotones= 100000,
 	  const int _maxFotonesGlobales= 100000, const int _maxFotonesCausticos= 0,
-		const int _nFotonesCercanos = 50);
+		const int _nFotonesCercanos = 50, const bool _guardarDirectos = false);
 
 	// PMRenderer(const Escena& _e, const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
 

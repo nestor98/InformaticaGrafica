@@ -16,4 +16,6 @@ public:
   Color getEmision() const;
   Vector3 getDir() const;
 
+  void setEmision(const Color& emision);
+
 };

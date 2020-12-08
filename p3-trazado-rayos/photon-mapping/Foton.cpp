@@ -24,3 +24,8 @@ Vector3 Foton::getDir() const {
 Color Foton::getEmision() const {
   return e;
 }
+
+
+void Foton::setEmision(const Color& emision) {
+  e = emision;
+}

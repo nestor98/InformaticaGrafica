@@ -229,7 +229,7 @@ void PMRenderer::preprocess()
     // std::cout << "a trace..." << '\n';
 
 		fin = !trace_ray(origen, dir, luz.getEmision(), fotonesGlobales,
-							fotonesCausticos,	guardarDirectos, rng);
+							fotonesCausticos,	true, rng);//guardarDirectos
 	}
   std::cout << i << " iteraciones de trace_ray (en preprocess)" << '\n';
 	// store
@@ -257,7 +257,8 @@ const Vector3& normal) const
   std::vector<const KDTree<Foton, 3>::Node*> nodes;
   float maxDist;
   //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
-  kdTreeGlobal.find(pto, nFotonesCercanos, nodes, maxDist);
+  int debug_nFotones = nFotonesCercanos;//nFotonesCercanos
+  kdTreeGlobal.find(pto, debug_nFotones, nodes, maxDist);
   // std::cout << "maxDist: " << maxDist << '\n';
   for (auto node : nodes) { // para cada foton
     Foton foton = node->data();
@@ -265,7 +266,7 @@ const Vector3& normal) const
     Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
     // ha chocado con esta cara de la fig (normal*dir < 0)
     //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-      L = L + foton.getEmision() * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+      L = L + foton.getEmision();// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
     //}
   }
   // std::cout << "L: " << L.to_string() << '\n';
@@ -289,7 +290,7 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
     L = iluminacionGlobal(interseccion, n) +
-        Renderer::luzDirecta(ptoCorregido, n) +
+        // Renderer::luzDirecta(ptoCorregido, n) +
         causticas(interseccion);
     L = L * mat.getCoeficiente(0) / PI;
 
@@ -297,7 +298,7 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
     // std::cout << "L: " << L.to_string() << '\n';
     // ---------------------- Iluminacion directa:
 
-    L = L * mat.getCoeficiente(0) / PI ; // L = kd/PI * sum(flujo/(PI*r^2))
+
   }
   else if (evento == 1) { // ESPECULAR
     std::cerr << "Aun no tienes especulares en PM!" << '\n';

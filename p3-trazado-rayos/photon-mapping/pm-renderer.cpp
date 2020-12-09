@@ -27,6 +27,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
   maxFotonesCausticos(_maxFotonesCausticos), fotonesActuales(0),
   nFotonesCercanos(_nFotonesCercanos), guardarDirectos(_guardarDirectos)
 {
+  std::cout << "Guardar dir: " << guardarDirectos << '\n';
 	// threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }
 
@@ -114,37 +115,40 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
   				fotonesGlobales.emplace_back( Foton(iData.punto, dirFoton, energia ));
         }
         else{
-          // std::cout << "lista llena" << '\n';
+          std::cout << "lista llena" << '\n';
         }
 			}
 			esCaustica = false;
 		}
+
 		// Color surf_albedo = mat.getCoeficiente(0); // Nos interesa el difuso //it.intersected()->material()->get_albedo(it);
-		int evento = mat.ruletaRusa(rng);
-    double pdf = mat.getPDF(evento); // probabilidad del evento
+		//int evento = mat.ruletaRusa(rng, nivel==0);
+
 		// Real avg_surf_albedo = surf_albedo.avg();
 		//
 		// Real epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
 		// // while (epsilon2 < 0.)
 		// // 	epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
 
-    //Color albedo = mat.getCoeficiente(0); // TODO: REVISAR 0
-    //double albedoPromedio = albedo.getPromedio();
-    //double eps = rng.rand01();
-    //int evento = 0;
-		if (evento == 3 || nivel > 20 || energia == 0 ) {// Absorcion 20
-    //if (eps > albedoPromedio || nivel > 20 || energia == 0 ) {// Absorcion 20
+    Color albedo = mat.getCoeficiente(0); // TODO: REVISAR 0
+    double albedoPromedio = albedo.getPromedio();
+    double eps = rng.rand01();
+		//if (evento == 3 || nivel > 20 || energia == 0 ) {// Absorcion 20
+    if (eps > albedoPromedio || nivel > 20 || energia == 0 ) {// Absorcion 20
 
       // std::cout << "absorcion" << '\n';
-      if (energia == 0) std::cout << "energia 0" << '\n'; // TODO: borrar
+      if (energia == 0) std::cout << "energia 0" << '\n';
     	break;
 
     }
     // TODO: borrar esto
-    if (evento == 1 || evento == 2) {
-      std::cerr << "DELTA sin implementar!!!!" << '\n';
-      exit(1);
-    }
+    // if (evento == 1 || evento == 2) {
+    //   std::cerr << "DELTA sin implementar!!!!" << '\n';
+    //   exit(1);
+    // }
+    double pdf = mat.getPDF(0, true); // probabilidad del evento
+
+    int evento = 0;//mat.ruletaRusa(rng, );
 		// Random walk's next step
 		// Get sampled direction plus pdf, and update attenuation
 		auto fig = inter->second;
@@ -156,13 +160,17 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 		oFoton = alejarDeNormal(iData.punto, base[2]); // Nuevo pto
 		nivel++; // Un rebote mas
     // if (nivel > 3) std::cout << "nivel>3" << '\n';
-    // Nueva energia = energia * kd / pdf
-    energia = energia * mat.getCoeficiente(evento) / pdf;
-    if( !mat.esDelta() )
-    	energia = energia * std::abs(base[2] * dirFoton)/PI;// base[2] es la normal
 
+		// Shade...
+    // double albedoPromedio = albedo.getPromedio();
+    //double albedoMax = mat.getMax
+    Color eAntes = energia;
+		energia = energia*albedo;
+		if( !mat.esDelta() )
+			energia = energia * std::abs(base[2] * dirFoton)/PI;// base[2] es la normal
 
-	}
+		energia = energia /(pdf*albedoPromedio);//albedo.getMax());//*albedoPromedio);// pdf? :(
+  }
 	if( fotonesCausticos.size() == maxFotonesCausticos &&
 		fotonesGlobales.size() == maxFotonesGlobales )
 	{
@@ -173,7 +181,6 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 	return true;
 }
 
-
 template <class T, unsigned int N>
 void guardarFotones(KDTree<T, N>& KDTFotones, const std::list<Foton>& fotones,
   const double& escalarPFotones) {
@@ -181,6 +188,7 @@ void guardarFotones(KDTree<T, N>& KDTFotones, const std::list<Foton>& fotones,
     //std::cout << "Guardando foton" << '\n';
 		Vector3 pos = foton.getPos();
     foton.setEmision(foton.getEmision() * escalarPFotones);
+    std::cout << foton.getEmision(); // TODO: borrar
 		std::vector<float> pto;
     pos.toKDTreePoint(pto); // = {pos[0], pos[1], pos[2]};
 		KDTFotones.store(pto, foton);
@@ -229,13 +237,13 @@ void PMRenderer::preprocess()
     // std::cout << "a trace..." << '\n';
 
 		fin = !trace_ray(origen, dir, luz.getEmision(), fotonesGlobales,
-							fotonesCausticos,	true, rng);//guardarDirectos
+							fotonesCausticos,	guardarDirectos, rng);//guardarDirectos
 	}
   std::cout << i << " iteraciones de trace_ray (en preprocess)" << '\n';
 	// store
   std::cout << "globales: " << fotonesGlobales.size() << "\ncausticos: "
             << fotonesCausticos.size() << '\n';
-  double escalarPFotones = 1.0/i; // cada foton debe tener 1/numfotones la e original
+  double escalarPFotones = 10.0/i; // cada foton debe tener 1/numfotones la e original
 	guardarFotones<Foton, 3>(kdTreeGlobal, fotonesGlobales, escalarPFotones);
 	guardarFotones<Foton, 3>(kdTreeCaustico, fotonesCausticos, escalarPFotones);
   kdTreeGlobal.balance();
@@ -257,7 +265,7 @@ const Vector3& normal) const
   std::vector<const KDTree<Foton, 3>::Node*> nodes;
   float maxDist;
   //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
-  int debug_nFotones = nFotonesCercanos;//nFotonesCercanos
+  int debug_nFotones = 100;//nFotonesCercanos
   kdTreeGlobal.find(pto, debug_nFotones, nodes, maxDist);
   // std::cout << "maxDist: " << maxDist << '\n';
   for (auto node : nodes) { // para cada foton
@@ -267,13 +275,16 @@ const Vector3& normal) const
     // ha chocado con esta cara de la fig (normal*dir < 0)
     //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
       L = L + foton.getEmision();// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+      //std::cout << foton.getEmision() << " ";
     //}
   }
   // std::cout << "L: " << L.to_string() << '\n';
   L = L / (PI * (maxDist*maxDist));
+  // std::cout << "L: " << L << '\n';
   // std::cout << "L/(PI*maxD^2): " << L.to_string() << '\n';
   return L;
 }
+
 
 Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   const std::shared_ptr<Figura>& figIntersectada) const
@@ -289,16 +300,12 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-    L = iluminacionGlobal(interseccion, n) +
-        // Renderer::luzDirecta(ptoCorregido, n) +
-        causticas(interseccion);
+    //L = iluminacionGlobal(interseccion, n) + causticas(interseccion);
+    if (!guardarDirectos) {
+      //std::cout << "??????????" << '\n';
+      L = L + Renderer::luzDirecta(ptoCorregido, n);
+    }
     L = L * mat.getCoeficiente(0) / PI;
-
-
-    // std::cout << "L: " << L.to_string() << '\n';
-    // ---------------------- Iluminacion directa:
-
-
   }
   else if (evento == 1) { // ESPECULAR
     std::cerr << "Aun no tienes especulares en PM!" << '\n';
@@ -366,7 +373,7 @@ Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
     //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
     kdTreeGlobal.find(pto, 1, nodes, maxDist);
     //std::cout << nodes[0]->data().getEmision().to_string() << std::endl;
-    L = nodes[0]->data().getEmision()/float(maxDist*maxDist); // Color del mas cercano / distancia
+    L = nodes[0]->data().getEmision()/maxDist;///float(maxDist*maxDist); // Color del mas cercano / distancia
     break;
   }
 	case Renderer::TipoRender::Albedo:
@@ -474,8 +481,6 @@ void PMRenderer::render(const std::string fichero) {
   // ---------------- PREPROCESS:
   std::cout << "Voy a hacer el preprocess" << '\n';
   preprocess();
-  int kdTreeNFotones = 0; //TODO: ?????????????????????????
-  std::cout << "El kdtree tiene " << kdTreeNFotones << " fotones" << '\n';
 	t2 = hrc::now();
 	std::chrono::duration<double> t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 	// t2 -> tRender2 = t2-t1
@@ -556,3 +561,56 @@ void PMRenderer::render(const std::string fichero) {
 
 		energia = energia /(pdf*albedoPromedio);//albedo.getMax());//*albedoPromedio);// pdf? :(
 */
+
+
+
+
+
+
+/* Con maximos en vez de promedios:
+
+    // ------------------------------------------------
+		// Color surf_albedo = mat.getCoeficiente(0); // Nos interesa el difuso //it.intersected()->material()->get_albedo(it);
+		int evento = mat.ruletaRusa(rng);
+    double pdf = mat.getPDF(evento); // probabilidad del evento
+		// Real avg_surf_albedo = surf_albedo.avg();
+		//
+		// Real epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
+		// // while (epsilon2 < 0.)
+		// // 	epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
+
+    //Color albedo = mat.getCoeficiente(0); // TODO: REVISAR 0
+    //double albedoPromedio = albedo.getPromedio();
+    //double eps = rng.rand01();
+    //int evento = 0;
+		if (evento == 3 || nivel > 20 || energia == 0 ) {// Absorcion 20
+    //if (eps > albedoPromedio || nivel > 20 || energia == 0 ) {// Absorcion 20
+
+      // std::cout << "absorcion" << '\n';
+      if (energia == 0) std::cout << "energia 0" << '\n'; // TODO: borrar
+    	break;
+
+    }
+    // TODO: borrar esto
+    if (evento == 1 || evento == 2) {
+      std::cerr << "DELTA sin implementar!!!!" << '\n';
+      exit(1);
+    }
+		// Random walk's next step
+		// Get sampled direction plus pdf, and update attenuation
+		auto fig = inter->second;
+		Matriz4 base = fig->getBase(iData.punto);
+
+		dirFoton = mat.getVectorSalida(base, rng, evento, dirFoton);
+    // TODO: al añadir refraccion cuidado con alejar el pto de la normal en este
+    // sentido!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+		oFoton = alejarDeNormal(iData.punto, base[2]); // Nuevo pto
+		nivel++; // Un rebote mas
+    // if (nivel > 3) std::cout << "nivel>3" << '\n';
+    // Nueva energia = energia * kd / pdf
+    energia = energia * mat.getCoeficiente(evento) / pdf;
+    if( !mat.esDelta() )
+    	energia = energia * std::abs(base[2] * dirFoton)/PI;// base[2] es la normal
+
+	}
+  */

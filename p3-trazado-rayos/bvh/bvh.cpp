@@ -10,7 +10,9 @@
 
 
 
-BoundingVolumeH::BoundingVolumeH(std::shared_ptr<Figura> fig) : vectorPlanos(), tieneFigsFinitas(true), figura(fig) {
+BoundingVolumeH::BoundingVolumeH(std::shared_ptr<Figura> fig) : vectorPlanos(),
+	tieneFigsFinitas(true), figura(fig)
+{
 	// figura = fig;
 	box = figura->getBoundingBox();
 }

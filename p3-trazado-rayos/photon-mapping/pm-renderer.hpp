@@ -95,7 +95,7 @@ public:
 	PMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo,
 		const bool _usarBVH, const float _rangoDinamico=18, const int _maxNumFotones= 100000,
 	  const int _maxFotonesGlobales= 100000, const int _maxFotonesCausticos= 0,
-		const int _nFotonesCercanos = 50, const bool _guardarDirectos = false);
+		const int _nFotonesCercanos = 50, const bool _guardarDirectos = true);
 
 	// PMRenderer(const Escena& _e, const int _nThreads = 12, const TipoRender tipo = Materiales, const bool _usarBVH = true);
 

@@ -89,15 +89,9 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		c = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
 		c = c/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
 		// std::cout << "c: " << c.to_string() << '\n';
-		// inside = dir * normal;
-		bool inside = false;
-		// if (dir * base[2] > 0) {
-		// 	base[2] = -base[2];
-		// 	inside = true;
-		// }
 		float kr;
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir, kr);
-		c = pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread);// * kr; //
+		c = c * pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread);// * kr; //
 	}
 	else if (evento == 1) { // ------------------------ REFLEXION
 		Matriz4 base = fig->getBase(pto);
@@ -115,13 +109,15 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		}
 		// Iluminacion directa:
 		Matriz4 base = fig->getBase(pto);
-		Color iDirecta = muestraLuzDirecta(pto, base[2], rngThread);
+
+		Color iDirecta = muestraLuzDirecta(alejarDeNormal(pto, base[2]), base[2], rngThread);
 
 		// Iluminacion indirecta:
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
 		float pdf = mat.getPDF(evento, primerRebote);
 		// std::cout << "pdf: "<<pdf << '\n';
 		// Aqui, c es kd
+		// TODO: REVISAR COSENOS
 		c = c/pdf *(iDirecta + pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread)); // kd * Li
 	}
 	return c;

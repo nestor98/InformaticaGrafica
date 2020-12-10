@@ -63,9 +63,6 @@ class PMRenderer : public Renderer {
 		const bool primerRebote = false) const;
 
 
-	// ---------------------------------------
-	// --------- Barra de progreso  ---------
-	void progressBar(const int nPixeles);
 
 	// ---------------------------------------
 	// --------- Photon mapping...  ---------
@@ -77,17 +74,24 @@ class PMRenderer : public Renderer {
 
 	// Auxiliar de shade para separar la parte de PM del debug
 	Color shadePM(const Figura::InterseccionData& interseccion,
-  	const std::shared_ptr<Figura>& figIntersectada) const;
+  	const std::shared_ptr<Figura>& figIntersectada, const bool primerRebote,
+	  const GeneradorAleatorio& rng, const Vector3& dir) const;
 
+	// Aux de iluminacionGlobal y de causticas
+	Color iluminacionDeKDTree(const KDTree<Foton, 3>& kdTree,
+	  const Figura::InterseccionData& interseccion,
+	  const Vector3& normal) const;
 	// Aux de shadePM, devuelve la luminosidad correspondiente a fotones globales
 	Color iluminacionGlobal(const Figura::InterseccionData& interseccion,
 		const Vector3& normal) const;
 
 	// Aux de shadePM, devuelve la luminosidad correspondiente a fotones causticos
-	Color causticas(const Figura::InterseccionData& interseccion) const;
+	Color causticas(const Figura::InterseccionData& interseccion,
+	  const Vector3& normal) const;
 
 	Color shade(const Figura::InterseccionData& interseccion,
-  	const std::shared_ptr<Figura>& figIntersectada) const;
+  	const std::shared_ptr<Figura>& figIntersectada, const bool primerRebote,
+	  const GeneradorAleatorio& rng, const Vector3& dir) const;
 
 public:
 	// PMRenderer(const Camara& _c, const TipoRender tipo = BVHEmision);

@@ -189,6 +189,9 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		else { // Refraccion:
 			// std::cout << "reflexion" << '\n';
 			wi = refraccion(incidente, base[2], coefRefraccion);
+			if (wi.getModulo() == 0) { // Reflexion interna total
+				wi = reflejar(incidente, base);
+			}
 			kr = 1-kr; // Se devuelve kt
 				// std::cout << "refraccion" << '\n';
 				// float coefRefraccion = 1.45;
@@ -219,7 +222,19 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 
 
 	}
-	return normalizar(wi);
+	try {
+		return normalizar(wi);
+	}
+	catch (std::string e) {
+		if (evento == 2) {
+			std::cerr << "Error normalizando: " << e << '\n';
+			std::cerr << "EN [DIFUSO, REFLEXION, REFRACCION]: "<<evento  << '\n';
+			std::cerr << "wi:" << wi << '\n';
+			std::cerr << "Incidente: " << incidente << '\n';
+			std::cerr << "base: " << base << '\n';
+		}
+
+	}
 }
 
 

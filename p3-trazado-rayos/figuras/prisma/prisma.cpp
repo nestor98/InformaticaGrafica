@@ -108,7 +108,7 @@ Vector3 Prisma::getNormal(const Vector3& pto) const {
 			minIdx = i+3;
 		}
 	}
-	return normalDeCara(minIdx);
+	return normalizar(normalDeCara(minIdx));
 }
 
 
@@ -380,7 +380,7 @@ Vector3 PrismaRotable::getNormal(const Vector3& pto) const {
 	}
 	// std::cout << "normalDeCara(0): " << normalDeCara(0) << '\n'
 	// 			<< "base*normalDeCara(0): " << base*normalDeCara(0) << '\n';
-	return base * normalDeCara(minIdx);
+	return normalizar(base * normalDeCara(minIdx));
 }
 //
 // bool PrismaRotable::contiene(const Vector3& p) const {

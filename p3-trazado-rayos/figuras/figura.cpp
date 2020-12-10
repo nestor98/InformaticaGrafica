@@ -69,11 +69,18 @@ Color Figura::getEmision(const Vector3& dir) const {
 
 
 Matriz4 Figura::getBase(const Vector3& pto) {
-	return getBase(this->getNormal(pto), pto);
+	try {
+		return getBase(this->getNormal(pto), pto);
+	}
+	catch (std::string e) {
+		std::cerr << "error en getBase" << '\n';
+	}
 }
 
 Matriz4 Figura::getBase(const Vector3& normal, const Vector3& pto) {
-	Matriz4 base = baseFromVector(normal, pto);
+	Vector3 normalVec = normal; normalVec.setVector();
+	Vector3 ptoPunto = pto; ptoPunto.setPunto();
+	Matriz4 base = baseFromVector(normalVec, ptoPunto);
 	return base;
 }
 

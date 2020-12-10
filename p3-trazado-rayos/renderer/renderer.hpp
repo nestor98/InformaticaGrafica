@@ -58,14 +58,14 @@ protected:
 	Color luzDirecta(const Vector3& pto, const Vector3& normal) const;
  	Color muestraLuzDirecta(const Vector3& pto, const Vector3& normal, const GeneradorAleatorio& rng) const;
 
-	// ---------------------------------------
-	// --------- Barra de progreso  ---------
-	void progressBar(const int nPixeles);
 
 public:
 	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion,
 		VectoresWiRefraccion, krFresnel, Albedo, Delta, IluminacionLuz0, DireccionLuz0,
 		FotonesRadioFijo, VisibilidadLuz0, VectoresAleatorios, FotonMasCercano};
+	// ---------------------------------------
+	// --------- Barra de progreso  ---------
+	void progressBar(const int nPixeles);
 protected:
 	TipoRender renderSeleccionado;
 

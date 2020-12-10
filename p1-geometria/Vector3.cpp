@@ -39,6 +39,12 @@ Vector3::Vector3(float x, float y, float z, bool punto) {
 
 /**************** Metodos ****************/
 
+void Vector3::setVector() {
+	c[3] = 0;
+}
+void Vector3::setPunto(){
+	c[3] = 1;
+}
 
 void Vector3::setCoords(std::array<float, 3> _c) {
 	setCoords(_c[0], _c[1], _c[2], 0);
@@ -97,9 +103,14 @@ void Vector3::setModulo(const float mod) {
 // Devuelve el vector v normalizado:
 Vector3 normalizar(const Vector3& v) {
 	//Vector3 normalizado = v / v.getModulo();
-	Vector3 u=v/v.getModulo();
-	u[3]=0;
-	return u;
+	// try {
+		Vector3 u=v/v.getModulo();
+		u[3]=0;
+		return u;
+	// }
+	// catch (std::string e) {
+	// 	std::cerr << "error en normalizar!!!! " << e << '\n';
+	// }
 }
 
 // devuelve el modulo al cuadrado
@@ -113,7 +124,7 @@ float Vector3::getModuloSq() const {
 
 // Cambio de sentido
 Vector3 Vector3::operator - () const {
-	return Vector3(-c[0], -c[1], -c[2], -c[3]);
+	return Vector3(-c[0], -c[1], -c[2], c[3]);
 }
 
 // componente (get, a = v[2])
@@ -469,9 +480,10 @@ Vector3 operator * (const Vector3& v, const float& s) {
 // escalar v/s
 Vector3 operator / (const Vector3& v, const float& s) {
 	if (s == 0) {
-		std::cerr << "no dividas entre 0..." << std::endl;
+		throw std::string("no dividas entre 0...");
+		//std::cerr << "no dividas entre 0..." << std::endl;
 		//exit(1);
-		return Vector3();
+		//return Vector3();
 	}
 	Vector3 res(v[0] / s, v[1] / s, v[2] / s, v[3]/s);
 	return res;
@@ -597,8 +609,8 @@ Matriz4 baseFromVectorYOrigen(const Vector3& normal, const Vector3& pto,  const 
 	return base;
 }
 
-Vector3 alejarDeNormal(const Vector3& punto, const Vector3& normal) {
-	Vector3 pto = punto + EPSILON_NORMAL*normal;
+Vector3 alejarDeNormal(const Vector3& punto, const Vector3& normal,const double dist) {
+	Vector3 pto = punto + dist*normal;
 	pto[3] = 1;
 	return pto;
 }

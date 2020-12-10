@@ -41,6 +41,10 @@ public:
 	// True sii es un vector (false si es punto)
 	bool esVector() const;
 
+
+	void setVector();
+	void setPunto();
+
 	// Representacion en string del vector
 	std::string to_string() const;
 
@@ -200,6 +204,7 @@ Vector3 operator * (const Vector3& v, const float& s);
 
 float operator / (const Vector3& v1, const Vector3& v2);
 
+// TODO: no dividas
 // escalar v/s
 Vector3 operator / (const Vector3& v, const float& s);
 
@@ -241,7 +246,8 @@ Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto);
 
 Matriz4 baseFromVectorYOrigen(const Vector3& normal, const Vector3& pto,  const Vector3& origen);
 
-Vector3 alejarDeNormal(const Vector3& punto, const Vector3& normal);
+Vector3 alejarDeNormal(const Vector3& punto, const Vector3& normal,
+	const double dist = EPSILON_NORMAL);
 
 
 double gradosARad(const double grados);

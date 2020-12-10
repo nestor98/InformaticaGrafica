@@ -28,7 +28,9 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
   nFotonesCercanos(_nFotonesCercanos), guardarDirectos(_guardarDirectos)
 {
   std::cout << "Guardar dir: " << guardarDirectos << '\n';
-	// threads.reserve(_nThreads+1); // +1 por la barra de progreso
+  std::cout << "maxFotonesCausticos: " << maxFotonesCausticos << '\n';
+  std::cout << "Nthreads: " << _nThreads << '\n';
+	threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }
 
 
@@ -95,6 +97,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 			// If delta material, then is caustic...
 			// Don't store the photon!
 			esCaustica = true;
+      //std::cout << "CAUSTICA" << '\n';
 		}
 		else if (nivel > 0 || directo)
 		{
@@ -114,9 +117,6 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
           // std::cout << "meto un foton global" << '\n';
   				fotonesGlobales.emplace_back( Foton(iData.punto, dirFoton, energia ));
         }
-        else{
-          std::cout << "lista llena" << '\n';
-        }
 			}
 			esCaustica = false;
 		}
@@ -129,8 +129,8 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 		// Real epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
 		// // while (epsilon2 < 0.)
 		// // 	epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
-
-    Color albedo = mat.getCoeficiente(0); // TODO: REVISAR 0
+    int evento = mat.ruletaRusa(rng, true); // No absorbemos con esta ruleta
+    Color albedo = mat.getCoeficiente(evento); // TODO: REVISAR 0
     double albedoPromedio = albedo.getPromedio();
     double eps = rng.rand01();
 		//if (evento == 3 || nivel > 20 || energia == 0 ) {// Absorcion 20
@@ -146,9 +146,9 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
     //   std::cerr << "DELTA sin implementar!!!!" << '\n';
     //   exit(1);
     // }
-    double pdf = mat.getPDF(0, true); // probabilidad del evento
+    double pdf = mat.getPDF(evento, true); // probabilidad del evento
 
-    int evento = 0;//mat.ruletaRusa(rng, );
+    //int evento = 0;//mat.ruletaRusa(rng, );
 		// Random walk's next step
 		// Get sampled direction plus pdf, and update attenuation
 		auto fig = inter->second;
@@ -188,11 +188,12 @@ void guardarFotones(KDTree<T, N>& KDTFotones, const std::list<Foton>& fotones,
     //std::cout << "Guardando foton" << '\n';
 		Vector3 pos = foton.getPos();
     foton.setEmision(foton.getEmision() * escalarPFotones);
-    std::cout << foton.getEmision(); // TODO: borrar
+    //std::cout << foton.getEmision(); // TODO: borrar
 		std::vector<float> pto;
     pos.toKDTreePoint(pto); // = {pos[0], pos[1], pos[2]};
 		KDTFotones.store(pto, foton);
 	}
+  if (!fotones.empty()) KDTFotones.balance();
 }
 
 //*********************************************************************
@@ -243,20 +244,21 @@ void PMRenderer::preprocess()
 	// store
   std::cout << "globales: " << fotonesGlobales.size() << "\ncausticos: "
             << fotonesCausticos.size() << '\n';
-  double escalarPFotones = 10.0/i; // cada foton debe tener 1/numfotones la e original
+  double escalarPFotones = 4.0*PI/i; // cada foton debe tener 1/numfotones la e original
 	guardarFotones<Foton, 3>(kdTreeGlobal, fotonesGlobales, escalarPFotones);
 	guardarFotones<Foton, 3>(kdTreeCaustico, fotonesCausticos, escalarPFotones);
-  kdTreeGlobal.balance();
-  //kdTreeCaustico.balance();
 }
 
 // TODO: implementar...
-Color PMRenderer::causticas(const Figura::InterseccionData& interseccion) const {
-  return Color(0);
+Color PMRenderer::causticas(const Figura::InterseccionData& interseccion,
+  const Vector3& normal) const
+{
+  return iluminacionDeKDTree(kdTreeCaustico, interseccion, normal);
 }
 
-Color PMRenderer::iluminacionGlobal(const Figura::InterseccionData& interseccion,
-const Vector3& normal) const
+Color PMRenderer::iluminacionDeKDTree(const KDTree<Foton, 3>& kdTree,
+  const Figura::InterseccionData& interseccion,
+  const Vector3& normal) const
 {
   Color L;
   std::vector<float> pto;
@@ -266,7 +268,7 @@ const Vector3& normal) const
   float maxDist;
   //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
   int debug_nFotones = 100;//nFotonesCercanos
-  kdTreeGlobal.find(pto, debug_nFotones, nodes, maxDist);
+  kdTree.find(pto, debug_nFotones, nodes, maxDist);
   // std::cout << "maxDist: " << maxDist << '\n';
   for (auto node : nodes) { // para cada foton
     Foton foton = node->data();
@@ -274,7 +276,7 @@ const Vector3& normal) const
     Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
     // ha chocado con esta cara de la fig (normal*dir < 0)
     //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-      L = L + foton.getEmision();// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+      L = L + foton.getEmision() * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
       //std::cout << foton.getEmision() << " ";
     //}
   }
@@ -282,25 +284,32 @@ const Vector3& normal) const
   L = L / (PI * (maxDist*maxDist));
   // std::cout << "L: " << L << '\n';
   // std::cout << "L/(PI*maxD^2): " << L.to_string() << '\n';
-  return L;
+  return  L; // TODO: L
+}
+
+Color PMRenderer::iluminacionGlobal(const Figura::InterseccionData& interseccion,
+const Vector3& normal) const
+{
+  return iluminacionDeKDTree(kdTreeGlobal, interseccion, normal);
 }
 
 
 Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
-  const std::shared_ptr<Figura>& figIntersectada) const
+  const std::shared_ptr<Figura>& figIntersectada, const bool primerRebote,
+  const GeneradorAleatorio& rng, const Vector3& dir) const
 {
   Color L;
   Material mat = figIntersectada->getMaterial();
   GeneradorAleatorio rngThread; //TODO: threads y tal
   // true pq es el primer rebote:
-  int evento = mat.ruletaRusa(rngThread, true); // devuelve un entero entre 0 y 4 en f de las probs
+  int evento = mat.ruletaRusa(rngThread, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
   if (evento == 3) { // Absorcion, imposible en el 1er rebote
     return L;
   }
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-    //L = iluminacionGlobal(interseccion, n) + causticas(interseccion);
+    L = iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     if (!guardarDirectos) {
       //std::cout << "??????????" << '\n';
       L = L + Renderer::luzDirecta(ptoCorregido, n);
@@ -308,15 +317,86 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
     L = L * mat.getCoeficiente(0) / PI;
   }
   else if (evento == 1) { // ESPECULAR
-    std::cerr << "Aun no tienes especulares en PM!" << '\n';
-    exit(1);
+    Matriz4 base;Vector3 wi;
+    try{
+      base = figIntersectada->getBase(interseccion.punto);
+      Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, base[2], 1e-2);
+  	  L = mat.getCoeficiente(0); // usamos el coeficiente del difuso
+  		if (L == double(0)) L = mat.getCoeficiente(1);
+  		wi = mat.getVectorSalida(base, rng, evento, dir);
+      auto intersec = e.interseccion(ptoCorregido, wi);
+      if (intersec) {
+        L = L * shade(intersec->first, intersec->second, false, rng, wi); // true para que el primero siempre rebote
+      }
+    }
+    catch (std::string e) {
+      std::cerr << "Error en reflexion: " << e << '\n';
+      std::cerr << "Base:\n" << base << "\nwi: " << wi << '\n';
+      std::cerr << "dir: " << dir << '\n';
+      std::cerr << "--------------------------" << '\n';
+
+    }
+
   }
   else if (evento == 2) { // REFRACCION
-    std::cerr << "Aun no tienes refraccion en PM!" << '\n';
-    exit(1);
+    Matriz4 base;Vector3 wi;
+    try {
+  		// Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
+  		base = figIntersectada->getBase(interseccion.punto);
+      Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, -base[2]);
+  		L = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
+  		L = L/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
+  		// std::cout << "c: " << c.to_string() << '\n';
+      try {
+    		wi = mat.getVectorSalida(base, rngThread, evento, dir);
+        if (wi*base[2] > 0) {
+          ptoCorregido = alejarDeNormal(interseccion.punto, base[2]);
+        }
+      }
+      catch (std::string e) {
+        std::cerr << "Error en getVectorSalida" << '\n';
+      }
+      auto intersec = e.interseccion(ptoCorregido, wi);
+      if (intersec) {
+        L = L * shade(intersec->first, intersec->second, false, rng, wi); // true para que el primero siempre rebote
+      }
+    }
+    catch (std::string e) {
+      std::cerr << "Error en refraccion: " << e << '\n';
+      std::cerr << "Base:\n" << base << "wi: " << wi << '\n';
+      std::cerr << "dir: " << dir << '\n';
+      std::cerr << "--------------------------" << '\n';
+    }
   }
   return L;
 }
+
+// Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
+void PMRenderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
+	Color color(0.0,0.0,0.0);
+	auto c = e.getCamara();
+	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
+	GeneradorAleatorio rngThread; // generador para el thread
+	for (int i=0; i<nRayos; i++) { // cada rayo
+    Vector3 dir;
+    if (nRayos == 1) { // un rayo, por el centro
+      dir = c->getRayoCentroPixel(pixel);
+    }
+    else {
+  	   dir = c->getRayoPixel(pixel); // dir aleatoria
+    }
+
+    auto intersec = e.interseccion(o, dir);
+    if (intersec) {
+      color = color + shade(intersec->first, intersec->second,
+      true, rngThread, dir); // true para que el primero siempre rebote
+    }
+  }
+  color = color / nRayos;
+	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
+}
+
+
 
 //*********************************************************************
 // TODO: Implement the function that computes the rendering equation
@@ -330,7 +410,8 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
 // of the kernel.
 //---------------------------------------------------------------------
 Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
-  const std::shared_ptr<Figura>& figIntersectada) const
+  const std::shared_ptr<Figura>& figIntersectada, const bool primerRebote,
+  const GeneradorAleatorio& rng, const Vector3& dir) const
 {
 	Color L(0);
 	//Intersection it(it0);
@@ -347,7 +428,7 @@ Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
 	switch ((int) renderSeleccionado)
 	{
   case Renderer::TipoRender::Materiales:
-    L = shadePM(interseccion, figIntersectada);
+    L = shadePM(interseccion, figIntersectada,primerRebote,rng,dir);
     break;
   case Renderer::TipoRender::FotonesRadioFijo:
   {
@@ -440,29 +521,7 @@ Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
 	return L;
 }
 
-// Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
-void PMRenderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
-	Color color(0.0,0.0,0.0);
-	auto c = e.getCamara();
-	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
-	GeneradorAleatorio rngThread; // generador para el thread
-	for (int i=0; i<nRayos; i++) { // cada rayo
-    Vector3 dir;
-    if (nRayos == 1) { // un rayo, por el centro
-      dir = c->getRayoCentroPixel(pixel);
-    }
-    else {
-  	   dir = c->getRayoPixel(pixel); // dir aleatoria
-    }
 
-    auto intersec = e.interseccion(o, dir);
-    if (intersec) {
-      color = color + shade(intersec->first, intersec->second); // true para que el primero siempre rebote
-    }
-  }
-  color = color / nRayos;
-	im.setPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
-}
 
 void PMRenderer::render(const std::string fichero) {
 	hrc::time_point t1, t2;
@@ -488,13 +547,13 @@ void PMRenderer::render(const std::string fichero) {
   // ---------------- RENDER:
   t1 = hrc::now();
 	for (int pixel = 0; pixel<c->getNumPixeles(); pixel++) {
-		//tasks.push_back(pixel); // encolar cada pixel
-		PMRenderer::renderPixel(im, o, pixel);
+		tasks.push_back(pixel); // encolar cada pixel
+		//PMRenderer::renderPixel(im, o, pixel);
 	}
-	// std::cout << "Inicializando threads... " << std::endl;
-	// initThreads(im, o, c->getNumPixeles()); // inicializar los threads
+	std::cout << "Inicializando threads... " << std::endl;
+	initThreads(im, o, c->getNumPixeles()); // inicializar los threads
 	// // std::cout << "hecho" << '\n';
-	// waitThreads(); // y esperar a que terminen
+	waitThreads(); // y esperar a que terminen
 	im.setMaxFloat(rangoDinamico); // TODO: entender esta vaina
 	im.extendedReinhard();
 	im.guardar("out/" + fichero); // guardar la imagen
@@ -505,6 +564,41 @@ void PMRenderer::render(const std::string fichero) {
 	std::cout << "\nRender realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
 }
 
+/********************************** PARALELIZACION **********************************/
+
+void PMRenderer::consumirTasks(Imagen& im, const Vector3& origen) {
+	//std::cout<<"Bueno"<<std::endl;
+	// int cuenta = 0;
+	while (true) {
+		int pixel;
+		{ //Lock
+			// Las llaves son para que la guarda solo este entre ellas (scope):
+			std::lock_guard<std::mutex> guarda(mtx); // asegura la SC
+			if (tasks.empty()) { // Fin cuando no quedan tasks
+				break;
+			}
+			pixel = tasks.back();
+			tasks.pop_back();
+		} // unlock
+		PMRenderer::renderPixel(im, origen, pixel);
+		// cuenta++;
+	}
+	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";
+}
+
+void PMRenderer::initThreads(Imagen& im, const Vector3& origen, const int nPixeles) {
+	for (int i=0; i<threads.capacity()-1; i++) {
+		// std::thread t1(&Escena::consumirTasks, this, std::ref(im), std::ref(origen));
+		threads.emplace_back(std::thread(&PMRenderer::consumirTasks, this, std::ref(im), std::ref(origen)));
+	}
+	threads.emplace_back(std::thread(&Renderer::progressBar, this, nPixeles));
+}
+
+void PMRenderer::waitThreads() {
+	for (int i=0; i<threads.capacity(); i++) {
+		threads[i].join();
+	}
+}
 
 
 

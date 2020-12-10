@@ -121,8 +121,10 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// ----------------------- Camara:
 		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
-		double fov = gradosARad(90); //0.475 * PI;
-		Camara c = Camara(posCam, centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+		double fov = gradosARad(60); //0.475 * PI;
+
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
+		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
 
 
 		//
@@ -170,7 +172,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 		// --------------------
 		//
-		Plano paredOculta(FRONT, distanciaParedes);
+		Plano paredOculta(FRONT, distanciaParedes*2.5);
 		paredOculta.setMaterial(DIFUSO_AZUL);
 		// paredOculta.setColor(0.05,0.05,0.8);
 		e.addFigura(std::make_shared<Plano>(paredOculta));
@@ -264,7 +266,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		Vector3 posPrismaLuz = centroSuelo + UP * distanciaParedes * 1.99 + LEFT * tamPrismaLuz[0]/2.0 - FRONT*tamPrismaLuz[2]/2.0;
 		Prisma prismaLuz(posPrismaLuz, tamPrismaLuz);
 		prismaLuz.setColor(Color(20));
-		e.addFigura(std::make_shared<Prisma>(prismaLuz));
+		//e.addFigura(std::make_shared<Prisma>(prismaLuz));
 
 
 		return std::make_unique<Escena>(e);
@@ -374,25 +376,61 @@ int main(int argc, char* argv[]) {
 	// escenaEsponja(argv);
 	// escenaPlanos(argv);
 	//escenaBastanteGuay400prismas200esferas(argv);
+	/* Path tracer
 	auto escena = escenaCornellBoxMateriales(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
-	escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO, DIFUSO_GRIS});
+	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
   auto tipo = Renderer::TipoRender::Materiales;//Materiales;//FotonesRadioFijo;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
+	bool usarBVH = true;
+	int resColor = atoi(argv[4]); // maxFloat de hdr
+	Renderer rend(*escena, nThreads, tipo, usarBVH);
+
+	rend.render(argv[1]);*/
+
+	auto escena = escenaCornellBoxMateriales(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
+	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
+	int nThreads = atoi(argv[2]);
+	auto tipo = Renderer::TipoRender::Materiales;//Materiales;//FotonesRadioFijo;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 	// Renderer rend(*escena, nThreads, tipo, usarBVH);
 
 	// Parametros de PM:
 	int maxNumFotones= 100000,
-			maxFotonesGlobales= 100000, maxFotonesCausticos= 0,
+			maxFotonesGlobales= 10000, maxFotonesCausticos= 10000,
 			nFotonesCercanos = 50;
-	bool guardarDirectos = false;
+	bool guardarDirectos = true;
 	// Renderer de photon mapping:
-	PMRenderer pmrend(*escena, 1, tipo, false, resColor, maxNumFotones,
+	PMRenderer pmrend(*escena, nThreads, tipo, false, resColor, maxNumFotones,
 		maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
-		guardarDirectos);
-		
-	pmrend.render(argv[1]);
+		false);
 
+	pmrend.render(argv[1]);
 	return 0;
 }
+
+
+
+
+
+/*
+auto escena = escenaCornellBoxMateriales(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
+escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
+int nThreads = atoi(argv[2]);
+auto tipo = Renderer::TipoRender::Materiales;//Materiales;//FotonesRadioFijo;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
+bool usarBVH = true;
+int resColor = atoi(argv[4]); // maxFloat de hdr
+// Renderer rend(*escena, nThreads, tipo, usarBVH);
+
+// Parametros de PM:
+int maxNumFotones= 100000,
+		maxFotonesGlobales= 100000, maxFotonesCausticos= 0,
+		nFotonesCercanos = 50;
+bool guardarDirectos = true;
+// Renderer de photon mapping:
+PMRenderer pmrend(*escena, 1, tipo, false, resColor, maxNumFotones,
+	maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
+	guardarDirectos);
+
+pmrend.render(argv[1]);
+*/

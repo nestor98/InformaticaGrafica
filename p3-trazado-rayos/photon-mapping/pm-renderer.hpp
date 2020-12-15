@@ -39,18 +39,14 @@ class PMRenderer : public Renderer {
 
 
 	// --------- Threads ---------
-	std::vector<std::thread> threads; // Vector con cada thread
-	std::mutex mtx; // mutex para asegurar seccion critica (tomar dato de la cola)
+	//std::vector<std::thread> threads; // Vector con cada thread
+	//std::mutex mtx; // mutex para asegurar seccion critica (tomar dato de la cola)
 
-	std::vector<int> tasks; // cola de pixeles a renderizar
+	//std::vector<int> tasks; // cola de pixeles a renderizar
 
 	// Inicializa los threads:
 	void initThreads(Imagen& im,  const Vector3& origen, const int nPixeles);
 
-	void waitThreads();
-
-	// encola un pixel
-	void enQueueTask(const int pixel);
 
 	// funcion que ejecutan los threads
 	void consumirTasks(Imagen& im,  const Vector3& origen);
@@ -78,7 +74,7 @@ class PMRenderer : public Renderer {
 	  const GeneradorAleatorio& rng, const Vector3& dir) const;
 
 	// Aux de iluminacionGlobal y de causticas
-	Color iluminacionDeKDTree(const KDTree<Foton, 3>& kdTree,
+	Color iluminacionDeKDTree(const int idxKDTree,
 	  const Figura::InterseccionData& interseccion,
 	  const Vector3& normal) const;
 	// Aux de shadePM, devuelve la luminosidad correspondiente a fotones globales

@@ -44,8 +44,6 @@ protected:
 
 	void waitThreads();
 
-	// encola un pixel
-	void enQueueTask(const int pixel);
 
 	// funcion que ejecutan los threads
 	void consumirTasks(Imagen& im,  const Vector3& origen);
@@ -62,7 +60,8 @@ protected:
 public:
 	enum TipoRender {Materiales, Distancia, Normales, VectoresWiDifusos, VectoresWiReflexion,
 		VectoresWiRefraccion, krFresnel, Albedo, Delta, IluminacionLuz0, DireccionLuz0,
-		FotonesRadioFijo, VisibilidadLuz0, VectoresAleatorios, FotonMasCercano};
+		FotonesRadioFijo, VisibilidadLuz0, VectoresAleatorios, FotonMasCercano,
+		FotonCausticoMasCercano};
 	// ---------------------------------------
 	// --------- Barra de progreso  ---------
 	void progressBar(const int nPixeles);

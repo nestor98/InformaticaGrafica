@@ -66,8 +66,8 @@ public:
 
 	float getPDF(const int evento, const bool primerRebote=false) const;
 
-	// nuse jajajaajj
-	bool esDelta() const;
+	// delta si el evento es reflexion o refraccion
+	bool esDelta(const int evento) const;
 
 	//
 	// // Le cambia el color en funcion de la posicion
@@ -83,6 +83,7 @@ public:
 
 	// ---------------------- Prefabricados:
 	const Material DIFUSO_VERDE = Material(Color(0.05,0.9,0.05), Color(), Color());
+	const Material DIFUSO_VERDE_MAJO = Material(Color(0,143.0/255.0,57.0/255.0), Color(), Color());
 	const Material DIFUSO_ROJO = Material(Color(0.9,0.05,0.05), Color(), Color());
 	const Material DIFUSO_AZUL = Material(Color(0.05,0.05,0.9), Color(), Color());
 	const Material DIFUSO_GRIS = Material(Color(0.70001,0.7001,0.70001), Color(), Color());

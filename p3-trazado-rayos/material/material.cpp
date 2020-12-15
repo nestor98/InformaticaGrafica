@@ -29,8 +29,8 @@ Material::Material(const Color& c1, const Color& c2, const Color& c3)
 
 
 
-bool Material::esDelta() const {
-	return maxCoefs[0]==0; // TODO: Son NO delta si son difusos (si son parte difusos parte especulares ni idea)
+bool Material::esDelta(const int evento) const {
+	return evento==1||evento==2;
 }
 
 // Material::Material(bool aleatorio) {
@@ -240,9 +240,9 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 
 std::string Material::to_string() const {
 	std::string s = "Material con coeficientes (lambertiano, reflexion, refraccion)\n";
-	// for (int i = 0; i<3; i++) { // TODO:implementar en color si eso
-	// 	s+= coeficientes[i].to_string() + ";\t";
-	// }
+	for (int i = 0; i<3; i++) { // TODO:implementar en color si eso
+		s+= coeficientes[i].to_string() + ";\t";
+	}
 	return s;
 
 }
@@ -297,8 +297,9 @@ float Material::getPDF(const int evento, const bool primerRebote) const {
 	// con probabilidades en funcion del coeficiente máximo de cada uno
 	int Material::ruletaRusa(const GeneradorAleatorio& gen, const bool primerRebote) const {
 		double random = gen.rand01();
-		while (primerRebote && random >= 0.9) { // en el primer rebote no puede absorber
-			random -= 0.1;
+		double totalCoefs = maxCoefs[0]+maxCoefs[1]+maxCoefs[2];
+		while (primerRebote && random >= totalCoefs) { // en el primer rebote no puede absorber
+			random -= 1 - totalCoefs;
 		}
 		//std::cout << "maxCoefs: " << maxCoefs[0] << " " << maxCoefs[1] << " "<< maxCoefs[2] << '\n';
 		if (random < maxCoefs[0]) {
@@ -328,6 +329,12 @@ float Material::getPDF(const int evento, const bool primerRebote) const {
 
 
 // para evitar el to_string en cout
-std::ostream& operator<<(std::ostream& os, const Material& c);
+std::ostream& operator<<(std::ostream& os, const Material& c) {
+	os << c.to_string();
+	return os;
+}
 
-std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Material> c);
+std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Material> c){
+	os << c->to_string();
+	return os;
+}

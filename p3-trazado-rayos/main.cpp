@@ -53,11 +53,11 @@ int main(int argc, char* argv[]) {
 			nFotonesCercanos = 50;
 	bool guardarDirectos = false;
 	// Renderer de photon mapping:
-	PMRenderer pmrend(*escena, nThreads, tipo, false, resColor, maxNumFotones,
+	PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
 		maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
 		guardarDirectos);
 
-	pmrend.render(argv[1]); 
+	pmrend.render(argv[1]);
 	return 0;
 }
 

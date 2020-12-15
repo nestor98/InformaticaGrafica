@@ -586,10 +586,7 @@ void PMRenderer::render(const std::string fichero) {
 	t1 = hrc::now();
 	// std::cout<<"a construir el arbol\n";
 	if (usarBVH){
-		std::vector<std::shared_ptr<Figura>> figs;
-		e.getFiguras(figs);
-		// std::cout << "A construir el bvh.." << '\n';
-		bvh.construirArbol(figs);//figuras);
+    e.construirBVH();
 		std::cout<<"arbol bvh construido\n";
 	}
 	auto c = e.getCamara();

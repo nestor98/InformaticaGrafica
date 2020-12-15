@@ -13,9 +13,16 @@
 #define hrc std::chrono::high_resolution_clock
 
 Escena::Escena(const std::shared_ptr<Camara> _c)
-: c(_c)
+: c(_c), tieneBVH(false)
 {
 }
+
+
+void Escena::construirBVH() {
+	tieneBVH=true;
+	bvh.construirArbol(figuras);
+}
+
 
 void Escena::addFigura(const std::shared_ptr<Figura> f)
 {
@@ -26,6 +33,8 @@ void Escena::addLuz(const LuzPuntual& luz)
 {
 	luces.emplace_back(luz);
 }
+
+
 
 void Escena::addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectFiguras) {
 	figuras.insert(figuras.end(), vectFiguras->begin(), vectFiguras->end());
@@ -57,25 +66,31 @@ bool tMenor (const Figura::InterseccionData& iData, const double min) {
 
 // Interseccion sin bvh:
 std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Escena::interseccion(const Vector3& o, const Vector3& dir) const {
-	float t = -1;
-	Vector3 pto;
-	std::shared_ptr<Figura> f;
-	bool intersectado = false;
-	for (auto fig : figuras) {
-		auto iFig = fig->interseccion(o, dir);
-		// std::cout << "Probando interseccion con " <<fig << '\n';
-		if (iFig) {
-			if (tMenor(iFig->t, t)) {
-				t = iFig->t;
-				pto = iFig->punto;
-				f = fig;
-				intersectado = true;
-			}
-		}
-
+	if (tieneBVH) {
+		// std::cout << "intersectando bvh" << '\n';
+		return bvh.interseccion(o, dir);
 	}
-	if (!intersectado) return {}; // std::nullopt
-	return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(Figura::InterseccionData{t, pto}, f);
+	else {
+		float t = -1;
+		Vector3 pto;
+		std::shared_ptr<Figura> f;
+		bool intersectado = false;
+		for (auto fig : figuras) {
+			auto iFig = fig->interseccion(o, dir);
+			// std::cout << "Probando interseccion con " <<fig << '\n';
+			if (iFig) {
+				if (tMenor(iFig->t, t)) {
+					t = iFig->t;
+					pto = iFig->punto;
+					f = fig;
+					intersectado = true;
+				}
+			}
+
+		}
+		if (!intersectado) return {}; // std::nullopt
+		return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(Figura::InterseccionData{t, pto}, f);
+	}
 }
 
 

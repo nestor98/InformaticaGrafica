@@ -33,12 +33,14 @@ Color Renderer::shadowRay(const Vector3& pto, const Vector3& normal, const int i
 	rayoSombra = normalizar(rayoSombra);
 	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
 	// std::cout << "ueyueya" << '\n';
-	if (!usarBVH) { // Sin bvh
-		interseccionFigura = e.interseccion(pto, rayoSombra);
-	}
-	else { // con bvh
-		interseccionFigura = bvh.interseccion(pto, rayoSombra);
-	}
+	interseccionFigura = e.interseccion(pto, rayoSombra);
+
+	// if (!usarBVH) { // Sin bvh
+	// 	interseccionFigura = e.interseccion(pto, rayoSombra);
+	// }
+	// else { // con bvh
+	// 	interseccionFigura = bvh.interseccion(pto, rayoSombra);
+	// }
 	if (interseccionFigura) {
 		if (distLuz < interseccionFigura->first.t) {
 			// c = eluz / |distLuz|^2 / |normal * rayoSombra|
@@ -162,13 +164,8 @@ Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorA
 	Color c = COLOR_FONDO;
 	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
 	// std::cout << "Voy a intersectar" << '\n';
-	if (!usarBVH) { // Sin bvh
-		interseccionFigura = e.interseccion(o, dir);
-	}
-	else { // con bvh
-		// std::cout << "Cuidado con la interseccion con bvh" << '\n';
-		interseccionFigura = bvh.interseccion(o, dir);
-	}
+	interseccionFigura = e.interseccion(o, dir);
+
 	if (interseccionFigura) { // intersecta con alguna
 		if (!primerRebote) {
 			// std::cout << "No soy el primer rebote Y he intersectado con algo" << '\n';
@@ -319,10 +316,12 @@ void Renderer::render(const std::string fichero) {
 	t1 = hrc::now();
 	// std::cout<<"a construir el arbol\n";
 	if (usarBVH){
-		std::vector<std::shared_ptr<Figura>> figs;
-		e.getFiguras(figs);
-		// std::cout << "A construir el bvh.." << '\n';
-		bvh.construirArbol(figs);//figuras);
+		e.construirBVH();
+		// std::vector<std::shared_ptr<Figura>> figs;
+		// e.getFiguras(figs);
+		// // std::cout << "A construir el bvh.." << '\n';
+		//
+		//bvh.construirArbol(figs);//figuras);
 		std::cout<<"arbol bvh construido\n";
 	}
 	auto c = e.getCamara();

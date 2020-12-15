@@ -24,9 +24,14 @@ class Escena {
 
 	std::vector<LuzPuntual> luces;
 
+	BoundingVolumeH bvh;
+	bool tieneBVH;
+
 public:
 	// Escena(const Camara& _c, const TipoRender tipo = BVHEmision);
 	Escena(const std::shared_ptr<Camara> _c);
+
+	void construirBVH();
 
 	std::string to_string() const;
 	void addFigura(const std::shared_ptr<Figura> f);

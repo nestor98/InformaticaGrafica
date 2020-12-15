@@ -12,7 +12,7 @@
 #include "camara.hpp"
 #include "figura.hpp"
 #include "material.hpp"
-#include "bvh.hpp"
+// #include "bvh.hpp"
 
 #include "utils.hpp"
 
@@ -20,7 +20,7 @@ class Renderer {
 
 protected:
 	bool usarBVH;
-	BoundingVolumeH bvh;
+	//BoundingVolumeH bvh;
 
 	Escena e;
 

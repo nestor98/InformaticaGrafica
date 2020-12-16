@@ -166,6 +166,9 @@ const Vector3 UP(0,0,1,false);
 const Vector3 LEFT(-1,0,0,false);
 const Vector3 FRONT(0,1,0,false);
 
+// La base por defecto es dcha,front,up,origen=0
+const Matriz4 BASE_UNIVERSAL(-LEFT, FRONT, UP, Vector3(0,0,0,true));
+
 
 /**************** OPERADORES ****************/
 

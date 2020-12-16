@@ -44,8 +44,6 @@ std::string ejemploLSystem(const int iteraciones) {
   return lSystem(reglas, "F", iteraciones);
 }
 
-
-
 // ---------------------------------------------------------------------
 // Funcion recursiva para una esponja de Menger con los parametros dados
 // ---------------------------------------------------------------------
@@ -97,12 +95,12 @@ void GeneradorEstructuras::setArbolPrismas(const Matriz4& base, const Vector3& t
 
   std::vector<Matriz4> pilaMatrices;// Permiten volver a una base anterior con los corchetes
   for (auto mov : lsys) { // Cada movimiento
-    if (mov == 'F') { // Forward
+    if (mov == 'F') { // Forward, se dibuja rama
       PrismaRotable rama(baseActual, Vector3(tamActual));
       rama.setMaterial(Material(c,Color(),Color()));
       figuras->emplace_back(std::make_shared<PrismaRotable>(rama));
       // Actualizamos:
-      baseActual[3] = baseActual[3] + tamActual[2];
+      baseActual[3] = baseActual[3] + tamActual[1];
       tamActual = tamActual * reduccionTam;
       c=c*redColor;
       // TODO: COMPROBARRRRRR:
@@ -150,6 +148,39 @@ pos(_pos), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>()), tipo(
     exit(1);
   }
 }
+
+
+// Genera la estructura a partir del punto pos
+GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura, const Matriz4& _base, const Vector3& _tam, const int iteraciones) :
+pos(_base[3]), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>()), tipo(_estructura)
+{
+  if (_estructura == GeneradorEstructuras::Estructura::MengerSponge) {
+    std::cout << "GeneradorEstructuras: Advertencia, en MengerSponge no se tienen en cuenta los vectores de la base!" << '\n';
+    int iteracionesCap = iteraciones;
+    if (iteraciones > 5) {
+      std::cout << "Mala idea hacer mas de 5 iteraciones, te lo dejo en 5\n";
+      iteracionesCap = 5;
+    }
+    setMengerSponge(_base[3], _tam, iteracionesCap);
+    std::cout << "Esponja generada!\n" << "(Contiene " << figuras->size() << " cubos)\n";
+  }
+  else if (_estructura == GeneradorEstructuras::Estructura::ArbolPrismas) {
+    Matriz4 base = _base;
+    //base.setCambioBase(FRONT, LEFT, UP, _pos);
+    int iteracionesCap = iteraciones;
+
+    if (iteraciones>4) {
+      std::cout << "Mala idea hacer mas de 4 iteraciones, te lo dejo en 4\n";
+      iteracionesCap = 4;
+    }
+    setArbolPrismas(base, tam/iteracionesCap, iteracionesCap);
+  }
+  else {
+    std::cerr << "Estructura desconocida (de momento solo tenemos MengerSponge)\n";
+    exit(1);
+  }
+}
+
 
 GeneradorEstructuras::vectorFigs GeneradorEstructuras::getVectorFiguras() const {
   return figuras;

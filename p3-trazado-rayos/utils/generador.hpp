@@ -24,6 +24,8 @@ private:
 public:
   // Genera la estructura a partir del punto pos
   GeneradorEstructuras(const Estructura _estructura, const Vector3& _pos, const Vector3& _tam, const int iteraciones = 3);
+  // Idem, a partir de la base _base:
+  GeneradorEstructuras(const Estructura _estructura, const Matriz4& _base, const Vector3& _tam, const int iteraciones=3);
 
   void setTipo(const Estructura estructura);
 

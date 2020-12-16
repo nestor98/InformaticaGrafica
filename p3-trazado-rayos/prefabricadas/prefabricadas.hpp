@@ -538,10 +538,13 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 			e.addFigura(std::make_shared<Esfera>(esfVidrio));
 
 			// Arbol---------------------------------------------
-			Vector3 tamRama(tamEsferaVidrio/4);
-			tamRama[2] = tamRama[2]*2;
+			Vector3 tamRama(tamEsferaVidrio/20.0);
+			tamRama[2] = tamRama[2]*10.0;
+			Matriz4 baseArbol = BASE_UNIVERSAL;
+			baseArbol[3] = posEsferaVidrio-1.3*LEFT*tamEsferaVidrio-UP*tamEsferaVidrio; // posicion
+			baseArbol[3].setPunto(); // Tiene que ser un pto
 			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ArbolPrismas,
-				 posEsferaVidrio-1.3*LEFT*tamEsferaVidrio-UP*tamEsferaVidrio, tamRama, 2);
+				 baseArbol, tamRama, 2);
 			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 			// for (auto f : *figuras) {
 			// 	//f->setMaterial(PLASTICO_GRIS);

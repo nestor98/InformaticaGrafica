@@ -4,11 +4,9 @@
 #include <cmath>
 #include <vector>
 #include <sstream>
+#include <fstream>
 // cmath para sqrt
 #include "Imagen.hpp"
-
-
-#include <fstream>
 
 Imagen::Imagen() : maxFloat(10000) {}
 
@@ -74,28 +72,28 @@ Imagen::Imagen(const std::string nombreFichero, bool ldr) {
 	//std::cout << "i/3 = " << i/3 << "\ny lineas*cols = " << filas*cols << std::endl;
 	}else{
 
-	fichero >> linea; // #MAX=...
-	maxFloat = parseMax(linea); // saca el valor del max
-	fichero.ignore().ignore(); // HAY QUE LLAMAR A ESTO ANTES DEL GETLINE PORQUE NO IGNORA EL \n DEL >> ANTERIOR...............................
-	std::getline(fichero, linea, '\n'); // esta es # nombre_fichero, ya lo tenemos LO HE CAMBIADO PARA LA TEXTURA
-	fichero >> cols >> filas;
-	pixeles.reserve(filas * cols); // Reservar el tama�o del vector
-	fichero >> c;
+		fichero >> linea; // #MAX=...
+		maxFloat = parseMax(linea); // saca el valor del max
+		fichero.ignore().ignore(); // HAY QUE LLAMAR A ESTO ANTES DEL GETLINE PORQUE NO IGNORA EL \n DEL >> ANTERIOR...............................
+		std::getline(fichero, linea, '\n'); // esta es # nombre_fichero, ya lo tenemos LO HE CAMBIADO PARA LA TEXTURA
+		fichero >> cols >> filas;
+		pixeles.reserve(filas * cols); // Reservar el tama�o del vector
+		fichero >> c;
 
-	//std::cout << "ewhehwh\n" << formato << std::endl << linea << std::endl << filas << std::endl << cols << std::endl << max_in << std::endl;
-	// valores
-	int valor;
-	int i = 0;
-	while (fichero >> valor)
-	{
-		/*if (i / 3 < 25) {
-			std::cout << valor << std::endl << i  << "..." << i/3 << std::endl;
-		}*/
-		pixeles[i/3][i%3] = valor*maxFloat/c; // cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
-		//cout<<pixeles[i/3][i%3];
-		i++;
+		//std::cout << "ewhehwh\n" << formato << std::endl << linea << std::endl << filas << std::endl << cols << std::endl << max_in << std::endl;
+		// valores
+		int valor;
+		int i = 0;
+		while (fichero >> valor)
+		{
+			/*if (i / 3 < 25) {
+				std::cout << valor << std::endl << i  << "..." << i/3 << std::endl;
+			}*/
+			pixeles[i/3][i%3] = valor*maxFloat/c; // cada 3 cambia el primer indice, el segundo rota en 0 1 2 0 1 2...
+			//cout<<pixeles[i/3][i%3];
+			i++;
 
-	}
+		}
 	//std::cout << "i/3 = " << i/3 << "\ny lineas*cols = " << filas*cols << std::endl;
 	}
 
@@ -122,6 +120,7 @@ void Imagen::setPixel(const double r, const double g, const double b, const int 
 	pixeles[i][2] = b;
 }
 
+// Modulo matematico, nunca negativo
 int modBien(const int algo, const int mod) {
 	int r = algo%mod;
 	return (r>=0) ? r : -r;
@@ -203,7 +202,6 @@ void Imagen::extendedReinhard() {
 	for (int i = 0; i < filas * cols; i++) { // cada pixel
 		for (auto& v : pixeles[i]) { // cada valor rgb
 			v = v * (1.0 + (v / (maxFloat * maxFloat))) / (1.0 + v);
-
 		}
 	}
 	maxFloat = 1;

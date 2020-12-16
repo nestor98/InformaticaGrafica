@@ -15,9 +15,10 @@ class GeneradorEstructuras {
   vectorFigs figuras;
 
   void setMengerSponge(const Vector3& pos, const Vector3& tam, const int iteraciones = 10);
+  void setArbolPrismas(const Matriz4& base, const Vector3& tam, const int iteraciones = 3);
 
 public:
-  enum Estructura {MengerSponge}; // Añadir otras estructuras aqui
+  enum Estructura {MengerSponge, ArbolPrismas}; // Añadir otras estructuras aqui
 private:
   Estructura tipo;
 public:

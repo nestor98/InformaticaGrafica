@@ -38,8 +38,8 @@ int main(int argc, char* argv[]) {
 	Renderer rend(*escena, nThreads, tipo, usarBVH);
 
 	rend.render(argv[1]);*/
-
-	auto escena = cornellBoxEsferaGrande(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
+ 
+	auto escena = cornellBoxArbolMk1(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
 	auto tipo = Renderer::TipoRender::Materiales;//Materiales;//FotonesRadioFijo;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel

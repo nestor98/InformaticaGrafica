@@ -77,6 +77,7 @@ class PrismaRotable : public Prisma {
 public:
 	PrismaRotable(const Vector3& _posicion, const Vector3& _tam);
 
+	PrismaRotable(const Matriz4& _base, const Vector3& _tam);
 
 	Vector3 getPos() const override;
 

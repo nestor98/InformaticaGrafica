@@ -615,6 +615,12 @@ Vector3 alejarDeNormal(const Vector3& punto, const Vector3& normal,const double 
 	return pto;
 }
 
+// Rota la matriz <base> mediante <rotacion> alrededor del pto de la base
+void rotarAlrededorDePto(Matriz4& base, const Matriz4& rotacion) {
+	Vector3 pto = base[3];
+	base = rotacion*base;
+	base[3] = pto;
+}
 
 
 double gradosARad(const double grados) {

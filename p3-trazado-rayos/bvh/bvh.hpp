@@ -26,6 +26,7 @@ class BoundingVolumeH {
 
 	std::shared_ptr<Figura> figura; // Figura
 
+	std::vector<std::shared_ptr<Figura>> masFiguras; // Casos particulares
 
 	GeneradorAleatorio gen;
 	// ---------------------------

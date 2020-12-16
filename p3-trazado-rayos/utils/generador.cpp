@@ -86,34 +86,34 @@ void GeneradorEstructuras::setArbolPrismas(const Matriz4& base, const Vector3& t
 
   // Rotaciones:
   double anguloDcha = gradosARad(22.5);
-  Matriz4 rotacionDcha; rotacionDcha.setRotarX(anguloDcha);
-  double anguloIzq = gradosARad(22.5);
-  Matriz4 rotacionIzq; rotacionIzq.setRotarX(-anguloIzq);
+  Matriz4 rotacionDcha; rotacionDcha.setRotarY(anguloDcha);
+  double anguloIzq = gradosARad(23);
+  Matriz4 rotacionIzq; rotacionIzq.setRotarY(-anguloIzq);
 
-  Color c(0.9);
+  // Color c(0.9);
   double redColor = 0.9;
 
   std::vector<Matriz4> pilaMatrices;// Permiten volver a una base anterior con los corchetes
   for (auto mov : lsys) { // Cada movimiento
     if (mov == 'F') { // Forward, se dibuja rama
       PrismaRotable rama(baseActual, Vector3(tamActual));
-      rama.setMaterial(Material(c,Color(),Color()));
+      rama.setMaterial(DIFUSO_MARRON);
       figuras->emplace_back(std::make_shared<PrismaRotable>(rama));
       // Actualizamos:
-      baseActual[3] = baseActual[3] + tamActual[1];
+      baseActual[3] = baseActual[3] + baseActual[2]*tamActual[2];
       tamActual = tamActual * reduccionTam;
-      c=c*redColor;
+      // c=c*redColor;
       // TODO: COMPROBARRRRRR:
       // Se desplaza la base
     } else if (mov == '+') {  // Rotar dcha
-      baseActual = rotacionDcha * baseActual;
+      // c=Color(0,0.9,0); // DEBUG: verde
+      rotarAlrededorDePto(baseActual, rotacionDcha);
     } else if (mov == '-') { // Rotar izq
-      baseActual = rotacionIzq * baseActual;
+      // c=Color(0.9,0,0); // DEBUG: rojo
+      rotarAlrededorDePto(baseActual, rotacionIzq);
     } else if (mov == '[') { // Guardar posicion
-      c=Color(0,0.9,0);
       pilaMatrices.emplace_back(baseActual);
     } else if (mov == ']') { // Volver a ultima pos guardada
-      c=Color(0,0,0.9);
       baseActual = pilaMatrices.back();
       pilaMatrices.pop_back();
     } else {
@@ -173,7 +173,8 @@ pos(_base[3]), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>()), t
       std::cout << "Mala idea hacer mas de 4 iteraciones, te lo dejo en 4\n";
       iteracionesCap = 4;
     }
-    setArbolPrismas(base, tam/iteracionesCap, iteracionesCap);
+    setArbolPrismas(base, tam/double(iteracionesCap), iteracionesCap);
+    std::cout << "Arbol raro generado!\n" << "(Contiene " << figuras->size() << " prismas)\n";
   }
   else {
     std::cerr << "Estructura desconocida (de momento solo tenemos MengerSponge)\n";

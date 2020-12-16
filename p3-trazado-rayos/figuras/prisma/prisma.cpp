@@ -328,7 +328,7 @@ PrismaRotable::PrismaRotable(const Vector3& _posicion, const Vector3& _tam) :
 Prisma(Vector3(), _tam), base(FRONT,LEFT,UP,_posicion)
 {
 	base.setCambioBase(FRONT, -LEFT, UP, _posicion);
-	std::cout << "base: "<< base << '\n';
+	//std::cout << "base: "<< base << '\n';
 	baseInversa = base.inversa(); // mas eficiente, supongo
 }
 
@@ -337,7 +337,7 @@ PrismaRotable::PrismaRotable(const Matriz4& _base, const Vector3& _tam) :
 Prisma(Vector3(), _tam), base(_base)
 {
 	//base.setCambioBase(FRONT, -LEFT, UP, _posicion);
-	std::cout << "base: "<< base << '\n';
+	//std::cout << "base: "<< base << '\n';
 	baseInversa = base.inversa(); // mas eficiente, supongo
 }
 

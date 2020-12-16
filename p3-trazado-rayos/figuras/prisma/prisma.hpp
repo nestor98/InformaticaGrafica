@@ -29,6 +29,9 @@ public:
 
 	// Constructor del prisma bounding box del vector de figuras
 	Prisma(const std::vector<std::shared_ptr<Figura>>& bboxes);
+	// Constructor del prisma bounding box del vector de figuras,
+	// ptoMediano pasa a ser la mediana de los centroides de las cajas
+	Prisma(const std::vector<std::shared_ptr<Figura>>& bboxes, Vector3& ptoMediano);
 	virtual std::string to_string() const override;
 
 	virtual Vector3 getPos() const;

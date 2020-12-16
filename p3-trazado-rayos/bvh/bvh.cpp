@@ -4,7 +4,7 @@
 #include <cmath>
 #include <vector>
 // cmath para sqrt
-#include <algorithm> // std::partition
+#include <algorithm> // std::partition, std::nth_element
 
 #include "bvh.hpp"
 
@@ -45,15 +45,30 @@ void BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>>& figur
 }
 
 // devuelve un iterador que parta las figuras en algun punto
-std::vector<std::shared_ptr<Figura>>::iterator BoundingVolumeH::casoParticular(std::vector<std::shared_ptr<Figura>>& figuras, const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it) {
+std::vector<std::shared_ptr<Figura>>::iterator BoundingVolumeH::casoParticular(
+	std::vector<std::shared_ptr<Figura>>& figuras,
+	const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it)
+{
 	while (it == figuras.begin() || it == figuras.end()){ // prueba otro punto hasta encontrar una partición
 		// std::cout << "Caso particular, buscando otro pto de corte...\n";
 		int eje = gen.rand(0,3); // eje aleatorio [0,2]
 		double ptoSep = box->getPtoAleatorio(gen)[eje];
 		it = std::partition(figuras.begin(), figuras.end(), [eje, ptoSep](const std::shared_ptr<Figura> f){return f->getCentroide()[eje] < ptoSep;});
+		std::cout << "|" << std::flush; // TODO: hay... bastantes casos "particulares"
+
 	}
-	// std::cout << "|"; // TODO: hay... bastantes casos "particulares"
 	return it;
+}
+
+// Mediana del centroide de las figuras en el eje
+float medianaEnEje(std::vector<std::shared_ptr<Figura>>& figuras, int eje) {
+	// Basado en https://stackoverflow.com/a/1719155
+	size_t n = figuras.size() / 2; // el elemento numero tam/2 (me da igual que a veces sean pares)
+	std::nth_element(figuras.begin(), figuras.begin()+n, figuras.end(),
+ 	[eje](const std::shared_ptr<Figura> f1,const std::shared_ptr<Figura> f2){
+		return f1->getCentroide()[eje] < f2->getCentroide()[eje];
+	});
+	return figuras[n]->getCentroide()[eje];
 }
 
 // Construccion del arbol adaptada de https://www.youtube.com/watch?v=xUszK2xNL3I
@@ -72,23 +87,35 @@ void BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>>& fi
 	else {
 		box = std::shared_ptr<Prisma>(new Prisma(figuras));
 		int eje = box->getMaxEje();
-		float ptoCentro = box->getCentroide()[eje];
-    auto it = std::partition(figuras.begin(), figuras.end(), [eje, ptoCentro](const std::shared_ptr<Figura> f){return f->getCentroide()[eje] < ptoCentro;});
-		it = casoParticular(figuras, box, it);
+		float ptoMediano  = medianaEnEje(figuras, eje);
+		//std::cout << "mediana " << ptoMediano << " en eje " << eje << '\n';
+		//float ptoCentro = box->getCentroide()[eje];
+    auto it = std::partition(figuras.begin(), figuras.end(),
+			[eje, ptoMediano](const std::shared_ptr<Figura> f){
+				return f->getCentroide()[eje] < ptoMediano;
+			});
+		if (it == figuras.begin() || it == figuras.end()) {
+			masFiguras = figuras;
+			std::cout << "|";
+		}
+		else {
+			std::vector<std::shared_ptr<Figura>> mitad;
+			mitad.insert(mitad.end(), figuras.begin(), it); // Tenemos la primera mitad
+			left = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitad));
+			std::vector<std::shared_ptr<Figura>> mitadDcha;
+			mitadDcha.insert(mitadDcha.end(), it, figuras.end());
+			right = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitadDcha));
+
+		}
+		//it = casoParticular(figuras, box, it);
 	 // Se ha dividido:
-		std::vector<std::shared_ptr<Figura>> mitad;
-		mitad.insert(mitad.end(), figuras.begin(), it); // Tenemos la primera mitad
-		left = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitad));
-		std::vector<std::shared_ptr<Figura>> mitadDcha;
-		mitadDcha.insert(mitadDcha.end(), it, figuras.end());
-		right = std::make_shared<BoundingVolumeH>(BoundingVolumeH(mitadDcha));
 
 	}
 }
 
 // True sii es nodo hoja (tiene figura y no ramas)
 bool BoundingVolumeH::isLeaf() const {
-	return bool(figura); // True si no es null
+	return bool(figura) || masFiguras.size()>0; // True si no es null
 }
 
 
@@ -151,17 +178,37 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Boun
 			// if (figura->getBoundingBox()->esInfinito()) {
 			// 	std::cout << figura << "\ntiene una caja infinita!!\n";
 			// }
-			auto iDataFigura = figura->interseccion(origen, dir);
-			if (!iDataFigura){
-				// std::cout << "Soy hoja pero mi fig no intersecta" << '\n';
-				return std::nullopt; // si no intersecta con la figura, nada
-			}
-			else {// si que intersecta, lo devolvemos
-				// std::cout << "intersectando figura" << '\n';
+			if (masFiguras.empty()) {
+				auto iDataFigura = figura->interseccion(origen, dir);
+				if (!iDataFigura){
+					// std::cout << "Soy hoja pero mi fig no intersecta" << '\n';
+					return std::nullopt; // si no intersecta con la figura, nada
+				}
+				else {// si que intersecta, lo devolvemos
+					// std::cout << "intersectando figura" << '\n';
 
-				//std::cout << "inter: " << iLeft.t << " " <<iLeft.punto<< '\n';
-				return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(*iDataFigura, figura);
+					//std::cout << "inter: " << iLeft.t << " " <<iLeft.punto<< '\n';
+					return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(*iDataFigura, figura);
+				}
 			}
+			else { // Vector de figuras
+				Figura::InterseccionData iDataMin; std::shared_ptr<Figura> figuraInter;
+				iDataMin.t = -1;
+				for (auto fig : masFiguras) {
+					auto iDataFig = fig->interseccion(origen, dir);
+					if (iDataFig) { // intersecta
+						if (iDataFig->t < iDataMin.t || iDataMin.t == -1) {
+							iDataMin = *iDataFig;
+							figuraInter = fig;
+						}
+					}
+				}
+				if (iDataMin.t>0)
+					return std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>(iDataMin, figuraInter);
+				else
+					return {};
+			}
+
 		}
 		else { // caja padre:
 			// std::cout << "No soy hoja, intersecto dcha e izq..." << '\n';

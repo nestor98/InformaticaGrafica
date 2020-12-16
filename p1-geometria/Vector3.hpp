@@ -136,6 +136,7 @@ public:
 	 */
 	void setRotarZ(const float theta);
 
+
 	// para cambiar un vector a una nueva base
 	void setCambioBase(const Vector3& eje1, const Vector3& eje2, const Vector3& eje3, const Vector3& origen);
 
@@ -213,6 +214,13 @@ Vector3 operator / (const Vector3& v, const float& s);
 
 // escalar M/s
 Matriz4 operator / (const Matriz4& m, const float& s);
+
+
+
+// Rota la matriz <base> mediante <rotacion> alrededor del pto de la base
+void rotarAlrededorDePto(Matriz4& base, const Matriz4& rotacion);
+
+
 // Prod escalar (dot product)
 float operator * (const Vector3& v1, const Vector3& v2);
 

@@ -27,7 +27,8 @@ protected:
 	float rangoDinamico; // maxFloat del hdr
 
 	// Auxiliar de render
-	void renderPixel(Imagen& im, const Vector3& o, const int pixel) const;
+	void renderPixel(Imagen& im, const Vector3& o, const int pixel,
+	const GeneradorAleatorio& rngThread) const;
 
 	// Ray tracer, normales, etc
 	void renderPixelViejo(Imagen& im, const Vector3& o, const int pixel) const;

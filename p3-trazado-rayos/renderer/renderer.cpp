@@ -89,11 +89,16 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		Matriz4 base = fig->getBase(pto);
 
 		c = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
-		c = c/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
+		c = c/mat.getPDF(evento, primerRebote); // kr/pdf
 		// std::cout << "c: " << c.to_string() << '\n';
 		float kr;
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir, kr);
-		c = c * pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread);// * kr; //
+
+		Vector3 ptoCorregido = alejarDeNormal(pto, -base[2]);
+		if (otroPath*base[2] > 0) {
+			ptoCorregido = alejarDeNormal(pto, base[2]);
+		}
+		c = c  * pathTrace(ptoCorregido, otroPath, rngThread);// * kr; //
 	}
 	else if (evento == 1) { // ------------------------ REFLEXION
 		Matriz4 base = fig->getBase(pto);
@@ -203,11 +208,11 @@ Color Renderer::pathTrace(const Vector3& o, const Vector3& dir, const GeneradorA
 
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
-void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
+void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel,
+const GeneradorAleatorio& rngThread) const {
 		Color color(0.0,0.0,0.0);
 		auto c = e.getCamara();
 		int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
-		GeneradorAleatorio rngThread; // generador para el thread
 		for (int i=0; i<nRayos; i++) { // cada rayo
 			Vector3 dir(c->getRayoPixel(pixel)); // una direccion
 			Color cPixel = pathTrace(o, dir, rngThread, true); // true para que el primero siempre rebote
@@ -225,6 +230,7 @@ void Renderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const 
 void Renderer::consumirTasks(Imagen& im, const Vector3& origen) {
 	//std::cout<<"Bueno"<<std::endl;
 	// int cuenta = 0;
+	GeneradorAleatorio rngThread;
 	while (true) {
 		int pixel;
 		{ //Lock
@@ -236,7 +242,7 @@ void Renderer::consumirTasks(Imagen& im, const Vector3& origen) {
 			pixel = tasks.back();
 			tasks.pop_back();
 		} // unlock
-		renderPixel(im, origen, pixel);
+		renderPixel(im, origen, pixel,rngThread);
 		// cuenta++;
 	}
 	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";

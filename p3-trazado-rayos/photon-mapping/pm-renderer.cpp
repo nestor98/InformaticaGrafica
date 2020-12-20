@@ -318,11 +318,11 @@ Color PMRenderer::iluminacionDeKDTree(const int idxKDTree,
       Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
       // ha chocado con esta cara de la fig (normal*dir < 0)
       //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-        L = L + foton.getEmision() * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+        L = L + foton.getEmision();// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
         //std::cout << foton.getEmision() << " ";
       //}
     }
-    L = L/(PI * (maxDist*maxDist));
+    L = L/((maxDist*maxDist));//PI *
     // std::cout << "L caustica: " << L << '\n';
   }
   return  L;
@@ -343,21 +343,21 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   Material mat = figIntersectada->getMaterial();
   GeneradorAleatorio rngThread; //TODO: threads y tal
   // true pq es el primer rebote:
-  int evento = mat.ruletaRusa(rngThread, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
+  int evento = mat.ruletaRusa(rng, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
   if (evento == 3) { // Absorcion, imposible en el 1er rebote
     return L;
   }
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-    L = iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
+    L = iluminacionGlobal(interseccion, n);// + causticas(interseccion, n);
     // L = L/2.0;
     //iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     if (!guardarDirectos) {
       //std::cout << "??????????" << '\n';
       L = L + Renderer::luzDirecta(ptoCorregido, n);
     }
-    L = L * mat.getCoeficiente(0) / PI;
+    L = L * mat.getCoeficiente(0);
   }
   else if (evento == 1) { // ESPECULAR
     Matriz4 base;Vector3 wi;
@@ -391,7 +391,7 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   		L = L/0.9; // pasa a ser de 0 a 1. TODO: preguntar si se puede hacer esto
   		// std::cout << "c: " << c.to_string() << '\n';
       try {
-    		wi = mat.getVectorSalida(base, rngThread, evento, dir);
+    		wi = mat.getVectorSalida(base, rng, evento, dir);
         if (wi*base[2] > 0) {
           ptoCorregido = alejarDeNormal(interseccion.punto, base[2]);
         }
@@ -415,11 +415,11 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
 }
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
-void PMRenderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) const {
+void PMRenderer::renderPixel(Imagen& im, const Vector3& o, const int pixel,
+const GeneradorAleatorio& rng) const {
 	Color color(0.0,0.0,0.0);
 	auto c = e.getCamara();
 	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
-	GeneradorAleatorio rngThread; // generador para el thread
 	for (int i=0; i<nRayos; i++) { // cada rayo
     Vector3 dir;
     if (nRayos == 1) { // un rayo, por el centro
@@ -432,7 +432,7 @@ void PMRenderer::renderPixel(Imagen& im, const Vector3& o, const int pixel) cons
     auto intersec = e.interseccion(o, dir);
     if (intersec) {
       color = color + shade(intersec->first, intersec->second,
-      true, rngThread, dir); // true para que el primero siempre rebote
+      true, rng, dir); // true para que el primero siempre rebote
     }
   }
   color = color / nRayos;
@@ -624,6 +624,7 @@ void PMRenderer::render(const std::string fichero) {
 void PMRenderer::consumirTasks(Imagen& im, const Vector3& origen) {
 	//std::cout<<"Bueno"<<std::endl;
 	// int cuenta = 0;
+  GeneradorAleatorio rngThread;
 	while (true) {
 		int pixel;
 		{ //Lock
@@ -635,7 +636,7 @@ void PMRenderer::consumirTasks(Imagen& im, const Vector3& origen) {
 			pixel = tasks.back();
 			tasks.pop_back();
 		} // unlock
-		PMRenderer::renderPixel(im, origen, pixel);
+		PMRenderer::renderPixel(im, origen, pixel,rngThread);
 		// cuenta++;
 	}
 	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";

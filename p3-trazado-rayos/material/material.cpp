@@ -143,47 +143,18 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		double rand2 = gen.rand01();
 		double theta = acos(sqrt(1.0-rand1));
 		double phi = 2.0 * PI * rand2;
-		// std::cout << "---------------------------------" << '\n';
-		// std::cout << "theta: " << theta << "\nphi: " <<phi << '\n';
-		// std::cout << "base: " << base << '\n';
 		wi = base * Vector3(sin(theta)*cos(phi), sin(theta)*sin(phi), cos(theta), false);
-		// std::cout << "Dcha: "<<-LEFT << '\n'<< "wi:" << wi<<'\n';
-		// std::cout << "wiiiii: "<<wi << '\n';
-	}else if(evento==1){		//especular
-		//angulo entre dir y normal
-		//double an=acos((base[3]*base[0])/(base[3].getModulo()*base[0].getModulo()));
-		// Vector3 u=base.inversa()*(incidente); //inversa base* normal
-		// wi=u;
-		// wi[2]=-u[2];
-		// wi=base*wi;
+	}
+	else if(evento==1){		//especular
 		wi = reflejar(incidente, base);
-
 	}
 	else {	//refraccion   https://www.scratchapixel.com/lessons/3d-basic-rendering/introduction-to-shading/reflection-refraction-fresnel
-		//double coefRefraccion = 1.45; // TODO: campo del material o algo
-		// Vector3 wo = base.inversa()*normalizar(incidente);
-		// // std::cout << "wo: " << wo << '\n';
-		// wi = wo;
-		// wi[1] = coefRefraccion * wo[1];
-		// wi[2] = (1.0/coefRefraccion) * wo[2];
-		// std::cout << "wi: " << wi << '\n';
-		// if (wo.getModulo() != wi.getModulo()) {
-		// 	std::cerr << "MALLLLLLL " << wo.getModulo() << " " << wi.getModulo() << '\n';
-		// }
-    //float cosi = base[2]*incidente;
-    //wi = (incidente * coefRefraccion - base[2] * (-cosi + coefRefraccion * cosi));
-		//wi=base*wi;
-		// std::cout << "wi mundo: " << wi << '\n';
-
 		// ------------------ Fresnel:
 		// Vec3f refractionColor = 0;
 		// compute fresnel
 		float coefRefraccion = 1.45; // TODO: de momento es vidrio
 		kr = krFresnel(incidente, base[2], coefRefraccion); // Devuelve la probabilidad de reflexion
-		// if (kr>0.9) std::cout << "kr:" << kr << '\n';
 		if (gen.rand01() < kr) { // Reflexion:
-			// Matriz4 basePrueba = base;
-			// basePrueba[2] = -base[2];
 			wi = reflejar(incidente, base);
 		}
 		else { // Refraccion:
@@ -191,36 +162,10 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 			wi = refraccion(incidente, base[2], coefRefraccion);
 			if (wi.getModulo() == 0) { // Reflexion interna total
 				wi = reflejar(incidente, base);
+			} else {
+				kr = 1-kr; // Se devuelve kt
 			}
-			kr = 1-kr; // Se devuelve kt
-				// std::cout << "refraccion" << '\n';
-				// float coefRefraccion = 1.45;
-				// float eta = (inside) ? coefRefraccion : 1.0 / coefRefraccion; // are we inside or outside the surface? //pasar inside
-		    // float cosi = -base[2]*incidente;
-		    // float k = 1.0 - eta * eta * (1.0 - cosi * cosi);
-		    // wi = incidente * eta + base[2] * (eta *  cosi - sqrt(k));
-
 		}
-		//
-		//
-		// bool outside = dir.dotProduct(hitNormal) < 0;
-		// Vec3f bias = options.bias * hitNormal;
-		// // compute refraction if it is not a case of total internal reflection
-		// if (kr < 1) {
-		// 		Vec3f refractionDirection = refract(dir, hitNormal, isect.hitObject->ior).normalize();
-		// 		Vec3f refractionRayOrig = outside ? hitPoint - bias : hitPoint + bias;
-		// 		refractionColor = castRay(refractionRayOrig, refractionDirection, objects, lights, options, depth + 1);
-		// }
-		//
-		// Vec3f reflectionDirection = reflect(dir, hitNormal).normalize();
-		// Vec3f reflectionRayOrig = outside ? hitPoint + bias : hitPoint - bias;
-		// Vec3f reflectionColor = castRay(reflectionRayOrig, reflectionDirection, objects, lights, options, depth + 1);
-		//
-		// // mix the two
-		// hitColor += reflectionColor * kr + refractionColor * (1 - kr);
-
-
-
 	}
 	try {
 		return normalizar(wi);

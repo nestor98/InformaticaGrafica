@@ -35,7 +35,8 @@ class PMRenderer : public Renderer {
 // 	Escena e;
 
 	// Auxiliar de render
-	void renderPixel(Imagen& im, const Vector3& o, const int pixel) const;
+	void renderPixel(Imagen& im, const Vector3& o, const int pixel,
+	const GeneradorAleatorio& rng) const;
 
 
 	// --------- Threads ---------

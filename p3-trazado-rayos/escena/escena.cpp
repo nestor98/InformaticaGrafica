@@ -71,6 +71,7 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Esce
 		return bvh.interseccion(o, dir);
 	}
 	else {
+		std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sin bvh????" << '\n';
 		float t = -1;
 		Vector3 pto;
 		std::shared_ptr<Figura> f;

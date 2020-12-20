@@ -96,8 +96,8 @@ void GeneradorEstructuras::setArbolPrismas(const Matriz4& base, const Vector3& t
   std::vector<Matriz4> pilaMatrices;// Permiten volver a una base anterior con los corchetes
   for (auto mov : lsys) { // Cada movimiento
     if (mov == 'F') { // Forward, se dibuja rama
-      PrismaRotable rama(baseActual, Vector3(tamActual));
-      rama.setMaterial(DIFUSO_MARRON);
+      PrismaRotable rama(baseActual, 1.1*tamActual); // 1.1 para que no se vean rendijas entre los prismas
+      rama.setMaterial(DIFUSO_MARRON_OSCURO);
       figuras->emplace_back(std::make_shared<PrismaRotable>(rama));
       // Actualizamos:
       baseActual[3] = baseActual[3] + baseActual[2]*tamActual[2];

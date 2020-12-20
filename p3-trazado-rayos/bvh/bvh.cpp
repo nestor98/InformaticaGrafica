@@ -45,6 +45,7 @@ void BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>>& figur
 }
 
 // devuelve un iterador que parta las figuras en algun punto
+// Deprecated, ya no la uso pq se bloquea si varios centroides coinciden
 std::vector<std::shared_ptr<Figura>>::iterator BoundingVolumeH::casoParticular(
 	std::vector<std::shared_ptr<Figura>>& figuras,
 	const std::shared_ptr<Prisma> box, std::vector<std::shared_ptr<Figura>>::iterator it)
@@ -96,6 +97,7 @@ void BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>>& fi
 			});
 		if (it == figuras.begin() || it == figuras.end()) {
 			masFiguras = figuras;
+
 			std::cout << "|";
 		}
 		else {

@@ -447,9 +447,9 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
 		double fov = gradosARad(60); //0.475 * PI;
-
-		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
-		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+		posCam = posCam-(centroHabitacion-posCam).getModulo()*FRONT;
+		Camara c = Camara(posCam, centroHabitacion, uCam, fov, pixelesX,
+			 pixelesY, rayosPP);
 
 
 		//
@@ -507,7 +507,7 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
 		Color emisionLuces(100);
 		LuzPuntual luz(posLuz, emisionLuces);
-		e.addLuz(luz);
+		//e.addLuz(luz);
 
 		// LuzPuntual luz2(posLuz - FRONT * distanciaParedes /2, emisionLuces);
 		// e.addLuz(luz2);
@@ -541,7 +541,16 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 			Vector3 tamRama(tamEsferaVidrio/15.0);
 			tamRama[2] = tamRama[2]*7.0;
 			Matriz4 baseArbol = BASE_UNIVERSAL;
-			baseArbol[3] = posEsferaVidrio-1.3*LEFT*tamEsferaVidrio-1.5*UP*tamEsferaVidrio; // posicion
+
+			// Detras de la camara
+			Vector3 posLuz = posCam - 1.5*FRONT;
+			Color emisionLuces(200);
+			LuzPuntual luz2(posLuz, emisionLuces);
+			e.addLuz(luz2);
+
+
+			baseArbol[3] = posCam - 0.2*FRONT - 1*UP*tamEsferaVidrio; // Detras de la camara
+			//baseArbol[3] = posEsferaVidrio-1.3*LEFT*tamEsferaVidrio-1.5*UP*tamEsferaVidrio; // posicion
 			baseArbol[3].setPunto(); // Tiene que ser un pto
 			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ArbolPrismas,
 				 baseArbol, tamRama, 4);

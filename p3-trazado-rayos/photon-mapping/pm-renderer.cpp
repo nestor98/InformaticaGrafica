@@ -126,8 +126,6 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 			esCaustica = todosCausticos = false;
 		}
 
-
-
     Color albedo = mat.getCoeficiente(evento); // TODO: REVISAR 0
     double albedoPromedio = albedo.getPromedio();
 
@@ -244,7 +242,7 @@ void PMRenderer::preprocess()
 		// sample
 		int iLuz = rng.rand(0, vLuces.size()); // luz aleatoria
 		LuzPuntual luz = e.getLuz(iLuz);
-		Vector3 origen = luz.samplePunto(rng);
+		Vector3 origen = luz.samplePunto(rng,0);
     // std::cout << "muestra pto luz: "<<origen << '\n';
 		Vector3 dir = rng.vectorNormalAleatorio();
     // std::cout << "dir: " <<dir << '\n';
@@ -318,11 +316,11 @@ Color PMRenderer::iluminacionDeKDTree(const int idxKDTree,
       Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
       // ha chocado con esta cara de la fig (normal*dir < 0)
       //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-        L = L + foton.getEmision();// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+        L = L + foton.getEmision() * std::abs(normal * dirFoton);// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
         //std::cout << foton.getEmision() << " ";
       //}
     }
-    L = L/((maxDist*maxDist));//PI *
+    L = L/(PI * (maxDist*maxDist));//PI *
     // std::cout << "L caustica: " << L << '\n';
   }
   return  L;
@@ -350,7 +348,7 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-    L = iluminacionGlobal(interseccion, n);// + causticas(interseccion, n);
+    L =iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     // L = L/2.0;
     //iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     if (!guardarDirectos) {

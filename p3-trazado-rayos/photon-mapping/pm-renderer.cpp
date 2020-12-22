@@ -104,27 +104,30 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 
       //std::cout << "CAUSTICA" << '\n';
 		}
-		else if (nivel > 0 || directo)
-		{
-			//If non-delta material, store the photon!
-			if( esCaustica )
-			{
-				//If caustic particle, store in caustics
-				if( fotonesCausticos.size() < maxFotonesCausticos ) {
-          // std::cout << "meto un foton caustico" << '\n';
-          fotonesCausticos.emplace_back( Foton(iData.punto, dirFoton, energia ));
-        }
-			}
-			else
-			{
-				//If non-caustic particle, store in global
-				if( fotonesGlobales.size() < maxFotonesGlobales ) {
-          // std::cout << "meto un foton global" << '\n';
-  				fotonesGlobales.emplace_back( Foton(iData.punto, dirFoton, energia ));
-        }
-			}
-			esCaustica = todosCausticos = false;
-		}
+		else {
+      if (nivel > 0 || directo)
+  		{
+  			//If non-delta material, store the photon!
+  			if( esCaustica )
+  			{
+  				//If caustic particle, store in caustics
+  				if( fotonesCausticos.size() < maxFotonesCausticos ) {
+            // std::cout << "meto un foton caustico" << '\n';
+            fotonesCausticos.emplace_back( Foton(iData.punto, dirFoton, energia ));
+          }
+  			}
+  			else
+  			{
+  				//If non-caustic particle, store in global
+  				if( fotonesGlobales.size() < maxFotonesGlobales ) {
+            // std::cout << "meto un foton global" << '\n';
+    				fotonesGlobales.emplace_back( Foton(iData.punto, dirFoton, energia ));
+          }
+  			}
+  		}
+      todosCausticos = false;
+      esCaustica = false;
+    }
 
     Color albedo = mat.getCoeficiente(evento); // TODO: REVISAR 0
     double albedoPromedio = albedo.getPromedio();
@@ -300,7 +303,7 @@ Color PMRenderer::iluminacionDeKDTree(const int idxKDTree,
   } else { // Caustico
     std::list<const KDTree<Foton, 3>::Node*> nodes;
     //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
-    maxDist = 0.25;
+    maxDist = 0.2;
     int cercanos = kdTreeCaustico.find(pto, maxDist, &nodes);
 
 

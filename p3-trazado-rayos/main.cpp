@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
 	// Parametros de PM:
 	int maxNumFotones= 50000,
 			maxFotonesGlobales= 50000, maxFotonesCausticos= 10000,
-			nFotonesCercanos = 50;
+			nFotonesCercanos = 250;
 	bool guardarDirectos = false;
 	// Renderer de photon mapping:
 	PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,

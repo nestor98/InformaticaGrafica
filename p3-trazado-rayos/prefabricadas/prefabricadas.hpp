@@ -61,7 +61,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		rotaciontex.setRotarX(gradosARad(90));
 		texRotada.rotar(rotaciontex);
 		suelo.setTextura(std::make_shared<Textura>(texRotada));
-		suelo.setMaterial(difusoGris);
+		//suelo.setMaterial(difusoGris);
 		e.addFigura(std::make_shared<Plano>(suelo));
 
 		Plano techo(-UP, distanciaParedes);

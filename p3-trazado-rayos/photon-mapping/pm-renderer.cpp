@@ -358,7 +358,16 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
       //std::cout << "??????????" << '\n';
       L = L + Renderer::luzDirecta(ptoCorregido, n);
     }
-    L = L * mat.getCoeficiente(0);
+    //L = L * mat.getCoeficiente(0);
+
+    if (figIntersectada->tieneTextura()) { // con textura
+			L= L*figIntersectada->getEmision(ptoCorregido); // El coeficiente es el de la textura
+		}
+		else { // difuso sin textura
+			L = L * mat.getCoeficiente(0);
+		}
+
+
   }
   else if (evento == 1) { // ESPECULAR
     Matriz4 base;Vector3 wi;

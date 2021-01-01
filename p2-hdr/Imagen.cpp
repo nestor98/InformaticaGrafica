@@ -103,7 +103,7 @@ Imagen::Imagen(const std::string nombreFichero, bool ldr) {
 Imagen::Imagen(const int _filas, const int _cols, const long _c, const float _maxFloat, const std::string _titulo)
 						: titulo(_titulo), filas(_filas), cols(_cols), maxFloat(_maxFloat), c(_c)
 {
-	pixeles.reserve(filas * cols);
+	pixeles.resize(filas * cols, {0,0,0});
 }
 
 // Post: el pixel en <fila,col> tiene el valor <r,g,b>
@@ -118,6 +118,13 @@ void Imagen::setPixel(const double r, const double g, const double b, const int 
 	pixeles[i][0] = r;
 	pixeles[i][1] = g;
 	pixeles[i][2] = b;
+}
+
+// Post: al iesimo pixel (izq a dcha, arriba a abajo) se le suma el valor <r,g,b>
+void Imagen::addToPixel(const double r, const double g, const double b, const int i) {
+	pixeles[i][0] += r;
+	pixeles[i][1] += g;
+	pixeles[i][2] += b;
 }
 
 // Modulo matematico, nunca negativo

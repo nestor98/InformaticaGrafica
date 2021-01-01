@@ -29,6 +29,8 @@ public:
 
 	void setPixel(const double r, const double g, const double b, const int fila, const int col);
 
+	void addToPixel(const double r, const double g, const double b, const int i);
+
 	std::array<double, 3> getPixel(const int fila, const int col)const;
 	std::array<double, 3> getPixel(const int i)const;
 

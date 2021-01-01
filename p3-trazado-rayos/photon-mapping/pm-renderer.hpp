@@ -6,15 +6,7 @@
 #include <memory>
 #include <thread>
 #include <mutex>
-//
-// #include "escena.hpp"
-// #include "Imagen.hpp"
-// #include "camara.hpp"
-// #include "figura.hpp"
-// #include "material.hpp"
-// #include "bvh.hpp"
-//
-// #include "utils.hpp"
+
 #include "renderer.hpp"
 #include "Foton.hpp"
 #include "KDTree.h"
@@ -22,29 +14,18 @@
 // const unsigned int MAX_FOTONES = 100000;
 
 class PMRenderer : public Renderer {
+protected:
 	int maxNumFotones, maxFotonesGlobales, maxFotonesCausticos;
 	int fotonesActuales;
 	int nFotonesCercanos;
 	bool guardarDirectos;
 	KDTree<Foton, 3> kdTreeGlobal, kdTreeCaustico;
-//
-// protected:
-// 	bool usarBVH;
-// 	BoundingVolumeH bvh;
-//
-// 	Escena e;
-
 	// Auxiliar de render
 	void renderPixel(Imagen& im, const Vector3& o, const int pixel,
 	const GeneradorAleatorio& rng) const;
 
 
 	// --------- Threads ---------
-	//std::vector<std::thread> threads; // Vector con cada thread
-	//std::mutex mtx; // mutex para asegurar seccion critica (tomar dato de la cola)
-
-	//std::vector<int> tasks; // cola de pixeles a renderizar
-
 	// Inicializa los threads:
 	void initThreads(Imagen& im,  const Vector3& origen, const int nPixeles);
 
@@ -75,15 +56,18 @@ class PMRenderer : public Renderer {
 	  const GeneradorAleatorio& rng, const Vector3& dir) const;
 
 	// Aux de iluminacionGlobal y de causticas
-	Color iluminacionDeKDTree(const int idxKDTree,
-	  const Figura::InterseccionData& interseccion,
-	  const Vector3& normal) const;
+	Color iluminacionRadioFijo(const KDTree<Foton,3>& kdTree,
+	  const Vector3& ptoInterseccion, const Vector3& normal,
+	  const float radio, int& nFotonesCercanos) const;
+	// Color iluminacionDeKDTree(const int idxKDTree,
+	//   const Vector3& ptoInterseccion,
+	//   const Vector3& normal) const;
 	// Aux de shadePM, devuelve la luminosidad correspondiente a fotones globales
-	Color iluminacionGlobal(const Figura::InterseccionData& interseccion,
+	Color iluminacionGlobal(const Vector3& pto,
 		const Vector3& normal) const;
 
 	// Aux de shadePM, devuelve la luminosidad correspondiente a fotones causticos
-	Color causticas(const Figura::InterseccionData& interseccion,
+	Color causticas(const Vector3& pto,
 	  const Vector3& normal) const;
 
 	Color shade(const Figura::InterseccionData& interseccion,
@@ -103,7 +87,8 @@ public:
 	std::string to_string() const;
 
 	void render(const std::string fichero);
-	//
+
+
 
 };
 

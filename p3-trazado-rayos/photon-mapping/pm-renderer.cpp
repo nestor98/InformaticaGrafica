@@ -265,74 +265,61 @@ void PMRenderer::preprocess()
 }
 
 // TODO: implementar...
-Color PMRenderer::causticas(const Figura::InterseccionData& interseccion,
-  const Vector3& normal) const
+Color PMRenderer::causticas(const Vector3& pto, const Vector3& normal) const
 {
-  return iluminacionDeKDTree(1, interseccion, normal);
+  int nCercanos; // No se usa
+  return iluminacionRadioFijo(kdTreeCaustico, pto, normal, 0.2, nCercanos);
+  // Color L;
+  // float maxDist;
+  // std::vector<float> ptoKDT;
+  // pto.toKDTreePoint(ptoKDT);// pto para buscar en el KDTree
+  // return iluminacionDeKDTree(1, pto, normal, 0.2);
 }
 
-Color PMRenderer::iluminacionDeKDTree(const int idxKDTree,
-  const Figura::InterseccionData& interseccion,
-  const Vector3& normal) const
+Color PMRenderer::iluminacionRadioFijo(const KDTree<Foton,3>& kdTree,
+  const Vector3& pto, const Vector3& normal,
+  const float radio, int& nFotonesCercanos) const
 {
-
   Color L;
-   float maxDist;
-
-  std::vector<float> pto;
-  interseccion.punto.toKDTreePoint(pto);// pto para buscar en el KDTree
-  //std::cout << "pto: " << pto[0] << " " << pto[1] << " " << pto[2] << '\n';
-  if (idxKDTree == 0) { // Global
-    std::vector<const KDTree<Foton, 3>::Node*> nodes;
-    //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
-    int debug_nFotones = nFotonesCercanos;//nFotonesCercanos
-    kdTreeGlobal.find(pto, debug_nFotones, nodes, maxDist);
-    // std::cout << "maxDist: " << maxDist << '\n';
-    for (auto node : nodes) { // para cada foton
-      Foton foton = node->data();
-    //  float rCuadrado = (foton.getPos()-interseccion.punto).getModuloSq();
-      Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
-      // ha chocado con esta cara de la fig (normal*dir < 0)
-      //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-        L = L + foton.getEmision() * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
-        //std::cout << foton.getEmision() << " ";
-      //}
-    }
-    if (nodes.size()>0)
-      L = L / (PI * (maxDist*maxDist));
-  } else { // Caustico
-    std::list<const KDTree<Foton, 3>::Node*> nodes;
-    //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
-    maxDist = 0.2;
-    int cercanos = kdTreeCaustico.find(pto, maxDist, &nodes);
-
-
-    // std::vector<const KDTree<Foton, 3>::Node*> nodes;
-    // //std::cout << "nFotonesCercanos: "<< nFotonesCercanos << '\n';
-    // int debug_nFotones = nFotonesCercanos;//nFotonesCercanos
-    // kdTreeGlobal.find(pto, debug_nFotones, nodes, maxDist);
-
-    for (auto node : nodes) {
-      // std::cout << "nodo" << '\n';
-      Foton foton = node->data();
-    //  float rCuadrado = (foton.getPos()-interseccion.punto).getModuloSq();
-      Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
-      // ha chocado con esta cara de la fig (normal*dir < 0)
-      //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-        L = L + foton.getEmision() * std::abs(normal * dirFoton);// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
-        //std::cout << foton.getEmision() << " ";
-      //}
-    }
-    L = L/(PI * (maxDist*maxDist));//PI *
-    // std::cout << "L caustica: " << L << '\n';
+  std::vector<float> ptoKDT;
+  pto.toKDTreePoint(ptoKDT);// pto para buscar en el KDTree
+  std::list<const KDTree<Foton, 3>::Node*> nodes;
+  int cercanos = kdTreeCaustico.find(ptoKDT, radio, &nodes);
+  for (auto node : nodes) {
+    Foton foton = node->data();
+    Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
+    // ha chocado con esta cara de la fig (normal*dir < 0)
+    //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
+    L = L + foton.getEmision() * std::abs(normal * dirFoton);// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+      //std::cout << foton.getEmision() << " ";
+    //}
   }
+  nFotonesCercanos+=cercanos;
+  L = L/(PI * (radio*radio));
   return  L;
 }
 
-Color PMRenderer::iluminacionGlobal(const Figura::InterseccionData& interseccion,
-const Vector3& normal) const
+Color PMRenderer::iluminacionGlobal(const Vector3& pto, const Vector3& normal) const
 {
-  return iluminacionDeKDTree(0, interseccion, normal);
+  Color L;
+  float maxDist;
+  std::vector<float> ptoKDT;
+  pto.toKDTreePoint(ptoKDT);// pto para buscar en el KDTree
+  std::vector<const KDTree<Foton, 3>::Node*> nodes;
+  kdTreeGlobal.find(ptoKDT, nFotonesCercanos, nodes, maxDist);
+  for (auto node : nodes) { // para cada foton
+    Foton foton = node->data();
+    Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
+    // TODO: probar estas lineas comentadas, igual quita bias:
+    // ha chocado con esta cara de la fig (normal*dir < 0)
+    //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
+    L = L + foton.getEmision() * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+      //std::cout << foton.getEmision() << " ";
+    //}
+  }
+  if (nodes.size()>0)
+    L = L / (PI * (maxDist*maxDist));
+  return L;
 }
 
 
@@ -351,7 +338,8 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-    L =iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
+    L = iluminacionGlobal(interseccion.punto, n) +
+        causticas(interseccion.punto, n);
     // L = L/2.0;
     //iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     if (!guardarDirectos) {
@@ -361,7 +349,7 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
     //L = L * mat.getCoeficiente(0);
 
     if (figIntersectada->tieneTextura()) { // con textura
-			L= L*figIntersectada->getEmision(ptoCorregido); // El coeficiente es el de la textura
+			L= L*figIntersectada->getEmision(interseccion.punto); // El coeficiente es el de la textura
 		}
 		else { // difuso sin textura
 			L = L * mat.getCoeficiente(0);
@@ -593,20 +581,23 @@ Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
 
 void PMRenderer::render(const std::string fichero) {
 	hrc::time_point t1, t2;
-	t1 = hrc::now();
+  std::chrono::duration<double> t; // duracion
 	// std::cout<<"a construir el arbol\n";
 	if (usarBVH){
+	  t1 = hrc::now();
     e.construirBVH();
-		std::cout<<"arbol bvh construido\n";
+    t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - hrc::now());
+		std::cout<<"arbol bvh construido en " << t.count() <<" segundos\n";
 	}
 	auto c = e.getCamara();
 	Vector3 o = c->getPos();
 	Imagen im(c->getPixelesY(), c->getPixelesX());
   // ---------------- PREPROCESS:
   std::cout << "Voy a hacer el preprocess" << '\n';
+  t1 = hrc::now();
   preprocess();
 	t2 = hrc::now();
-	std::chrono::duration<double> t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
 	// t2 -> tRender2 = t2-t1
 	std::cout << "\nPreprocess realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
   // ---------------- RENDER:

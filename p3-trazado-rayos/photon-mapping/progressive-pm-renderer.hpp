@@ -48,7 +48,7 @@ class ProgressivePMRenderer : public PMRenderer {
 
 	// aux de preprocess, traza un rayo y almacena los hits en el vector de hits
 	void traceRay(const Vector3& origen, const Vector3& dir,
-	  int iPixel, float radio);
+	  int iPixel, float radio, const GeneradorAleatorio& rng);
 
 	// Lanza los rayos de la camara y los almacena en el vector de hits
 	void preprocess();

@@ -74,7 +74,15 @@ Color Renderer::muestraLuzDirecta(const Vector3& pto, const Vector3& normal,
 	return Color();
 }
 
-
+/*
+////////////////////////////////////////////////////////////////
+float desplazamiento = bumpMap.getEmision(pto)[0] / 255.0 * bumpMap.getMaxDesplaz();
+Vector3 ptoDesplazado = alejarDeNormal(pto, fig.getNormal(pto), desplazamiento);
+// TODO: diferenciacion xdddddddddddddddddddd
+// 			 base con nueva normal y pto
+// 			 si eso quitar alejardenormal abajo
+//////////////////////////////////////////////////////////////
+*/
 Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
 	Material mat = fig->getMaterial();
 	Color c;

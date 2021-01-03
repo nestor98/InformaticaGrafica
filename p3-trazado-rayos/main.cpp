@@ -10,6 +10,7 @@
 //#include "Matriz4.cpp"
 #include "renderer.hpp"
 #include "pm-renderer.hpp"
+#include "progressive-pm-renderer.hpp"
 
 #include "generador.hpp"
 
@@ -84,10 +85,11 @@ int main(int argc, char* argv[]) {
 			nFotonesCercanos = 250;
 	bool guardarDirectos = false;
 	// Renderer de photon mapping:
-	PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
+	ProgressivePMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
 		maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
 		guardarDirectos);
+	pmrend.iterarRenderAll(30,argv[1]);
 
-	pmrend.render(argv[1]);
+	// pmrend.render(argv[1]);
 	return 0;
 }

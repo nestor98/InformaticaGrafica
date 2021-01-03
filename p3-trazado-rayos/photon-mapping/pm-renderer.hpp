@@ -48,7 +48,7 @@ protected:
 			   std::list<Foton> &fotonesGlobales, std::list<Foton> &fotonesCausticos,
 				 bool directo, const GeneradorAleatorio& rng);
 
-	void preprocess();
+	void preprocess(bool normalizar=true);
 
 	// Auxiliar de shade para separar la parte de PM del debug
 	Color shadePM(const Figura::InterseccionData& interseccion,

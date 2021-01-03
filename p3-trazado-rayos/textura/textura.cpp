@@ -9,7 +9,7 @@
 
 
 Textura::Textura(const Imagen& i, const float _ancho, const float _alto, const Vector3& _pos)
-  : tex(i), ancho(_ancho), alto(_alto), pos(_pos+LEFT*_ancho/2.0-UP*_ancho/2.0)
+  : tex(i), ancho(_ancho), alto(_alto), pos(_pos+LEFT*_ancho/2.0-UP*_ancho/2.0), esBumpMap(false)
 {
   base.setCambioBase(UP, -LEFT, FRONT, pos);
   baseInversa = base.inversa();
@@ -27,11 +27,21 @@ Textura::Textura(const Imagen& i, const float _ancho, const float _alto, const V
     // }
 }
 
-Textura::Textura(): ancho(0), alto(0)
+Textura::Textura(): ancho(0), alto(0), esBumpMap(false)
 {
   std::cout<<"vacio\n";
 }
 
+
+void Textura::setMaxDesplaz(const float& despl) {
+  maxDespl = despl;
+  esBumpMap=true;
+}
+
+float Textura::getMaxDesplaz() const {
+  if (esBumpMap) return maxDespl;
+  else return 0;
+}
 
 void Textura::rotar(const Matriz4& rotacion) {
 	// Vector3 centroideMundo = base * tam/2; // 0+tam/2

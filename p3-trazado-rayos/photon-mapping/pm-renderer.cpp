@@ -225,7 +225,7 @@ void guardarFotones(KDTree<T, N>& KDTFotones, const std::list<Foton>& fotones,
 //		for rendering.
 //		NOTE: Careful with function
 //---------------------------------------------------------------------
-void PMRenderer::preprocess()
+void PMRenderer::preprocess(bool normalizar)
 {
 	std::vector<LuzPuntual> vLuces;
 	e.getLuces(vLuces);
@@ -259,7 +259,10 @@ void PMRenderer::preprocess()
 	// store
   std::cout << "globales: " << fotonesGlobales.size() << "\ncausticos: "
             << fotonesCausticos.size() << '\n';
-  double escalarPFotones = 4.0*PI/i; // cada foton debe tener 1/numfotones la e original
+  double escalarPFotones = 1;
+  if (normalizar) {
+    escalarPFotones=4.0*PI/i; // cada foton debe tener 1/numfotones la e original
+  }
 	guardarFotones<Foton, 3>(kdTreeGlobal, fotonesGlobales, escalarPFotones);
 	guardarFotones<Foton, 3>(kdTreeCaustico, fotonesCausticos, escalarPFotones);
 }
@@ -295,7 +298,8 @@ Color PMRenderer::iluminacionRadioFijo(const KDTree<Foton,3>& kdTree,
     //}
   }
   nFotonesCercanos+=cercanos;
-  L = L/(PI * (radio*radio));
+  if (radio>0)
+    L = L/(PI * (radio*radio));
   return  L;
 }
 

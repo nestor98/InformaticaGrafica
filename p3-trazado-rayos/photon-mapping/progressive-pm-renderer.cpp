@@ -13,6 +13,7 @@
 #define hrc std::chrono::high_resolution_clock
 
 
+//*********************************************************************
 ProgressivePMRenderer::ProgressivePMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo,
   const bool _usarBVH, const float _rangoDinamico, const int _maxNumFotones,
   const int _maxFotonesGlobales, const int _maxFotonesCausticos,
@@ -44,29 +45,59 @@ ProgressivePMRenderer::ProgressivePMRenderer(const Escena& _e, const int _nThrea
             << std::endl;
 }
 
+//*********************************************************************
+// Traza un rayo de la camara y almacena sus hits en el vector de hits
 void ProgressivePMRenderer::traceRay(const Vector3& origen, const Vector3& dir,
-  int iPixel, float radio)
+  int iPixel, float radio, const GeneradorAleatorio& rng)
 {
-  auto intersec = e.interseccion(origen, dir);
-  if (intersec) { // Ha intersectado
-    auto iData = intersec->first;
-    auto fig = intersec->second;
-    bool evento = 0; // TODO: ruleta rusa, etc
-    if (evento==0) {
-      ptosVisibles.emplace_back(
-        Hit(
-          iData.punto, // posicion
-          fig->getNormal(iData.punto), // normal
-          dir, // direccion
-          fig->getMaterial().getCoeficiente(evento), // kd
-          iPixel, // Indice del pixel (orden i-d, arriba abajo)
-          Color(), // Pixel weight (????????????)
-          radio, // Radio actual de busqueda de fotones
-          0, // num de fotones acumulados actual
-          Color() // Color actual hacia la camara (0) TODO: asegurar
-
-        )
-      );
+  Vector3 o = origen;
+  Vector3 d = dir;
+  bool fin = false;
+  bool primerRebote=true;
+  while(!fin) {
+    auto intersec = e.interseccion(o, d);
+    if (intersec) { // Ha intersectado
+      auto iData = intersec->first;
+      auto fig = intersec->second;
+      Material mat = fig->getMaterial();
+      int evento = 0;// DEBUG: mat.ruletaRusa(rng, primerRebote);
+      int eventorandom = mat.ruletaRusa(rng, primerRebote);
+      if (evento==0) {
+        ptosVisibles.emplace_back(
+          Hit(
+            iData.punto, // posicion
+            fig->getNormal(iData.punto), // normal
+            d, // direccion
+            mat.getCoeficiente(eventorandom),///mat.getPDF(evento, primerRebote), // kd
+            iPixel, // Indice del pixel (orden i-d, arriba abajo)
+            Color(), // Pixel weight (????????????)
+            radio, // Radio actual de busqueda de fotones
+            0, // num de fotones acumulados actual
+            Color() // Color actual hacia la camara (0) TODO: asegurar
+          )
+        );
+        break; // DEBUG: TODO: BORRAR!!!!!
+      }
+      if (evento==3) { // Absorcion
+        fin = true;
+      }
+      else if (evento<2) { // Nueva dir y origen (difuso o reflex):
+        Matriz4 base = fig->getBase(iData.punto);
+    		d = mat.getVectorSalida(base, rng, evento, d);
+        o = alejarDeNormal(iData.punto, base[2]);
+      }
+      else { // Nueva dir y origen (refraccion o reflex fresnel)
+        Matriz4 base = fig->getBase(iData.punto);
+    		d = mat.getVectorSalida(base, rng, evento, d);
+    		o = alejarDeNormal(iData.punto, -base[2]);
+    		if (d*base[2] > 0) { // reflexion fresnel
+    			o = alejarDeNormal(iData.punto, base[2]);
+    		}
+      }
+      primerRebote=false;
+    }
+    else { // No ha intersectado
+      fin = true;
     }
   }
 }
@@ -78,43 +109,75 @@ void ProgressivePMRenderer::preprocess()
   auto camara = e.getCamara();
   auto o = camara->getPos();
   float radio = 1; // TODO: ??????????????????
+  GeneradorAleatorio rng;
   for (int iPixel = 0; iPixel < camara->getNumPixeles(); iPixel++) {
     for (int i = 0; i<camara->getRayosPorPixel(); i++) {
-      traceRay(o, camara->getRayoPixel(iPixel), iPixel, radio);
+      traceRay(o, camara->getRayoPixel(iPixel), iPixel, radio, rng);
     }
-    //radio = radio*0.9; // TODO: revisar
   }
+  std::cout << "vect de hits tiene: " << ptosVisibles.size() << '\n';
 }
 
+//*********************************************************************
 // Lanza fotones desde las luces y almacena fotones en los kdtrees
 void ProgressivePMRenderer::tracePhotons() {
   kdTreeGlobal.clear();
   kdTreeCaustico.clear();
   // Trazar fotones y almacenar en los kdtrees:
-  PMRenderer::preprocess();
+  PMRenderer::preprocess(false);
   nFotonesTotal+=fotonesActuales;
+  std::cout << "nFotonesTotal = " << nFotonesTotal << '\n';
 }
 
+//*********************************************************************
 // Añade la contribucion de los fotones guardados al vector de hits
 void ProgressivePMRenderer::addPhotonContribution(const float& alfa) {
   for (auto& hit : ptosVisibles) {
     // TODO: tiene sentido usar dos kdtrees en progressive si se usan igual??
     int nFotCercanos = 0;
-    hit.color = hit.color +
-      hit.kd * PMRenderer::iluminacionRadioFijo(
-        kdTreeGlobal, hit.pto, hit.normal, hit.r, nFotCercanos) +
-      hit.kd * PMRenderer::iluminacionRadioFijo(
-        kdTreeCaustico, hit.pto, hit.normal, hit.r, nFotCercanos);
+    if (isnan(hit.color[0])) {
+      std::cerr << "138: color: " << hit.color << "\tnFotones: "
+                << hit.nFotones << "\tnFotCercanos: " << nFotCercanos << '\n';
+      exit(1);
+    }
+    Color ilumGlobal = PMRenderer::iluminacionRadioFijo(
+      kdTreeGlobal, hit.pto, hit.normal, hit.r, nFotCercanos);
+    Color ilumCaustica = PMRenderer::iluminacionRadioFijo(
+      kdTreeCaustico, hit.pto, hit.normal, hit.r, nFotCercanos);
+    hit.color = hit.color + hit.kd * ilumGlobal + hit.kd * ilumCaustica;
+
+
+
     // Reduccion del radio (ecuacion 9, https://www.ci.i.u-tokyo.ac.jp/~hachisuka/ppm.pdf)
     // N = nFotones, M=nFotCercanos
-    double dRsq = (hit.nFotones+alfa*nFotCercanos)/(hit.nFotones+nFotCercanos);
+
+    double dRsq=1;
+    if (nFotCercanos>0) {
+      dRsq = double(hit.nFotones+alfa*nFotCercanos)/double(hit.nFotones+nFotCercanos);
+    }
+    if (isnan(dRsq) || isnan(hit.color[0])) {
+      std::cerr << "155: color: " << hit.color << "\tdRsq: "<< dRsq << "\tnFotones: "
+                << hit.nFotones << "\tnFotCercanos: " << nFotCercanos
+                << "\tkd: " << hit.kd << '\n'
+                << "global: " << ilumGlobal << "caustica: " << ilumCaustica
+                << '\n';
+      exit(1);
+    }
     hit.color = hit.color*dRsq; // Correccion del flujo (Ecuacion 12)
+    if (isnan(hit.color[0])) {
+      std::cerr << "161: color: " << hit.color << "\tdRsq: "<< dRsq << "\tnFotones: "
+                << hit.nFotones << "\tnFotCercanos: " << nFotCercanos << '\n';
+      exit(1);
+    }
     hit.r *= sqrt(dRsq); // Ecuacion 9
     hit.nFotones += nFotonesCercanos;
+    // std::cout << "color: " << hit.color << "\tdRsq: "<< dRsq << "\tnFotones: "
+    //           << hit.nFotones << '\n';
   }
 }
 
 
+//*********************************************************************
 // Se itera nVeces el proceso de tracePhotons y addPhotonContribution
 void ProgressivePMRenderer::iterar(int nVeces) {
   float alfa = 0.7; // TODO: miembro de la clase?
@@ -124,27 +187,50 @@ void ProgressivePMRenderer::iterar(int nVeces) {
   }
 }
 
+//*********************************************************************
 // Se itera nVeces el proceso de tracePhotons y addPhotonContribution
 // Se guarda la imagen resultante de cada (iesima) iteracion en fichero-i.ppm
 void ProgressivePMRenderer::iterarRenderAll(int nVeces, const std::string& fichero) {
   float alfa = 0.7; // TODO: miembro de la clase?
+  guardarDirectos=true; // TODO: iluminacion directa?
   for (int i = 0; i<nVeces; i++) {
+    int _maxNumFotones=maxNumFotones;
+    int _maxFotonesGlobales=maxFotonesGlobales;
+    int _maxFotonesCausticos=maxFotonesCausticos;
+  	int _fotonesActuales=fotonesActuales;
     tracePhotons();
     addPhotonContribution(alfa);
     render(fichero+"-"+std::to_string(i+1));
+    maxNumFotones=_maxNumFotones;
+    maxFotonesGlobales=_maxFotonesGlobales;
+    maxFotonesCausticos=_maxFotonesCausticos;
+  	fotonesActuales=_fotonesActuales;
   }
 
 }
 
+//*********************************************************************
 // Renderiza el vector de ptos visibles actual en el archivo <fichero>.ppm
 void ProgressivePMRenderer::render(const std::string& fichero) {
   auto c = e.getCamara();
   Imagen imagen(c->getPixelesY(), c->getPixelesX());
+  // imagen.guardar("out/cero.ppm");
   for (auto hit : ptosVisibles) {
     // TODO: habria que dividir el color entre el num de hits con iPixel?
-    Color c = hit.color/(PI*hit.r*hit.r*nFotonesTotal);
+    Color c;
+    if (hit.r>0){
+      // std::cout << "Hombre" << '\n';
+      c = 4*PI*hit.color/(PI*hit.r*hit.r*nFotonesTotal);
+      if (isnan(c[0])) {
+        std::cout << "color: " << hit.color << "\tr:" << hit.r
+        << "\tc: " << c << '\n';
+      }
+    }
+    else {
+      cerr << "el radio no deberia ser 0!!\n"; exit(1);
+    }
     imagen.addToPixel(c[0],c[1],c[2],hit.iPixel);
   }
   imagen.extendedReinhard();
-  imagen.guardar(fichero+".ppm");
+  imagen.guardar("out/"+fichero+".ppm");
 }

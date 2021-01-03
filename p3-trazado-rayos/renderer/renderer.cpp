@@ -28,19 +28,10 @@ Color Renderer::shadowRay(const Vector3& pto, const Vector3& normal, const int i
 	Color c;
 	LuzPuntual luz=	e.getLuz(indiceluz);
 	Vector3 rayoSombra = luz.getPos() - pto;
-	// std::cout << "ueyueya" << '\n';
 	double distLuz = rayoSombra.getModulo();
 	rayoSombra = normalizar(rayoSombra);
-	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccionFigura;
-	// std::cout << "ueyueya" << '\n';
-	interseccionFigura = e.interseccion(pto, rayoSombra);
+	auto interseccionFigura = e.interseccion(pto, rayoSombra);
 
-	// if (!usarBVH) { // Sin bvh
-	// 	interseccionFigura = e.interseccion(pto, rayoSombra);
-	// }
-	// else { // con bvh
-	// 	interseccionFigura = bvh.interseccion(pto, rayoSombra);
-	// }
 	if (interseccionFigura) {
 		if (distLuz < interseccionFigura->first.t) {
 			// c = eluz / |distLuz|^2 / |normal * rayoSombra|
@@ -122,10 +113,13 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		else { // difuso sin textura
 			c = mat.getCoeficiente(evento); // Coef difuso
 		}
-		// Iluminacion directa:
+		// if (fig->tieneBumpMap()) {
+		// 	base = fig->getBase()
+		// }
 		Matriz4 base = fig->getBase(pto);
 
-		Color iDirecta = muestraLuzDirecta(alejarDeNormal(pto, base[2]), base[2], rngThread);
+		// Iluminacion directa:pto = alejarDeNormal(base[3], base[2])
+		Color iDirecta = muestraLuzDirecta(base[3], base[2], rngThread);
 
 		// Iluminacion indirecta:
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
@@ -133,7 +127,7 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		// std::cout << "pdf: "<<pdf << '\n';
 		// Aqui, c es kd
 		// TODO: REVISAR COSENOS
-		c = c/pdf *(iDirecta + pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread)); // kd * Li
+		c = c/pdf *(iDirecta + pathTrace(alejarDeNormal(base[3], base[2]), otroPath, rngThread)); // kd * Li
 	}
 	return c;
 }
@@ -163,7 +157,8 @@ Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::share
 		return mat.getVectorSalida(base, gen, 0, dir);
 	}
 	else if (tipoRender == Renderer::Normales) {
-		return fig->getNormal(ptoInterseccion);
+		// return fig->getNormal(ptoInterseccion);
+		return fig->getBase(ptoInterseccion)[2];
 	}
 	else {
 		std::cerr << "ERROR: Tipo de render desconocido" << '\n';

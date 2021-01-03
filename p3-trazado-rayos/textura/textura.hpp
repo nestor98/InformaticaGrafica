@@ -11,6 +11,7 @@
 #include "Imagen.hpp"
 #include "color.hpp"
 #include "Vector3.hpp"
+class Figura;
 
 class Textura{
     protected:
@@ -19,7 +20,7 @@ class Textura{
         int alto;
         Vector3 pos;
         Matriz4 base, baseInversa; // Bases para local->mundo, mundo->local
-        bool esBumpMap;
+        bool _esBumpMap;
         float maxDespl;
     public:
     Textura();
@@ -28,6 +29,14 @@ class Textura{
 
     // Rota la textura segun la matriz de rotacion, alrededor de pos (esquina sup izquierda)
     void rotar(const Matriz4& rotacion);
+
+    //************************************************************************
+    // BUMP MAPPING:
+    bool esBumpMap() const;
+
+    Vector3 desplazar(const Vector3& pto, const Figura& fig) const;
+
+    void bump(const Vector3& pto, const Figura& fig, Matriz4& baseBump) const;
 
     void setMaxDesplaz(const float& despl);
     float getMaxDesplaz() const;

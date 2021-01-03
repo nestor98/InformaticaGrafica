@@ -41,6 +41,10 @@ protected:
 	std::shared_ptr<Textura> tex;
 	bool textura;
 
+
+	std::shared_ptr<Textura> bumpMap;
+	bool conBumpMap;
+
 public:
 	Figura();
 	Figura(const std::array<double, 3> _e);
@@ -64,6 +68,7 @@ public:
 	bool tieneTextura() const;
 	void setTextura(std::shared_ptr<Textura> _tex);
 
+	void setBumpMap(std::shared_ptr<Textura> _bm);
 
 	// Materiales -------------------------
 	void setMaterial(const Material& _m);

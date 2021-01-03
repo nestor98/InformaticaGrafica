@@ -56,12 +56,17 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// Caja:
 		Plano suelo(UP, 1.0*distanciaParedes);
 		// suelo.setColor(0.8,0.8,0.8);
-		Textura texRotada = tex;
+
+		Imagen bump= Imagen("sponza-bumpmap-p3.ppm", true);
+		// Textura tex=Textura(t,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+		Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
 		Matriz4 rotaciontex;
 		rotaciontex.setRotarX(gradosARad(90));
 		texRotada.rotar(rotaciontex);
+		texRotada.setMaxDesplaz(5);
+		suelo.setMaterial(difusoGris);
+		suelo.setBumpMap(std::make_shared<Textura>(texRotada));
 		suelo.setTextura(std::make_shared<Textura>(texRotada));
-		//suelo.setMaterial(difusoGris);
 		e.addFigura(std::make_shared<Plano>(suelo));
 
 		Plano techo(-UP, distanciaParedes);

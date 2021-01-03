@@ -414,6 +414,16 @@ bool operator == (const Vector3& v1, const Vector3& v2) {
 	return iguales;
 }
 
+// TODO: ahora, un vector y un punto con las mismas componentes no son iguales,
+// revisar si seria mejor que lo fueran (cambiando el i<4 por i<3)
+bool operator == (const Matriz4& m1, const Matriz4& m2) {
+	bool iguales = true;
+	for (int i = 0; i < 4; i++) {
+		iguales &= m1[i] == m2[i];
+	}
+	return iguales;
+}
+
 bool operator != (const Vector3& v1, const Vector3& v2) {
 	return !(v1 == v2);
 }

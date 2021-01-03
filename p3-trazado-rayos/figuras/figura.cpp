@@ -33,6 +33,12 @@ void Figura::setTextura(std::shared_ptr<Textura> _tex){
 	tex=_tex;
 }
 
+void Figura::setBumpMap(std::shared_ptr<Textura> _bm){
+	conBumpMap=true;
+	bumpMap=_bm;
+	// std::cout << "Tengo bump map y textura " << textura  << '\n';
+}
+
 Material Figura::getMaterial() const {
 	return m;
 }
@@ -70,7 +76,21 @@ Color Figura::getEmision(const Vector3& dir) const {
 
 Matriz4 Figura::getBase(const Vector3& pto) {
 	try {
-		return getBase(this->getNormal(pto), pto);
+		if (!conBumpMap){
+			return getBase(this->getNormal(pto), pto);
+		}
+		else {
+			Matriz4 base;
+			bumpMap->bump(pto, *this, base);
+			// Matriz4 base2=getBase(this->getNormal(pto), pto);
+			// if (base[2]!=base2[2]) {
+			// 	std::cerr << "Normales distintas???......." << '\n';
+			// 	exit(1);
+			// }
+
+			// std::cout << "pto: " << pto << "\nBase de bump:" << '\n' << base;
+			return base;
+		}
 	}
 	catch (std::string e) {
 		std::cerr << "error en getBase" << '\n';

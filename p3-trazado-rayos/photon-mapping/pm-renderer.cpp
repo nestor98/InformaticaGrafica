@@ -271,7 +271,7 @@ void PMRenderer::preprocess(bool normalizar)
 Color PMRenderer::causticas(const Vector3& pto, const Vector3& normal) const
 {
   int nCercanos; // No se usa
-  return iluminacionRadioFijo(kdTreeCaustico, pto, normal, 0.2, nCercanos);
+  return iluminacionRadioFijo(kdTreeCaustico, pto, normal, 0.05, nCercanos);
   // Color L;
   // float maxDist;
   // std::vector<float> ptoKDT;

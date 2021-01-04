@@ -72,29 +72,26 @@ int main(int argc, char* argv[]) {
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 	// -----------------------------------------------
 	// Con Path tracer:
-	Renderer rend(*escena, nThreads, tipo, usarBVH, resColor);
-	rend.render(argv[1]);
+	// Renderer rend(*escena, nThreads, tipo, usarBVH, resColor);
+	// rend.render(argv[1]);
 	// -----------------------------------------------
 
 
 	// -----------------------------------------------
 	// Con PM;
 	// Parametros de PM:
-	// int maxNumFotones= 50000,
-	// 		maxFotonesGlobales= 50000, maxFotonesCausticos= 10000,
-	// 		nFotonesCercanos = 250;
-	// bool guardarDirectos = false;
-	// // Renderer de photon mapping:
-	// ProgressivePMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
-	// 	maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
-	// 	guardarDirectos);
+	int maxNumFotones= 15000000,
+			maxFotonesGlobales= 50000, maxFotonesCausticos= 1000000,
+			nFotonesCercanos = 250;
+	bool guardarDirectos = false;
+	// Renderer de photon mapping:
+	PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
+		maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
+		guardarDirectos);
 	// pmrend.iterarRenderAll(15,argv[1]);
 
-	// pmrend.render(argv[1]);
+	pmrend.render(argv[1]);
 	return 0;
 }
- 
- 
- 
  
  

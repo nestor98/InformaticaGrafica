@@ -82,13 +82,13 @@ Color Textura::getEmision(const Vector3& pto) const{
 }
 
 Vector3 Textura::desplazar(const Vector3& pto, const Figura& fig) const {
-  float desplazamiento = getEmision(pto).getPromedio() / 255.0 * getMaxDesplaz();
+  float desplazamiento = getEmision(pto).getPromedio() * getMaxDesplaz();
   // std::cout << "despl: " << desplazamiento << '\n';
   return alejarDeNormal(pto, fig.getNormal(pto), desplazamiento);
 }
 
 void Textura::bump(const Vector3& pto, const Figura& fig, Matriz4& baseBump) const{
-    float du = 2; // tamaño del paso para diferenciacion
+    float du = 1e-2; // tamaño del paso para diferenciacion
     Vector3 ptoDesplazado = desplazar(pto, fig);
     // if (pto - ptoDesplazado) {
     //   std::cerr << "pto es ptoDesplazado!!!" << '\n';

@@ -56,17 +56,18 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// Caja:
 		Plano suelo(UP, 1.0*distanciaParedes);
 		// suelo.setColor(0.8,0.8,0.8);
-
-		Imagen bump= Imagen("sponza-bumpmap-p3.ppm", true);
+		// sponza-bumpmap del pbrt, capitulo bump mapping
+		//Imagen bump= Imagen("sponza-bumpmap-p3.ppm", true); // textura-bump.ppm
+		Imagen bump= Imagen("bump-agua-p3.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
 		// Textura tex=Textura(t,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
 		Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
 		Matriz4 rotaciontex;
 		rotaciontex.setRotarX(gradosARad(90));
 		texRotada.rotar(rotaciontex);
-		texRotada.setMaxDesplaz(5);
-		suelo.setMaterial(difusoGris);
+		texRotada.setMaxDesplaz(3e-2);
+		suelo.setMaterial(ESPEJO);
 		suelo.setBumpMap(std::make_shared<Textura>(texRotada));
-		suelo.setTextura(std::make_shared<Textura>(texRotada));
+		//suelo.setTextura(std::make_shared<Textura>(texRotada));
 		e.addFigura(std::make_shared<Plano>(suelo));
 
 		Plano techo(-UP, distanciaParedes);
@@ -98,7 +99,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
-		Color emisionLuces(40);
+		Color emisionLuces(8);//40
 		LuzPuntual luz(posLuz, emisionLuces);
 		e.addLuz(luz);
 

@@ -104,7 +104,9 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		c = mat.getCoeficiente(0); // usamos el coeficiente del difuso
 		if (c == double(0)) c = mat.getCoeficiente(1);
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
-		c = c*pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread); // kd * Li
+		float pdf = mat.getPDF(evento, primerRebote);
+
+		c = c/pdf*pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread); // kd * Li
 	}
 	else { // --------------------------- DIFUSO
 		if (fig->tieneTextura()) { // con textura

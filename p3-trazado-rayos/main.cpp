@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
 	auto escena = escenaCornellBoxMateriales(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
-	auto tipo = PMRenderer::TipoRender::Materiales;//;Normales//;//FotonesRadioFijo;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
+	auto tipo = PMRenderer::TipoRender::Materiales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 	// -----------------------------------------------
@@ -93,4 +93,8 @@ int main(int argc, char* argv[]) {
 	// pmrend.render(argv[1]);
 	return 0;
 }
+ 
+ 
+ 
+ 
  

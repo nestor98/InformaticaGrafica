@@ -10,7 +10,7 @@
 
 
 Textura::Textura(const Imagen& i, const float _ancho, const float _alto, const Vector3& _pos)
-  : tex(i), ancho(_ancho), alto(_alto), pos(_pos+LEFT*_ancho/2.0-UP*_ancho/2.0), _esBumpMap(false)
+  : tex(i), ancho(_ancho), alto(_alto), pos(_pos), _esBumpMap(false)
 {
   base.setCambioBase(UP, -LEFT, FRONT, pos);
   baseInversa = base.inversa();

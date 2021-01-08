@@ -70,6 +70,7 @@ int Camara::getNumPixeles() const {
 
 // devuelve el vector del iesimo pixel de la camara
 Vector3 Camara::getRayoPixel(const int i) const{
+	//std::cout<<"funcion camara\n";
 	int x = i%(pixelesX); // coord x
 	int y = i/(pixelesX);
 
@@ -80,6 +81,7 @@ Vector3 Camara::getRayoPixel(const int i) const{
 	// std::cout << xLeft << "\t" << yUp << std::endl;
 	Vector3 dirCamara(xLeft, yUp, 1, false);
 	//std::cout << "Dircamara: " << dirCamara << std::endl;
+	//std::cout<<normalizar(base*dirCamara)<<"\n";
 	return normalizar(base*dirCamara); // se devuelve en coords del mundo
 }
 

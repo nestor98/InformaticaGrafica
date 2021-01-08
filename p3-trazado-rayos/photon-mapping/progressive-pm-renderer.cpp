@@ -1,21 +1,21 @@
-#include <iostream>
-#include <array>
-#include <string>
-#include <cmath>
-#include <vector>
-// cmath para sqrt
+// #include <iostream>
+// #include <array>
+// #include <string>
+// #include <cmath>
+// #include <vector>
+// // cmath para sqrt
 
-#include <chrono> // tests
+// #include <chrono> // tests
 
 #include "progressive-pm-renderer.hpp"
 #include "Foton.hpp"
 
 
-#include "escena.hpp"
+// #include "escena.hpp"
 
 
 
-#define hrc std::chrono::high_resolution_clock
+// #define hrc std::chrono::high_resolution_clock
 
 
 //*********************************************************************

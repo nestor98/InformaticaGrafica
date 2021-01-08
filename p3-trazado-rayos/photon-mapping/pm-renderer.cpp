@@ -91,6 +91,9 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 			break;
     //std::cout << "he intersectado" << '\n';
 		Figura::InterseccionData iData = inter->first;
+    if(inter->second->esEmisor()){
+      break;
+    }
 		Material mat = inter->second->getMaterial();
 
     int evento = mat.ruletaRusa(rng, true); // No absorbemos con esta ruleta

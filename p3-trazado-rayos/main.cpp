@@ -17,32 +17,6 @@
 #include "prefabricadas.hpp"
 using namespace std;
 
-
-/*
-auto escena = escenaCornellBoxMateriales(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
-escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
-int nThreads = atoi(argv[2]);
-auto tipo = Renderer::TipoRender::Materiales;//Materiales;//FotonesRadioFijo;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
-bool usarBVH = true;
-int resColor = atoi(argv[4]); // maxFloat de hdr
-// Renderer rend(*escena, nThreads, tipo, usarBVH);
-
-// Parametros de PM:
-int maxNumFotones= 100000,
-		maxFotonesGlobales= 100000, maxFotonesCausticos= 0,
-		nFotonesCercanos = 50;
-bool guardarDirectos = true;
-// Renderer de photon mapping:
-PMRenderer pmrend(*escena, 1, tipo, false, resColor, maxNumFotones,
-	maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
-	guardarDirectos);
-
-pmrend.render(argv[1]);
-*/
-
-
-
-
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
 	if (argc < 5) {// <fichero de entrada>
@@ -93,5 +67,3 @@ int main(int argc, char* argv[]) {
 	pmrend.render(argv[1]);
 	return 0;
 }
- 
- 

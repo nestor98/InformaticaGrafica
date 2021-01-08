@@ -485,8 +485,6 @@ Vector3 operator * (const Vector3& v, const float& s) {
 	return res;
 }
 
-
-
 // escalar v/s
 Vector3 operator / (const Vector3& v, const float& s) {
 	if (s == 0) {

@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
 
 	rend.render(argv[1]);*/ 
 
-	auto escena = escenaPruebaSky(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
+	auto escena = escenaPruebaSky(500, 300, atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
 	auto tipo = Renderer::TipoRender::Materiales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
@@ -72,27 +72,72 @@ int main(int argc, char* argv[]) {
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 	// -----------------------------------------------
 	// Con Path tracer:
-	Renderer rend(*escena, nThreads, tipo, usarBVH, resColor);
-	rend.render(argv[1]);
+	// Renderer rend(*escena, nThreads, tipo, usarBVH, resColor);
+	// rend.render(argv[1]);
 	// ----------------------------------------------- 
 
 
 	// -----------------------------------------------
 	// Con PM;
 	// Parametros de PM:
-	// int maxNumFotones= 15000000,  
-	// 		maxFotonesGlobales= 50000, maxFotonesCausticos= 1000000,
-	// 		nFotonesCercanos = 250;
-	// bool guardarDirectos = false;
-	// // Renderer de photon mapping:
-	// PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
-	// 	maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
-	// 	guardarDirectos);
-	// // pmrend.iterarRenderAll(15,argv[1]);
+	int maxNumFotones= 15000000,  
+			maxFotonesGlobales= 50000, maxFotonesCausticos= 1000000,
+			nFotonesCercanos = 250;
+	bool guardarDirectos = false;
+	// Renderer de photon mapping:
+	PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
+		maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
+		guardarDirectos);
+	// pmrend.iterarRenderAll(15,argv[1]);
 
-	// pmrend.render(argv[1]);
+	pmrend.render(argv[1]);
 	return 0;
 }
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  

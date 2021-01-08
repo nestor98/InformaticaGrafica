@@ -197,8 +197,8 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
   if(_estructura== GeneradorEstructuras::Estructura::SkyBox){
     //Plano delante=setPlano(imagen+"pz.ppm", -FRONT,(FRONT*dist)+(UP*dist)+(LEFT)*dist, dist);
     Imagen ipz=Imagen(imagen+"pz.ppm", true);
-    Textura tpz=Textura(ipz, 2.0*dist, 2.0*dist,(FRONT*dist)+(UP*dist*2)+(LEFT)*dist);
-    Plano pz=Plano(-FRONT, 2*dist);
+    Textura tpz=Textura(ipz, 2.0*dist, 2.0*dist,(FRONT*dist)+(UP*dist)+(LEFT)*dist);
+    Plano pz=Plano(-FRONT, dist);
     Matriz4 rpz;
      rpz.setRotarY(gradosARad(-90));
     tpz.rotar(rpz);
@@ -210,7 +210,7 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     Textura tnz=Textura(inz, 2.0*dist, 2.0*dist, (-FRONT*dist)+(UP*dist)+(LEFT)*dist);
     Plano nz=Plano(FRONT, dist);
     Matriz4 rnz;
-    rnz.setRotarY(gradosARad(180));
+    rnz.setRotarY(gradosARad(90));
     tnz.rotar(rnz);
     nz.setTextura(std::make_shared<Textura>(tnz));
     figuras->emplace_back(std::make_shared<Plano>(nz));
@@ -220,12 +220,13 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     Plano px=Plano(LEFT, dist);
     Matriz4 rpx;
     rpx.setRotarY(gradosARad(90));
-    tpx.rotar(rpx);
+    rnz.setRotarX(gradosARad(-90));
+    tpx.rotar(rpx*rnz);
     px.setTextura(std::make_shared<Textura>(tpx));
     figuras->emplace_back(std::make_shared<Plano>(px));
 
     Imagen inx=Imagen(imagen+"nx.ppm", true);
-    Textura tnx=Textura(inx, 2.0*dist, 2.0*dist, (UP*2*dist)+(-FRONT*dist));
+    Textura tnx=Textura(inx, 2.0*dist, 2.0*dist, (UP*dist)+(-FRONT*dist));
     Plano nx=Plano(-LEFT, dist);
     Matriz4 rnx;
     rnx.setRotarY(gradosARad(-90));
@@ -235,11 +236,12 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     figuras->emplace_back(std::make_shared<Plano>(nx));
 
     Imagen ipy=Imagen(imagen+"py.ppm", true);
-    Textura tpy=Textura(ipy, 2.0*dist, 2.0*dist, (UP*dist)+(-FRONT*dist)+(LEFT)*dist);
+    Textura tpy=Textura(ipy, 2.0*dist, 2.0*dist, (-FRONT*dist)+(LEFT*dist));
     Plano py=Plano(-UP, dist);
     Matriz4 rpy;
-    rpy.setRotarX(gradosARad(-90));
-    tpy.rotar(rpy);
+    rpy.setRotarX(gradosARad(90));
+    rpx.setRotarY(gradosARad(-90));
+    tpy.rotar(rpy*rpx);
     py.setTextura(std::make_shared<Textura>(tpy));
     figuras->emplace_back(std::make_shared<Plano>(py));
 
@@ -249,7 +251,8 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     Plano ny=Plano(UP, dist);
     Matriz4 rny;
     rny.setRotarX(gradosARad(90));
-    tny.rotar(rny);
+    rpx.setRotarY(gradosARad(-90));
+    tny.rotar(rny*rpx);
     ny.setTextura(std::make_shared<Textura>(tny));
     figuras->emplace_back(std::make_shared<Plano>(ny));
 

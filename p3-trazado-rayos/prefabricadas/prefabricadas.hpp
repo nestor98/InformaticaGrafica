@@ -34,9 +34,9 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 		// ----------------------- Camara:
 		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
-		double fov = gradosARad(60); //0.475 * PI;
+		double fov = gradosARad(90); //0.475 * PI;
 
-		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT-FRONT,
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
 		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
 
 
@@ -57,6 +57,7 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 		GeneradorEstructuras gen=GeneradorEstructuras(GeneradorEstructuras::Estructura::SkyBox, "texturas/",6.0);
 		auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 		e.addFiguras(figuras);
+
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;

@@ -73,7 +73,7 @@ Color Textura::getEmision(const Vector3& pto) const{
     Vector3 ptoLocal = baseInversa * pto;
     double x = ptoLocal[0];//-pos[0];
     double y=ptoLocal[1]; // [0, tex.getPixelesY)
-    y = -(y-pos[1]);
+    y = -(y);
     x = x/ancho;
     y = y/alto;
 

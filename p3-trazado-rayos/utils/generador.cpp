@@ -191,13 +191,15 @@ Plano GeneradorEstructuras::setPlano(const std::string imagen, Vector3 normal, c
 }
 
 
-GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura, const std::string imagen, const double dist):
+GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura,
+  const std::string imagen, const double& dist, const float& multIlum)
+:
 tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
 {
   if(_estructura== GeneradorEstructuras::Estructura::SkyBox){
     //Plano delante=setPlano(imagen+"pz.ppm", -FRONT,(FRONT*dist)+(UP*dist)+(LEFT)*dist, dist);
     Imagen ipz=Imagen(imagen+"pz.ppm", true);
-    Textura tpz=Textura(ipz, 2.0*dist, 2.0*dist,(FRONT*dist)+(UP*dist)+(LEFT)*dist);
+    Textura tpz=Textura(ipz, 2.0*dist, 2.0*dist,(FRONT*dist)+(UP*dist)+(LEFT)*dist,multIlum);
     Plano pz=Plano(-FRONT, dist);
     Matriz4 rpz;
      rpz.setRotarY(gradosARad(-90));
@@ -207,7 +209,7 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     figuras->emplace_back(std::make_shared<Plano>(pz));
 
     Imagen inz=Imagen(imagen+"nz.ppm", true);
-    Textura tnz=Textura(inz, 2.0*dist, 2.0*dist, (-FRONT*dist)+(UP*dist)+(LEFT)*dist);
+    Textura tnz=Textura(inz, 2.0*dist, 2.0*dist, (-FRONT*dist)+(UP*dist)+(LEFT)*dist,multIlum);
     Plano nz=Plano(FRONT, dist);
     Matriz4 rnz;
     rnz.setRotarY(gradosARad(90));
@@ -216,7 +218,7 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     figuras->emplace_back(std::make_shared<Plano>(nz));
 
     Imagen ipx=Imagen(imagen+"px.ppm", true);
-    Textura tpx=Textura(ipx, 2.0*dist, 2.0*dist, (-LEFT*dist)+(UP*dist)+(FRONT)*dist);
+    Textura tpx=Textura(ipx, 2.0*dist, 2.0*dist, (-LEFT*dist)+(UP*dist)+(FRONT)*dist,multIlum);
     Plano px=Plano(LEFT, dist);
     Matriz4 rpx;
     rpx.setRotarY(gradosARad(90));
@@ -226,7 +228,7 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     figuras->emplace_back(std::make_shared<Plano>(px));
 
     Imagen inx=Imagen(imagen+"nx.ppm", true);
-    Textura tnx=Textura(inx, 2.0*dist, 2.0*dist, (UP*dist)+(-FRONT*dist));
+    Textura tnx=Textura(inx, 2.0*dist, 2.0*dist, (UP*dist)+(-FRONT*dist),multIlum);
     Plano nx=Plano(-LEFT, dist);
     Matriz4 rnx;
     rnx.setRotarY(gradosARad(-90));
@@ -236,7 +238,7 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     figuras->emplace_back(std::make_shared<Plano>(nx));
 
     Imagen ipy=Imagen(imagen+"py.ppm", true);
-    Textura tpy=Textura(ipy, 2.0*dist, 2.0*dist, (-FRONT*dist)+(LEFT*dist));
+    Textura tpy=Textura(ipy, 2.0*dist, 2.0*dist, (-FRONT*dist)+(LEFT*dist),multIlum);
     Plano py=Plano(-UP, dist);
     Matriz4 rpy;
     rpy.setRotarX(gradosARad(90));
@@ -247,7 +249,7 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
 
 
     Imagen iny=Imagen(imagen+"ny.ppm", true);
-    Textura tny=Textura(iny, 2.0*dist, 2.0*dist, (-UP*dist)+(FRONT*dist)+(LEFT)*dist);
+    Textura tny=Textura(iny, 2.0*dist, 2.0*dist, (-UP*dist)+(FRONT*dist)+(LEFT)*dist,multIlum);
     Plano ny=Plano(UP, dist);
     Matriz4 rny;
     rny.setRotarX(gradosARad(90));

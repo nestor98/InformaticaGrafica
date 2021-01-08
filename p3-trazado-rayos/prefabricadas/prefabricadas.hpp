@@ -54,7 +54,7 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 		Material difusoGris = DIFUSO_GRIS;
 		//
 		// Caja:
-		GeneradorEstructuras gen=GeneradorEstructuras(GeneradorEstructuras::Estructura::SkyBox, "texturas/",6.0);
+		GeneradorEstructuras gen=GeneradorEstructuras(GeneradorEstructuras::Estructura::SkyBox, "texturas/",6.0, 8);
 		auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 		e.addFiguras(figuras);
 

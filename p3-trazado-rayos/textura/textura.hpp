@@ -19,12 +19,14 @@ class Textura{
         int ancho;
         int alto;
         Vector3 pos;
+        float multColor;
         Matriz4 base, baseInversa; // Bases para local->mundo, mundo->local
         bool _esBumpMap;
         float maxDespl;
     public:
     Textura();
-    Textura(const Imagen& i, const float _ancho, const float _alto, const Vector3& _pos);
+    Textura(const Imagen& i, const float _ancho, const float _alto,
+      const Vector3& _pos, const float& _multColor=1);
     Color getEmision(const Vector3& pto)const;
 
     // Rota la textura segun la matriz de rotacion, alrededor de pos (esquina sup izquierda)

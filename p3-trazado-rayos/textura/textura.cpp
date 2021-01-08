@@ -9,8 +9,10 @@
 #include "figura.hpp"
 
 
-Textura::Textura(const Imagen& i, const float _ancho, const float _alto, const Vector3& _pos)
-  : tex(i), ancho(_ancho), alto(_alto), pos(_pos), _esBumpMap(false)
+Textura::Textura(const Imagen& i, const float _ancho, const float _alto,
+  const Vector3& _pos, const float& _multColor)
+  : tex(i), ancho(_ancho), alto(_alto), pos(_pos), _esBumpMap(false),
+  multColor(_multColor)
 {
   base.setCambioBase(UP, -LEFT, FRONT, pos);
   baseInversa = base.inversa();
@@ -28,7 +30,7 @@ Textura::Textura(const Imagen& i, const float _ancho, const float _alto, const V
     // }
 }
 
-Textura::Textura(): ancho(0), alto(0), _esBumpMap(false)
+Textura::Textura(): ancho(0), alto(0), _esBumpMap(false), multColor(1)
 {
   std::cout<<"vacio\n";
 }
@@ -78,7 +80,7 @@ Color Textura::getEmision(const Vector3& pto) const{
     y = y/alto;
 
     // std::cout << int(y*tex.getNumPixelsY()) << "  " << int(x*tex.getNumPixelsX()) << std::endl;
-    return Color(tex.getPixel(int((y)*(tex.getNumPixelsY()-1)), int((1.0-x)*(tex.getNumPixelsX()-1))));
+    return multColor*Color(tex.getPixel(int((y)*(tex.getNumPixelsY())), int((1.0-x)*(tex.getNumPixelsX()))));
 }
 
 Vector3 Textura::desplazar(const Vector3& pto, const Figura& fig) const {

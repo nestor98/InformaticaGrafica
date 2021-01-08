@@ -30,7 +30,8 @@ public:
   // Idem, a partir de la base _base:
   GeneradorEstructuras(const Estructura _estructura, const Matriz4& _base, const Vector3& _tam, const int iteraciones=3);
 
-  GeneradorEstructuras(const Estructura _estructura, const std::string imagen, const double dist=10);
+  // Cubemap
+  GeneradorEstructuras(const Estructura _estructura, const std::string imagen, const double& dist=10, const float& multIlum=3.0);
 
   Plano setPlano(const std::string imagen, Vector3 normal,Vector3 pos,  const double dist);
 

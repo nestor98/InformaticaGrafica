@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
 	// -----------------------------------------------
 	// Con PM;
 	// Parametros de PM:
-	int maxNumFotones= 15000000,
+	int maxNumFotones= 1000000,
 			maxFotonesGlobales= 50000, maxFotonesCausticos= 1000000,
 			nFotonesCercanos = 250;
 	bool guardarDirectos = false;
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
 		maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
 		guardarDirectos);
 	// pmrend.iterarRenderAll(15,argv[1]);
-	
+
 	pmrend.render(argv[1]);
 	return 0;
 }

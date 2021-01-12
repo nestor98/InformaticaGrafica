@@ -195,10 +195,10 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 
 
 
-    if(viejo<energia && mat.esDelta(evento)){
-      std::cout<<"antes:"<<viejo<<" , nueva: "<<energia<<" albedo: "<<albedo<<" pdf: "<<pdf<<"albedopromedio: "<<albedoPromedio<<". \n";
-      std::cout<<"La energia ha aumentado baia baia\n";
-     }//else{
+    // if(viejo<energia && mat.esDelta(evento)){
+    //   std::cout<<"antes:"<<viejo<<" , nueva: "<<energia<<" albedo: "<<albedo<<" pdf: "<<pdf<<"albedopromedio: "<<albedoPromedio<<". \n";
+    //   std::cout<<"La energia ha aumentado baia baia\n";
+    //  }//else{
       //std::cout<<"antes:"<<viejo<<" , nueva: "<<energia<<" albedo: "<<albedo<<" pdf: "<<pdf<<"albedopromedio: "<<albedoPromedio<<". \n";
     //}
 

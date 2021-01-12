@@ -224,8 +224,12 @@ void Material::setRandom() {
 float Material::getPDF(const int evento, const bool primerRebote) const {
 	float pdf = 0;
 	if (0 <= evento || evento < 3) {
-		return maxCoefs[evento];
-
+		if (!primerRebote) {
+			return maxCoefs[evento];
+		}
+		else { // Primer rebote
+			return maxCoefs[evento]/0.9; // los 0,9 deben ser 1, etc.
+		}
 	}
 	else {
 		if (primerRebote) {

@@ -10,8 +10,10 @@
 
 #include "Imagen.hpp"
 
-Camara::Camara(const Vector3& _posicion, const Vector3& _front, const Vector3& _left, const Vector3& _up,
-							 const int _pixelesX, const int _pixelesY, const int _rayosPixel) :
+Camara::Camara(const Vector3& _posicion, const Vector3& _front,
+							 const Vector3& _left, const Vector3& _up,
+							 const int _pixelesX, const int _pixelesY, const int _rayosPixel)
+	:
 	posicion(_posicion), front(_front), left(_left), up(_up), pixelesX(_pixelesX), pixelesY(_pixelesY),
 	rayosPixel(_rayosPixel), base(left, up, front, posicion)
 {
@@ -23,17 +25,18 @@ Camara::Camara(const Vector3& _posicion, const Vector3& _front, const Vector3& _
 }
 
 
-Camara::Camara(const Vector3& _posicion, const Vector3& objetivo, const Vector3& _up, const double fov, const int _pixelesX,
+Camara::Camara(const Vector3& _posicion, const Vector3& objetivo,
+	const Vector3& _up, const double fov, const int _pixelesX,
 	const int _pixelesY, const int _rayosPixel) :
 		posicion(_posicion), up(_up),
 		pixelesX(_pixelesX), pixelesY(_pixelesY),rayosPixel(_rayosPixel)
 		{
 			left = cross(up, normalizar(objetivo)) * (double(pixelesX)/double(pixelesY));
-			std::cout << "up x objetivo = " << cross(up, objetivo) << '\n';
-			std::cout << "left: " << left << "\nLEFT:" << LEFT << '\n';
-			std::cout << "up: " << up << "\nUP:" << UP << '\n';
+			// std::cout << "up x objetivo = " << cross(up, objetivo) << '\n';
+			// std::cout << "left: " << left << "\nLEFT:" << LEFT << '\n';
+			// std::cout << "up: " << up << "\nUP:" << UP << '\n';
 			front = cross(left, up);
-			std::cout << "front: " << front << "\nFRONT:" << FRONT << '\n';
+			// std::cout << "front: " << front << "\nFRONT:" << FRONT << '\n';
 			setFOV(fov);
 
 		}
@@ -101,10 +104,6 @@ Vector3 Camara::getRayoCentroPixel(const int i) const{
 }
 
 
-
-
-
-
 int Camara::getRayosPorPixel() const {
 	return rayosPixel;
 }
@@ -119,11 +118,12 @@ void Camara::setFOV(const double fov) {
 	// sacado con un dibujo y tan(angulo) = opuesto/adyacente
 	// con angulo=fov, opuesto=up, adyacente=front
 	float modFront = left.getModulo()/tan(fov/2.0);
-	 std::cout << "modFront: " << modFront << std::endl;
+	 // std::cout << "modFront: " << modFront << std::endl;
 	front.setModulo(std::abs(modFront));
-		 std::cout << "modFrontdespues: " << modFront << std::endl;
+		 // std::cout << "modFrontdespues: " << modFront << std::endl;
 
 	base.setCambioBase(left, up, front, posicion);
+	std::cout << "Base camara: " << base << '\n';
 }
 
 // Dada una anchura de una escena a renderizar, devuelve a que distancia tiene que estar

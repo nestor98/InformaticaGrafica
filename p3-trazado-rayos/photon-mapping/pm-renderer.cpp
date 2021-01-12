@@ -191,17 +191,17 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 		if( !mat.esDelta(evento) )
 			energia = energia * std::abs(base[2] * dirFoton)/PI;// base[2] es la normal
 
-		energia = energia*pdf /(albedoPromedio);//albedo.getMax());//*albedoPromedio);// pdf? :( energia /(pdf*albedoPromedio)
+		energia = energia /(albedoPromedio*pdf);//albedo.getMax());//*albedoPromedio);// pdf? :( energia /(pdf*albedoPromedio)
 
 
- 
+
     if(viejo<energia && mat.esDelta(evento)){
       std::cout<<"antes:"<<viejo<<" , nueva: "<<energia<<" albedo: "<<albedo<<" pdf: "<<pdf<<"albedopromedio: "<<albedoPromedio<<". \n";
       std::cout<<"La energia ha aumentado baia baia\n";
      }//else{
       //std::cout<<"antes:"<<viejo<<" , nueva: "<<energia<<" albedo: "<<albedo<<" pdf: "<<pdf<<"albedopromedio: "<<albedoPromedio<<". \n";
     //}
-    
+
 
 
     viejo=energia;

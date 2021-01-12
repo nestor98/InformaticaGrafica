@@ -79,6 +79,8 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
 	bool esCaustica = false;
   bool todosCausticos = true;
 
+  Color viejo(p);
+
 	//Iterate the path
 	while(1)
 	{
@@ -184,11 +186,31 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
     //double albedoMax = mat.getMax
     Color eAntes = energia;
 		energia = energia*albedo;
+
+
 		if( !mat.esDelta(evento) )
 			energia = energia * std::abs(base[2] * dirFoton)/PI;// base[2] es la normal
 
-		energia = energia /(pdf*albedoPromedio);//albedo.getMax());//*albedoPromedio);// pdf? :(
+		energia = energia*pdf /(albedoPromedio);//albedo.getMax());//*albedoPromedio);// pdf? :( energia /(pdf*albedoPromedio)
+
+
+ 
+    if(viejo<energia && mat.esDelta(evento)){
+      std::cout<<"antes:"<<viejo<<" , nueva: "<<energia<<" albedo: "<<albedo<<" pdf: "<<pdf<<"albedopromedio: "<<albedoPromedio<<". \n";
+      std::cout<<"La energia ha aumentado baia baia\n";
+     }//else{
+      //std::cout<<"antes:"<<viejo<<" , nueva: "<<energia<<" albedo: "<<albedo<<" pdf: "<<pdf<<"albedopromedio: "<<albedoPromedio<<". \n";
+    //}
+    
+
+
+    viejo=energia;
   }
+
+
+
+
+
 	if( fotonesCausticos.size() == maxFotonesCausticos &&
 		fotonesGlobales.size() == maxFotonesGlobales )
 	{

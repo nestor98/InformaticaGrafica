@@ -710,3 +710,40 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 
 		return std::make_unique<Escena>(e);
 }
+
+
+
+
+std::unique_ptr<Escena> escenaExplosionEsferas(const int pixelesX, const int pixelesY, const int rayosPP) {
+		// ----------------------- Constantes de la escena:
+		double distanciaParedes = 3;
+		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+
+		// ----------------------- Camara:
+		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
+		double fov = gradosARad(90); //0.475 * PI;
+
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
+		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+
+		double dmin = 0.3, dmax = 0.5,// distanciaParedes,
+					rmin = 0.2, rmax=0.6;
+		int nEsferas = 10;
+		GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ExplosionEsferas, centroHabitacion,
+			dmin, dmax, rmin, rmax, nEsferas);
+		auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+		// for (auto f : *figuras) {
+		// 	f->setMaterial(PLASTICO_GRIS);
+		// }
+
+
+		Escena e(std::make_shared<Camara>(c));//Materiales);//MaterialesSinBVH
+		e.addFiguras(figuras);
+		std::cout << "escena:\n" <<e << '\n';
+		return std::make_unique<Escena>(e);
+}

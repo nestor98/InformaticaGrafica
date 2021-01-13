@@ -21,7 +21,7 @@ class GeneradorEstructuras {
   void setArbolPrismas(const Matriz4& base, const Vector3& tam, const int iteraciones = 3);
 
 public:
-  enum Estructura {MengerSponge, ArbolPrismas, SkyBox}; // Añadir otras estructuras aqui
+  enum Estructura {MengerSponge, ArbolPrismas, SkyBox, ExplosionEsferas}; // Añadir otras estructuras aqui
 private:
   Estructura tipo;
 public:
@@ -32,6 +32,12 @@ public:
 
   // Cubemap
   GeneradorEstructuras(const Estructura _estructura, const std::string imagen, const double& dist=10, const float& multIlum=3.0);
+
+  // Explosion de esferas
+  GeneradorEstructuras(const Estructura _estructura, const Vector3& _centro,
+    const double& _dmin, const double& _dmax, const double& _rmin, const double& _rmax,
+    const int _nEsferas);
+
 
   Plano setPlano(const std::string imagen, Vector3 normal,Vector3 pos,  const double dist);
 

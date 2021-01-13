@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 
 	rend.render(argv[1]);*/
 
-	auto escena = escenaCornellBoxMateriales(500, 300, atoi(argv[3])); // pixX, pixY, rayosPP
+	auto escena = escenaCornellBoxMateriales(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
 	auto tipo = Renderer::TipoRender::Materiales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
@@ -54,8 +54,8 @@ int main(int argc, char* argv[]) {
 	// -----------------------------------------------
 	// Con PM;
 	// Parametros de PM:
-	int maxNumFotones= 1000000,
-			maxFotonesGlobales= 50000, maxFotonesCausticos= 1000000,
+	int maxNumFotones= 500000000,
+			maxFotonesGlobales= 500000, maxFotonesCausticos= 50000000,
 			nFotonesCercanos = 250;
 	bool guardarDirectos = false;
 	// Renderer de photon mapping:

@@ -2,6 +2,7 @@
 #include <memory>
 
 #include "generador.hpp"
+#include "esfera.hpp"
 
 #include <map>
 #include <string>
@@ -265,6 +266,42 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
     exit(1);
   }
 }
+
+// Explosion de esferas
+GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura, const Vector3& _centro,
+  const double& _dmin, const double& _dmax, const double& _rmin, const double& _rmax,
+  const int _nEsferas) :
+  tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
+{
+  if (_estructura != ExplosionEsferas) {
+    std::cerr << "Este constructor solo es para GeneradorEstructuras::ExplosionEsferas" << '\n';
+    exit(1);
+  }
+  else {
+    Vector3 minpos = _centro - _dmax*Vector3();
+    Vector3 maxpos = _centro + _dmax*Vector3();
+    GeneradorAleatorio rng;
+    Color emision;
+    for (size_t i = 0; i < _nEsferas; i++) {
+      double desplazamiento = rng.rand(_dmin, _dmax);
+      Vector3 pos = _centro + rng.vectorNormalAleatorio() * desplazamiento;
+      Esfera e(pos, rng.rand(_rmin, _rmax));
+      double eps = rng.rand01();
+      if (eps < 0.5) {
+        // e.setRandomColor();
+        eps = rng.rand(1.0,80.0); // multiplica la emision por algo entre 1 y 8
+        emision.setFromPosGrad(pos,minpos,maxpos);
+        std::cout << "emision: "<< emision*eps << '\n';
+        e.setColor(emision*eps);
+      }
+      else {
+        e.setMaterial(PLASTICO_DORADO);
+      }
+      figuras->emplace_back(std::make_shared<Esfera>(e));
+    }
+  }
+}
+
 
 
 GeneradorEstructuras::vectorFigs GeneradorEstructuras::getVectorFiguras() const {

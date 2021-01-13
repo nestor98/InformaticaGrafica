@@ -4,15 +4,18 @@
 #include "figura.hpp"
 #include "prisma.hpp"
 
-Figura::Figura(const std::array<double, 3> _e) : e(_e), emite(true), textura(false)
+Figura::Figura(const std::array<double, 3> _e) :
+e(_e), emite(true), textura(false), conBumpMap(false)
 {}
 
-Figura::Figura(const Material& _m) : m(_m), emite(false), textura(false)
+Figura::Figura(const Material& _m)
+: m(_m), emite(false), textura(false), conBumpMap(false)
 {}
 
 
 // TODO: revisar emite, gestionar texturas+materiales etc
-Figura::Figura(std::shared_ptr<Textura> _tex): emite(true), tex(_tex), textura(true)
+Figura::Figura(std::shared_ptr<Textura> _tex)
+: emite(true), tex(_tex), textura(true), conBumpMap(false)
 {
 	// std::cout << "ah pos si\n";
 }

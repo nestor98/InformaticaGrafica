@@ -228,7 +228,8 @@ float Material::getPDF(const int evento, const bool primerRebote) const {
 			return maxCoefs[evento];
 		}
 		else { // Primer rebote
-			return maxCoefs[evento]/0.9; // los 0,9 deben ser 1, etc.
+			double totalCoefs = maxCoefs[0]+maxCoefs[1]+maxCoefs[2];
+			return maxCoefs[evento]/totalCoefs; // los 0,9 deben ser 1, etc.
 		}
 	}
 	else {

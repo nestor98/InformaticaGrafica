@@ -133,8 +133,9 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		// }
 		Matriz4 base = fig->getBase(pto);
 
-		// Iluminacion directa:pto = alejarDeNormal(base[3], base[2])
-		Color iDirecta = muestraLuzDirecta(base[3], base[2], rngThread);
+		// Iluminacion directa:
+		Vector3 pto = alejarDeNormal(base[3], base[2]);
+		Color iDirecta = muestraLuzDirecta(base[3], base[2], rngThread); // poner pto en base[3]
 
 		// Iluminacion indirecta:
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
@@ -142,8 +143,8 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		// std::cout << "pdf: "<<pdf << '\n';
 		// Aqui, c es kd
 		// TODO: REVISAR COSENOS
-		float cosangulos =1;// std::abs(otroPath*dir);
-		c = c*cosangulos/pdf *(iDirecta + pathTrace(alejarDeNormal(base[3], base[2]), otroPath, rngThread)); // kd * Li
+		float cosangulos = std::abs(otroPath*dir);
+		c = c*cosangulos/pdf *(iDirecta + pathTrace(pto, otroPath, rngThread)); // kd * Li
 	}
 	return c;
 }

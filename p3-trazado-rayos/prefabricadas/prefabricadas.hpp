@@ -241,7 +241,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
-		Color emisionLuces(8);//40 //8
+		Color emisionLuces(30);//40 //8
 		LuzPuntual luz(posLuz, emisionLuces);
 		e.addLuz(luz);
 

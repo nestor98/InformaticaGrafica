@@ -71,7 +71,7 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Esce
 		return bvh.interseccion(o, dir);
 	}
 	else {
-		std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sin bvh????" << '\n';
+		//std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sin bvh????" << '\n';
 		float t = -1;
 		Vector3 pto;
 		std::shared_ptr<Figura> f;
@@ -80,6 +80,7 @@ std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Esce
 			auto iFig = fig->interseccion(o, dir);
 			// std::cout << "Probando interseccion con " <<fig << '\n';
 			if (iFig) {
+				// std::cout << "interseccion" << '\n';
 				if (tMenor(iFig->t, t)) {
 					t = iFig->t;
 					pto = iFig->punto;

@@ -1,4 +1,6 @@
+#include <cmath>
 #include "utils.hpp"
+
 
 std::random_device rd;  //Will be used to obtain a seed for the random number engine
 
@@ -38,6 +40,14 @@ int GeneradorAleatorio::rand(const int min, const int max) const {
 // }
 
 
-Vector3 GeneradorAleatorio::vectorNormalAleatorio() const {
+Vector3 GeneradorAleatorio::vectorNormalAleatorioBruto() const {
 	return normalizar(Vector3(rand01()-0.5, rand01()-0.5, rand01()-0.5, false));
+}
+
+Vector3 GeneradorAleatorio::vectorNormalAleatorio() const {
+	double eps1 = rand(-1.0, 1.0);
+	double eps2 = rand01();
+	double th = acos(eps1);
+	double phi = 2*PI*eps2;
+	return normalizar(Vector3(sin(th)*cos(phi), sin(th)*sin(phi),cos(th), false));
 }

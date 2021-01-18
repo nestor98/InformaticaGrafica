@@ -19,6 +19,10 @@ public:
 	int rand(const int min, const int max) const; // entero uniforme en [min, max-1]
 	std::string to_string() const;
 
+	// Vector normal aleatorio mal distribuido:
+	Vector3 vectorNormalAleatorioBruto() const;
+
+	// Vector normal aleatorio uniforme:
 	Vector3 vectorNormalAleatorio() const;
 
 

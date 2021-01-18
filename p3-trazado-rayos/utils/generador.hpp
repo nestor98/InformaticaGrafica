@@ -36,7 +36,7 @@ public:
   // Explosion de esferas
   GeneradorEstructuras(const Estructura _estructura, const Vector3& _centro,
     const double& _dmin, const double& _dmax, const double& _rmin, const double& _rmax,
-    const int _nEsferas);
+    const int _nEsferas, const double& _probEmision=1.0);
 
 
   Plano setPlano(const std::string imagen, Vector3 normal,Vector3 pos,  const double dist);

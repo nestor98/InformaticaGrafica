@@ -24,6 +24,11 @@ Renderer::Renderer(const Escena& _e, const int _nThreads, const Renderer::TipoRe
 	threads.reserve(_nThreads+1); // +1 por la barra de progreso
 }
 
+Color contribucion(const Color& emision, const double& distLuz, const Vector3& normal, const Vector3& rayoSombra) {
+	Color c = emision / (distLuz * distLuz);
+	return c * (std::abs(normal * rayoSombra)); // Se devuelve su color entre la distancia al cuadrado
+}
+
 Color Renderer::shadowRay(const Vector3& pto, const Vector3& normal, const int indiceluz) const {
 	Color c;
 	LuzPuntual luz=	e.getLuz(indiceluz);
@@ -31,15 +36,19 @@ Color Renderer::shadowRay(const Vector3& pto, const Vector3& normal, const int i
 	double distLuz = rayoSombra.getModulo();
 	rayoSombra = normalizar(rayoSombra);
 	auto interseccionFigura = e.interseccion(pto, rayoSombra);
-
+	bool contarContribucion=false;
 	if (interseccionFigura) {
 		if (distLuz < interseccionFigura->first.t) {
+			return contribucion(luz.getEmision(), distLuz, normal, rayoSombra);
 			// c = eluz / |distLuz|^2 / |normal * rayoSombra|
-			c = luz.getEmision() / (distLuz * distLuz);
-			return c * (std::abs(normal * rayoSombra)); // Se devuelve su color entre la distancia al cuadrado
 		}
+	} else {
+		c = contribucion(luz.getEmision(), distLuz, normal, rayoSombra);
+		// std::cout << "c: " << c << '\n';
+		return c;
 	}
-	return c;
+	// std::cout << "L: " << c << '\n';
+	return c; // no esta iluminado
 }
 
 Color Renderer::luzDirecta(const Vector3& pto, const Vector3& normal) const {
@@ -60,7 +69,9 @@ Color Renderer::muestraLuzDirecta(const Vector3& pto, const Vector3& normal,
 	if (numLuces>0) { // Se muestrea una sola luz
 		// Si hay varias con intensidad muy distinta se deberia hacer importance sampling!!
 		int indiceLuz = rng.rand(0, numLuces);
-		return shadowRay(pto, normal, indiceLuz);
+		Color L = shadowRay(pto, normal, indiceLuz);
+		// std::cout << "L: " << L << '\n';
+		return L;
   }
 	return Color();
 }
@@ -74,7 +85,9 @@ Vector3 ptoDesplazado = alejarDeNormal(pto, fig.getNormal(pto), desplazamiento);
 // 			 si eso quitar alejardenormal abajo
 //////////////////////////////////////////////////////////////
 */
-Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const {
+Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir,
+	const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote) const
+{
 	Material mat = fig->getMaterial();
 	Color c;
 
@@ -129,7 +142,8 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		// std::cout << "pdf: "<<pdf << '\n';
 		// Aqui, c es kd
 		// TODO: REVISAR COSENOS
-		c = c/pdf *(iDirecta + pathTrace(alejarDeNormal(base[3], base[2]), otroPath, rngThread)); // kd * Li
+		float cosangulos =1;// std::abs(otroPath*dir);
+		c = c*cosangulos/pdf *(iDirecta + pathTrace(alejarDeNormal(base[3], base[2]), otroPath, rngThread)); // kd * Li
 	}
 	return c;
 }

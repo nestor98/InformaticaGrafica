@@ -358,7 +358,6 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
 {
   Color L;
   Material mat = figIntersectada->getMaterial();
-  GeneradorAleatorio rngThread; //TODO: threads y tal
   // true pq es el primer rebote:
   int evento = mat.ruletaRusa(rng, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
   if (evento == 3) { // Absorcion, imposible en el 1er rebote
@@ -679,118 +678,207 @@ void PMRenderer::initThreads(Imagen& im, const Vector3& origen, const int nPixel
 	}
 	threads.emplace_back(std::thread(&Renderer::progressBar, this, nPixeles));
 }
-//
-// void PMRenderer::waitThreads() {
-// 	for (int i=0; i<threads.capacity(); i++) {
-// 		threads[i].join();
-// 	}
-// }
 
 
+/********************************** PROGRESSIVE PM **********************************/
 
+// Devuelve el radio de la iteracion i a partir del inicial r1 y alpha
+// Tb recomiendan alpha=0.7
+float radioIteracion(const float& r1, const int i, const float& alpha=0.3) {
+  float r = r1*r1;
+  for (size_t k = 1; k < i; k++) { // Ec. 16 de http://www.cs.jhu.edu/~misha/ReadingSeminar/Papers/Knaus11.pdf
+    r *= (k+alpha)/k;
+  }
+  return sqrt(r/float(i));
+}
 
-/* Version mas como la proporcionada:
+// Render de PROGRESSIVE
+// r1 el radio inicial
+void PMRenderer::render(const std::string fichero, const int iteraciones, const float& r1) {
+	hrc::time_point t1, t2, t3;
+  t3 = hrc::now();
 
-		// Color surf_albedo = mat.getCoeficiente(0); // Nos interesa el difuso //it.intersected()->material()->get_albedo(it);
-		//int evento = mat.ruletaRusa(rng, nivel==0);
-    double pdf = mat.getPDF(0, nivel==0); // probabilidad del evento
-		// Real avg_surf_albedo = surf_albedo.avg();
-		//
-		// Real epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
-		// // while (epsilon2 < 0.)
-		// // 	epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
-
-    Color albedo = mat.getCoeficiente(0); // TODO: REVISAR 0
-    double albedoPromedio = albedo.getPromedio();
-    double eps = rng.rand01();
-    int evento = 0;
-		//if (evento == 3 || nivel > 20 || energia == 0 ) {// Absorcion 20
-    if (eps > albedoPromedio || nivel > 20 || energia == 0 ) {// Absorcion 20
-
-      // std::cout << "absorcion" << '\n';
-      if (energia == 0) std::cout << "energia 0" << '\n';
-    	break;
-
-    }
-    // TODO: borrar esto
-    // if (evento == 1 || evento == 2) {
-    //   std::cerr << "DELTA sin implementar!!!!" << '\n';
-    //   exit(1);
-    // }
-
-
-		// Random walk's next step
-		// Get sampled direction plus pdf, and update attenuation
-		auto fig = inter->second;
-		Matriz4 base = fig->getBase(iData.punto);
-
-		dirFoton = mat.getVectorSalida(base, rng, evento, dirFoton);
-    // TODO: al añadir refraccion cuidado con alejar el pto de la normal en este
-    // sentido!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-		oFoton = alejarDeNormal(iData.punto, base[2]); // Nuevo pto
-		nivel++; // Un rebote mas
-    // if (nivel > 3) std::cout << "nivel>3" << '\n';
-
-		// Shade...
-    // double albedoPromedio = albedo.getPromedio();
-    //double albedoMax = mat.getMax
-    Color eAntes = energia;
-		energia = energia*albedo;
-		if( !mat.esDelta() )
-			energia = energia * std::abs(base[2] * dirFoton)/PI;// base[2] es la normal
-
-		energia = energia /(pdf*albedoPromedio);//albedo.getMax());//*albedoPromedio);// pdf? :(
-*/
-
-
-
-
-
-
-/* Con maximos en vez de promedios:
-
-    // ------------------------------------------------
-		// Color surf_albedo = mat.getCoeficiente(0); // Nos interesa el difuso //it.intersected()->material()->get_albedo(it);
-		int evento = mat.ruletaRusa(rng);
-    double pdf = mat.getPDF(evento); // probabilidad del evento
-		// Real avg_surf_albedo = surf_albedo.avg();
-		//
-		// Real epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
-		// // while (epsilon2 < 0.)
-		// // 	epsilon2 = static_cast<Real>(rand())/static_cast<Real>(RAND_MAX);
-
-    //Color albedo = mat.getCoeficiente(0); // TODO: REVISAR 0
-    //double albedoPromedio = albedo.getPromedio();
-    //double eps = rng.rand01();
-    //int evento = 0;
-		if (evento == 3 || nivel > 20 || energia == 0 ) {// Absorcion 20
-    //if (eps > albedoPromedio || nivel > 20 || energia == 0 ) {// Absorcion 20
-
-      // std::cout << "absorcion" << '\n';
-      if (energia == 0) std::cout << "energia 0" << '\n'; // TODO: borrar
-    	break;
-
-    }
-    // TODO: borrar esto
-    if (evento == 1 || evento == 2) {
-      std::cerr << "DELTA sin implementar!!!!" << '\n';
-      exit(1);
-    }
-		// Random walk's next step
-		// Get sampled direction plus pdf, and update attenuation
-		auto fig = inter->second;
-		Matriz4 base = fig->getBase(iData.punto);
-
-		dirFoton = mat.getVectorSalida(base, rng, evento, dirFoton);
-    // TODO: al añadir refraccion cuidado con alejar el pto de la normal en este
-    // sentido!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-		oFoton = alejarDeNormal(iData.punto, base[2]); // Nuevo pto
-		nivel++; // Un rebote mas
-    // if (nivel > 3) std::cout << "nivel>3" << '\n';
-    // Nueva energia = energia * kd / pdf
-    energia = energia * mat.getCoeficiente(evento) / pdf;
-    if( !mat.esDelta() )
-    	energia = energia * std::abs(base[2] * dirFoton)/PI;// base[2] es la normal
-
+  std::chrono::duration<double> t; // duracion
+	// std::cout<<"a construir el arbol\n";
+	if (usarBVH){
+	  t1 = hrc::now();
+    e.construirBVH();
+    t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - hrc::now());
+		std::cout<<"arbol bvh construido en " << t.count() <<" segundos\n";
 	}
-  */
+	auto c = e.getCamara();
+	Vector3 o = c->getPos();
+	Imagen im(c->getPixelesY(), c->getPixelesX());
+  for (int i=0; i<iteraciones; i++) { // ITeraciones de progressive PM
+    double radio = radioIteracion(r1, i+1); // Radio de la iteracion
+    std::cout << "-------------- Iteracion " << i+1 << " de " << iteraciones << " ("
+          << i/float(iteraciones)*100.0 << '%' << ")\nradio="
+          << radio << '\n';
+    // ---------------- PREPROCESS:
+    std::cout << "Voy a hacer el preprocess" << '\n';
+    fotonesActuales = 0;
+    kdTreeGlobal.clear();
+    kdTreeCaustico.clear();
+    t1 = hrc::now();
+    preprocess();
+  	t2 = hrc::now();
+  	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
+  	// t2 -> tRender2 = t2-t1
+  	std::cout << "\nPreprocess realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
+    // ---------------- RENDER:
+    t1 = hrc::now();
+  	for (int pixel = 0; pixel<c->getNumPixeles(); pixel++) {
+  		tasks.push_back(pixel); // encolar cada pixel
+  		//PMRenderer::renderPixel(im, o, pixel);
+  	}
+  	std::cout << "Inicializando threads... " << std::endl;
+  	initThreadsProgressive(im, o, c->getNumPixeles(), radio); // inicializar los threads
+  	// // std::cout << "hecho" << '\n';
+  	Renderer::waitThreads(); // y esperar a que terminen
+    std::cout << "-------------- Fin iteracion --------------" << '\n';
+  }
+  //im.dividirPixels(iteraciones); // TODO: DIVIDIR O NO?
+	im.setMaxFloat(rangoDinamico);
+	im.extendedReinhard();
+	im.guardar("out/" + fichero); // guardar la imagen
+
+	t2 = hrc::now();
+	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t3);
+	// t2 -> tRender2 = t2-t1
+	std::cout << "\nRender realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
+}
+
+
+void PMRenderer::initThreadsProgressive(Imagen& im, const Vector3& origen, const int nPixeles, const float& radio) {
+  threads.clear();
+  for (int i=0; i<threads.capacity()-1; i++) {
+		// std::thread t1(&Escena::consumirTasks, this, std::ref(im), std::ref(origen));
+		threads.emplace_back(std::thread(&PMRenderer::consumirTasksProgressive, this, std::ref(im), std::ref(origen), std::ref(radio)));
+	}
+	threads.emplace_back(std::thread(&Renderer::progressBar, this, nPixeles));
+}
+
+
+void PMRenderer::consumirTasksProgressive(Imagen& im, const Vector3& origen,
+  const float& radio) {
+	//std::cout<<"Bueno"<<std::endl;
+	// int cuenta = 0;
+  GeneradorAleatorio rngThread;
+	while (true) {
+		int pixel;
+		{ //Lock
+			// Las llaves son para que la guarda solo este entre ellas (scope):
+			std::lock_guard<std::mutex> guarda(mtx); // asegura la SC
+			if (tasks.empty()) { // Fin cuando no quedan tasks
+				break;
+			}
+			pixel = tasks.back();
+			tasks.pop_back();
+		} // unlock
+		PMRenderer::addToPixelProgressive(im, origen, pixel,rngThread, radio);
+		// cuenta++;
+	}
+	// std::cout<<"He dibujado: " << cuenta << " pixeles\n";
+}
+
+
+
+// Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara
+void PMRenderer::addToPixelProgressive(Imagen& im, const Vector3& o, const int pixel,
+const GeneradorAleatorio& rng, const float& radio) const {
+	Color color(0.0,0.0,0.0);
+	auto c = e.getCamara();
+	int nRayos = c->getRayosPorPixel(); // nº rayos por cada pixel
+	for (int i=0; i<nRayos; i++) { // cada rayo
+    Vector3 dir;
+    if (nRayos == 1) { // un rayo, por el centro
+      dir = c->getRayoCentroPixel(pixel);
+    }
+    else {
+  	   dir = c->getRayoPixel(pixel); // dir aleatoria
+    }
+
+    auto intersec = e.interseccion(o, dir);
+    if (intersec) {
+      color = color + shadeProgressive(intersec->first, intersec->second,
+      true, rng, dir, radio); // true para que el primero siempre rebote
+    }
+  }
+  color = color / nRayos;
+	im.addToPixel(color[0], color[1], color[2], pixel); // se pone el pixel de la imagen de ese color
+}
+
+
+Color PMRenderer::shadeProgressive(const Figura::InterseccionData& interseccion,
+  const std::shared_ptr<Figura>& figIntersectada, const bool primerRebote,
+  const GeneradorAleatorio& rng, const Vector3& dir, const float& radio) const
+{
+  Color L;
+  Material mat = figIntersectada->getMaterial();
+  // true pq es el primer rebote:
+  int evento = mat.ruletaRusa(rng, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
+  if (evento == 3) { // Absorcion, imposible en el 1er rebote
+    return L;
+  }
+  else if (evento == 0) { // DIFUSO
+    int nCercanos;
+    Vector3 n = figIntersectada->getNormal(interseccion.punto);
+    Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
+    L = iluminacionRadioFijo(kdTreeGlobal, interseccion.punto, n, radio, nCercanos)
+      + iluminacionRadioFijo(kdTreeCaustico, interseccion.punto, n, radio, nCercanos);
+    // iluminacionGlobal(interseccion.punto, n) +
+    //     causticas(interseccion.punto, n);
+    // L = L/2.0;
+    //iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
+    if (!guardarDirectos) {
+      //std::cout << "??????????" << '\n';
+      L = L + Renderer::luzDirecta(ptoCorregido, n);
+    }
+    //L = L * mat.getCoeficiente(0);
+
+    if (figIntersectada->tieneTextura()) { // con textura
+			L= L*figIntersectada->getEmision(interseccion.punto); // El coeficiente es el de la textura
+		}
+		else { // difuso sin textura
+			L = L * mat.getCoeficiente(0);
+		}
+    L = L/mat.getPDF(evento, primerRebote);
+
+
+  }
+  else if (evento == 1) { // ESPECULAR
+    Matriz4 base;Vector3 wi;
+    base = figIntersectada->getBase(interseccion.punto);
+    Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, base[2], 1e-2);
+	  L = mat.getCoeficiente(0); // usamos el coeficiente del difuso
+		if (L == double(0)) L = mat.getCoeficiente(1);
+		wi = mat.getVectorSalida(base, rng, evento, dir);
+    auto intersec = e.interseccion(ptoCorregido, wi);
+    if (intersec) {
+      float pdf = mat.getPDF(evento, primerRebote);
+      L = L/pdf * shadeProgressive(intersec->first, intersec->second,
+        false, rng, wi, radio); // true para que el primero siempre rebote
+    }
+
+  }
+  else if (evento == 2) { // REFRACCION
+    Matriz4 base;Vector3 wi;
+		// Matriz4 base = baseFromVectorYOrigen(fig->getNormal(pto), pto, dir);
+		base = figIntersectada->getBase(interseccion.punto);
+    Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, -base[2]);
+		L = mat.getCoeficiente(evento); // coef de refraccion en 0..0.9
+		// std::cout << "c: " << c.to_string() << '\n';
+
+		wi = mat.getVectorSalida(base, rng, evento, dir);
+    if (wi*base[2] > 0) {
+      ptoCorregido = alejarDeNormal(interseccion.punto, base[2]);
+    }
+    auto intersec = e.interseccion(ptoCorregido, wi);
+    if (intersec) {
+      float pdf = mat.getPDF(evento, primerRebote);
+      L = L/pdf * shadeProgressive(intersec->first, intersec->second,
+        false, rng, wi, radio); // true para que el primero siempre rebote
+    }
+  }
+  return L;
+}

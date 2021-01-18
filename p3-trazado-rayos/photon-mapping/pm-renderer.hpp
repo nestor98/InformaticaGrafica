@@ -88,7 +88,27 @@ public:
 
 	void render(const std::string fichero);
 
+	// ---------------------- PROGRESSIVE PM -------------------------
+	// Render progressive PM, con <iteraciones> y radio inicial r1:
+	void render(const std::string fichero, const int iteraciones, const float& r1=0.5);
 
+protected:
+	// --------- Threads ---------
+	// Inicializa los threads:
+	void initThreadsProgressive(Imagen& im,  const Vector3& origen, const int nPixeles, const float& radio);
+
+
+	// funcion que ejecutan los threads
+	void consumirTasksProgressive(Imagen& im,  const Vector3& origen, const float& radio);
+
+	// Auxiliar de render
+	void addToPixelProgressive(Imagen& im, const Vector3& o, const int pixel,
+	const GeneradorAleatorio& rng, const float& radio) const;
+
+	// Auxiliar de shade para separar la parte de PM del debug
+	Color shadeProgressive(const Figura::InterseccionData& interseccion,
+  	const std::shared_ptr<Figura>& figIntersectada, const bool primerRebote,
+	  const GeneradorAleatorio& rng, const Vector3& dir, const float& radio) const;
 
 };
 

@@ -127,6 +127,17 @@ void Imagen::addToPixel(const double r, const double g, const double b, const in
 	pixeles[i][2] += b;
 }
 
+// Divide todos los pixeles entre d
+void Imagen::dividirPixels(const double& d) {
+	//equalizeAndClamp(valor);
+	for (int i = 0; i < filas * cols; i++) { // cada pixel
+		for (auto& v : pixeles[i]) { // cada valor rgb
+			v = v/d;
+		}
+	}
+}
+
+
 // Modulo matematico, nunca negativo
 int modBien(const int algo, const int mod) {
 	int r = algo%mod;

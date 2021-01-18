@@ -96,29 +96,38 @@ std::optional<Figura::InterseccionData> Esfera::interseccion(const Vector3& orig
    // printf (">>>%f,%f,%f<< \n",  ray.direccion.x,  ray.direccion.y,  ray.direccion.z);
 	double distancia=0;
   double a = dir*dir;
-  Vector3 ro_sc = origen-getPos();
+  Vector3 ro_sc = origen-getPos(); // Normalizar este vector para efectos psicodelicos
   double b = 2.0 *dir*ro_sc;
-  double y = ro_sc*ro_sc - (getRadio()*getRadio()) ;
+	double mod_ro_sc_sq = ro_sc.getModuloSq();
+  double y = mod_ro_sc_sq - (getRadio()*getRadio());
+	// NI IDEA de como funcionaba asi:
+	// double y = ro_sc*ro_sc - (getRadio()*getRadio());
+
+	//std::cout << "radio " << getRadio() << '\n';
 
 
-  double discriminante = b*b - 4.0 * a * y;
-
-  double RaizDiscriminante = sqrt(b*b - 4.0 * a * y);
+  // double discriminante = b*b - 4.0 * a * y;
+	  double discriminante = b*b - 4.0* a * y;
+	// std::cout << "discriminante " << discriminante << '\n';
 
   if (discriminante >=0 ){
-      double t1 = (-b-RaizDiscriminante)/(2.0*a);
-      double t2 = (-b+RaizDiscriminante)/(2.0*a);
-      if (t1<t2 && t1>0){
-          distancia =  t1;
-      }
-      else{
-          distancia =  t2;
-      }
-			if (distancia<=0) return std::nullopt; // intersecta detras del origen, como si no intersectara
-      return Figura::InterseccionData{distancia, origen+distancia*dir};
+  	double RaizDiscriminante = sqrt(b*b - 4.0 * a * y);
+    double t1 = (-b-RaizDiscriminante)/(2.0*a);
+    double t2 = (-b+RaizDiscriminante)/(2.0*a);
+    if (t1<t2 && t1>0){
+      distancia =  t1;
+    }
+    else{
+      distancia =  t2;
+    }
+		// std::cout << "yep "<< distancia << "\n";
+		if (distancia<=0) return std::nullopt; // intersecta detras del origen, como si no intersectara
+
+		return Figura::InterseccionData{distancia, origen+distancia*dir};
   }
   else {
-      return std::nullopt; // no intersecta
+		//std::cout << "nope" << '\n';
+    return std::nullopt; // no intersecta
   }
 
 }

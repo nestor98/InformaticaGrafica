@@ -1,134 +1,552 @@
-==913== Memcheck, a memory error detector
-==913== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==913== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==913== Command: ./main explosion-esfs-500.ppm 12 50 50000
-==913== Parent PID: 912
-==913== 
---913-- 
---913-- Valgrind options:
---913--    --leak-check=full
---913--    --show-leak-kinds=all
---913--    --track-origins=yes
---913--    --verbose
---913--    --log-file=valgrind-out.txt
---913-- Contents of /proc/version:
---913--   Linux version 4.4.0-18362-Microsoft (Microsoft@Microsoft.com) (gcc version 5.4.0 (GCC) ) #1049-Microsoft Thu Aug 14 12:01:00 PST 2020
---913-- 
---913-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
---913-- Page sizes: currently 4096, max supported 4096
---913-- Valgrind library directory: /usr/lib/valgrind
---913-- Reading syms from /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main
---913-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
---913--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
---913--   .. CRC mismatch (computed 0ef8daab wanted 65bccefe)
---913--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
---913--   .. CRC is valid
---913-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
---913--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
---913--   .. CRC mismatch (computed 41ddb025 wanted 9972f546)
---913--    object doesn't have a symbol table
---913--    object doesn't have a dynamic symbol table
---913-- Scheduler: using generic scheduler lock implementation.
---913-- Reading suppressions file: /usr/lib/valgrind/default.supp
-==913== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-913-by-root-on-???
-==913== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-913-by-root-on-???
-==913== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-913-by-root-on-???
-==913== 
-==913== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==913== don't want to do, unless you know exactly what you're doing,
-==913== or are doing some strange experiment):
-==913==   /usr/lib/valgrind/../../bin/vgdb --pid=913 ...command...
-==913== 
-==913== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==913==   /path/to/gdb ./main
-==913== and then give GDB the following command
-==913==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=913
-==913== --pid is optional if only one valgrind process is running
-==913== 
-==913== error calling PR_SET_PTRACER, vgdb might block
---913-- REDIR: 0x4020d20 (ld-linux-x86-64.so.2:strlen) redirected to 0x580608c1 (???)
---913-- REDIR: 0x4020b00 (ld-linux-x86-64.so.2:index) redirected to 0x580608db (???)
---913-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
---913--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
---913--   .. CRC mismatch (computed 50df1b30 wanted 4800a4cf)
---913--    object doesn't have a symbol table
---913-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
---913--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
---913--   .. CRC mismatch (computed f893b962 wanted 95ee359e)
---913--    object doesn't have a symbol table
-==913== WARNING: new redirection conflicts with existing -- ignoring it
---913--     old: 0x04020d20 (strlen              ) R-> (0000.0) 0x580608c1 ???
---913--     new: 0x04020d20 (strlen              ) R-> (2007.0) 0x04c34db0 strlen
---913-- REDIR: 0x401d540 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c35ee0 (strcmp)
---913-- REDIR: 0x4021260 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c394f0 (mempcpy)
---913-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25
---913--    object doesn't have a symbol table
---913-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
---913--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
---913--   .. CRC mismatch (computed 8017c758 wanted 0183ab3a)
---913--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
---913--   .. CRC is valid
---913-- Reading syms from /lib/x86_64-linux-gnu/libgcc_s.so.1
---913--    object doesn't have a symbol table
---913-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
---913--   Considering /usr/lib/debug/.build-id/68/f36706eb2e6eee4046c4fdca2a19540b2f6113.debug ..
---913--   .. build-id is valid
---913-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
---913--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
---913--   .. CRC mismatch (computed cb654923 wanted 8713c55a)
---913--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
---913--   .. CRC is valid
---913-- REDIR: 0x5a3ab70 (libc.so.6:memmove) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39e80 (libc.so.6:strncpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3ae50 (libc.so.6:strcasecmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a398d0 (libc.so.6:strcat) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39eb0 (libc.so.6:rindex) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3c5a0 (libc.so.6:rawmemchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3ace0 (libc.so.6:mempcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3ab10 (libc.so.6:bcmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39e40 (libc.so.6:strncmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39940 (libc.so.6:strcmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3ac40 (libc.so.6:memset) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a57ed0 (libc.so.6:wcschr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39de0 (libc.so.6:strnlen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a399b0 (libc.so.6:strcspn) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3aea0 (libc.so.6:strncasecmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39980 (libc.so.6:strcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3afe0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39ee0 (libc.so.6:strpbrk) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39900 (libc.so.6:index) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a39db0 (libc.so.6:strlen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a444a0 (libc.so.6:memrchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3aef0 (libc.so.6:strcasecmp_l) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3aae0 (libc.so.6:memchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a58c90 (libc.so.6:wcslen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3a190 (libc.so.6:strspn) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3ae20 (libc.so.6:stpncpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3adf0 (libc.so.6:stpcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3c5d0 (libc.so.6:strchrnul) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5a3af40 (libc.so.6:strncasecmp_l) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
---913-- REDIR: 0x5b2a300 (libc.so.6:__strrchr_avx2) redirected to 0x4c34730 (rindex)
---913-- REDIR: 0x5a33140 (libc.so.6:malloc) redirected to 0x4c31aa0 (malloc)
---913-- REDIR: 0x5b2a4d0 (libc.so.6:__strlen_avx2) redirected to 0x4c34cf0 (strlen)
---913-- REDIR: 0x5b26ae0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4c37e00 (bcmp)
---913-- REDIR: 0x5a45c50 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x4c35da0 (strcmp)
---913-- REDIR: 0x5a3a6c0 (libc.so.6:__GI_strstr) redirected to 0x4c39760 (__strstr_sse2)
---913-- REDIR: 0x5b2a110 (libc.so.6:__strchrnul_avx2) redirected to 0x4c39020 (strchrnul)
---913-- REDIR: 0x5b2a9f0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c39130 (mempcpy)
---913-- REDIR: 0x5b2aa10 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c386e0 (memmove)
---913-- REDIR: 0x4ed1280 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4c32110 (operator new(unsigned long))
---913-- REDIR: 0x4ecf390 (libstdc++.so.6:operator delete(void*)) redirected to 0x4c331d0 (operator delete(void*))
---913-- REDIR: 0x5a36170 (libc.so.6:calloc) redirected to 0x4c33a70 (calloc)
---913-- REDIR: 0x5a33a30 (libc.so.6:free) redirected to 0x4c32cd0 (free)
---913-- REDIR: 0x4ed1330 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4c32830 (operator new[](unsigned long))
---913-- REDIR: 0x5b26360 (libc.so.6:__memchr_avx2) redirected to 0x4c35f80 (memchr)
---913-- REDIR: 0x4ecf3c0 (libstdc++.so.6:operator delete[](void*)) redirected to 0x4c336d0 (operator delete[](void*))
-==913== 
-==913== HEAP SUMMARY:
-==913==     in use at exit: 0 bytes in 0 blocks
-==913==   total heap usage: 204 allocs, 204 frees, 3,418,688 bytes allocated
-==913== 
-==913== All heap blocks were freed -- no leaks are possible
-==913== 
-==913== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-==913== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1404== Memcheck, a memory error detector
+==1404== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1404== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==1404== Command: ./main progressive.ppm 12 50 50000
+==1404== Parent PID: 1403
+==1404== 
+--1404-- 
+--1404-- Valgrind options:
+--1404--    --leak-check=full
+--1404--    --show-leak-kinds=all
+--1404--    --track-origins=yes
+--1404--    --verbose
+--1404--    --log-file=valgrind-out.txt
+--1404-- Contents of /proc/version:
+--1404--   Linux version 4.4.0-18362-Microsoft (Microsoft@Microsoft.com) (gcc version 5.4.0 (GCC) ) #1049-Microsoft Thu Aug 14 12:01:00 PST 2020
+--1404-- 
+--1404-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-avx-avx2-bmi
+--1404-- Page sizes: currently 4096, max supported 4096
+--1404-- Valgrind library directory: /usr/lib/valgrind
+--1404-- Reading syms from /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main
+--1404-- Reading syms from /lib/x86_64-linux-gnu/ld-2.27.so
+--1404--   Considering /lib/x86_64-linux-gnu/ld-2.27.so ..
+--1404--   .. CRC mismatch (computed 0ef8daab wanted 65bccefe)
+--1404--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/ld-2.27.so ..
+--1404--   .. CRC is valid
+--1404-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--1404--   Considering /usr/lib/valgrind/memcheck-amd64-linux ..
+--1404--   .. CRC mismatch (computed 41ddb025 wanted 9972f546)
+--1404--    object doesn't have a symbol table
+--1404--    object doesn't have a dynamic symbol table
+--1404-- Scheduler: using generic scheduler lock implementation.
+--1404-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==1404== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-1404-by-root-on-???
+==1404== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-1404-by-root-on-???
+==1404== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-1404-by-root-on-???
+==1404== 
+==1404== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==1404== don't want to do, unless you know exactly what you're doing,
+==1404== or are doing some strange experiment):
+==1404==   /usr/lib/valgrind/../../bin/vgdb --pid=1404 ...command...
+==1404== 
+==1404== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==1404==   /path/to/gdb ./main
+==1404== and then give GDB the following command
+==1404==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=1404
+==1404== --pid is optional if only one valgrind process is running
+==1404== 
+==1404== error calling PR_SET_PTRACER, vgdb might block
+--1404-- REDIR: 0x4020d20 (ld-linux-x86-64.so.2:strlen) redirected to 0x580608c1 (???)
+--1404-- REDIR: 0x4020b00 (ld-linux-x86-64.so.2:index) redirected to 0x580608db (???)
+--1404-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--1404--   Considering /usr/lib/valgrind/vgpreload_core-amd64-linux.so ..
+--1404--   .. CRC mismatch (computed 50df1b30 wanted 4800a4cf)
+--1404--    object doesn't have a symbol table
+--1404-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--1404--   Considering /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so ..
+--1404--   .. CRC mismatch (computed f893b962 wanted 95ee359e)
+--1404--    object doesn't have a symbol table
+==1404== WARNING: new redirection conflicts with existing -- ignoring it
+--1404--     old: 0x04020d20 (strlen              ) R-> (0000.0) 0x580608c1 ???
+--1404--     new: 0x04020d20 (strlen              ) R-> (2007.0) 0x04c34db0 strlen
+--1404-- REDIR: 0x401d540 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c35ee0 (strcmp)
+--1404-- REDIR: 0x4021260 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c394f0 (mempcpy)
+--1404-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25
+--1404--    object doesn't have a symbol table
+--1404-- Reading syms from /lib/x86_64-linux-gnu/libm-2.27.so
+--1404--   Considering /lib/x86_64-linux-gnu/libm-2.27.so ..
+--1404--   .. CRC mismatch (computed 8017c758 wanted 0183ab3a)
+--1404--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libm-2.27.so ..
+--1404--   .. CRC is valid
+--1404-- Reading syms from /lib/x86_64-linux-gnu/libgcc_s.so.1
+--1404--    object doesn't have a symbol table
+--1404-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.27.so
+--1404--   Considering /usr/lib/debug/.build-id/68/f36706eb2e6eee4046c4fdca2a19540b2f6113.debug ..
+--1404--   .. build-id is valid
+--1404-- Reading syms from /lib/x86_64-linux-gnu/libc-2.27.so
+--1404--   Considering /lib/x86_64-linux-gnu/libc-2.27.so ..
+--1404--   .. CRC mismatch (computed cb654923 wanted 8713c55a)
+--1404--   Considering /usr/lib/debug/lib/x86_64-linux-gnu/libc-2.27.so ..
+--1404--   .. CRC is valid
+--1404-- REDIR: 0x5a3ab70 (libc.so.6:memmove) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39e80 (libc.so.6:strncpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3ae50 (libc.so.6:strcasecmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a398d0 (libc.so.6:strcat) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39eb0 (libc.so.6:rindex) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3c5a0 (libc.so.6:rawmemchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3ace0 (libc.so.6:mempcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3ab10 (libc.so.6:bcmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39e40 (libc.so.6:strncmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39940 (libc.so.6:strcmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3ac40 (libc.so.6:memset) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a57ed0 (libc.so.6:wcschr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39de0 (libc.so.6:strnlen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a399b0 (libc.so.6:strcspn) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3aea0 (libc.so.6:strncasecmp) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39980 (libc.so.6:strcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3afe0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39ee0 (libc.so.6:strpbrk) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39900 (libc.so.6:index) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a39db0 (libc.so.6:strlen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a444a0 (libc.so.6:memrchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3aef0 (libc.so.6:strcasecmp_l) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3aae0 (libc.so.6:memchr) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a58c90 (libc.so.6:wcslen) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3a190 (libc.so.6:strspn) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3ae20 (libc.so.6:stpncpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3adf0 (libc.so.6:stpcpy) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3c5d0 (libc.so.6:strchrnul) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5a3af40 (libc.so.6:strncasecmp_l) redirected to 0x4a2c6e0 (_vgnU_ifunc_wrapper)
+--1404-- REDIR: 0x5b2a300 (libc.so.6:__strrchr_avx2) redirected to 0x4c34730 (rindex)
+--1404-- REDIR: 0x5a33140 (libc.so.6:malloc) redirected to 0x4c31aa0 (malloc)
+--1404-- REDIR: 0x5b2a4d0 (libc.so.6:__strlen_avx2) redirected to 0x4c34cf0 (strlen)
+--1404-- REDIR: 0x5b26ae0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4c37e00 (bcmp)
+--1404-- REDIR: 0x5a45c50 (libc.so.6:__strcmp_sse2_unaligned) redirected to 0x4c35da0 (strcmp)
+--1404-- REDIR: 0x5a3a6c0 (libc.so.6:__GI_strstr) redirected to 0x4c39760 (__strstr_sse2)
+--1404-- REDIR: 0x4ed1330 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4c32830 (operator new[](unsigned long))
+--1404-- REDIR: 0x5b2aa10 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4c386e0 (memmove)
+--1404-- REDIR: 0x4ed1280 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4c32110 (operator new(unsigned long))
+--1404-- REDIR: 0x4ecf3c0 (libstdc++.so.6:operator delete[](void*)) redirected to 0x4c336d0 (operator delete[](void*))
+--1404-- REDIR: 0x5a33a30 (libc.so.6:free) redirected to 0x4c32cd0 (free)
+--1404-- REDIR: 0x4ecf390 (libstdc++.so.6:operator delete(void*)) redirected to 0x4c331d0 (operator delete(void*))
+--1404-- REDIR: 0x5b2a110 (libc.so.6:__strchrnul_avx2) redirected to 0x4c39020 (strchrnul)
+--1404-- REDIR: 0x5b2a9f0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4c39130 (mempcpy)
+--1404-- REDIR: 0x5b26360 (libc.so.6:__memchr_avx2) redirected to 0x4c35f80 (memchr)
+==1404== 
+==1404== Process terminating with default action of signal 2 (SIGINT)
+==1404==    at 0x4EE1F30: std::__detail::_List_node_base::_M_unhook() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==1404==    by 0x125079: std::__cxx11::list<int, std::allocator<int> >::remove(int const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x123AB6: Matriz4::determinante(std::__cxx11::list<int, std::allocator<int> > const&, std::__cxx11::list<int, std::allocator<int> > const&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x124055: Matriz4::adj() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1241FF: Matriz4::inversa() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x124352: reflejar(Vector3 const&, Matriz4 const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x138F8E: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&, float&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x139302: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x141A0B: PMRenderer::trace_ray(Vector3 const&, Vector3 const&, Color const&, std::__cxx11::list<Foton, std::allocator<Foton> >&, std::__cxx11::list<Foton, std::allocator<Foton> >&, bool, GeneradorAleatorio const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x142DBF: PMRenderer::preprocess(bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1439AA: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== HEAP SUMMARY:
+==1404==     in use at exit: 15,978,224 bytes in 53,511 blocks
+==1404==   total heap usage: 17,167,964 allocs, 17,114,453 frees, 439,109,646 bytes allocated
+==1404== 
+==1404== Searching for pointers to 53,511 not-freed blocks
+==1404== Checked 23,578,040 bytes
+==1404== 
+==1404== 24 bytes in 1 blocks are still reachable in loss record 1 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x149C7F: Esfera::setBoundingBox() (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x149DD5: Esfera::Esfera(Vector3 const&, float) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x111F8C: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 24 bytes in 1 blocks are still reachable in loss record 2 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x149C7F: Esfera::setBoundingBox() (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x149DD5: Esfera::Esfera(Vector3 const&, float) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x112275: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 24 bytes in 1 blocks are still reachable in loss record 3 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x149C7F: Esfera::setBoundingBox() (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x149EB2: Esfera::Esfera(Vector3 const&, float, std::shared_ptr<Textura>) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x112654: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 24 bytes in 1 blocks are still reachable in loss record 4 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x133A01: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 24 bytes in 1 blocks are still reachable in loss record 5 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1341ED: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x133B8C: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 24 bytes in 1 blocks are still reachable in loss record 6 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1342AF: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x133B8C: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 24 bytes in 1 blocks are still reachable in loss record 7 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1341ED: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1344B3: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 24 bytes in 1 blocks are still reachable in loss record 8 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1342AF: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1344B3: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 40 bytes in 1 blocks are still reachable in loss record 9 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1132DD: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 40 bytes in 1 blocks are still reachable in loss record 10 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x12DCAE: Renderer::Renderer(Escena const&, int, Renderer::TipoRender, bool, float) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1421CF: PMRenderer::PMRenderer(Escena const&, int, Renderer::TipoRender, bool, float, int, int, int, int, bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD02: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 40 bytes in 1 blocks are still reachable in loss record 11 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x12A963: std::vector<LuzPuntual, std::allocator<LuzPuntual> >::operator=(std::vector<LuzPuntual, std::allocator<LuzPuntual> > const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x142B5D: PMRenderer::preprocess(bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1439AA: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 72 bytes in 3 blocks are still reachable in loss record 12 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x125151: void std::__cxx11::list<int, std::allocator<int> >::_M_assign_dispatch<std::_List_const_iterator<int> >(std::_List_const_iterator<int>, std::_List_const_iterator<int>, std::__false_type) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x123FE4: Matriz4::adj() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1241FF: Matriz4::inversa() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x124352: reflejar(Vector3 const&, Matriz4 const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x138F8E: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&, float&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x139302: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x141A0B: PMRenderer::trace_ray(Vector3 const&, Vector3 const&, Color const&, std::__cxx11::list<Foton, std::allocator<Foton> >&, std::__cxx11::list<Foton, std::allocator<Foton> >&, bool, GeneradorAleatorio const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x142DBF: PMRenderer::preprocess(bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1439AA: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 72 bytes in 3 blocks are still reachable in loss record 13 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x125151: void std::__cxx11::list<int, std::allocator<int> >::_M_assign_dispatch<std::_List_const_iterator<int> >(std::_List_const_iterator<int>, std::_List_const_iterator<int>, std::__false_type) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x12400A: Matriz4::adj() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1241FF: Matriz4::inversa() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x124352: reflejar(Vector3 const&, Matriz4 const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x138F8E: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&, float&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x139302: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x141A0B: PMRenderer::trace_ray(Vector3 const&, Vector3 const&, Color const&, std::__cxx11::list<Foton, std::allocator<Foton> >&, std::__cxx11::list<Foton, std::allocator<Foton> >&, bool, GeneradorAleatorio const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x142DBF: PMRenderer::preprocess(bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1439AA: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 72 bytes in 3 blocks are still reachable in loss record 14 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x123A89: Matriz4::determinante(std::__cxx11::list<int, std::allocator<int> > const&, std::__cxx11::list<int, std::allocator<int> > const&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x124055: Matriz4::adj() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1241FF: Matriz4::inversa() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x124352: reflejar(Vector3 const&, Matriz4 const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x138F8E: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&, float&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x139302: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x141A0B: PMRenderer::trace_ray(Vector3 const&, Vector3 const&, Color const&, std::__cxx11::list<Foton, std::allocator<Foton> >&, std::__cxx11::list<Foton, std::allocator<Foton> >&, bool, GeneradorAleatorio const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x142DBF: PMRenderer::preprocess(bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1439AA: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 96 bytes in 1 blocks are still reachable in loss record 15 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x12B1DD: void std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >::_M_range_insert<__gnu_cxx::__normal_iterator<std::shared_ptr<Figura>*, std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > > > >(__gnu_cxx::__normal_iterator<std::shared_ptr<Figura>*, std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > > >, __gnu_cxx::__normal_iterator<std::shared_ptr<Figura>*, std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > > >, __gnu_cxx::__normal_iterator<std::shared_ptr<Figura>*, std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > > >, std::forward_iterator_tag) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135678: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 96 bytes in 4 blocks are still reachable in loss record 16 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x123F36: Matriz4::adj() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1241FF: Matriz4::inversa() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x124352: reflejar(Vector3 const&, Matriz4 const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x138F8E: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&, float&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x139302: Material::getVectorSalida(Matriz4 const&, GeneradorAleatorio const&, int, Vector3 const&) const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x141A0B: PMRenderer::trace_ray(Vector3 const&, Vector3 const&, Color const&, std::__cxx11::list<Foton, std::allocator<Foton> >&, std::__cxx11::list<Foton, std::allocator<Foton> >&, bool, GeneradorAleatorio const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x142DBF: PMRenderer::preprocess(bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1439AA: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 104 bytes in 1 blocks are still reachable in loss record 17 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x12E0DF: Renderer::Renderer(Escena const&, int, Renderer::TipoRender, bool, float) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1421CF: PMRenderer::PMRenderer(Escena const&, int, Renderer::TipoRender, bool, float, int, int, int, int, bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD02: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 160 bytes in 1 blocks are still reachable in loss record 18 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1131E7: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 160 bytes in 1 blocks are still reachable in loss record 19 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x12DBD0: Renderer::Renderer(Escena const&, int, Renderer::TipoRender, bool, float) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1421CF: PMRenderer::PMRenderer(Escena const&, int, Renderer::TipoRender, bool, float, int, int, int, int, bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD02: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 240 bytes in 1 blocks are still reachable in loss record 20 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x149C5F: Esfera::setBoundingBox() (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x149DD5: Esfera::Esfera(Vector3 const&, float) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x111F8C: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 240 bytes in 1 blocks are still reachable in loss record 21 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x11203D: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 240 bytes in 1 blocks are still reachable in loss record 22 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x149C5F: Esfera::setBoundingBox() (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x149DD5: Esfera::Esfera(Vector3 const&, float) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x112275: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 240 bytes in 1 blocks are still reachable in loss record 23 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x11229E: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 240 bytes in 1 blocks are still reachable in loss record 24 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x149C5F: Esfera::setBoundingBox() (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x149EB2: Esfera::Esfera(Vector3 const&, float, std::shared_ptr<Textura>) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x112654: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 240 bytes in 1 blocks are still reachable in loss record 25 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x112682: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 240 bytes in 1 blocks are still reachable in loss record 26 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1339E9: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 248 bytes in 1 blocks are still reachable in loss record 27 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x110D82: std::__shared_ptr<Plano, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Plano>, Plano&>(std::_Sp_make_shared_tag, std::allocator<Plano> const&, Plano&) [clone .constprop.154] (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1119DF: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 248 bytes in 1 blocks are still reachable in loss record 28 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x110D82: std::__shared_ptr<Plano, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Plano>, Plano&>(std::_Sp_make_shared_tag, std::allocator<Plano> const&, Plano&) [clone .constprop.154] (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x111AA1: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 248 bytes in 1 blocks are still reachable in loss record 29 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x110D82: std::__shared_ptr<Plano, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Plano>, Plano&>(std::_Sp_make_shared_tag, std::allocator<Plano> const&, Plano&) [clone .constprop.154] (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x111B63: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 248 bytes in 1 blocks are still reachable in loss record 30 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x110D82: std::__shared_ptr<Plano, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Plano>, Plano&>(std::_Sp_make_shared_tag, std::allocator<Plano> const&, Plano&) [clone .constprop.154] (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x111C88: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 248 bytes in 1 blocks are still reachable in loss record 31 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x110D82: std::__shared_ptr<Plano, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Plano>, Plano&>(std::_Sp_make_shared_tag, std::allocator<Plano> const&, Plano&) [clone .constprop.154] (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x111D4A: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 248 bytes in 1 blocks are still reachable in loss record 32 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x110D82: std::__shared_ptr<Plano, (__gnu_cxx::_Lock_policy)2>::__shared_ptr<std::allocator<Plano>, Plano&>(std::_Sp_make_shared_tag, std::allocator<Plano> const&, Plano&) [clone .constprop.154] (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x111DEC: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 256 bytes in 1 blocks are still reachable in loss record 33 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x14D0BC: combinar(std::shared_ptr<Prisma>, std::shared_ptr<Prisma>) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x13435E: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x133B8C: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 256 bytes in 1 blocks are still reachable in loss record 34 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x14DA53: PrismaRotable::getBoundingBox() const (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x130089: BoundingVolumeH::BoundingVolumeH(std::shared_ptr<Figura>) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1342A5: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1344B3: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 256 bytes in 1 blocks are still reachable in loss record 35 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x14D0BC: combinar(std::shared_ptr<Prisma>, std::shared_ptr<Prisma>) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x13435E: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1344B3: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 264 bytes in 1 blocks are still reachable in loss record 36 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x111842: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 264 bytes in 1 blocks are still reachable in loss record 37 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1124DA: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 384 bytes in 1 blocks are still reachable in loss record 38 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x112C89: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 552 bytes in 1 blocks are still reachable in loss record 39 of 52
+==1404==    at 0x4C31B0F: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x5A1AF29: __fopen_internal (iofopen.c:65)
+==1404==    by 0x5A1AF29: fopen@@GLIBC_2.2.5 (iofopen.c:89)
+==1404==    by 0x4EFA973: std::random_device::_M_init(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25)
+==1404==    by 0x10F360: _GLOBAL__sub_I_rd (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x14FB7C: __libc_csu_init (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x59BDB87: (below main) (libc-start.c:266)
+==1404== 
+==1404== 5,136 bytes in 1 blocks are still reachable in loss record 40 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1341CE: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x133B8C: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 5,136 bytes in 1 blocks are still reachable in loss record 41 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x134297: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x133B8C: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 5,136 bytes in 1 blocks are still reachable in loss record 42 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1341CE: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1344B3: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 5,136 bytes in 1 blocks are still reachable in loss record 43 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x134297: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135B43: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x135C43: BoundingVolumeH::BoundingVolumeH(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1344B3: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 5,152 bytes in 1 blocks are still reachable in loss record 44 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x133B96: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 5,152 bytes in 1 blocks are still reachable in loss record 45 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1344BD: BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1356B2: BoundingVolumeH::construirArbol(std::vector<std::shared_ptr<Figura>, std::allocator<std::shared_ptr<Figura> > >&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x143E61: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 5,208 bytes in 1 blocks are still reachable in loss record 46 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x113164: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 5,240 bytes in 1 blocks are still reachable in loss record 47 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1113C6: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 347,328 bytes in 4,824 blocks are still reachable in loss record 48 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x142083: PMRenderer::trace_ray(Vector3 const&, Vector3 const&, Color const&, std::__cxx11::list<Foton, std::allocator<Foton> >&, std::__cxx11::list<Foton, std::allocator<Foton> >&, bool, GeneradorAleatorio const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x142DBF: PMRenderer::preprocess(bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1439AA: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 1,500,000 bytes in 1 blocks are still reachable in loss record 49 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1277EA: std::vector<std::array<double, 3ul>, std::allocator<std::array<double, 3ul> > >::reserve(unsigned long) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x12654C: Imagen::Imagen(Imagen const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x111870: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 3,501,216 bytes in 48,628 blocks are still reachable in loss record 50 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x141EA1: PMRenderer::trace_ray(Vector3 const&, Vector3 const&, Color const&, std::__cxx11::list<Foton, std::allocator<Foton> >&, std::__cxx11::list<Foton, std::allocator<Foton> >&, bool, GeneradorAleatorio const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x142DBF: PMRenderer::preprocess(bool) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1439AA: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 3,583,440 bytes in 1 blocks are still reachable in loss record 51 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x1277EA: std::vector<std::array<double, 3ul>, std::allocator<std::array<double, 3ul> > >::reserve(unsigned long) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x12654C: Imagen::Imagen(Imagen const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x112501: escenaCornellBoxMateriales(int, int, int) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CC92: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== 6,998,400 bytes in 1 blocks are still reachable in loss record 52 of 52
+==1404==    at 0x4C3217F: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==1404==    by 0x127A86: std::vector<std::array<double, 3ul>, std::allocator<std::array<double, 3ul> > >::_M_fill_insert(__gnu_cxx::__normal_iterator<std::array<double, 3ul>*, std::vector<std::array<double, 3ul>, std::allocator<std::array<double, 3ul> > > >, unsigned long, std::array<double, 3ul> const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1266BF: Imagen::Imagen(int, int, long, float, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x1436E8: PMRenderer::render(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, int, float const&) (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404==    by 0x10CD37: main (in /mnt/d/Universidad/InformaticaGrafica/InformaticaGrafica/p3-trazado-rayos/main)
+==1404== 
+==1404== LEAK SUMMARY:
+==1404==    definitely lost: 0 bytes in 0 blocks
+==1404==    indirectly lost: 0 bytes in 0 blocks
+==1404==      possibly lost: 0 bytes in 0 blocks
+==1404==    still reachable: 15,978,224 bytes in 53,511 blocks
+==1404==         suppressed: 0 bytes in 0 blocks
+==1404== 
+==1404== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==1404== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

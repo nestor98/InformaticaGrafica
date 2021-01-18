@@ -270,7 +270,7 @@ tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
 // Explosion de esferas
 GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura, const Vector3& _centro,
   const double& _dmin, const double& _dmax, const double& _rmin, const double& _rmax,
-  const int _nEsferas) :
+  const int _nEsferas, const double& _probEmision) :
   tipo(_estructura), figuras(new std::vector<std::shared_ptr<Figura>>())
 {
   if (_estructura != ExplosionEsferas) {
@@ -284,12 +284,13 @@ GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura, const V
     Color emision;
     for (size_t i = 0; i < _nEsferas; i++) {
       double desplazamiento = rng.rand(_dmin, _dmax);
+      // Vector3 pos = _centro + rng.vectorNormalAleatorioBruto() * desplazamiento;
       Vector3 pos = _centro + rng.vectorNormalAleatorio() * desplazamiento;
       Esfera e(pos, rng.rand(_rmin, _rmax));
       double eps = rng.rand01();
-      if (eps < 0.5) {
+      if (eps < _probEmision) {
         // e.setRandomColor();
-        eps = rng.rand(1.0,80.0); // multiplica la emision por algo entre 1 y 8
+        eps = rng.rand(1.0,8.0); // multiplica la emision por algo entre 1 y 8
         emision.setFromPosGrad(pos,minpos,maxpos);
         std::cout << "emision: "<< emision*eps << '\n';
         e.setColor(emision*eps);

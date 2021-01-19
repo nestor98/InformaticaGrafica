@@ -577,12 +577,24 @@ Vector3 abs(const Vector3& v) {
 	return res;
 }
 
-Vector3 reflejar(const Vector3& in, const Matriz4& base) {
+Vector3 reflejarIneficiente(const Vector3& in, const Matriz4& base) {
 	Vector3 wi=base.inversa()*in;
 	wi[2] = -wi[2];
 	return base*wi;
+	// return reflejar(in, base[2]);
 }
 
+Vector3 reflejar(const Vector3& in, const Matriz4& base) {
+	return reflejar(in, base[2]);
+}
+
+Vector3 reflejar(const Vector3& in, const Vector3& n) {
+	// ωr=ωi−2n(ωi·n)
+	return in-2*n*(in*n);
+	// Vector3 wi=base.inversa()*in;
+	// wi[2] = -wi[2];
+	// return base*wi;
+}
 
 Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto) {
 	Vector3 i, j, k;

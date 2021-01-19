@@ -114,12 +114,16 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 	}
 	else if (evento == 1) { // ------------------------ REFLEXION
 		Matriz4 base = fig->getBase(pto);
+		// Vector3 normal = fig->getNormal(pto);
+		Vector3 normal = base[2];
+
 		c = mat.getCoeficiente(0); // usamos el coeficiente del difuso
 		if (c == double(0)) c = mat.getCoeficiente(1);
+		// Vector3 otroPath = reflejar(dir, normal);
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);
 		float pdf = mat.getPDF(evento, primerRebote);
 
-		c = c/pdf*pathTrace(alejarDeNormal(pto, base[2]), otroPath, rngThread); // kd * Li
+		c = c/pdf*pathTrace(alejarDeNormal(pto, normal), otroPath, rngThread); // kd * Li
 	}
 	else { // --------------------------- DIFUSO
 		if (fig->tieneTextura()) { // con textura
@@ -135,7 +139,7 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 
 		// Iluminacion directa:
 		Vector3 pto = alejarDeNormal(base[3], base[2]);
-		Color iDirecta = muestraLuzDirecta(base[3], base[2], rngThread); // poner pto en base[3]
+		Color iDirecta = muestraLuzDirecta(pto, base[2], rngThread);
 
 		// Iluminacion indirecta:
 		Vector3 otroPath = mat.getVectorSalida(base, rngThread, evento, dir);

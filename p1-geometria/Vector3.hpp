@@ -254,6 +254,10 @@ Vector3 abs(const Vector3& v);
 Vector3 reflejar(const Vector3& in, const Matriz4& base);
 
 
+// Devuelve el vector resultante de reflejar in en la normal
+Vector3 reflejar(const Vector3& in, const Vector3& n);
+
+
 Matriz4 baseFromVector(const Vector3& normal, const Vector3& pto);
 
 

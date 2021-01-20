@@ -96,7 +96,7 @@ Matriz4 Figura::getBase(const Vector3& pto) {
 		}
 	}
 	catch (std::string e) {
-		std::cerr << "error en getBase" << '\n';
+		std::cerr << "error en getBase " << e << '\n';
 	}
 }
 

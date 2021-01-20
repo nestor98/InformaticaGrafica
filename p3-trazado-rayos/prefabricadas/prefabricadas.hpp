@@ -226,7 +226,9 @@ std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, 
 
 		Plano suelo(UP, 1.0*distanciaParedes);
 		Imagen bump= Imagen("bump-agua-p3.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
-		Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+		// Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+		Textura texRotada = Textura(bump,1.5*distanciaParedes,1.5*distanciaParedes, 2.0*distanciaParedes+FRONT);
+
 		Matriz4 rotaciontex;
 		rotaciontex.setRotarX(gradosARad(90));
 		texRotada.rotar(rotaciontex);
@@ -247,17 +249,40 @@ std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, 
 		Vector3 pos2=pos1+UP*300;
 
 
-		// Esfera esf(pos2, tamEsfera);
-		// esf.setColor(30*Color(252/255.0, 212/255.0, 64/255.0));
+		// Esfera esf(pos2+LEFT*tamEsfera*3-UP*tamEsfera*1.26, 0.5*tamEsfera);
+		// esf.setColor(Color(5));
 		// e.addFigura(std::make_shared<Esfera>(esf));
+		//
+		// Esfera esfd(pos2-LEFT*tamEsfera*3+UP*tamEsfera*1.26, 0.65*tamEsfera);
+		// esfd.setColor(Color(5));//30*Color(252/255.0, 212/255.0, 64/255.0)
+		// e.addFigura(std::make_shared<Esfera>(esfd));
 
-		double dmin = 2.0*tamEsfera, dmax = 2.0*tamEsfera,// distanciaParedes,
-					rmin = tamEsfera/10, rmax=tamEsfera/10;
-		int nEsferas = 200;
-		GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ExplosionEsferas, pos2,
-			dmin, dmax, rmin, rmax, nEsferas);
-		auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
-		e.addFiguras(figuras);
+		int opcion = 1;
+
+		if (opcion==0) {
+			double dmin = 1.75*tamEsfera, dmax = 1.75*tamEsfera,// distanciaParedes,
+						rmin = tamEsfera/100, rmax=tamEsfera/100;
+			int nEsferas = 2500;
+			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ExplosionEsferas, pos2,
+				dmin, dmax, rmin, rmax, nEsferas);
+			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+			e.addFiguras(figuras);
+		} else {
+			double dmin = 1.75*tamEsfera, dmax = 1.75*tamEsfera,// distanciaParedes,
+					rmin = tamEsfera/100, rmax=tamEsfera/100;
+			int nEsferas = 2500;
+			GeneradorAleatorio rng;
+			for (size_t i = 0; i < 20; i++) {
+				Vector3 despl = rng.vectorNormalAleatorio();
+				despl = despl * rng.rand(0.0,tamEsfera*5);
+				GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ExplosionEsferas,
+					(despl[2]<-tamEsfera*3) ? (pos2+despl) :(pos2-despl),
+					dmin/2, 0.75*dmax, rmin, rmax, nEsferas);
+				auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+				e.addFiguras(figuras);
+			}
+		}
+
 
 	return std::make_unique<Escena>(e);
 

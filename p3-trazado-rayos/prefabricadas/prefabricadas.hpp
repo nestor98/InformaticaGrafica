@@ -14,6 +14,138 @@
 
 
 
+std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, const int rayosPP, const int escena) {
+	// Vector3 camera_position(0,1,3.0);
+	// Vector3 looking_at(0,1,0);
+	// Vector3 up(0,1,0);
+	// Real view_plane_dist = 1;
+	// Camera camera(camera_position,looking_at,up,view_plane_dist);
+
+	Vector3 posicion_camara(0.0, 1.0, 3.0, false);
+	Vector3 looking_at(0.0,1.0,0.0, false);
+	Vector3 up(0.0,1.0,0.0, false);
+	double distancia=1;
+	Camara c= Camara(posicion_camara, looking_at, up, gradosARad(90), 512, 512, 10);
+
+	Escena e(std::make_shared<Camara>(c));
+
+	// BSDF* glass = new Transmissive(w, 1.5);
+	// BSDF* mirror = new Specular(w);
+
+	// BSDF* white = new Lambertian(w, Vector3(.85,.85,.85));
+	// BSDF* red = new Lambertian(w, Vector3(.85,.085,.085));
+	// BSDF* green = new Lambertian(w, Vector3(.085,.85,.085));
+
+	Material cristal = Material(Color(), Color(), Color(0.9,0.9,0.9), 1.5f);
+	Material espejo = Material(Color(), Color(0.9,0.9,0.9), Color());
+	Material difusoBlanco(Color(.85,.85,.85), Color(), Color());
+	Material difusoRojo(Color(.85,.085,.085), Color(), Color());
+	Material difusoVerde(Color(.085,.85,.085), Color(), Color());
+
+	Plano suelo(UP, 1.0);
+	suelo.setMaterial(difusoBlanco);
+	e.addFigura(std::make_shared<Plano>(suelo));
+
+
+	Plano techo(-UP, distancia);
+	techo.setMaterial(difusoBlanco);
+	e.addFigura(std::make_shared<Plano>(techo));
+
+
+
+		Plano paredFondo(-FRONT, 4.0*distancia);
+		paredFondo.setMaterial(difusoBlanco);
+		e.addFigura(std::make_shared<Plano>(paredFondo));
+
+
+		Plano paredi(-LEFT, distancia);
+		paredi.setMaterial(difusoRojo);
+		e.addFigura(std::make_shared<Plano>(paredi));
+
+
+		Plano paredd(LEFT, distancia);
+		paredd.setMaterial(difusoVerde);
+		e.addFigura(std::make_shared<Plano>(paredd));
+
+	switch(escena){
+		case 1:
+		{
+		// 	Object3D* sphere1 = new Sphere(Vector3(0.5,0.3,.5), 0.3, glass);
+		// w->add_object(sphere1);
+
+		// Object3D* sphere2 = new Sphere(Vector3(-0.5,0.5,.5), 0.3, mirror);
+		// w->add_object(sphere2);
+			float tamEsfera=0.3;
+			Esfera esf(Vector3(0.5,0.3,.5), tamEsfera);
+			esf.setMaterial(cristal); 
+			e.addFigura(std::make_shared<Esfera>(esf));
+			Esfera esf2(Vector3(-0.5,0.5,.5), tamEsfera);
+			esf2.setMaterial(espejo); 
+			e.addFigura(std::make_shared<Esfera>(esf2));
+
+		}
+		break;
+		case 2:
+		{
+			
+		// Object3D* sphere1 = new Sphere(Vector3(0.5,0.3,.5), 0.3, white);
+		// w->add_object(sphere1);
+
+		// Object3D* sphere2 = new Sphere(Vector3(-0.5,0.5,1.5), 0.3, red);
+		// w->add_object(sphere2);
+
+		// Object3D* sphere3 = new Sphere(Vector3(0.,0.3,.0), 0.3, white);
+		// w->add_object(sphere3);
+			float tamEsfera=0.3;
+			Esfera esf(Vector3(0.5,0.3,.5), tamEsfera);
+			esf.setMaterial(difusoBlanco); 
+			e.addFigura(std::make_shared<Esfera>(esf));
+			Esfera esf2(Vector3(-0.5,0.5,1.5), tamEsfera);
+			esf2.setMaterial(difusoRojo); 
+			e.addFigura(std::make_shared<Esfera>(esf2));
+			Esfera esf3(Vector3(0.,0.3,.0), tamEsfera);
+			esf3.setMaterial(difusoBlanco); 
+			e.addFigura(std::make_shared<Esfera>(esf3));
+
+		}
+		break;
+		case 4:
+		{
+		// Object3D* sphere1 = new Sphere(Vector3(0.5,0.3,.5), 0.3, white);
+		// w->add_object(sphere1);
+
+		// Object3D* sphere2 = new Sphere(Vector3(-0.5,0.5,1.5), 0.3, red);
+		// w->add_object(sphere2);
+			float tamEsfera=0.3;
+			Esfera esf(Vector3(0.5,0.3,.5), tamEsfera);
+			esf.setMaterial(difusoBlanco); 
+			e.addFigura(std::make_shared<Esfera>(esf));
+			Esfera esf2(Vector3(-0.5,0.5,1.5), tamEsfera);
+			esf2.setMaterial(difusoRojo); 
+			e.addFigura(std::make_shared<Esfera>(esf2));
+		}
+		break;
+		default:
+		break;
+
+	}
+
+		Color emisionLuces(5);//40 //8
+		LuzPuntual luz(Vector3(0,1.9,0), emisionLuces);
+		e.addLuz(luz);
+		// LightSource* ls = new PointLightSource(w, Vector3(0,1.9,0), Vector3(5,5,5));
+		// w->add_light(ls);
+
+	
+	return std::make_unique<Escena>(e);
+
+
+}
+
+
+
+
+
 std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, const int rayosPP) {
 		// ----------------------- Constantes de la escena:
 		double distanciaParedes = 3;

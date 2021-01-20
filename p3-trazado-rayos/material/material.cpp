@@ -14,12 +14,13 @@ bool Material::coeficientesCorrectos() const {
 	return true;
 }
 
-Material::Material() : Material(Material::Difuso)
+Material::Material(const float& coef) : Material(Material::Difuso, coef)
 {
 	setMaximos();
 }
 
-Material::Material(const Color& c1, const Color& c2, const Color& c3)
+Material::Material(const Color& c1, const Color& c2, const Color& c3, const float& coef):	coeficienteRefraccion(coef)
+
 {
 	coeficientes[0]=(c1);
 	coeficientes[1]=(c2);
@@ -40,7 +41,7 @@ bool Material::esDelta(const int evento) const {
 // 	}
 // }
 
-Material::Material(const Tipo predeterminado) {
+Material::Material(const Tipo predeterminado, const float& coef):coeficienteRefraccion(coef) {
 	if (predeterminado==Tipo::Plastico) {
 		// TODO
 		std::cerr << "TODO: tipo plastico" << '\n';
@@ -152,14 +153,14 @@ Vector3 Material::getVectorSalida(const Matriz4& base, const GeneradorAleatorio&
 		// ------------------ Fresnel:
 		// Vec3f refractionColor = 0;
 		// compute fresnel
-		float coefRefraccion = 1.45; // TODO: de momento es vidrio
-		kr = krFresnel(incidente, base[2], coefRefraccion); // Devuelve la probabilidad de reflexion
+		float coefRefraccion = coeficienteRefraccion; // TODO: de momento es vidrio
+		kr = krFresnel(incidente, base[2], coeficienteRefraccion); // Devuelve la probabilidad de reflexion
 		if (gen.rand01() < kr) { // Reflexion:
 			wi = reflejar(incidente, base);
 		}
 		else { // Refraccion:
 			// std::cout << "reflexion" << '\n';
-			wi = refraccion(incidente, base[2], coefRefraccion);
+			wi = refraccion(incidente, base[2], coeficienteRefraccion);
 			if (wi.getModulo() == 0) { // Reflexion interna total
 				wi = reflejar(incidente, base);
 			} else {

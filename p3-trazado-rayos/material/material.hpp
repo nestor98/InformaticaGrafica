@@ -26,17 +26,19 @@ protected:
 
 	std::array<double, 3> maxCoefs; // Lambertiano, especular, refraccion
 
+	float coeficienteRefraccion;
+
 
 	// inline static Utils utils;
 	bool coeficientesCorrectos() const;
 
 public:
 	enum Tipo {Plastico, Metal, Difuso, Especular};
-	Material();
-	Material(const Color& c1, const Color& c2, const Color& c3);
+	Material(const float& coef=1.45);
+	Material(const Color& c1, const Color& c2, const Color& c3, const float& coef=1.45);
 	//Material(bool aleatorio = false);
-	Material(const Tipo predeterminado);
-	Material(std::shared_ptr<Textura> _tex);
+	Material(const Tipo predeterminado, const float& coef=1.45);
+	Material(std::shared_ptr<Textura> _tex, const float& coef=1.45);
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;

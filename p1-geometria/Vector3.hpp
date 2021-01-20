@@ -31,7 +31,7 @@ public:
 
 	Vector3(float x, float y, float z, float homogenea);
 
-	Vector3(float x, float y, float z, bool punto);
+	Vector3(float x, float y, float z, bool punto=false);
 
 	/**************** Metodos ****************/
 

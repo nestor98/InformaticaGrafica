@@ -31,7 +31,7 @@ Camara::Camara(const Vector3& _posicion, const Vector3& objetivo,
 		posicion(_posicion), up(_up),
 		pixelesX(_pixelesX), pixelesY(_pixelesY),rayosPixel(_rayosPixel)
 		{
-			left = cross(up, normalizar(objetivo)) * (double(pixelesX)/double(pixelesY));
+			left = cross(up, normalizar(objetivo-_posicion)) * (double(pixelesX)/double(pixelesY));
 			// std::cout << "up x objetivo = " << cross(up, objetivo) << '\n';
 			// std::cout << "left: " << left << "\nLEFT:" << LEFT << '\n';
 			// std::cout << "up: " << up << "\nUP:" << UP << '\n';

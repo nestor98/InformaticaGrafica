@@ -292,6 +292,9 @@ void PMRenderer::preprocess(bool normalizar)
 Color PMRenderer::causticas(const Vector3& pto, const Vector3& normal) const
 {
   int nCercanos; // No se usa
+  if(kdTreeCaustico.is_empty()){
+    return Color();
+  }
   return iluminacionRadioFijo(kdTreeCaustico, pto, normal, 0.05, nCercanos);
   // Color L;
   // float maxDist;
@@ -362,8 +365,8 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-    L = iluminacionGlobal(interseccion.punto, n) +
-        causticas(interseccion.punto, n);
+    // L = iluminacionGlobal(interseccion.punto, n) +
+    //     causticas(interseccion.punto, n);
     // L = L/2.0;
     //iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     if (!guardarDirectos) {
@@ -632,7 +635,7 @@ void PMRenderer::render(const std::string fichero) {
 	}
 	std::cout << "Inicializando threads... " << std::endl;
 	initThreads(im, o, c->getNumPixeles()); // inicializar los threads
-	// // std::cout << "hecho" << '\n';
+	std::cout << "hecho" << '\n';
 	Renderer::waitThreads(); // y esperar a que terminen
 	im.setMaxFloat(rangoDinamico); // TODO: entender esta vaina
 	im.extendedReinhard();

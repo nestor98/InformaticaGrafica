@@ -148,7 +148,8 @@ Color Renderer::ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir
 		// Aqui, c es kd
 		// TODO: REVISAR COSENOS
 		float cosangulos = std::abs(otroPath*dir);
-		c = c*cosangulos/pdf *(iDirecta + pathTrace(pto, otroPath, rngThread)); // kd * Li
+		//c = c/pdf *(iDirecta + pathTrace(pto, otroPath, rngThread)*cosangulos); // kd * Li
+		c=c/pdf *(iDirecta);
 	}
 	return c;
 }

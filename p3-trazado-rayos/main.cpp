@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 
 	rend.render(argv[1]);*/
 	//720/16*9
-	auto escena = escenaPruebas(500, 500, atoi(argv[3]), 1); // pixX, pixY, rayosPP
+	auto escena = escenaPruebas(512, 512, atoi(argv[3]), 2); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
 	auto tipo = Renderer::TipoRender::Materiales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
 		int maxNumFotones= 100000,
 				maxFotonesGlobales= 50000, maxFotonesCausticos= 50000,
 				nFotonesCercanos = 250;
-		bool guardarDirectos =true;
+		bool guardarDirectos =false;
 		// Parametros PROGRESSIVE:
 		int nIteraciones = 10;
 		float r1 = 0.8;
@@ -78,6 +78,48 @@ int main(int argc, char* argv[]) {
 	}
 	return 0;
 }
+ 
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  

@@ -64,6 +64,9 @@ public:
 	double& operator [](int i);
 
 };
+
+const Color CELESTE(135/255.0,206/255.0,235/255.0);
+
 std::ostream& operator<<(std::ostream& os, const Color& c);
 
 bool operator == (const Color& c1, const double val);

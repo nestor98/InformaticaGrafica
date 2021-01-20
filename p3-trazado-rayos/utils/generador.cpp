@@ -292,7 +292,7 @@ GeneradorEstructuras::GeneradorEstructuras(const Estructura _estructura, const V
         // e.setRandomColor();
         eps = rng.rand(1.0,8.0); // multiplica la emision por algo entre 1 y 8
         emision.setFromPosGrad(pos,minpos,maxpos);
-        std::cout << "emision: "<< emision*eps << '\n';
+        //std::cout << "emision: "<< emision*eps << '\n';
         e.setColor(emision*eps);
       }
       else {

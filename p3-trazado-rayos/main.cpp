@@ -43,11 +43,13 @@ int main(int argc, char* argv[]) {
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
 	auto tipo = Renderer::TipoRender::Materiales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
-	bool usarBVH = true;
+	bool usarBVH = false;
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 
 	enum TipoRenderer {PathTracer, PM, ProgressivePM};
 	TipoRenderer seleccionado=(TipoRenderer) atoi(argv[5]);
+
+	std::cout << "------- ESCENA -------\n" << escena->to_string() << '\n';
 	if (seleccionado==PathTracer){
 		// -----------------------------------------------
 		// Con Path tracer:
@@ -78,6 +80,3 @@ int main(int argc, char* argv[]) {
 	}
 	return 0;
 }
- 
- 
- 

@@ -131,7 +131,7 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 			for (auto f : *figuras) {
 				f->setMaterial(PLASTICO_GRIS);
 			}
-			// e.addFiguras(figuras);
+			//e.addFiguras(figuras);
 			PrismaRotable test(posPrsima - (2.0*distanciaParedes-2.0*tamEsponja[0])*LEFT+2.0*tamEsponja[0]*UP-distanciaParedes/2.0*FRONT, tamEsponja/1.5);
 			Matriz4 rotacion, tmp;
 			rotacion.setRotarZ(PI/4.0);
@@ -261,7 +261,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 
 			Esfera esf(centroSuelo + tamEsfera*UP + 0.45*distanciaParedes*LEFT - 0.2*FRONT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
-			esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLEXION
+			esf.setMaterial(Material(Color(0.3,0.3,0.3), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLEXION
 			//esf.setMaterial(difusoRojo);
 			e.addFigura(std::make_shared<Esfera>(esf));
 			//
@@ -311,7 +311,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			for (auto f : *figuras) {
 				f->setMaterial(PLASTICO_GRIS);
 			}
-			// e.addFiguras(figuras);
+			e.addFiguras(figuras);
 			PrismaRotable test(posPrsima - (2.0*distanciaParedes-2.0*tamEsponja[0])*LEFT+2.0*tamEsponja[0]*UP-distanciaParedes/2.0*FRONT, tamEsponja);
 			Matriz4 rotacion, tmp;
 			rotacion.setRotarZ(PI/4.0);
@@ -320,7 +320,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			test.rotar(rotacion);
 
 			test.setMaterial(PLASTICO_GRIS);
-			e.addFigura(std::make_shared<PrismaRotable>(test));
+			//e.addFigura(std::make_shared<PrismaRotable>(test));
 
 		} // LUZ:
 		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;

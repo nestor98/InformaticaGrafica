@@ -207,10 +207,6 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
     viejo=energia;
   }
 
-
-
-
-
 	if( fotonesCausticos.size() == maxFotonesCausticos &&
 		fotonesGlobales.size() == maxFotonesGlobales )
 	{

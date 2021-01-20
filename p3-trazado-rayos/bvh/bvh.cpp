@@ -98,7 +98,7 @@ void BoundingVolumeH::construirArbolRec(std::vector<std::shared_ptr<Figura>>& fi
 		if (it == figuras.begin() || it == figuras.end()) {
 			masFiguras = figuras;
 
-			std::cout << "|";
+			//std::cout << "|";
 		}
 		else {
 			std::vector<std::shared_ptr<Figura>> mitad;

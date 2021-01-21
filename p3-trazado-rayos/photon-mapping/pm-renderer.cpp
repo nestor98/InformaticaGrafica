@@ -21,11 +21,11 @@
 PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::TipoRender tipo,
   const bool _usarBVH, const float _rangoDinamico, const int _maxNumFotones,
   const int _maxFotonesGlobales, const int _maxFotonesCausticos,
-  const int _nFotonesCercanos, const bool _guardarDirectos)
+  const int _nFotonesCercanos, const bool _guardarDirectos, const float radioCaus)
 : Renderer(_e, _nThreads, tipo, _usarBVH, _rangoDinamico),
   maxNumFotones(_maxNumFotones), maxFotonesGlobales(_maxFotonesGlobales),
   maxFotonesCausticos(_maxFotonesCausticos), fotonesActuales(0),
-  nFotonesCercanos(_nFotonesCercanos), guardarDirectos(_guardarDirectos)
+  nFotonesCercanos(_nFotonesCercanos), guardarDirectos(_guardarDirectos), radioCausticos(radioCaus)
 {
   std::cout << "Guardar dir: " << guardarDirectos << '\n';
   std::cout << "maxFotonesCausticos: " << maxFotonesCausticos << '\n';
@@ -295,7 +295,7 @@ Color PMRenderer::causticas(const Vector3& pto, const Vector3& normal) const
   if(kdTreeCaustico.is_empty()){
     return Color();
   }
-  return iluminacionRadioFijo(kdTreeCaustico, pto, normal, 0.05, nCercanos);
+  return iluminacionRadioFijo(kdTreeCaustico, pto, normal, radioCausticos, nCercanos);
   // Color L;
   // float maxDist;
   // std::vector<float> ptoKDT;
@@ -365,10 +365,10 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-    // L = iluminacionGlobal(interseccion.punto, n) +
-    //     causticas(interseccion.punto, n);
+     L = iluminacionGlobal(interseccion.punto, n) +
+        causticas(interseccion.punto, n);
     // L = L/2.0;
-    //iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
+    // iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     if (!guardarDirectos) {
       //std::cout << "??????????" << '\n';
       L = L + Renderer::luzDirecta(ptoCorregido, n);

@@ -24,7 +24,7 @@ class Camara {
 
 	Matriz4 baseInversa;
 
-	GeneradorAleatorio gen; // random, etc
+	// GeneradorAleatorio gen; // random, etc
 
 
 public:
@@ -52,7 +52,7 @@ public:
 	void rotarAlrededorDeTarget(const Matriz4& rotacion);
 
 
-	Vector3 getRayoPixel(const int i) const;
+	Vector3 getRayoPixel(const int i, const GeneradorAleatorio& rng) const;
 	Vector3 getRayoCentroPixel(const int i) const;
 
 	int getRayosPorPixel() const;

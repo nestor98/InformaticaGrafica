@@ -72,14 +72,14 @@ int Camara::getNumPixeles() const {
 }
 
 // devuelve el vector del iesimo pixel de la camara
-Vector3 Camara::getRayoPixel(const int i) const{
+Vector3 Camara::getRayoPixel(const int i, const GeneradorAleatorio& rng) const{
 	//std::cout<<"funcion camara\n";
 	int x = i%(pixelesX); // coord x
 	int y = i/(pixelesX);
 
-	double xLeft = x+gen.rand01();
+	double xLeft = x+rng.rand01();
 	xLeft = -(xLeft/(pixelesX/2.0)-1.0);
-	double yUp = y+gen.rand01();
+	double yUp = y+rng.rand01();
 	yUp = -(2.0*yUp/double(pixelesY)-1.0);
 	// std::cout << xLeft << "\t" << yUp << std::endl;
 	Vector3 dirCamara(xLeft, yUp, 1, false);

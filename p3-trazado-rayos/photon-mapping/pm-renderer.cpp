@@ -451,7 +451,7 @@ const GeneradorAleatorio& rng) const {
       dir = c->getRayoCentroPixel(pixel);
     }
     else {
-  	   dir = c->getRayoPixel(pixel); // dir aleatoria
+  	   dir = c->getRayoPixel(pixel, rng); // dir aleatoria
     }
 
     auto intersec = e.interseccion(o, dir);
@@ -794,7 +794,7 @@ const GeneradorAleatorio& rng, const float& radio) const {
       dir = c->getRayoCentroPixel(pixel);
     }
     else {
-  	   dir = c->getRayoPixel(pixel); // dir aleatoria
+  	   dir = c->getRayoPixel(pixel, rng); // dir aleatoria
     }
 
     auto intersec = e.interseccion(o, dir);

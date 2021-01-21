@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 		// -----------------------------------------------
 		// Con PROGRESSIVE PM;
 		// Parametros de PM:
-		int maxNumFotones= 1000,
+		int maxNumFotones= 2000,
 				maxFotonesGlobales= 500, maxFotonesCausticos= 500,
 				nFotonesCercanos = 10;
 		bool guardarDirectos =false;
@@ -80,31 +80,3 @@ int main(int argc, char* argv[]) {
 	}
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -642,11 +642,9 @@ void rotarAlrededorDePto(Matriz4& base, const Matriz4& rotacion) {
 	base[3] = pto;
 }
 
-
 double gradosARad(const double grados) {
 	return grados * (2.0*PI) / 360.0;
 }
-
 
 double radianesAGrados(const double rad) {
 	return rad / (2.0*PI) * 360.0;

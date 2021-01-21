@@ -254,7 +254,7 @@ void PMRenderer::preprocess(bool normalizar)
 	std::list<Foton> fotonesGlobales, fotonesCausticos;
 	//KDTree<Foton, 3> KDTFotones;
 	bool fin = false;
-  int i = 0;
+  //int i = 0;
   // Esperamos iterar el sig. num de veces (10 es la p de absorcion):
   double esperanza_iteraciones = double(maxNumFotones)/10.0;
   std::cout << "esperamos iterar: " << esperanza_iteraciones << '\n';
@@ -262,7 +262,7 @@ void PMRenderer::preprocess(bool normalizar)
   std::cout << "Emision luz: " << luz0.getEmision() << " en cada iter: "
             << (luz0.getEmision()/esperanza_iteraciones) << '\n';
 	while (!fin) {
-    i++; // DEBUG
+    //i++; // DEBUG
 		// sample
 		int iLuz = rng.rand(0, vLuces.size()); // luz aleatoria
 		LuzPuntual luz = e.getLuz(iLuz);
@@ -276,13 +276,13 @@ void PMRenderer::preprocess(bool normalizar)
 		fin = !trace_ray(origen, dir, luz.getEmision(), fotonesGlobales,
 							fotonesCausticos,	guardarDirectos, rng);//guardarDirectos
 	}
-  std::cout << i << " iteraciones de trace_ray (en preprocess)" << '\n';
+  std::cout << fotonesActuales << " iteraciones de trace_ray (en preprocess)" << '\n';
 	// store
   std::cout << "globales: " << fotonesGlobales.size() << "\ncausticos: "
             << fotonesCausticos.size() << '\n';
   double escalarPFotones = 1;
   if (normalizar) {
-    escalarPFotones=4.0*PI/i; // cada foton debe tener 1/numfotones la e original
+    escalarPFotones=4.0*PI/fotonesActuales; // cada foton debe tener 1/numfotones la e original
   }
 	guardarFotones<Foton, 3>(kdTreeGlobal, fotonesGlobales, escalarPFotones);
 	guardarFotones<Foton, 3>(kdTreeCaustico, fotonesCausticos, escalarPFotones);
@@ -317,7 +317,7 @@ Color PMRenderer::iluminacionRadioFijo(const KDTree<Foton,3>& kdTree,
     Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
     // ha chocado con esta cara de la fig (normal*dir < 0)
     //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-    L = L + foton.getEmision() * std::abs(normal * dirFoton);// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+    L = L + foton.getEmision();// * std::abs(normal * dirFoton);// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
       //std::cout << foton.getEmision() << " ";
     //}
   }
@@ -341,7 +341,7 @@ Color PMRenderer::iluminacionGlobal(const Vector3& pto, const Vector3& normal) c
     // TODO: probar estas lineas comentadas, igual quita bias:
     // ha chocado con esta cara de la fig (normal*dir < 0)
     //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-    L = L + foton.getEmision() * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+    L = L + foton.getEmision();// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
       //std::cout << foton.getEmision() << " ";
     //}
   }
@@ -359,6 +359,7 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   Material mat = figIntersectada->getMaterial();
   // true pq es el primer rebote:
   int evento = mat.ruletaRusa(rng, primerRebote); // devuelve un entero entre 0 y 4 en f de las probs
+  float pdf = mat.getPDF(evento, primerRebote);
   if (evento == 3) { // Absorcion, imposible en el 1er rebote
     return L;
   }
@@ -379,6 +380,7 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
 			L= L*figIntersectada->getEmision(interseccion.punto); // El coeficiente es el de la textura
 		}
 		else { // difuso sin textura
+      // BRDF:
 			L = L * mat.getCoeficiente(0);
 		}
 
@@ -436,7 +438,7 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
       std::cerr << "--------------------------" << '\n';
     }
   }
-  return L;
+  return L/pdf;
 }
 
 // Renderiza el <pixel> en la imagen <im>. <o> es el origen de la camara

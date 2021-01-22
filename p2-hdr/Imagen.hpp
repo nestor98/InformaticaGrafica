@@ -19,7 +19,7 @@ class Imagen {
 public:
 
 	Imagen();
-	Imagen(const std::string nombreFichero, bool ldr);
+	Imagen(const std::string nombreFichero, bool ldr=true);
 	Imagen(const Imagen& i2);
 
 
@@ -33,7 +33,7 @@ public:
 
 	// Divide todos los pixeles entre d
 	void dividirPixels(const double& d);
-	
+
 	std::array<double, 3> getPixel(const int fila, const int col)const;
 	std::array<double, 3> getPixel(const int i)const;
 
@@ -61,3 +61,6 @@ public:
 
 	// para evitar el to_string en cout
 	std::ostream& operator<<(std::ostream& os, const Imagen& v);
+
+	// Devuelve la suma del valor absoluto de la diferencia entre cada pixel en i1 e i2
+	double diferencia(const Imagen& i1, const Imagen& i2);

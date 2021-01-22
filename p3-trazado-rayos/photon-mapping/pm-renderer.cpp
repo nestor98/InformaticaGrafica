@@ -335,13 +335,14 @@ Color PMRenderer::iluminacionGlobal(const Vector3& pto, const Vector3& normal) c
   pto.toKDTreePoint(ptoKDT);// pto para buscar en el KDTree
   std::vector<const KDTree<Foton, 3>::Node*> nodes;
   kdTreeGlobal.find(ptoKDT, nFotonesCercanos, nodes, maxDist);
+ // std::cout<<"nodes: "<<nodes.size()<<std::endl;
   for (auto node : nodes) { // para cada foton
     Foton foton = node->data();
     Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
     // TODO: probar estas lineas comentadas, igual quita bias:
     // ha chocado con esta cara de la fig (normal*dir < 0)
     //if (dirFoton * figIntersectada->getNormal(interseccion.punto) < 0) {
-    L = L + foton.getEmision();// * std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
+    L = L + foton.getEmision()* std::abs(normal * dirFoton);// / (PI* (maxDist*maxDist));// * rCuadrado); // sum(flujo/(PI*r^2))
       //std::cout << foton.getEmision() << " ";
     //}
   }

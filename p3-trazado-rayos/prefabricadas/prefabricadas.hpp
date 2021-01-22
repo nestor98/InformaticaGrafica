@@ -290,13 +290,113 @@ std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, 
 }
 
 
+// Mar y reflejo del sol la luna o algo
+std::unique_ptr<Escena> escenaAguaFresnel(const int pixelesX, const int pixelesY, const int rayosPP) {
+
+		double distanciaParedes = 3;
+		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
+		// Vector3 fCam = FRONT;//(0,1,0,false);
+		// Vector3 lCam = LEFT; //(1,0,0,false);
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+
+
+		// ----------------------- Camara:
+		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
+		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
+		double fov = gradosARad(60); //0.475 * PI;
+
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
+		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+
+
+		//
+
+		Escena e(std::make_shared<Camara>(c));
+
+	Material cristal = Material(Color(), Color(), Color(0.9,0.9,0.9), 1.5f);
+	Material espejo = Material(Color(), Color(0.6,0.6,0.6), Color());
+	Material difusoBlanco(Color(.85,.85,.85), Color(), Color());
+	Material difusoRojo(Color(.85,.085,.085), Color(), Color());
+	Material difusoVerde(Color(.085,.85,.085), Color(), Color());
+
+		Plano suelo(UP, 1.0*distanciaParedes);
+		Imagen bump= Imagen("bump-agua-p3.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
+		// Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+		Textura texRotada = Textura(bump,1.5*distanciaParedes,1.5*distanciaParedes, 2.0*distanciaParedes+FRONT);
+
+		Matriz4 rotaciontex;
+		rotaciontex.setRotarX(gradosARad(90));
+		texRotada.rotar(rotaciontex);
+		texRotada.setMaxDesplaz(3e-2);
+		suelo.setMaterial(VIDRIO);
+		suelo.setBumpMap(std::make_shared<Textura>(texRotada));
+		e.addFigura(std::make_shared<Plano>(suelo));
+
+		Plano sueloSubMarino(UP, 5*distanciaParedes);
+		sueloSubMarino.setColor(Color(1));
+		e.addFigura(std::make_shared<Plano>(sueloSubMarino));
+
+		Plano techo(-UP, 5000);
+		//techo.setColor(5*Color(135/255.0,206/255.0,235/255.0));
+		techo.setColor(Color());
+
+		//techo.setMaterial(difusoBlanco);
+	//	e.addFigura(std::make_shared<Plano>(techo));
+
+		float tamEsfera=100;
+		Vector3 pos1=centroSuelo+FRONT*1000;
+		Vector3 pos2=pos1+UP*300;
+
+
+		// Esfera esf(pos2+LEFT*tamEsfera*3-UP*tamEsfera*1.26, 0.5*tamEsfera);
+		// esf.setColor(Color(5));
+		// e.addFigura(std::make_shared<Esfera>(esf));
+		//
+		// Esfera esfd(pos2-LEFT*tamEsfera*3+UP*tamEsfera*1.26, 0.65*tamEsfera);
+		// esfd.setColor(Color(5));//30*Color(252/255.0, 212/255.0, 64/255.0)
+		// e.addFigura(std::make_shared<Esfera>(esfd));
+
+		int opcion = 0;
+
+		if (opcion==0) {
+			double dmin = 1.75*tamEsfera, dmax = 1.75*tamEsfera,// distanciaParedes,
+						rmin = tamEsfera/100, rmax=tamEsfera/100;
+			int nEsferas = 2500;
+			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ExplosionEsferas, pos2,
+				dmin, dmax, rmin, rmax, nEsferas);
+			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+			e.addFiguras(figuras);
+		} else {
+			double dmin = 1.75*tamEsfera, dmax = 1.75*tamEsfera,// distanciaParedes,
+					rmin = tamEsfera/100, rmax=tamEsfera/100;
+			int nEsferas = 2500;
+			GeneradorAleatorio rng;
+			for (size_t i = 0; i < 20; i++) {
+				Vector3 despl = rng.vectorNormalAleatorio();
+				despl = despl * rng.rand(0.0,tamEsfera*5);
+				GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ExplosionEsferas,
+					(despl[2]<-tamEsfera*3) ? (pos2+despl) :(pos2-despl),
+					dmin/2, 0.75*dmax, rmin, rmax, nEsferas);
+				auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+				e.addFiguras(figuras);
+			}
+		}
+
+
+	return std::make_unique<Escena>(e);
+
+
+}
 
 
 std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, const int rayosPP) {
 		// ----------------------- Constantes de la escena:
 		double distanciaParedes = 3;
-		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
-		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP- LEFT;
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP*0 + LEFT;
 		Vector3 posCam(0,0,0,true);
 		posCam = posCam - UP * distanciaParedes/4.0;
 		// Vector3 fCam = FRONT;//(0,1,0,false);
@@ -312,7 +412,7 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 		// ----------------------- Camara:
 		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
-		double fov = gradosARad(90); //0.475 * PI;
+		double fov = gradosARad(120); //0.475 * PI;
 
 		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
 		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
@@ -336,6 +436,23 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 		auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 		e.addFiguras(figuras);
 
+		bool agua=true;
+		if (agua) {
+			Plano suelo(UP, 1.0*distanciaParedes);
+			Imagen bump= Imagen("bump-agua-p3.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
+			// Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+			Textura texRotada = Textura(bump,1.5*distanciaParedes/2.0,1.5*distanciaParedes/2.0, distanciaParedes+FRONT);
+			Matriz4 rotaciontex;
+			rotaciontex.setRotarX(gradosARad(90));
+			texRotada.rotar(rotaciontex);
+			texRotada.setMaxDesplaz(3e-2);
+			suelo.setMaterial(VIDRIO);//Material(Color(), Color(0.9), Color(0.)
+			suelo.setBumpMap(std::make_shared<Textura>(texRotada));
+			e.addFigura(std::make_shared<Plano>(suelo));
+		}
+
+
+
 		// Figuras:
 		//Esfera esf(posEsf+5.0*(0.3*i*uCam), 0.5);// 1*1
 		Vector3 posLuz = centroSuelo + 1.8 * distanciaParedes * UP;
@@ -357,11 +474,22 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 
 
 
-			Esfera esf(centroSuelo + 0.5*tamEsfera*UP + 0.45*distanciaParedes*LEFT, tamEsfera);// 1*1
+			Esfera esf(centroSuelo + 0.15*tamEsfera*UP + distanciaParedes*LEFT, tamEsfera);// 1*1
 			// cout << esf.to_string() << endl;
 			esf.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color())); //PRUEBA REFLEXION
 			//esf.setMaterial(difusoRojo);
-			e.addFigura(std::make_shared<Esfera>(esf));
+			//e.addFigura(std::make_shared<Esfera>(esf));
+			// ESPONJA:
+			Vector3 tamEsponja(tamEsfera);
+			Vector3 posPrsima = centroSuelo  + 1.1*distanciaParedes*LEFT;
+			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posPrsima, tamEsponja, 4);
+			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+			for (auto f : *figuras) {
+				f->setMaterial(PLASTICO_GRIS);
+			}
+			//e.addFiguras(figuras);
+
+
 			//
 			Vector3 posEsfDcha = centroSuelo + tamEsfera;
 			Esfera esfdcha(posEsfDcha, tamEsfera);// 1*1
@@ -380,13 +508,13 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 			// cout << esf.to_string() << endl;
 			esf2.setMaterial(difusoGris);
 			esf2.setRandomColor();
-			e.addFigura(std::make_shared<Esfera>(esf2));
+			//e.addFigura(std::make_shared<Esfera>(esf2));
 			Vector3 posesfTex=(posEsfDcha + tamEsfera * LEFT);
 			// Textura tex=Textura(t,2.0*tamEsfera,2.0*tamEsfera, posesfTex);
 			Esfera esfVidrio(posesfTex, tamEsfera, std::make_shared<Textura>(tex));
 			// esfLuz.setRandomColor();
 			esfVidrio.setMaterial(VIDRIO);
-			e.addFigura(std::make_shared<Esfera>(esfVidrio));
+		//	e.addFigura(std::make_shared<Esfera>(esfVidrio));
 			// Vector3 tamPrisma(2.0*tamEsfera, 2.0*tamEsfera,0.2*tamEsfera, false);
 			// tamPrisma = tamPrisma/2.0;
 			// Prisma caja(centroSuelo + 1.5*distanciaParedes*UP + tamPrisma/2.0 * LEFT, tamPrisma);// 1*1
@@ -401,15 +529,7 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 			// caja2.setMaterial(Material(Color(), Color(0.9,0.9,0.9), Color()));
 			// caja2.setColor(0.2,0.5,0.2);
 			// e.addFigura(std::make_shared<Prisma>(caja2));
-			// ESPONJA:
-			Vector3 tamEsponja(tamEsfera);
-			Vector3 posPrsima = centroSuelo + 1.1*distanciaParedes*LEFT+ 0.5*distanciaParedes*FRONT;
-			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posPrsima - (2.0*distanciaParedes-tamEsponja[0])*LEFT , tamEsponja, 4);
-			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
-			for (auto f : *figuras) {
-				f->setMaterial(PLASTICO_GRIS);
-			}
-			//e.addFiguras(figuras);
+
 			PrismaRotable test(posPrsima - (2.0*distanciaParedes-2.0*tamEsponja[0])*LEFT+2.0*tamEsponja[0]*UP-distanciaParedes/2.0*FRONT, tamEsponja/1.5);
 			Matriz4 rotacion, tmp;
 			rotacion.setRotarZ(PI/4.0);
@@ -418,7 +538,7 @@ std::unique_ptr<Escena> escenaPruebaSky(const int pixelesX, const int pixelesY, 
 			test.rotar(rotacion);
 
 			test.setMaterial(PLASTICO_GRIS);
-			e.addFigura(std::make_shared<PrismaRotable>(test));
+		//	e.addFigura(std::make_shared<PrismaRotable>(test));
 
 		} // LUZ:
 		Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;

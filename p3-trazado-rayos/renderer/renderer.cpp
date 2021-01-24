@@ -67,7 +67,7 @@ Color Renderer::muestraLuzDirecta(const Vector3& pto, const Vector3& normal,
 {
 	int numLuces = e.getNumLuces();
 	if (numLuces>0) { // Se muestrea una sola luz
-		// Si hay varias con intensidad muy distinta se deberia hacer importance sampling!!
+		
 		int indiceLuz = rng.rand(0, numLuces);
 		Color L = shadowRay(pto, normal, indiceLuz);
 		// std::cout << "L: " << L << '\n';

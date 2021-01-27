@@ -36,34 +36,55 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 						// // BSDF* white = new Lambertian(w, Vector3(.85,.85,.85));
 						// // BSDF* red = new Lambertian(w, Vector3(.85,.085,.085));
 						// // BSDF* green = new Lambertian(w, Vector3(.085,.85,.085));
-								double distanciaParedes = 3;
-		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+
+
+
+		double distanciaParedes = 3;
+				Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
 		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
 		Vector3 posCam(0,0,0,true);
 		posCam = posCam - UP * distanciaParedes/4.0;
+		double fov = gradosARad(60); //0.475 * PI;
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
+		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+				Escena e(std::make_shared<Camara>(c));
+
 		// Vector3 fCam = FRONT;//(0,1,0,false);
 		// Vector3 lCam = LEFT; //(1,0,0,false);
-		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+
+		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
+		// tamPrismaLuz = tamPrismaLuz*2;
+		// Vector3 posPrismaLuz(0,0,0,true);
+		// posPrismaLuz=posPrismaLuz+UP*distanciaParedes/1.5+FRONT*distanciaParedes/3 + LEFT;
+		// Prisma prismaLuz(posPrismaLuz, tamPrismaLuz);
+		// prismaLuz.setColor(Color(100));
+		// 		e.addFigura(std::make_shared<Prisma>(prismaLuz));
+
 
 
 		// ----------------------- Camara:
 		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
-		double fov = gradosARad(60); //0.475 * PI;
 
-		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
-		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
 
 
 		//
 
-		Escena e(std::make_shared<Camara>(c));
+
 
 	Material cristal = Material(Color(), Color(), Color(0.9,0.9,0.9), 1.5f);
 	Material espejo = Material(Color(), Color(0.9,0.9,0.9), Color());
 	Material difusoBlanco(Color(.85,.85,.85), Color(), Color());
 	Material difusoRojo(Color(.85,.085,.085), Color(), Color());
-	Material difusoVerde(Color(.085,.85,.085), Color(), Color());
+	Material difusoVerde(Color(62.0/255,153.0/255.0,122.0/255.0), Color(), Color());
+	Material difusoNaranja(Color(.85,.6,.02), Color(), Color());
+	Material difusoLila(Color(95.0/255.0,90.0/255.0,180.0/255.0), Color(), Color());
+	Material mezclaBlanco(Color(.85/2.0,.85/2.0,.85/2.0), Color(0.45,0.45,0.45), Color());
+	Material mezclaRojo(Color(.85/2.0,.085/2.0,.085/2.0), Color(0.45,0.45,0.45), Color());
+	Material mezclaVerde(Color(62.0/255/2.0,153.0/255.0/2.0,122.0/255.0/2.0), Color(0.45,0.45,0.45), Color());
+
 
 						// // Plano suelo(UP, distancia);
 						// // suelo.setMaterial(difusoBlanco);
@@ -90,8 +111,18 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 						// 	paredd.setMaterial(difusoVerde);
 						// 	e.addFigura(std::make_shared<Plano>(paredd));
 
-		Plano suelo(UP, 1.0*distanciaParedes);
 
+		Plano suelo(UP, 1.0*distanciaParedes);
+		// Imagen bump= Imagen("bump-agua-p3.ppm", true);
+		// Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+		// Matriz4 rotaciontex;
+		// rotaciontex.setRotarX(gradosARad(90));
+		// texRotada.rotar(rotaciontex);
+		// texRotada.setMaxDesplaz(3e-2);
+		// suelo1.setMaterial(VIDRIO);
+		// suelo1.setBumpMap(std::make_shared<Textura>(texRotada));
+		// suelo1.setTextura(std::make_shared<Textura>(texRotada));
+		// e.addFigura(std::make_shared<Plano>(suelo1));
 		suelo.setMaterial(difusoBlanco);
 		e.addFigura(std::make_shared<Plano>(suelo));
 
@@ -104,7 +135,8 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 		paredi.setMaterial(difusoRojo);
 		e.addFigura(std::make_shared<Plano>(paredi));
 		Plano paredd(LEFT, distanciaParedes);
-		paredd.setMaterial(difusoVerde);
+
+		paredd.setMaterial(difusoLila);
 
 
 		e.addFigura(std::make_shared<Plano>(paredd));
@@ -174,11 +206,11 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 		// Object3D* sphere2 = new Sphere(Vector3(-0.5,0.5,1.5), 0.3, red);
 		// w->add_object(sphere2);
 			float tamEsfera=0.3;
-			Esfera esf(Vector3(0.5,0.3,.5, true), tamEsfera);
-			esf.setMaterial(difusoBlanco);
+			Esfera esf(pos1, tamEsfera*2);
+			esf.setMaterial(cristal);
 			e.addFigura(std::make_shared<Esfera>(esf));
-			Esfera esf2(Vector3(-0.5,0.5,1.5, true), tamEsfera);
-			esf2.setMaterial(difusoRojo);
+			Esfera esf2(pos1, tamEsfera);
+			esf2.setMaterial(difusoNaranja);
 			e.addFigura(std::make_shared<Esfera>(esf2));
 		}
 		break;
@@ -190,9 +222,10 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 
 		Color emisionLuces(20);//40 //8
 		LuzPuntual luz(Vector3(0,1.9,0, true), emisionLuces);
+		//luz.setEmision(Color(.85,.085,.085));
+		//LuzPuntual luz(Vector3(0,2.7,0, true), emisionLuces);
 		e.addLuz(luz);
-		// LightSource* ls = new PointLightSource(w, Vector3(0,1.9,0), Vector3(5,5,5));
-		// w->add_light(ls);
+
 
 
 	return std::make_unique<Escena>(e);
@@ -1014,11 +1047,14 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 
 
 		Material difuso(Material::Difuso);
-		Material difusoVerde = difuso;
-		difusoVerde.setCoeficiente(Color(0,0.8,0),0);
-		Material difusoRojo = difuso;
-		difusoRojo.setCoeficiente(Color(0.8,0,0),0);
+		// Material difusoVerde = difuso;
+		// difusoVerde.setCoeficiente(Color(0,0.8,0),0);
+		//Material difusoRojo = difuso;
+		//difusoRojo.setCoeficiente(Color(0.8,0,0),0);
 		Material difusoGris = DIFUSO_GRIS;
+		Material difusoBlanco(Color(.85,.85,.85), Color(), Color());
+		Material difusoRojo(Color(95.0/255.0,28.0/255.0,19.0/255.0), Color(), Color());
+		Material difusoVerde(Color(62.0/255,153.0/255.0,122.0/255.0), Color(), Color());
 		//
 		// Caja:
 		Plano suelo(UP, 1.0*distanciaParedes);
@@ -1027,21 +1063,20 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 		Matriz4 rotaciontex;
 		rotaciontex.setRotarX(gradosARad(90));
 		texRotada.rotar(rotaciontex);
-		suelo.setTextura(std::make_shared<Textura>(texRotada));
-		suelo.setMaterial(difusoGris);
+		suelo.setMaterial(difusoRojo);
 		e.addFigura(std::make_shared<Plano>(suelo));
 
 		Plano techo(-UP, distanciaParedes);
 		// techo.setColor(2.5,2.5,2.5);
 		techo.setMaterial(DIFUSO_BLANCO);
-		e.addFigura(std::make_shared<Plano>(techo));
+		//e.addFigura(std::make_shared<Plano>(techo));
 		Plano paredi(-LEFT, distanciaParedes);
 		 // paredi.setColor(0.8,0,0);
-		paredi.setMaterial(difusoRojo);
+		paredi.setMaterial(difusoVerde);
 		e.addFigura(std::make_shared<Plano>(paredi));
 		Plano paredd(LEFT, distanciaParedes);
 
-		paredd.setMaterial(DIFUSO_VERDE_MAJO);
+		paredd.setMaterial(difusoVerde);
 		//cout << "DIFUSO_VERDE_MAJO: " << DIFUSO_VERDE_MAJO << endl;
 		 // paredd.setColor(0,0.8,0);
 		e.addFigura(std::make_shared<Plano>(paredd));
@@ -1049,12 +1084,12 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
 		// paredFondo.setTextura(std::make_shared<Textura>(tex));
 		// paredFondo.setColor(0.3,0.75,0.9);
-		paredFondo.setMaterial(DIFUSO_AZUL);
+		paredFondo.setMaterial(difusoBlanco);
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 		// --------------------
 		//
 		Plano paredOculta(FRONT, distanciaParedes*2.5);
-		paredOculta.setMaterial(DIFUSO_AZUL);
+		paredOculta.setMaterial(difusoBlanco);
 		// paredOculta.setColor(0.05,0.05,0.8);
 		e.addFigura(std::make_shared<Plano>(paredOculta));
 		// Figuras:
@@ -1077,34 +1112,34 @@ std::unique_ptr<Escena> cornellBoxArbolMk1(const int pixelesX, const int pixeles
 			float tamEsfera =distanciaParedes/3.0*1.2;
 			Vector3 posEsfDcha = centroSuelo + tamEsfera;
 
-			Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, 0.75*tamEsfera);// 1*1
-			// cout << esf.to_string() << endl;
-			esf2.setMaterial(difusoGris);
-			esf2.setRandomColor();
-			e.addFigura(std::make_shared<Esfera>(esf2));
+			// Esfera esf2(centroSuelo /*+ distanciaParedes*UP*/, 0.75*tamEsfera);// 1*1
+			// // cout << esf.to_string() << endl;
+			// esf2.setMaterial(difusoGris);
+			// esf2.setRandomColor();
+			// e.addFigura(std::make_shared<Esfera>(esf2));
 			Vector3 posesfTex=(posEsfDcha + tamEsfera * LEFT);
 
       double tamEsferaVidrio = tamEsfera;
       Vector3 posEsferaVidrio = posesfTex + tamEsferaVidrio*UP - 0.5*tamEsferaVidrio*FRONT;
 			// Textura tex=Textura(t,2.0*tamEsfera,2.0*tamEsfera, posesfTex);
-			Esfera esfVidrio(posEsferaVidrio, tamEsferaVidrio, std::make_shared<Textura>(tex));
-			// esfLuz.setRandomColor();
-			esfVidrio.setMaterial(VIDRIO);
-			e.addFigura(std::make_shared<Esfera>(esfVidrio));
+			// Esfera esfVidrio(posEsferaVidrio, tamEsferaVidrio, std::make_shared<Textura>(tex));
+			// // esfLuz.setRandomColor();
+			// esfVidrio.setMaterial(VIDRIO);
+			// e.addFigura(std::make_shared<Esfera>(esfVidrio));
 
 			// Arbol---------------------------------------------
-			Vector3 tamRama(tamEsferaVidrio/15.0);
+			Vector3 tamRama(tamEsferaVidrio/20.0);
 			tamRama[2] = tamRama[2]*7.0;
 			Matriz4 baseArbol = BASE_UNIVERSAL;
 
 			// Detras de la camara
-			Vector3 posLuz = posCam - 1.5*FRONT;
-			Color emisionLuces(200);
+			Vector3 posLuz = centroHabitacion+UP*distanciaParedes*0.8+2*FRONT;
+			Color emisionLuces(25);
 			LuzPuntual luz2(posLuz, emisionLuces);
 			e.addLuz(luz2);
 
 
-			baseArbol[3] = posCam - 0.2*FRONT - 1*UP*tamEsferaVidrio; // Detras de la camara
+			baseArbol[3] = posEsferaVidrio-UP*distanciaParedes+UP*tamRama-2*FRONT; // Detras de la camara
 			//baseArbol[3] = posEsferaVidrio-1.3*LEFT*tamEsferaVidrio-1.5*UP*tamEsferaVidrio; // posicion
 			baseArbol[3].setPunto(); // Tiene que ser un pto
 			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ArbolPrismas,

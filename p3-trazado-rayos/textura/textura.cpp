@@ -117,7 +117,7 @@ void Textura::bump(const Vector3& pto, const Figura& fig, Matriz4& baseBump) con
     // std::cout << "Vu: " << Vu << "\nVv: " << Vv << "\ncross: " << n << '\n';
 
     if (n*fig.getNormal(pto)<=0){// || n*fig.getNormal(pto)!=1) {
-      std::cerr << "Vaadgangansdgi\n"; exit(1);
+     // std::cerr << "Vaadgangansdgi\n"; //exit(1);
     }
     baseBump.setCambioBase(Vu, Vv, n, ptoDesplazado);
 }

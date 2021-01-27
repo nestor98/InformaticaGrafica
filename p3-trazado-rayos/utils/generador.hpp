@@ -18,7 +18,9 @@ class GeneradorEstructuras {
   vectorFigs figuras;
 
   void setMengerSponge(const Vector3& pos, const Vector3& tam, const int iteraciones = 10);
-  void setArbolPrismas(const Matriz4& base, const Vector3& tam, const int iteraciones = 3);
+  void setArbolPrismas(const Matriz4& base, const Vector3& tam, const int iteraciones = 3,
+    const int iteraciones, const std::string& lsys, const float& reduccionTam=1,
+    const double& anguloDcha=22.5, const double& anguloIzq=23);
 
 public:
   enum Estructura {MengerSponge, ArbolPrismas, SkyBox, ExplosionEsferas}; // Añadir otras estructuras aqui

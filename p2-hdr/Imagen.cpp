@@ -293,3 +293,24 @@ int Imagen::getNumPixelsX() const {
 int Imagen::getNumPixelsY() const {
 	return filas;
 }
+
+// Devuelve el promedio del valor absoluto de la diferencia entre cada pixel en i1 e i2
+double diferencia(const Imagen& i1, const Imagen& i2) {
+	int nPixeles = i1.getNumPixels();
+	// std::cout << "EN DIFERENCIA " << nPixeles << '\n';
+	if (nPixeles != i2.getNumPixels()) {
+		std::cerr << "i1 e i2 deben tener el mismo num de pixeles" << '\n';
+		exit(1);
+	}
+	double error = 0;
+	for (size_t i = 0; i < i1.getNumPixels(); i++) { // para cada pixel
+		// std::cout << "Pixel " << i << '\n';
+		auto p1 = i1.getPixel(i);
+		auto p2 = i2.getPixel(i);
+		for (size_t j = 0; j < 3; j++) { // para cada rgb
+			error += std::abs(p1[j]-p2[j]); // se suma el error
+			// std::cout << "error: " << error << '\n';
+		}
+	}
+	return error/double(nPixeles); // promedio
+}

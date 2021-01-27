@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 
 	rend.render(argv[1]);*/
 	//720/16*9
-	auto escena = escenaPruebas(500, 500, atoi(argv[3]), 1); // pixX, pixY, rayosPP
+	auto escena = cornellBoxArbolMk1(500, 500, atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
 	auto tipo = Renderer::TipoRender::Materiales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
@@ -61,10 +61,10 @@ int main(int argc, char* argv[]) {
 		// Con PROGRESSIVE PM;
 		// Parametros de PM:
 		int maxNumFotones= 100000,
-				maxFotonesGlobales= 10000, maxFotonesCausticos= 10000,
-				nFotonesCercanos = 50;
+				maxFotonesGlobales= 1000000, maxFotonesCausticos= 1000000,
+				nFotonesCercanos = 200;
 		bool guardarDirectos =false;
-		float radioCausticos = 0.2f;
+		float radioCausticos = 0.3f;
 		// Parametros PROGRESSIVE:
 		int nIteraciones = 10;
 		float r1 = 0.5;
@@ -79,5 +79,93 @@ int main(int argc, char* argv[]) {
 			pmrend.render(argv[1], nIteraciones, r1);
 		}
 	}
+	
 	return 0;
 }
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

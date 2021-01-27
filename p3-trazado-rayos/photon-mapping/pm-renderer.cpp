@@ -282,7 +282,7 @@ void PMRenderer::preprocess(bool normalizar)
             << fotonesCausticos.size() << '\n';
   double escalarPFotones = 1;
   if (normalizar) {
-    escalarPFotones=4.0*PI/fotonesActuales; // cada foton debe tener 1/numfotones la e original
+    escalarPFotones=4.0*PI/float(fotonesActuales); // cada foton debe tener 1/numfotones la e original
   }
 	guardarFotones<Foton, 3>(kdTreeGlobal, fotonesGlobales, escalarPFotones);
 	guardarFotones<Foton, 3>(kdTreeCaustico, fotonesCausticos, escalarPFotones);

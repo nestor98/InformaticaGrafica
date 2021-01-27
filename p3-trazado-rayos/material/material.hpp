@@ -42,7 +42,6 @@ public:
 	virtual std::string to_string() const;
 
 	Vector3 getPos() const;
-	Color getEmision(const Vector3& dir) const;
 	//Vector3 getDir() const;
 
 	std::array<Color, 3> getCoeficientes() const;
@@ -91,7 +90,7 @@ public:
 	const Material DIFUSO_GRIS = Material(Color(0.70001,0.7001,0.70001), Color(), Color());
 	const Material DIFUSO_BLANCO = Material(Color(0.9,0.9,0.9), Color(), Color());
 	const Material DIFUSO_MARRON = Material(Color(101.0/255.0,67/255.0,33/255.0), Color(), Color());
-	const Material DIFUSO_MARRON_OSCURO = Material(Color(101.0/255.0/2.0,67/255.0/2.0,33.0/255.0/2.0), Color(), Color());
+	const Material DIFUSO_MARRON_OSCURO = Material(Color(67.0/255.0, 26.0/255.0,34.0/255.0), Color(), Color());
 
 	const Material PLASTICO_GRIS = Material(Color(0.45,0.45,0.45), Color(0.45,0.45,0.45), Color());
 	const Material PLASTICO_DORADO = Material(Color(0.6,0.6,0.1), Color(0.3,0.3,0.3), Color());

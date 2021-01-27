@@ -104,13 +104,22 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 		paredi.setMaterial(difusoRojo);
 		e.addFigura(std::make_shared<Plano>(paredi));
 		Plano paredd(LEFT, distanciaParedes);
-
 		paredd.setMaterial(difusoVerde);
+
 
 		e.addFigura(std::make_shared<Plano>(paredd));
 		//  -----------------
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
-		paredFondo.setMaterial(difusoBlanco);
+		bool lodeantes = false;
+		if (lodeantes) {
+			paredFondo.setMaterial(difusoBlanco);
+		} else {
+			paredFondo.setMaterial(ESPEJO);
+			Plano paredDetras(FRONT, 2.0*distanciaParedes);
+			paredDetras.setMaterial(ESPEJO);
+			e.addFigura(std::make_shared<Plano>(paredDetras));
+		}
+
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 
 		float tamEsfera=0.8;

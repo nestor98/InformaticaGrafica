@@ -53,7 +53,7 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 
 		// Vector3 fCam = FRONT;//(0,1,0,false);
 		// Vector3 lCam = LEFT; //(1,0,0,false);
-	
+
 		// Vector3 tamPrismaLuz = -LEFT + FRONT + UP / 15.0;
 		// tamPrismaLuz = tamPrismaLuz*2;
 		// Vector3 posPrismaLuz(0,0,0,true);
@@ -138,10 +138,20 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 
 		paredd.setMaterial(difusoLila);
 
+
 		e.addFigura(std::make_shared<Plano>(paredd));
 		//  -----------------
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
-		paredFondo.setMaterial(difusoBlanco);
+		bool lodeantes = false;
+		if (lodeantes) {
+			paredFondo.setMaterial(difusoBlanco);
+		} else {
+			paredFondo.setMaterial(ESPEJO);
+			Plano paredDetras(FRONT, 2.0*distanciaParedes);
+			paredDetras.setMaterial(ESPEJO);
+			e.addFigura(std::make_shared<Plano>(paredDetras));
+		}
+
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 
 		float tamEsfera=0.8;

@@ -203,7 +203,7 @@ PMRenderer::PMRenderer(const Escena& _e, const int _nThreads, const Renderer::Ti
     //}
 
 
-
+    //break;
     viejo=energia;
   }
 
@@ -311,7 +311,8 @@ Color PMRenderer::iluminacionRadioFijo(const KDTree<Foton,3>& kdTree,
   std::vector<float> ptoKDT;
   pto.toKDTreePoint(ptoKDT);// pto para buscar en el KDTree
   std::list<const KDTree<Foton, 3>::Node*> nodes;
-  int cercanos = kdTreeCaustico.find(ptoKDT, radio, &nodes);
+
+  int cercanos = kdTree.find(ptoKDT, radio, &nodes);
   for (auto node : nodes) {
     Foton foton = node->data();
     Vector3 dirFoton = foton.getDir(); // solo se tiene en cuenta si el foton
@@ -737,12 +738,23 @@ void PMRenderer::render(const std::string fichero, const int iteraciones, const 
   	initThreadsProgressive(im, o, c->getNumPixeles(), radio); // inicializar los threads
   	// // std::cout << "hecho" << '\n';
   	Renderer::waitThreads(); // y esperar a que terminen
+        t3 = hrc::now();
+  	t = std::chrono::duration_cast<std::chrono::duration<double>>(t3 - t1);
+
+  	std::cout << "\nRender realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
     std::cout << "-------------- Fin iteracion --------------" << '\n';
+    if((i+1)%10==0){
+      Imagen im2=im;
+      im2.dividirPixels(i+1); // TODO: DIVIDIR O NO?
+      im2.setMaxFloat(rangoDinamico);
+      im2.extendedReinhard();
+      im2.guardar("out/iteracion:"+ std::to_string(i+1) + fichero); // guardar la imagen
+    }
   }
-  //im.dividirPixels(iteraciones); // TODO: DIVIDIR O NO?
-	im.setMaxFloat(rangoDinamico);
-	im.extendedReinhard();
-	im.guardar("out/" + fichero); // guardar la imagen
+  // im.dividirPixels(iteraciones); // TODO: DIVIDIR O NO?
+	// im.setMaxFloat(rangoDinamico);
+	// im.extendedReinhard();
+	// im.guardar("out/iteracion:"+i + fichero); // guardar la imagen
 
 	t2 = hrc::now();
 	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t3);
@@ -826,8 +838,12 @@ Color PMRenderer::shadeProgressive(const Figura::InterseccionData& interseccion,
     int nCercanos;
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-    L = iluminacionRadioFijo(kdTreeGlobal, interseccion.punto, n, radio, nCercanos)
-      + iluminacionRadioFijo(kdTreeCaustico, interseccion.punto, n, radio, nCercanos);
+    if(kdTreeCaustico.is_empty()){
+        L = iluminacionRadioFijo(kdTreeGlobal, interseccion.punto, n, radio, nCercanos);
+   }else{
+       L = iluminacionRadioFijo(kdTreeGlobal, interseccion.punto, n, radio, nCercanos)
+          + iluminacionRadioFijo(kdTreeCaustico, interseccion.punto, n, radio, nCercanos);
+    }
     // iluminacionGlobal(interseccion.punto, n) +
     //     causticas(interseccion.punto, n);
     // L = L/2.0;

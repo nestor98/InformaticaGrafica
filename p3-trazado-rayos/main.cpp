@@ -60,13 +60,13 @@ int main(int argc, char* argv[]) {
 		// -----------------------------------------------
 		// Con PROGRESSIVE PM;
 		// Parametros de PM:
-		int maxNumFotones= 100000,
-				maxFotonesGlobales= 1000000, maxFotonesCausticos= 1000000,
-				nFotonesCercanos = 200;
+		int maxNumFotones= 1000,
+				maxFotonesGlobales= 100000, maxFotonesCausticos= 100000,
+				nFotonesCercanos = 50;
 		bool guardarDirectos =false;
 		float radioCausticos = 0.3f;
 		// Parametros PROGRESSIVE:
-		int nIteraciones = 10;
+		int nIteraciones = 100;
 		float r1 = 0.5;
 		// // Renderer de photon mapping:
 		PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,

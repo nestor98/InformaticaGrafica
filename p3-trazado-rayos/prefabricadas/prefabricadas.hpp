@@ -78,7 +78,7 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 	Material espejo = Material(Color(), Color(0.9,0.9,0.9), Color());
 	Material difusoBlanco(Color(.85,.85,.85), Color(), Color());
 	Material difusoRojo(Color(.85,.085,.085), Color(), Color());
-	Material difusoVerde(Color(62.0/255,153.0/255.0,122.0/255.0), Color(), Color());
+	Material difusoVerde(Color(.085,.85,.085), Color(), Color());
 	Material difusoNaranja(Color(.85,.6,.02), Color(), Color());
 	Material difusoLila(Color(95.0/255.0,90.0/255.0,180.0/255.0), Color(), Color());
 	Material mezclaBlanco(Color(.85/2.0,.85/2.0,.85/2.0), Color(0.45,0.45,0.45), Color());

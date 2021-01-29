@@ -34,8 +34,8 @@ public:
 	// Divide todos los pixeles entre d
 	void dividirPixels(const double& d);
 
-	std::array<double, 3> getPixel(const int fila, const int col)const;
-	std::array<double, 3> getPixel(const int i)const;
+	std::array<double, 3> getPixel(const int fila, const int col) const;
+	std::array<double, 3> getPixel(const int i) const;
 
 	std::string to_string(const int elementos = 100) const;
 

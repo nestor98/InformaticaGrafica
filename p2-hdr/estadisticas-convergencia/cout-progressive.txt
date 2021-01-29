@@ -1,0 +1,1752 @@
+Base camara: -0.992508	0.000000	0.000000	0.000000	
+0.000000	0.000000	1.719074	-3.092329	
+0.000000	1.000000	-0.000000	-0.750000	
+0.000000	0.000000	0.000000	1.000000	
+
+------- ESCENA -------
+camara:
+posicion: 0.000000 -3.092329 -0.750000 1.000000
+base: -0.992508	0.000000	0.000000	0.000000	
+0.000000	0.000000	1.719074	-3.092329	
+0.000000	1.000000	-0.000000	-0.750000	
+0.000000	0.000000	0.000000	1.000000	
+
+figuras:
+--- Plano:
+distancia: 3.000000
+normal: 0.000000 0.000000 1.000000 0.000000
+--- Plano:
+distancia: 3.000000
+normal: -0.000000 -0.000000 -1.000000 0.000000
+--- Plano:
+distancia: 3.000000
+normal: 1.000000 -0.000000 -0.000000 0.000000
+--- Plano:
+distancia: 3.000000
+normal: -1.000000 0.000000 0.000000 0.000000
+--- Plano:
+distancia: 6.000000
+normal: -0.000000 -1.000000 -0.000000 0.000000
+--- Esfera:
+posicion: -0.800000 2.200000 -2.200000 0.000000
+radio: 0.800000
+--- Esfera:
+posicion: 1.600000 3.000000 -2.200000 0.000000
+radio: 0.800000
+Guardar dir: 0
+maxFotonesCausticos: 100000
+Nthreads: 6
+Hay planos y figuras finitas
+arbol bvh construido en -1.61186e+09 segundos
+-------------- Iteracion 1 de 100 (0%)
+radio=0.5
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1828
+causticos: 35
+
+Preprocess realizado en 0.00261002 segundos (4.35004e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 52% (quedan unos 0:5 min)          ████████████████████████████████████░░░░░░░░░░░░░░ 72% (quedan unos 0:3 min)          ██████████████████████████████████████████████░░░░ 93% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0088 segundos (0.200147 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 2 de 100 (1%)
+radio=0.403113
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1789
+causticos: 47
+
+Preprocess realizado en 0.00946125 segundos (0.000157687 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0101 segundos (0.200169 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 3 de 100 (2%)
+radio=0.352964
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1923
+causticos: 49
+
+Preprocess realizado en 0.0148267 segundos (0.000247112 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0031 segundos (0.200051 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 4 de 100 (3%)
+radio=0.320595
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1818
+causticos: 42
+
+Preprocess realizado en 0.00313656 segundos (5.2276e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0028 segundos (0.200047 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 5 de 100 (4%)
+radio=0.297308
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1669
+causticos: 36
+
+Preprocess realizado en 0.0132712 segundos (0.000221186 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0032 segundos (0.200053 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 6 de 100 (5%)
+radio=0.279427
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1685
+causticos: 34
+
+Preprocess realizado en 0.0024524 segundos (4.08734e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0036 segundos (0.20006 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 7 de 100 (6%)
+radio=0.265088
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1699
+causticos: 45
+
+Preprocess realizado en 0.00689218 segundos (0.00011487 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0043 segundos (0.200072 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 8 de 100 (7%)
+radio=0.253225
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1721
+causticos: 44
+
+Preprocess realizado en 0.00425318 segundos (7.08863e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0025 segundos (0.200041 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 9 de 100 (8%)
+radio=0.243178
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1824
+causticos: 43
+
+Preprocess realizado en 0.0142304 segundos (0.000237174 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0033 segundos (0.200055 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 10 de 100 (9%)
+radio=0.234512
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1810
+causticos: 41
+
+Preprocess realizado en 0.0138924 segundos (0.000231539 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0072 segundos (0.200119 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 11 de 100 (10%)
+radio=0.226928
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1766
+causticos: 30
+
+Preprocess realizado en 0.00244372 segundos (4.07287e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0041 segundos (0.200068 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 12 de 100 (11%)
+radio=0.22021
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1840
+causticos: 34
+
+Preprocess realizado en 0.0141993 segundos (0.000236655 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0026 segundos (0.16671 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 13 de 100 (12%)
+radio=0.214199
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1750
+causticos: 34
+
+Preprocess realizado en 0.00902512 segundos (0.000150419 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0025 segundos (0.200041 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 14 de 100 (13%)
+radio=0.208775
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1818
+causticos: 37
+
+Preprocess realizado en 0.0139493 segundos (0.000232488 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0034 segundos (0.200056 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 15 de 100 (14%)
+radio=0.203846
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1741
+causticos: 38
+
+Preprocess realizado en 0.0132027 segundos (0.000220045 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0032 segundos (0.16672 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 16 de 100 (15%)
+radio=0.199337
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1758
+causticos: 49
+
+Preprocess realizado en 0.0137052 segundos (0.000228419 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0038 segundos (0.200063 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 17 de 100 (16%)
+radio=0.19519
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1688
+causticos: 40
+
+Preprocess realizado en 0.00747802 segundos (0.000124634 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.009 segundos (0.200149 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 18 de 100 (17%)
+radio=0.191357
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1738
+causticos: 46
+
+Preprocess realizado en 0.00247234 segundos (4.12058e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.001 segundos (0.166684 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 19 de 100 (18%)
+radio=0.187798
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1690
+causticos: 42
+
+Preprocess realizado en 0.00250799 segundos (4.17999e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.001 segundos (0.166683 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 20 de 100 (19%)
+radio=0.184483
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1772
+causticos: 36
+
+Preprocess realizado en 0.00258689 segundos (4.31148e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0016 segundos (0.200027 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 21 de 100 (20%)
+radio=0.181382
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1743
+causticos: 44
+
+Preprocess realizado en 0.00255171 segundos (4.25285e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0011 segundos (0.166684 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 22 de 100 (21%)
+radio=0.178473
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1796
+causticos: 37
+
+Preprocess realizado en 0.00252938 segundos (4.21564e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0023 segundos (0.200039 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 23 de 100 (22%)
+radio=0.175736
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1814
+causticos: 48
+
+Preprocess realizado en 0.0140724 segundos (0.00023454 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0025 segundos (0.200041 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 24 de 100 (23%)
+radio=0.173154
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1841
+causticos: 51
+
+Preprocess realizado en 0.0144112 segundos (0.000240187 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0097 segundos (0.200161 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 25 de 100 (24%)
+radio=0.170713
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1892
+causticos: 31
+
+Preprocess realizado en 0.0144004 segundos (0.000240007 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0031 segundos (0.200051 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 26 de 100 (25%)
+radio=0.168399
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1771
+causticos: 41
+
+Preprocess realizado en 0.00262277 segundos (4.37129e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0033 segundos (0.200055 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 27 de 100 (26%)
+radio=0.166202
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1720
+causticos: 42
+
+Preprocess realizado en 0.00931113 segundos (0.000155186 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0024 segundos (0.200041 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 28 de 100 (27%)
+radio=0.164111
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1818
+causticos: 50
+
+Preprocess realizado en 0.00492242 segundos (8.20403e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0039 segundos (0.200065 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 29 de 100 (28%)
+radio=0.162118
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1829
+causticos: 46
+
+Preprocess realizado en 0.0143034 segundos (0.000238389 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0096 segundos (0.20016 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 30 de 100 (29%)
+radio=0.160216
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1668
+causticos: 28
+
+Preprocess realizado en 0.0130731 segundos (0.000217885 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0031 segundos (0.166718 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 31 de 100 (30%)
+radio=0.158397
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1626
+causticos: 40
+
+Preprocess realizado en 0.00341891 segundos (5.69818e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0014 segundos (0.200023 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 32 de 100 (31%)
+radio=0.156655
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1649
+causticos: 41
+
+Preprocess realizado en 0.0026235 segundos (4.37251e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0093 segundos (0.200154 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 33 de 100 (32%)
+radio=0.154984
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1862
+causticos: 35
+
+Preprocess realizado en 0.0141394 segundos (0.000235657 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0031 segundos (0.166719 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 34 de 100 (33%)
+radio=0.153381
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1696
+causticos: 29
+
+Preprocess realizado en 0.0131959 segundos (0.000219932 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0032 segundos (0.200053 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 35 de 100 (34%)
+radio=0.151839
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1662
+causticos: 39
+
+Preprocess realizado en 0.00869684 segundos (0.000144947 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 36% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 57% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 79% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0024 segundos (0.166706 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 36 de 100 (35%)
+radio=0.150356
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1761
+causticos: 50
+
+Preprocess realizado en 0.013085 segundos (0.000218084 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 99% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0077 segundos (0.200128 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 37 de 100 (36%)
+radio=0.148926
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1681
+causticos: 39
+
+Preprocess realizado en 0.00547473 segundos (9.12455e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0174 segundos (0.20029 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 38 de 100 (37%)
+radio=0.147548
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1667
+causticos: 36
+
+Preprocess realizado en 0.0105045 segundos (0.000175076 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0134 segundos (0.200223 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 39 de 100 (38%)
+radio=0.146218
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1720
+causticos: 34
+
+Preprocess realizado en 0.00653124 segundos (0.000108854 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          ████████████████████████████████████░░░░░░░░░░░░░░ 72% (quedan unos 0:2 min)          ██████████████████████████████████████████████░░░░ 93% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0044 segundos (0.200074 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 40 de 100 (39%)
+radio=0.144933
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1726
+causticos: 40
+
+Preprocess realizado en 0.00247199 segundos (4.11999e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0044 segundos (0.16674 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 41 de 100 (40%)
+radio=0.143691
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1821
+causticos: 26
+
+Preprocess realizado en 0.00339428 segundos (5.65713e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0012 segundos (0.166686 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 42 de 100 (41%)
+radio=0.142488
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1774
+causticos: 40
+
+Preprocess realizado en 0.00398273 segundos (6.63788e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0014 segundos (0.16669 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 43 de 100 (42%)
+radio=0.141324
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1787
+causticos: 37
+
+Preprocess realizado en 0.0118828 segundos (0.000198047 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0032 segundos (0.16672 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 44 de 100 (43%)
+radio=0.140195
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1760
+causticos: 34
+
+Preprocess realizado en 0.0134319 segundos (0.000223864 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 57% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 79% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0031 segundos (0.166719 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 45 de 100 (44%)
+radio=0.1391
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1787
+causticos: 37
+
+Preprocess realizado en 0.0139306 segundos (0.000232176 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0033 segundos (0.200055 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 46 de 100 (45%)
+radio=0.138038
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1795
+causticos: 45
+
+Preprocess realizado en 0.00719305 segundos (0.000119884 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          ██████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 20% (quedan unos 0:7 min)          ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 36% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 57% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 79% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0014 segundos (0.16669 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 47 de 100 (46%)
+radio=0.137006
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1737
+causticos: 34
+
+Preprocess realizado en 0.013183 segundos (0.000219717 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0031 segundos (0.166719 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 48 de 100 (47%)
+radio=0.136003
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1653
+causticos: 49
+
+Preprocess realizado en 0.00318382 segundos (5.30637e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0013 segundos (0.166689 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 49 de 100 (48%)
+radio=0.135028
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1667
+causticos: 46
+
+Preprocess realizado en 0.0131269 segundos (0.000218782 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 76% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0033 segundos (0.200054 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 50 de 100 (49%)
+radio=0.13408
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1762
+causticos: 43
+
+Preprocess realizado en 0.00662747 segundos (0.000110458 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 36% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0011 segundos (0.166685 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 51 de 100 (50%)
+radio=0.133157
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1717
+causticos: 39
+
+Preprocess realizado en 0.00330135 segundos (5.50226e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0014 segundos (0.16669 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 52 de 100 (51%)
+radio=0.132257
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1621
+causticos: 39
+
+Preprocess realizado en 0.0128638 segundos (0.000214396 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 55% (quedan unos 0:4 min)          ██████████████████████████████████████░░░░░░░░░░░░ 77% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0031 segundos (0.166719 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 53 de 100 (52%)
+radio=0.131381
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1735
+causticos: 47
+
+Preprocess realizado en 0.00284188 segundos (4.73646e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.001 segundos (0.166684 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 54 de 100 (53%)
+radio=0.130527
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1838
+causticos: 32
+
+Preprocess realizado en 0.00313039 segundos (5.21732e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 36% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0115 segundos (0.166858 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 55 de 100 (54%)
+radio=0.129693
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1817
+causticos: 43
+
+Preprocess realizado en 0.00972991 segundos (0.000162165 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          ████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 33% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 52% (quedan unos 0:5 min)          ████████████████████████████████████░░░░░░░░░░░░░░ 73% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 94% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0106 segundos (0.200177 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 56 de 100 (55%)
+radio=0.12888
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1875
+causticos: 55
+
+Preprocess realizado en 0.00269291 segundos (4.48818e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          ████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 33% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 52% (quedan unos 0:5 min)          ████████████████████████████████████░░░░░░░░░░░░░░ 72% (quedan unos 0:3 min)          ██████████████████████████████████████████████░░░░ 92% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0121 segundos (0.200202 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 57 de 100 (56%)
+radio=0.128086
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1716
+causticos: 29
+
+Preprocess realizado en 0.0028916 segundos (4.81934e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0148 segundos (0.200246 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 58 de 100 (57%)
+radio=0.127311
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1653
+causticos: 44
+
+Preprocess realizado en 0.00652659 segundos (0.000108777 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0062 segundos (0.200103 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 59 de 100 (58%)
+radio=0.126554
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1725
+causticos: 34
+
+Preprocess realizado en 0.00545152 segundos (9.08587e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0124 segundos (0.200207 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 60 de 100 (59%)
+radio=0.125813
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1667
+causticos: 45
+
+Preprocess realizado en 0.00674655 segundos (0.000112442 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0065 segundos (0.200109 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 61 de 100 (60%)
+radio=0.125089
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1694
+causticos: 48
+
+Preprocess realizado en 0.00265371 segundos (4.42285e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0059 segundos (0.200099 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 62 de 100 (61%)
+radio=0.124381
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1806
+causticos: 40
+
+Preprocess realizado en 0.00926966 segundos (0.000154494 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0135 segundos (0.200224 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 63 de 100 (62%)
+radio=0.123688
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1805
+causticos: 38
+
+Preprocess realizado en 0.00617304 segundos (0.000102884 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0133 segundos (0.200221 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 64 de 100 (63%)
+radio=0.12301
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1783
+causticos: 39
+
+Preprocess realizado en 0.00865339 segundos (0.000144223 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          ████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 33% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0025 segundos (0.200042 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 65 de 100 (64%)
+radio=0.122346
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1765
+causticos: 36
+
+Preprocess realizado en 0.00461652 segundos (7.69421e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0061 segundos (0.200101 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 66 de 100 (65%)
+radio=0.121695
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1798
+causticos: 52
+
+Preprocess realizado en 0.00471289 segundos (7.85482e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0088 segundos (0.200147 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 67 de 100 (66%)
+radio=0.121058
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1853
+causticos: 41
+
+Preprocess realizado en 0.00532224 segundos (8.8704e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0086 segundos (0.200143 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 68 de 100 (67%)
+radio=0.120433
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1739
+causticos: 37
+
+Preprocess realizado en 0.00684334 segundos (0.000114056 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0075 segundos (0.200124 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 69 de 100 (68%)
+radio=0.119821
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1766
+causticos: 32
+
+Preprocess realizado en 0.0136372 segundos (0.000227286 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0251 segundos (0.200419 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 70 de 100 (69%)
+radio=0.11922
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1768
+causticos: 36
+
+Preprocess realizado en 0.00721728 segundos (0.000120288 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0205 segundos (0.200342 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 71 de 100 (70%)
+radio=0.118631
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1819
+causticos: 37
+
+Preprocess realizado en 0.00327873 segundos (5.46455e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0081 segundos (0.200134 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 72 de 100 (71%)
+radio=0.118053
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1590
+causticos: 40
+
+Preprocess realizado en 0.00642329 segundos (0.000107055 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0084 segundos (0.20014 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 73 de 100 (72%)
+radio=0.117486
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1733
+causticos: 34
+
+Preprocess realizado en 0.00746514 segundos (0.000124419 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          ████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 33% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0083 segundos (0.200139 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 74 de 100 (73%)
+radio=0.116929
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1715
+causticos: 35
+
+Preprocess realizado en 0.00552427 segundos (9.20712e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0148 segundos (0.200246 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 75 de 100 (74%)
+radio=0.116382
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1818
+causticos: 38
+
+Preprocess realizado en 0.0179153 segundos (0.000298588 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0173 segundos (0.200289 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 76 de 100 (75%)
+radio=0.115844
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1788
+causticos: 54
+
+Preprocess realizado en 0.00282883 segundos (4.71471e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0035 segundos (0.200059 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 77 de 100 (76%)
+radio=0.115317
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1722
+causticos: 51
+
+Preprocess realizado en 0.00498276 segundos (8.30461e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0044 segundos (0.200074 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 78 de 100 (77%)
+radio=0.114798
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1763
+causticos: 55
+
+Preprocess realizado en 0.00951727 segundos (0.000158621 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0141 segundos (0.200236 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 79 de 100 (78%)
+radio=0.114288
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1681
+causticos: 43
+
+Preprocess realizado en 0.00900743 segundos (0.000150124 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0236 segundos (0.200393 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 80 de 100 (79%)
+radio=0.113787
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1865
+causticos: 36
+
+Preprocess realizado en 0.00766269 segundos (0.000127711 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0132 segundos (0.200219 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 81 de 100 (80%)
+radio=0.113294
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1734
+causticos: 32
+
+Preprocess realizado en 0.00434112 segundos (7.2352e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0134 segundos (0.200223 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 82 de 100 (81%)
+radio=0.11281
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1869
+causticos: 47
+
+Preprocess realizado en 0.00884704 segundos (0.000147451 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0166 segundos (0.200277 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 83 de 100 (82%)
+radio=0.112333
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1805
+causticos: 48
+
+Preprocess realizado en 0.00758088 segundos (0.000126348 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0093 segundos (0.200156 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 84 de 100 (83%)
+radio=0.111864
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1682
+causticos: 37
+
+Preprocess realizado en 0.0034348 segundos (5.72466e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 94% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.013 segundos (0.200217 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 85 de 100 (84%)
+radio=0.111402
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1816
+causticos: 39
+
+Preprocess realizado en 0.0026556 segundos (4.426e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          ████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 32% (quedan unos 0:8 min)          █████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░░ 51% (quedan unos 0:5 min)          ████████████████████████████████████░░░░░░░░░░░░░░ 72% (quedan unos 0:3 min)          ███████████████████████████████████████████████░░░ 94% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0165 segundos (0.200275 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 86 de 100 (85%)
+radio=0.110948
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1826
+causticos: 45
+
+Preprocess realizado en 0.0145064 segundos (0.000241773 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:4 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          █████████████████████████████████████████████████░ 98% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0259 segundos (0.200432 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 87 de 100 (86%)
+radio=0.110501
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1789
+causticos: 53
+
+Preprocess realizado en 0.00312136 segundos (5.20227e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          ████████████████████████████████████░░░░░░░░░░░░░░ 73% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0073 segundos (0.200122 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 88 de 100 (87%)
+radio=0.110061
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1755
+causticos: 40
+
+Preprocess realizado en 0.00639143 segundos (0.000106524 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0121 segundos (0.200201 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 89 de 100 (88%)
+radio=0.109627
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1840
+causticos: 39
+
+Preprocess realizado en 0.0160359 segundos (0.000267265 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          ████████████████████████████████████░░░░░░░░░░░░░░ 73% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0144 segundos (0.20024 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 90 de 100 (89%)
+radio=0.1092
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1735
+causticos: 36
+
+Preprocess realizado en 0.00555156 segundos (9.2526e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          ████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 33% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 52% (quedan unos 0:5 min)          ████████████████████████████████████░░░░░░░░░░░░░░ 73% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 94% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0069 segundos (0.200116 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+-------------- Iteracion 91 de 100 (90%)
+radio=0.108779
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1659
+causticos: 32
+
+Preprocess realizado en 0.00240327 segundos (4.00545e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 75% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0071 segundos (0.200118 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 92 de 100 (91%)
+radio=0.108364
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1775
+causticos: 44
+
+Preprocess realizado en 0.00371981 segundos (6.19969e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0023 segundos (0.200039 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 93 de 100 (92%)
+radio=0.107956
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1852
+causticos: 46
+
+Preprocess realizado en 0.00584047 segundos (9.73412e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 18% (quedan unos 0:8 min)          ████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 33% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0175 segundos (0.200292 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 94 de 100 (93%)
+radio=0.107553
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1643
+causticos: 54
+
+Preprocess realizado en 0.00442404 segundos (7.37341e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ██████████████████████████░░░░░░░░░░░░░░░░░░░░░░░░ 53% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ███████████████████████████████████████████████░░░ 95% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0173 segundos (0.200289 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 95 de 100 (94%)
+radio=0.107156
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1807
+causticos: 53
+
+Preprocess realizado en 0.00314381 segundos (5.23969e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 96% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0105 segundos (0.200176 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 96 de 100 (95%)
+radio=0.106765
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1765
+causticos: 41
+
+Preprocess realizado en 0.0025165 segundos (4.19416e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 34% (quedan unos 0:7 min)          ███████████████████████████░░░░░░░░░░░░░░░░░░░░░░░ 54% (quedan unos 0:5 min)          █████████████████████████████████████░░░░░░░░░░░░░ 74% (quedan unos 0:2 min)          ████████████████████████████████████████████████░░ 97% (quedan unos 0:0 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 12.0095 segundos (0.200159 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 97 de 100 (96%)
+radio=0.106379
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1588
+causticos: 34
+
+Preprocess realizado en 0.00233256 segundos (3.8876e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          ██████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 20% (quedan unos 0:7 min)          ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 36% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 57% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 79% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0012 segundos (0.166687 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 98 de 100 (97%)
+radio=0.105998
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1735
+causticos: 34
+
+Preprocess realizado en 0.0133359 segundos (0.000222265 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          █████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 19% (quedan unos 0:8 min)          █████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 35% (quedan unos 0:7 min)          ████████████████████████████░░░░░░░░░░░░░░░░░░░░░░ 56% (quedan unos 0:4 min)          ███████████████████████████████████████░░░░░░░░░░░ 78% (quedan unos 0:2 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0031 segundos (0.166719 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 99 de 100 (98%)
+radio=0.105623
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1839
+causticos: 36
+
+Preprocess realizado en 0.00554991 segundos (9.24986e-05 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          ██████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 20% (quedan unos 0:7 min)          ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 36% (quedan unos 0:6 min)          █████████████████████████████░░░░░░░░░░░░░░░░░░░░░ 58% (quedan unos 0:4 min)          ████████████████████████████████████████░░░░░░░░░░ 80% (quedan unos 0:1 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0019 segundos (0.166698 minutos)
+-------------- Fin iteracion --------------
+-------------- Iteracion 100 de 100 (99%)
+radio=0.105252
+Voy a hacer el preprocess
+esperamos iterar: 100
+Emision luz: 20.000000 20.000000 20.000000
+ en cada iter: 0.200000 0.200000 0.200000
+
+1001 iteraciones de trace_ray (en preprocess)
+globales: 1830
+causticos: 36
+
+Preprocess realizado en 0.00996443 segundos (0.000166074 minutos)
+Inicializando threads... 
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 0% (quedan unos 0:0 min)          ██████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 20% (quedan unos 0:7 min)          ██████████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 36% (quedan unos 0:6 min)          █████████████████████████████░░░░░░░░░░░░░░░░░░░░░ 58% (quedan unos 0:4 min)          ████████████████████████████████████████░░░░░░░░░░ 80% (quedan unos 0:1 min)          ██████████████████████████████████████████████████ 100% (quedan unos 0:0 min)          
+
+Render realizado en 10.0063 segundos (0.166772 minutos)
+-------------- Fin iteracion --------------
+fin de guardar
+
+Render realizado en 0.0763421 segundos (0.00127237 minutos)

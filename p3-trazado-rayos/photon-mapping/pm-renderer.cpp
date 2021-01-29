@@ -642,8 +642,11 @@ void PMRenderer::render(const std::string fichero) {
 	std::cout << "hecho" << '\n';
 	Renderer::waitThreads(); // y esperar a que terminen
 	im.setMaxFloat(rangoDinamico); // TODO: entender esta vaina
-	im.extendedReinhard();
+  im.setResolucion(128); // TODO: entender esta vaina
+	//im.extendedReinhard();
 	im.guardar("out/" + fichero); // guardar la imagen
+  	im.extendedReinhard();
+	im.guardar("out/tone" + fichero, false); // guardar la imagen
 
 	t2 = hrc::now();
 	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);
@@ -743,18 +746,19 @@ void PMRenderer::render(const std::string fichero, const int iteraciones, const 
 
   	std::cout << "\nRender realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
     std::cout << "-------------- Fin iteracion --------------" << '\n';
-    if((i+1)%10==0){
-      Imagen im2=im;
-      im2.dividirPixels(i+1); // TODO: DIVIDIR O NO?
-      im2.setMaxFloat(rangoDinamico);
-      im2.extendedReinhard();
-      im2.guardar("out/iteracion:"+ std::to_string(i+1) + fichero); // guardar la imagen
-    }
+    
+      // Imagen im2=im;
+      // im2.dividirPixels(i+1); 
+      // im2.setMaxFloat(rangoDinamico);
+      // im2.setResolucion(1024);
+      // im2.extendedReinhard();
+      // im2.guardar("out/iteracion:"+ std::to_string(i+1) + fichero); // guardar la imagen
+    
   }
-  // im.dividirPixels(iteraciones); // TODO: DIVIDIR O NO?
-	// im.setMaxFloat(rangoDinamico);
-	// im.extendedReinhard();
-	// im.guardar("out/iteracion:"+i + fichero); // guardar la imagen
+  im.dividirPixels(iteraciones); // TODO: DIVIDIR O NO?
+	im.setMaxFloat(rangoDinamico);
+	im.extendedReinhard();
+	im.guardar("out/iteracion:"+iteraciones + fichero, true); // guardar la imagen
 
 	t2 = hrc::now();
 	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t3);

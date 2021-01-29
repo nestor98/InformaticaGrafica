@@ -367,8 +367,9 @@ void Renderer::render(const std::string fichero) {
 	// std::cout << "hecho" << '\n';
 	waitThreads(); // y esperar a que terminen
 	im.setMaxFloat(rangoDinamico); // TODO: entender esta vaina
+	//im.guardar("out/HDR" + fichero, true); // guardar la imagen
 	im.extendedReinhard();
-	im.guardar("out/" + fichero); // guardar la imagen
+	im.guardar("out/" + fichero, true); // guardar la imagen
 
 	t2 = hrc::now();
 	std::chrono::duration<double> t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);

@@ -277,7 +277,9 @@ std::ostream& operator<<(std::ostream& os, const Imagen& i) {
 float Imagen::getMaxFloat() const {
 	return maxFloat;
 }
-
+void Imagen::setResolucion(const float cmax) {
+	c = cmax;
+}
 
 void Imagen::setMaxFloat(const float max) {
 	maxFloat = max;

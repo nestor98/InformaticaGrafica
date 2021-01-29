@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
 		float radioCausticos = 0.3f;
 		// Parametros PROGRESSIVE:
 		int nIteraciones = 10;
-		float r1 = 0.5;
+		float r1 = 1.0;
 		// // Renderer de photon mapping:
 		PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
 			maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
@@ -95,3 +95,11 @@ int main(int argc, char* argv[]) {
 
 
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

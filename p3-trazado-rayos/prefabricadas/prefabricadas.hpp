@@ -233,6 +233,52 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 
 }
 
+std::unique_ptr<Escena> escenaPlanosEspejos(const int pixelesX, const int pixelesY, const int rayosPP) {
+		// ----------------------- Constantes de la escena:
+		double distanciaParedes = 3;
+				Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
+		double fov = gradosARad(90); //0.475 * PI;
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
+		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+				Escena e(std::make_shared<Camara>(c));
+
+		Matriz4 rotacion;
+		rotacion.setRotarY(gradosARad(60));
+		Vector3 v1=UP;
+		Plano f(-FRONT, 15*distanciaParedes);
+		f.setColor(Color(1));
+					e.addFigura(std::make_shared<Plano>(f));
+
+		for(int i=0; i<6; i++){
+			Plano p(v1, distanciaParedes);
+			v1=rotacion*v1;
+			p.setMaterial(ESPEJO);
+			e.addFigura(std::make_shared<Plano>(p));
+		}
+
+			float tamEsfera=0.8;
+		Vector3 pos1=centroSuelo+UP*tamEsfera+LEFT*tamEsfera-FRONT*tamEsfera;
+		Vector3 pos2=centroSuelo+UP*tamEsfera-2*LEFT*tamEsfera;
+		Esfera esf2(centroHabitacion, tamEsfera);
+			Material difusoBlanco(Color(.85,.85,.85), Color(), Color());
+
+			esf2.setMaterial(difusoBlanco);
+			e.addFigura(std::make_shared<Esfera>(esf2));
+		//std::cout << "escena: " << e << '\n';
+		Color emisionLuces(20);//40 //8
+		LuzPuntual luz(posCam-(centroHabitacion-posCam)+0.8*distanciaParedes*UP, emisionLuces);
+		//luz.setEmision(Color(.85,.085,.085));
+		//LuzPuntual luz(Vector3(0,2.7,0, true), emisionLuces);
+		e.addLuz(luz);
+
+		return std::make_unique<Escena>(e);
+}
+
 
 // Mar y reflejo del sol la luna o algo
 std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, const int rayosPP) {
@@ -615,7 +661,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// ----------------------- Camara:
 		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
-		double fov = gradosARad(80); //0.475 * PI;
+		double fov = gradosARad(60); //0.475 * PI;
 
 		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
 		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
@@ -749,7 +795,7 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 			GeneradorEstructuras gen(GeneradorEstructuras::Estructura::MengerSponge, posPrsima - (2.0*distanciaParedes-tamEsponja[0])*LEFT , tamEsponja, 4);
 			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 			for (auto f : *figuras) {
-				f->setMaterial(PLASTICO_GRIS);
+				f->setMaterial(DIFUSO_GRIS);
 			}
 			e.addFiguras(figuras);
 			PrismaRotable test(posPrsima - (2.0*distanciaParedes-2.0*tamEsponja[0])*LEFT+2.0*tamEsponja[0]*UP-distanciaParedes/2.0*FRONT, tamEsponja);

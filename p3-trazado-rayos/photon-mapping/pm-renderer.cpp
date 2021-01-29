@@ -758,7 +758,7 @@ void PMRenderer::render(const std::string fichero, const int iteraciones, const 
   im.dividirPixels(iteraciones); // TODO: DIVIDIR O NO?
 	im.setMaxFloat(rangoDinamico);
 	im.extendedReinhard();
-	im.guardar("out/iteracion:"+iteraciones + fichero, true); // guardar la imagen
+	im.guardar("out/" + fichero, true); // guardar la imagen
 
 	t2 = hrc::now();
 	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t3);

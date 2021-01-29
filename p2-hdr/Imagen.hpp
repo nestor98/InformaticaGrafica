@@ -23,7 +23,7 @@ public:
 	Imagen(const Imagen& i2);
 
 
-	Imagen(const int _filas, const int _cols, const long _c = 255, const float _maxFloat = 1, const std::string _titulo = "");
+	Imagen(const int _filas, const int _cols, const long _c = 512, const float _maxFloat = 1, const std::string _titulo = "");
 
 	void setPixel(const double r, const double g, const double b, const int i);
 
@@ -53,6 +53,7 @@ public:
 	void extendedReinhard();
 
 	void setMaxFloat(const float max);
+	void setResolucion(const float max);
 	float getMaxFloat() const;
 	int getNumPixels() const;
 	int getNumPixelsX() const;

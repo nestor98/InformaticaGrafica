@@ -136,13 +136,13 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 		e.addFigura(std::make_shared<Plano>(paredi));
 		Plano paredd(LEFT, distanciaParedes);
 
-		paredd.setMaterial(difusoLila);
+		paredd.setMaterial(difusoVerde);
 
 
 		e.addFigura(std::make_shared<Plano>(paredd));
 		//  -----------------
 		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
-		bool lodeantes = false;
+		bool lodeantes = true;
 		if (lodeantes) {
 			paredFondo.setMaterial(difusoBlanco);
 		} else {
@@ -639,17 +639,17 @@ std::unique_ptr<Escena> escenaCornellBoxMateriales(const int pixelesX, const int
 		// suelo.setColor(0.8,0.8,0.8);
 		// sponza-bumpmap del pbrt, capitulo bump mapping
 		//Imagen bump= Imagen("sponza-bumpmap-p3.ppm", true); // textura-bump.ppm
-		//Imagen bump= Imagen("bump-agua-p3.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
-		// Textura tex=Textura(t,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
-		// Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
-		// Matriz4 rotaciontex;
-		// rotaciontex.setRotarX(gradosARad(90));
-		// texRotada.rotar(rotaciontex);
-		// texRotada.setMaxDesplaz(3e-2);
-		// suelo.setMaterial(ESPEJO);
-		// suelo.setBumpMap(std::make_shared<Textura>(texRotada));
-		//suelo.setTextura(std::make_shared<Textura>(texRotada));
-		suelo.setMaterial(DIFUSO_BLANCO);
+		Imagen bump= Imagen("bump-agua-p3.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
+		//Textura texbump=Textura(t,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+		Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+		Matriz4 rotaciontex;
+		rotaciontex.setRotarX(gradosARad(90));
+		texRotada.rotar(rotaciontex);
+		texRotada.setMaxDesplaz(3e-2);
+		suelo.setMaterial(ESPEJO);
+		suelo.setBumpMap(std::make_shared<Textura>(texRotada));
+		suelo.setTextura(std::make_shared<Textura>(texRotada));
+		//suelo.setMaterial(DIFUSO_BLANCO);
 		e.addFigura(std::make_shared<Plano>(suelo));
 
 		Plano techo(-UP, distanciaParedes);

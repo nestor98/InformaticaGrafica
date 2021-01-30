@@ -205,11 +205,12 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 
 		// Object3D* sphere2 = new Sphere(Vector3(-0.5,0.5,1.5), 0.3, red);
 		// w->add_object(sphere2);
-			float tamEsfera=0.3;
-			Esfera esf(pos1, tamEsfera*2);
+			float tamEsfera=0.3*4;
+			pos1=centroSuelo+UP*tamEsfera+LEFT*tamEsfera-FRONT*tamEsfera-LEFT;
+			Esfera esf(pos1+FRONT, tamEsfera);
 			esf.setMaterial(cristal);
 			e.addFigura(std::make_shared<Esfera>(esf));
-			Esfera esf2(pos1, tamEsfera);
+			Esfera esf2(pos1+FRONT, tamEsfera/2);
 			esf2.setMaterial(difusoNaranja);
 			e.addFigura(std::make_shared<Esfera>(esf2));
 		}

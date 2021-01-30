@@ -644,9 +644,9 @@ void PMRenderer::render(const std::string fichero) {
 	im.setMaxFloat(rangoDinamico); // TODO: entender esta vaina
   im.setResolucion(128); // TODO: entender esta vaina
 	//im.extendedReinhard();
-	im.guardar("out/" + fichero); // guardar la imagen
-  	im.extendedReinhard();
-	im.guardar("out/tone" + fichero, false); // guardar la imagen
+	// im.guardar("out/" + fichero); // guardar la imagen
+  im.extendedReinhard();
+	im.guardar("out/" + fichero, true); // guardar la imagen
 
 	t2 = hrc::now();
 	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);

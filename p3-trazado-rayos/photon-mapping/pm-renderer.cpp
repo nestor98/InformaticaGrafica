@@ -368,10 +368,8 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-     L = iluminacionGlobal(interseccion.punto, n) +
+     L = iluminacionGlobal(interseccion.punto, n) +       //esto se comenta para hacer ray tracing
         causticas(interseccion.punto, n);
-    // L = L/2.0;
-    // iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     if (!guardarDirectos) {
       //std::cout << "??????????" << '\n';
       L = L + Renderer::luzDirecta(ptoCorregido, n);
@@ -647,9 +645,9 @@ void PMRenderer::render(const std::string fichero) {
 	im.setMaxFloat(rangoDinamico); // TODO: entender esta vaina
   im.setResolucion(128); // TODO: entender esta vaina
 	//im.extendedReinhard();
-	im.guardar("out/" + fichero); // guardar la imagen
-  	im.extendedReinhard();
-	im.guardar("out/tone" + fichero, false); // guardar la imagen
+	// im.guardar("out/" + fichero); // guardar la imagen
+  im.extendedReinhard();
+	im.guardar("out/" + fichero, true); // guardar la imagen
 
 	t2 = hrc::now();
 	t = std::chrono::duration_cast<std::chrono::duration<double>>(t2 - t1);

@@ -205,11 +205,12 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 
 		// Object3D* sphere2 = new Sphere(Vector3(-0.5,0.5,1.5), 0.3, red);
 		// w->add_object(sphere2);
-			float tamEsfera=0.3;
-			Esfera esf(pos1, tamEsfera*2);
+			float tamEsfera=0.3*4;
+			pos1=centroSuelo+UP*tamEsfera+LEFT*tamEsfera-FRONT*tamEsfera-LEFT;
+			Esfera esf(pos1+FRONT, tamEsfera);
 			esf.setMaterial(cristal);
 			e.addFigura(std::make_shared<Esfera>(esf));
-			Esfera esf2(pos1, tamEsfera);
+			Esfera esf2(pos1+FRONT, tamEsfera/2);
 			esf2.setMaterial(difusoNaranja);
 			e.addFigura(std::make_shared<Esfera>(esf2));
 		}
@@ -232,6 +233,92 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 
 
 }
+
+
+
+std::unique_ptr<Escena> escenaPresentacion(const int pixelesX, const int pixelesY, const int rayosPP) {
+		// ----------------------- Constantes de la escena:
+		double anchura= 5;
+		double altura= 5*3/4;
+		double distanciaParedes=anchura;
+		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
+		double fov = gradosARad(90); //0.475 * PI;
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
+		centroHabitacion+6*UP, uCam, fov, pixelesX, pixelesY, rayosPP);
+				Escena e(std::make_shared<Camara>(c));
+	Material difusoBlanco(Color(.85,.85,.85), Color(), Color());
+	Material mezclaRojo(Color(.85/2.0,.085/2.0,.085/2.0), Color(0.45,0.45,0.45), Color());
+	Material mezclaVerde(Color(62.0/255/2.0,153.0/255.0/2.0,122.0/255.0/2.0), Color(0.45,0.45,0.45), Color());
+
+
+	Plano suelo(UP, 1.0*altura);
+
+		suelo.setMaterial(difusoBlanco);
+		e.addFigura(std::make_shared<Plano>(suelo));
+
+		Plano techo(-UP, altura);
+		techo.setMaterial(difusoBlanco);
+		//techo.setColor(Color(10));
+		e.addFigura(std::make_shared<Plano>(techo));
+		Plano paredi(-LEFT, anchura);
+		paredi.setMaterial(mezclaRojo);
+		e.addFigura(std::make_shared<Plano>(paredi));
+		Plano paredd(LEFT, anchura);
+		paredd.setMaterial(mezclaVerde);
+		e.addFigura(std::make_shared<Plano>(paredd));
+		Plano paredFondo(-FRONT, distanciaParedes/3);
+		Imagen t= Imagen("presentacion/diapo13.ppm", true);
+		Textura tex=Textura(t,anchura*2, altura*2, distanciaParedes/3*FRONT+altura/2*UP+anchura/2+anchura*1.5*LEFT);
+		Matriz4 rotacion;
+		rotacion.setRotarY(gradosARad(90));
+				tex.rotar(rotacion);
+		rotacion.setRotarZ(gradosARad(180));
+		tex.rotar(rotacion);
+		paredFondo.setMaterial(difusoBlanco);
+		paredFondo.setTextura(std::make_shared<Textura>(tex));
+		e.addFigura(std::make_shared<Plano>(paredFondo));
+			Vector3 posP=2.75*-LEFT+2.75*UP+0.5*FRONT;
+		// PrismaRotable test(centroHabitacion-distanciaParedes*FRONT*0.8-UP*3-2*FRONT, posP);
+		// 	Matriz4 rotacionp, tmp;
+		// 	rotacionp.setRotarZ(gradosARad(20));
+		// 	test.rotar(rotacionp);
+		// e.addFigura(std::make_shared<PrismaRotable>(test));
+			Prisma test(centroHabitacion-distanciaParedes*FRONT*0.8-UP*3-2.5*FRONT-LEFT*2/3, posP);
+			//test.setMaterial(difusoBlanco);
+			Imagen iPrisma=Imagen("presentacion/diapo13-fig.ppm", true);
+			Textura texPrisma=Textura(iPrisma, 3, 3, centroHabitacion-distanciaParedes*FRONT*0.8-UP*3-2.5*FRONT-LEFT*2/3+3*UP);
+			rotacion.setRotarY(gradosARad(90));
+			texPrisma.rotar(rotacion);
+			rotacion.setRotarZ(gradosARad(180));
+			texPrisma.rotar(rotacion);
+			test.setColor(Color(40));
+			test.setTextura(std::make_shared<Textura>(texPrisma));
+		e.addFigura(std::make_shared<Prisma>(test));
+
+
+
+		//std::cout << "escena: " << e << '\n';
+		Color emisionLuces(40);//40 //8
+		LuzPuntual luz(posCam-(centroHabitacion-posCam)+0.8*distanciaParedes*UP+0.8*distanciaParedes*FRONT, emisionLuces*0.8);
+		LuzPuntual luz2(posCam+UP*altura/2*0.7-LEFT*anchura/2*0.5-2.5*FRONT, emisionLuces/2);
+		//luz.setEmision(Color(.85,.085,.085));
+		//LuzPuntual luz(Vector3(0,2.7,0, true), emisionLuces);
+		//e.addLuz(luz2);
+		e.addLuz(luz);
+
+		return std::make_unique<Escena>(e);
+}
+
+
+
+
+
+
 
 std::unique_ptr<Escena> escenaPlanosEspejos(const int pixelesX, const int pixelesY, const int rayosPP) {
 		// ----------------------- Constantes de la escena:

@@ -281,7 +281,7 @@ std::unique_ptr<Escena> escenaPlanosEspejos(const int pixelesX, const int pixele
 
 
 // Mar y reflejo del sol la luna o algo
-std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, const int rayosPP) {
+std::unique_ptr<Escena> escenaAguaEsfera(const int pixelesX, const int pixelesY, const int rayosPP) {
 
 								double distanciaParedes = 3;
 		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
@@ -333,7 +333,8 @@ std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, 
 	//	e.addFigura(std::make_shared<Plano>(techo));
 
 		float tamEsfera=100;
-		Vector3 pos1=centroSuelo+FRONT*1000;
+		Vector3 pos1=centroSuelo+FRONT*400;
+		// Vector3 pos1=centroSuelo+FRONT*1000;
 		Vector3 pos2=pos1+UP*300;
 
 
@@ -345,7 +346,7 @@ std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, 
 		// esfd.setColor(Color(5));//30*Color(252/255.0, 212/255.0, 64/255.0)
 		// e.addFigura(std::make_shared<Esfera>(esfd));
 
-		int opcion = 1;
+		int opcion = 2;
 
 		if (opcion==0) {
 			double dmin = 1.75*tamEsfera, dmax = 1.75*tamEsfera,// distanciaParedes,
@@ -355,7 +356,7 @@ std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, 
 				dmin, dmax, rmin, rmax, nEsferas);
 			auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 			e.addFiguras(figuras);
-		} else {
+		} else if (opcion==1) {
 			double dmin = 1.75*tamEsfera, dmax = 1.75*tamEsfera,// distanciaParedes,
 					rmin = tamEsfera/100, rmax=tamEsfera/100;
 			int nEsferas = 2500;
@@ -369,6 +370,11 @@ std::unique_ptr<Escena> escenaDosPlanos(const int pixelesX, const int pixelesY, 
 				auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 				e.addFiguras(figuras);
 			}
+		} else {
+				// Esfera esf(pos2+LEFT*tamEsfera*3-UP*tamEsfera*1.26, 0.5*tamEsfera);
+				Esfera esf(pos1+350*FRONT, tamEsfera*1.15);
+				esf.setColor(Color(50));
+				e.addFigura(std::make_shared<Esfera>(esf));
 		}
 
 

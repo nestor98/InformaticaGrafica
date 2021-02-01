@@ -496,6 +496,9 @@ Color PMRenderer::shade(const Figura::InterseccionData& interseccion,
 	// pieces of code that you won't be using.
 	//
 	// unsigned int debug_mode = 1;
+  if (figIntersectada->esEmisor()) { // no tiene material, solo emision
+    return figIntersectada->getEmision(interseccion.punto);
+  }
   Material mat = figIntersectada->getMaterial();
 	switch ((int) renderSeleccionado)
 	{
@@ -746,14 +749,14 @@ void PMRenderer::render(const std::string fichero, const int iteraciones, const 
 
   	std::cout << "\nRender realizado en " << t.count() << " segundos (" << t.count()/60.0 << " minutos)" << std::endl;
     std::cout << "-------------- Fin iteracion --------------" << '\n';
-    
+
       // Imagen im2=im;
-      // im2.dividirPixels(i+1); 
+      // im2.dividirPixels(i+1);
       // im2.setMaxFloat(rangoDinamico);
       // im2.setResolucion(1024);
       // im2.extendedReinhard();
       // im2.guardar("out/iteracion:"+ std::to_string(i+1) + fichero); // guardar la imagen
-    
+
   }
   im.dividirPixels(iteraciones); // TODO: DIVIDIR O NO?
 	im.setMaxFloat(rangoDinamico);

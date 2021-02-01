@@ -368,10 +368,8 @@ Color PMRenderer::shadePM(const Figura::InterseccionData& interseccion,
   else if (evento == 0) { // DIFUSO
     Vector3 n = figIntersectada->getNormal(interseccion.punto);
     Vector3 ptoCorregido = alejarDeNormal(interseccion.punto, n);
-     L = iluminacionGlobal(interseccion.punto, n) +
+     L = iluminacionGlobal(interseccion.punto, n) +       //esto se comenta para hacer ray tracing
         causticas(interseccion.punto, n);
-    // L = L/2.0;
-    // iluminacionGlobal(interseccion, n) + causticas(interseccion, n);
     if (!guardarDirectos) {
       //std::cout << "??????????" << '\n';
       L = L + Renderer::luzDirecta(ptoCorregido, n);

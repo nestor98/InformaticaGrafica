@@ -272,7 +272,7 @@ std::unique_ptr<Escena> escenaPresentacion(const int pixelesX, const int pixeles
 		paredd.setMaterial(mezclaVerde);
 		e.addFigura(std::make_shared<Plano>(paredd));
 		Plano paredFondo(-FRONT, distanciaParedes/3);
-		Imagen t= Imagen("presentacion/diapo13.ppm", true);
+		Imagen t= Imagen("presentacion/diapo11.ppm", true);
 		Textura tex=Textura(t,anchura*2, altura*2, distanciaParedes/3*FRONT+altura/2*UP+anchura/2+anchura*1.5*LEFT);
 		Matriz4 rotacion;
 		rotacion.setRotarY(gradosARad(90));
@@ -290,8 +290,8 @@ std::unique_ptr<Escena> escenaPresentacion(const int pixelesX, const int pixeles
 		// e.addFigura(std::make_shared<PrismaRotable>(test));
 			Prisma test(centroHabitacion-distanciaParedes*FRONT*0.8-UP*3-2.5*FRONT-LEFT*2/3, posP);
 			//test.setMaterial(difusoBlanco);
-			Imagen iPrisma=Imagen("presentacion/diapo13-fig.ppm", true);
-			Textura texPrisma=Textura(iPrisma, 3, 3, centroHabitacion-distanciaParedes*FRONT*0.8-UP*3-2.5*FRONT-LEFT*2/3+3*UP);
+			Imagen iPrisma=Imagen("presentacion/diapo11-fig.ppm", true);
+			Textura texPrisma=Textura(iPrisma, 3, 3, centroHabitacion-distanciaParedes*FRONT*0.8-UP*3-2.5*FRONT-LEFT*2/3+3*UP, 3);
 			rotacion.setRotarY(gradosARad(90));
 			texPrisma.rotar(rotacion);
 			rotacion.setRotarZ(gradosARad(180));
@@ -403,6 +403,7 @@ std::unique_ptr<Escena> escenaAguaEsfera(const int pixelesX, const int pixelesY,
 		Imagen bump= Imagen("bump-agua-p3.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
 		// Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
 		Textura texRotada = Textura(bump,1.5*distanciaParedes,1.5*distanciaParedes, 2.0*distanciaParedes+FRONT);
+
 
 		Matriz4 rotaciontex;
 		rotaciontex.setRotarX(gradosARad(90));

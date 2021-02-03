@@ -434,7 +434,7 @@ std::unique_ptr<Escena> escenaAguaEsfera(const int pixelesX, const int pixelesY,
 		// esfd.setColor(Color(5));//30*Color(252/255.0, 212/255.0, 64/255.0)
 		// e.addFigura(std::make_shared<Esfera>(esfd));
 
-		int opcion = 2;
+		int opcion = 3;
 
 		if (opcion==0) {
 			double dmin = 1.75*tamEsfera, dmax = 1.75*tamEsfera,// distanciaParedes,
@@ -458,11 +458,37 @@ std::unique_ptr<Escena> escenaAguaEsfera(const int pixelesX, const int pixelesY,
 				auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
 				e.addFiguras(figuras);
 			}
-		} else {
+		} else if (opcion==2) {
 				// Esfera esf(pos2+LEFT*tamEsfera*3-UP*tamEsfera*1.26, 0.5*tamEsfera);
 				Esfera esf(pos1+350*FRONT, tamEsfera*1.15);
 				esf.setColor(Color(50));
 				e.addFigura(std::make_shared<Esfera>(esf));
+		}else if (opcion==3) {
+				tamEsfera *= 2.7;
+				// ------------- "Luna":
+				Esfera esf(pos1+350*FRONT, tamEsfera);
+				esf.setColor(Color(10));
+				e.addFigura(std::make_shared<Esfera>(esf));
+				// ------------- Monticulo:
+				Esfera esfSuelo(pos1+20*FRONT-UP*525, 2*tamEsfera);
+				esfSuelo.setColor(Color());
+				e.addFigura(std::make_shared<Esfera>(esfSuelo));
+				// ------------- Arbol
+				Vector3 tamRama(tamEsfera/10);
+				tamRama[2] = tamRama[2]*7; // longitud
+				Matriz4 baseArbol = BASE_UNIVERSAL;
+				baseArbol[3] = pos1+0*FRONT+10*UP; // encima del monticulo
+				baseArbol[3].setPunto(); // Tiene que ser un pto
+				GeneradorEstructuras gen(GeneradorEstructuras::Estructura::ArbolPrismasSimetrico,
+					 baseArbol, tamRama, 11);
+				auto figuras = gen.getVectorFiguras(); // Devuelve un puntero al vector de las figuras
+				for (auto& f : *figuras) {
+					f->setColor(Color(-100));
+				}
+				e.addFiguras(figuras);
+
+		}else {
+			std::cerr << "Opcion no implementada en prefabs" << '\n';exit(1);
 		}
 
 

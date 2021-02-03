@@ -48,8 +48,8 @@ std::string ejemploLSystem(const int iteraciones) {
 // Regla de implementacion propia (es un arbol simple)
 std::string ejemploLSystem2(const int iteraciones) {
   std::map<char, std::string> reglas;
-  reglas['F']="F+[F]-[F]";
-  return lSystem(reglas, "F", iteraciones);
+  reglas['X']="[+FX]-FX";
+  return lSystem(reglas, "FX", iteraciones);
 }
 
 // ---------------------------------------------------------------------
@@ -86,7 +86,7 @@ void GeneradorEstructuras::setArbolPrismas(const Matriz4& base, const Vector3& t
   const std::string& lsys, const int iteraciones, const float& reduccionTam,
   const double& anguloDcha, const double& anguloIzq)
 {
-  std::cout << "Lsystem: " << lsys << '\n';
+  // std::cout << "Lsystem: " << lsys << '\n';
   // Variables a ir modificando:
   Matriz4 baseActual = base;
   Vector3 tamActual = tam;
@@ -99,10 +99,13 @@ void GeneradorEstructuras::setArbolPrismas(const Matriz4& base, const Vector3& t
   // Color c(0.9);
   double redColor = 0.9;
 
+  GeneradorAleatorio rng;
+
   std::vector<Matriz4> pilaMatrices;// Permiten volver a una base anterior con los corchetes
+  std::vector<Vector3> pilaTams;
   for (auto mov : lsys) { // Cada movimiento
     if (mov == 'F') { // Forward, se dibuja rama
-      PrismaRotable rama(baseActual, 1.1*tamActual); // 1.1 para que no se vean rendijas entre los prismas
+      PrismaRotable rama(baseActual, 1.0*tamActual); // 1.1 para que no se vean rendijas entre los prismas
       rama.setMaterial(DIFUSO_MARRON_OSCURO);
       figuras->emplace_back(std::make_shared<PrismaRotable>(rama));
       // Actualizamos:
@@ -112,17 +115,26 @@ void GeneradorEstructuras::setArbolPrismas(const Matriz4& base, const Vector3& t
       // TODO: COMPROBARRRRRR:
       // Se desplaza la base
     } else if (mov == '+') {  // Rotar dcha
-      // c=Color(0,0.9,0); // DEBUG: verde
+      //Ruido:
+      // double eps = rng.rand(-10.0,+10.0);
+      // rotacionDcha.setRotarY(anguloDcha+gradosARad(eps));
       rotarAlrededorDePto(baseActual, rotacionDcha);
     } else if (mov == '-') { // Rotar izq
-      // c=Color(0.9,0,0); // DEBUG: rojo
+
+      // double eps = rng.rand(-10.0,+10.0);
+      // rotacionDcha.setRotarY(-anguloIzq-gradosARad(eps));
       rotarAlrededorDePto(baseActual, rotacionIzq);
     } else if (mov == '[') { // Guardar posicion
       pilaMatrices.emplace_back(baseActual);
+      pilaTams.emplace_back(tamActual);
     } else if (mov == ']') { // Volver a ultima pos guardada
       baseActual = pilaMatrices.back();
       pilaMatrices.pop_back();
-    } else {
+      tamActual = pilaTams.back();
+      pilaTams.pop_back();
+    } else if (mov == 'X') {
+      // X no hace nada, solo para sustituciones
+    }else {
       std::cerr << "ERROR en setArbolPrismas, movimiento " << mov
         << " desconocido" << '\n';
       exit(1);
@@ -159,6 +171,7 @@ pos(_pos), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>()), tipo(
     setArbolPrismas(base, tam/iteraciones, lsys,1,reduccionTam, anguloDcha,anguloIzq);
   }
   else if (_estructura == GeneradorEstructuras::Estructura::ArbolPrismasSimetrico) {
+    std::cout << "Generando arbol simetrico!" << '\n';
     Matriz4 base;
     base.setCambioBase(FRONT, LEFT, UP, _pos);
     std::string lsys = ejemploLSystem2(iteraciones); // La cadena con la magia
@@ -166,10 +179,11 @@ pos(_pos), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>()), tipo(
     //double anchuraAltura = 0.25; // Relacion anchura/altura
     double reduccionTam = 0.8; // Reduccion en cada movimiento adelante
     // Rotaciones:
-    double anguloDcha = gradosARad(36);
-    double anguloIzq = gradosARad(36);
+    double anguloDcha = gradosARad(26);
+    double anguloIzq = gradosARad(26);
 
     setArbolPrismas(base, tam/iteraciones, lsys,1,reduccionTam, anguloDcha,anguloIzq);
+    std::cout << "Arbol generado, con " << figuras->size() << " prismas" << '\n';
   }
   else {
     std::cerr << "Estructura desconocida (de momento solo tenemos MengerSponge)\n";
@@ -198,6 +212,11 @@ pos(_base[3]), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>()), t
     //base.setCambioBase(FRONT, LEFT, UP, _pos);
     int iteracionesCap = iteraciones;
     std::string lsys;
+    double reduccionTam = 0.8; // Reduccion en cada movimiento adelante
+    // Rotaciones:
+    double anguloDcha = gradosARad(36);
+    double anguloIzq = gradosARad(36);
+
     if (_estructura == GeneradorEstructuras::Estructura::ArbolPrismas) {
 
       if (iteraciones>4) {
@@ -207,16 +226,17 @@ pos(_base[3]), tam(_tam), figuras(new std::vector<std::shared_ptr<Figura>>()), t
       lsys = ejemploLSystem(iteraciones); // La cadena con la magia
     }
     else {
+      std::cout << "A partir de pto" << '\n';
       lsys = ejemploLSystem2(iteraciones); // La cadena con la magia
+      reduccionTam = 0.9; // Reduccion en cada movimiento adelante
+      // Rotaciones:
+      anguloDcha = gradosARad(20);
+      anguloIzq = gradosARad(20);
     }
     std::cout << "Lsystem: " << lsys << '\n';
     //double anchuraAltura = 0.25; // Relacion anchura/altura
-    double reduccionTam = 0.8; // Reduccion en cada movimiento adelante
-    // Rotaciones:
-    double anguloDcha = gradosARad(36);
-    double anguloIzq = gradosARad(36);
 
-    setArbolPrismas(base, tam/double(iteracionesCap), lsys, iteracionesCap);
+    setArbolPrismas(base, tam/iteraciones, lsys,1,reduccionTam, anguloDcha,anguloIzq);
     std::cout << "Arbol raro generado!\n" << "(Contiene " << figuras->size() << " prismas)\n";
   }
   else {

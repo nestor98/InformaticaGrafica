@@ -486,7 +486,7 @@ std::unique_ptr<Escena> escenaAguaEsfera(const int pixelesX, const int pixelesY,
 				for (auto& f : *figuras) {
 					f->setColor(Color(-100));
 				}
-				//e.addFiguras(figuras);
+				e.addFiguras(figuras);
 
 				bool auroraTambien = true;
 				if (auroraTambien) {

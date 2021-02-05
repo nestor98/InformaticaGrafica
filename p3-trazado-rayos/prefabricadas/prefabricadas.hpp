@@ -403,6 +403,7 @@ std::unique_ptr<Escena> escenaAguaEsfera(const int pixelesX, const int pixelesY,
 		Imagen bump= Imagen("bump-agua-p3.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
 		// Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
 		Textura texRotada = Textura(bump,1.5*distanciaParedes,1.5*distanciaParedes, 2.0*distanciaParedes+FRONT);
+		// Textura texRotada = Textura(bump,3*distanciaParedes,3*distanciaParedes, 2.0*distanciaParedes+FRONT);
 
 
 		Matriz4 rotaciontex;
@@ -466,8 +467,8 @@ std::unique_ptr<Escena> escenaAguaEsfera(const int pixelesX, const int pixelesY,
 		}else if (opcion==3) {
 				tamEsfera *= 2.7;
 				// ------------- "Luna":
-				Esfera esf(pos1+350*FRONT, tamEsfera);
-				esf.setColor(Color(10));
+				Esfera esf(pos1+350*FRONT, 0.95*tamEsfera);
+				esf.setColor(Color(8));
 				e.addFigura(std::make_shared<Esfera>(esf));
 				// ------------- Monticulo:
 				Esfera esfSuelo(pos1+20*FRONT-UP*525, 2*tamEsfera);
@@ -485,7 +486,24 @@ std::unique_ptr<Escena> escenaAguaEsfera(const int pixelesX, const int pixelesY,
 				for (auto& f : *figuras) {
 					f->setColor(Color(-100));
 				}
-				e.addFiguras(figuras);
+				//e.addFiguras(figuras);
+
+				bool auroraTambien = true;
+				if (auroraTambien) {
+					// abcd
+					Imagen imBoreal= Imagen("boreal.ppm", true);// bump-agua de https://forums.chaosgroup.com/forum/chaos-common/chaos-common-public/1008483-v-ray-3-6-ocean-water-again
+					// Textura texRotada = Textura(bump,2.0*distanciaParedes/2.0,2.0*distanciaParedes/2.0, 2.0*distanciaParedes+FRONT);
+					Textura texBoreal = Textura(imBoreal,1500,800, 500*UP+600*LEFT, 1);
+					Matriz4 rotacionTex;
+					rotacionTex.setRotarY(gradosARad(90));
+					texBoreal.rotar(rotacionTex);
+
+					Plano fondo(-FRONT, 1000);
+
+					fondo.setTextura(std::make_shared<Textura>(texBoreal));
+					e.addFigura(std::make_shared<Plano>(fondo));
+
+				}
 
 		}else {
 			std::cerr << "Opcion no implementada en prefabs" << '\n';exit(1);

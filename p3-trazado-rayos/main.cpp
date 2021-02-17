@@ -24,20 +24,7 @@ int main(int argc, char* argv[]) {
 		<< " <fichero de salida> <numero de threads> <rayospp> <resolColor> <0, 1 o 2 (PT,PM,PPM)>\n";
 		exit(1);
 	}
-	// escenaBastanteGuay400prismas200esferas(argv);
-	// escenaEsponja(argv);
-	// escenaPlanos(argv);
-	//escenaBastanteGuay400prismas200esferas(argv);
-	/* Path tracer
-	auto escena = escenaCornellBoxMateriales(300, 300, atoi(argv[3])); // pixX, pixY, rayosPP
-	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
-	int nThreads = atoi(argv[2]);
-  auto tipo = Renderer::TipoRender::Materiales;//Materiales;//FotonesRadioFijo;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
-	bool usarBVH = true;
-	int resColor = atoi(argv[4]); // maxFloat de hdr
-	Renderer rend(*escena, nThreads, tipo, usarBVH);
 
-	rend.render(argv[1]);*/
 	//720/16*9
 	auto escena = escenaAguaEsfera(1000, 1000 , atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
@@ -46,7 +33,7 @@ int main(int argc, char* argv[]) {
 	bool usarBVH = true;
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 
-	enum TipoRenderer {PathTracer, PM, ProgressivePM};
+	enum TipoRenderer {PathTracer, PM, ProgressivePM, RayMarcher};
 	TipoRenderer seleccionado=(TipoRenderer) atoi(argv[5]);
 
 	std::cout << "------- ESCENA -------\n" << escena->to_string() << '\n';
@@ -56,7 +43,11 @@ int main(int argc, char* argv[]) {
 		Renderer rend(*escena, nThreads, tipo, usarBVH, resColor);
 		rend.render(argv[1]);
 		// -----------------------------------------------
-	} else {
+	}
+	else if (seleccionado==RayMarcher) {
+		RayMarcher rend(*escena, nThreads, tipo, usarBVH, resColor);
+	}
+	else {
 		// -----------------------------------------------
 		// Con PROGRESSIVE PM;
 		// Parametros de PM:
@@ -82,50 +73,3 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -53,12 +53,9 @@ public:
 
 	void setMaterialFiguras(const std::vector<Material>& materiales);
 
+	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>>
+		interseccion(const Vector3& o, const Vector3& dir) const;
 
-	std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> interseccion(const Vector3& o, const Vector3& dir) const;
-
-	// Compara los tiempos de render (secuencial, sin threads) de la escena con
-	// el metodo original y el bvh. Muestra los resultados por salida estandar.
-	// void testBVHRender(const std::string f1 = "out/testRenderOriginal.ppm", const std::string f2 = "out/testRenderBVH.ppm");
 };
 
 	// para evitar el to_string en cout

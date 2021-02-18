@@ -65,7 +65,9 @@ bool tMenor (const Figura::InterseccionData& iData, const double min) {
 }
 
 // Interseccion sin bvh:
-std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>> Escena::interseccion(const Vector3& o, const Vector3& dir) const {
+std::optional<std::pair<Figura::InterseccionData, std::shared_ptr<Figura>>>
+	Escena::interseccion(const Vector3& o, const Vector3& dir) const
+{
 	if (tieneBVH) {
 		// std::cout << "intersectando bvh" << '\n';
 		return bvh.interseccion(o, dir);

@@ -57,22 +57,34 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 
 			sdfW.setRandomColor();
 
-			// sdfW.setMaterial(DIFUSO_VERDE_MAJO);
-
 			// Se añade:
 			e.addFigura(std::make_shared<SDFWrapper>(sdfW));
 		}
-		else if (opcion == 1) { // Modulo
+		else if (opcion == 1) { // Esfera sin mas
+			// Wrapper:
+			SDFWrapper sdfW(std::make_shared<Sphere>(esf));
+			sdfW.setMaterial(DIFUSO_VERDE_MAJO);
+			// sdfW.setRandomColor();
+			// Se añade:
+			e.addFigura(std::make_shared<SDFWrapper>(sdfW));
+			// luz puntual:
+			Color emisionLuces(20);//40 //8
+			LuzPuntual luz(centroHabitacion+UP+distanciaParedes*(LEFT-FRONT), emisionLuces);
+			e.addLuz(luz);
+
+		}
+		else if (opcion == 2) { // Modulo
 			Vector3 repetition(30);
-			Sphere esfOrigen(Vector3({0,0,0}).toArray(),r/5.0);
-			SDFModulo esfMod(std::make_shared<Sphere>(esfOrigen), repetition.toArray());
+			//Sphere esfOrigen(Vector3({0,0,0}).toArray(),r/5.0);
+			Sphere esf3(Vector3(centroSuelo).toArray(),r/5.0);
+			SDFModulo esfMod(std::make_shared<Sphere>(esf3), repetition.toArray());
 
 			SDFWrapper sdfW(std::make_shared<SDFModulo>(esfMod));
 
 			// sdfW.setMaterial(DIFUSO_VERDE_MAJO);
-			sdfW.setRandomColor();
+			// sdfW.setRandomColor();
 			//
-			// Color emisionLuces(20);//40 //8
+			// Color emisionLuces(200);//40 //8
 			// LuzPuntual luz(Vector3(centroHabitacion+0.5*UP+0.75*LEFT), emisionLuces);
 			// e.addLuz(luz);
 			// Se añade:

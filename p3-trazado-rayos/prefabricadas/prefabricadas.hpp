@@ -17,9 +17,11 @@
 /************************ TFG ********************************/
 #include "figuras/sdfs/sdfWrapper.hpp"
 #include "src/primitives/sphere.hpp"
+#include "src/primitives/collections/smoothUnion.hpp"
+#include "src/primitives/modulo.hpp"
+
 
 std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const int rayosPP) {
-	std::cout << "?????" << '\n';
 		double distanciaParedes = 3;
 				Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
 		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
@@ -27,26 +29,55 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 		posCam = posCam - UP * distanciaParedes/4.0;
 		double fov = gradosARad(60); //0.475 * PI;
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
-		std::cout << "antes cam" << '\n';
 
 		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
 		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
-		std::cout << "despues cam" << '\n';
 
 		Escena e(std::make_shared<Camara>(c));
-		std::cout << "antes sdf" << '\n';
+
 
 		// Esfera con SDF:
-		float r = distanciaParedes/3;
+		float r = distanciaParedes/2.0;
 		Sphere esf(centroHabitacion.toArray(), r);
-		std::cout << "SDF construida" << '\n';
-		// Wrapper:
-		SDFWrapper esfW(std::make_shared<Sphere>(esf));
-		esfW.setRandomColor();
-		std::cout << "Wrapper construido" << '\n';
+		int opcion = 1;
+		if (opcion==0) { // Smooth union
 
-		// Se añade:
-		e.addFigura(std::make_shared<SDFWrapper>(esfW));
+			// Otra:
+			Vector3 pos2 = centroHabitacion+r*LEFT*1.5;
+			Sphere esf2(pos2.toArray(), r);
+			// Smooth union:
+			float factor = 0.5; // Smoothing factor
+			SDFSmoothUnion sdfU(factor);
+			sdfU.addSDF(std::make_shared<Sphere>(esf)); // Add the spheres
+			sdfU.addSDF(std::make_shared<Sphere>(esf2));
+
+			// Wrapper:
+			SDFWrapper sdfW(std::make_shared<SDFSmoothUnion>(sdfU));
+
+
+			sdfW.setRandomColor();
+
+			// sdfW.setMaterial(DIFUSO_VERDE_MAJO);
+
+			// Se añade:
+			e.addFigura(std::make_shared<SDFWrapper>(sdfW));
+		}
+		else if (opcion == 1) { // Modulo
+			Vector3 repetition(30);
+			Sphere esfOrigen(Vector3({0,0,0}).toArray(),r/5.0);
+			SDFModulo esfMod(std::make_shared<Sphere>(esfOrigen), repetition.toArray());
+
+			SDFWrapper sdfW(std::make_shared<SDFModulo>(esfMod));
+
+			// sdfW.setMaterial(DIFUSO_VERDE_MAJO);
+			sdfW.setRandomColor();
+			//
+			// Color emisionLuces(20);//40 //8
+			// LuzPuntual luz(Vector3(centroHabitacion+0.5*UP+0.75*LEFT), emisionLuces);
+			// e.addLuz(luz);
+			// Se añade:
+			e.addFigura(std::make_shared<SDFWrapper>(sdfW));
+		}
 		std::cout << "escena:\n" << e << '\n';
 		return std::make_unique<Escena>(e);
 }

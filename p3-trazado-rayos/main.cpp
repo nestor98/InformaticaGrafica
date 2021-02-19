@@ -19,6 +19,7 @@ using namespace std;
 
 /**************** Programa principal ****************/
 int main(int argc, char* argv[]) {
+	std::cout << "empezando" << '\n';
 	if (argc < 6) {// <fichero de entrada>
 		cerr << "invocar como:\n" << argv[0]
 		<< " <fichero de salida> <numero de threads> <rayospp> <resolColor> <0, 1 o 2 (PT,PM,PPM)>\n";
@@ -73,5 +74,15 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
 
 

@@ -19,7 +19,7 @@
 #include "src/primitives/sphere.hpp"
 
 std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const int rayosPP) {
-
+	std::cout << "?????" << '\n';
 		double distanciaParedes = 3;
 				Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
 		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
@@ -27,19 +27,27 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 		posCam = posCam - UP * distanciaParedes/4.0;
 		double fov = gradosARad(60); //0.475 * PI;
 		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+		std::cout << "antes cam" << '\n';
 
 		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
 		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+		std::cout << "despues cam" << '\n';
+
 		Escena e(std::make_shared<Camara>(c));
+		std::cout << "antes sdf" << '\n';
 
 		// Esfera con SDF:
 		float r = distanciaParedes/3;
 		Sphere esf(centroHabitacion.toArray(), r);
+		std::cout << "SDF construida" << '\n';
 		// Wrapper:
 		SDFWrapper esfW(std::make_shared<Sphere>(esf));
 		esfW.setRandomColor();
+		std::cout << "Wrapper construido" << '\n';
+
 		// Se añade:
 		e.addFigura(std::make_shared<SDFWrapper>(esfW));
+		std::cout << "escena:\n" << e << '\n';
 		return std::make_unique<Escena>(e);
 }
 

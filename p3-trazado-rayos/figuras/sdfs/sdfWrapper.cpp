@@ -12,6 +12,7 @@ SDFWrapper::SDFWrapper(std::shared_ptr<SDF> _sdf) : sdf(_sdf) {}
 
 std::optional<Figura::InterseccionData> SDFWrapper::interseccion(const Vector3& origen, const Vector3& dir) const
 {
+	//std::cout << "intersectando wrapper" << '\n';
 	std::optional<rayMarching::Intersection> interseccion = rayMarching::sphereTrace(origen.toArray(), dir.toArray(), *sdf);
 	if (!interseccion) return {};
 	return InterseccionData{interseccion->distance, Vector3(interseccion->point.toArray())};

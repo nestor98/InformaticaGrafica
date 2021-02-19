@@ -66,7 +66,7 @@ public:
 
 	void toKDTreePoint(std::vector<float> &pto) const;
 	const std::vector<float>& toKDTreePoint() const;
-	const std::array<float,3>& toArray() const;
+	std::array<float,3> toArray() const;
 
 	// Cambio de sentido
 	Vector3 operator - () const;

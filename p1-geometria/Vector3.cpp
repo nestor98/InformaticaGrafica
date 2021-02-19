@@ -155,7 +155,7 @@ const std::vector<float>& Vector3::toKDTreePoint() const
  	return {c[0], c[1], c[2]};
 }
 
-const std::array<float,3>& Vector3::toArray() const
+std::array<float,3> Vector3::toArray() const
 {
  	return {c[0], c[1], c[2]};
 }

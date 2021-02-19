@@ -69,7 +69,7 @@ TFG_SDF_DIR=/mnt/d/Universidad/cuarto-2/TFG/TFG-SDF
 ### main:
 MAIN=main
 
-CPPFLAGS=-MMD -Wall -Wno-sign-compare -I. -I${VECTOR_DIR} -I${PREFABS_DIR} -I${IMAGEN_DIR} -I${COLOR_DIR} -I${TEX_DIR} -I${PM_DIR} -I${FIGURAS_DIR} -I${MATERIAL_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${TFG_SDF_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${LUZ_DIR} -I${RENDERER_DIR} -I${BVH_DIR} -std=c++17 -pthread -O0
+CPPFLAGS=-MMD -Wall -Wno-sign-compare -I. -I${VECTOR_DIR} -I${PREFABS_DIR} -I${IMAGEN_DIR} -I${COLOR_DIR} -I${TEX_DIR} -I${PM_DIR} -I${FIGURAS_DIR} -I${MATERIAL_DIR} -I${UTILS_DIR} -I${ESFERA_DIR} -I${PLANO_DIR} -I${PRISMA_DIR} -I${TFG_SDF_DIR} -I${CAMARA_DIR} -I${ESCENA_DIR} -I${LUZ_DIR} -I${RENDERER_DIR} -I${BVH_DIR} -std=c++17 -pthread -O2
 
 src = $(wildcard *.cpp) \
         $(wildcard ../p1-geometria/Vector3.cpp) \

@@ -18,7 +18,7 @@
 #include "figuras/sdfs/sdfWrapper.hpp"
 #include "src/primitives/sphere.hpp"
 
-std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const int rayosPP, const int escena) {
+std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const int rayosPP) {
 
 		double distanciaParedes = 3;
 				Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;

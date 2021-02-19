@@ -18,6 +18,8 @@ const double EPSILON_NORMAL = 1e-4;
 class Matriz4;
 
 class Vector3 {
+	typedef std::array<float, 3> float3;
+
 	std::array<float, 4> c; // coordenadas, con coord homogenea
 
 public:
@@ -25,6 +27,7 @@ public:
 	/**************** Constructores ****************/
 	Vector3();
 
+	Vector3(const float3& original);
 	Vector3(const Vector3& original);
 
 	Vector3(const float tam); // Devuelve un vector con todas las componentes = tam
@@ -63,6 +66,7 @@ public:
 
 	void toKDTreePoint(std::vector<float> &pto) const;
 	const std::vector<float>& toKDTreePoint() const;
+	const std::array<float,3>& toArray() const;
 
 	// Cambio de sentido
 	Vector3 operator - () const;

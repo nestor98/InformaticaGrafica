@@ -7,10 +7,44 @@
 #include "plano.hpp"
 #include "prisma.hpp"
 
+
 #include "Vector3.hpp"
 //#include "Matriz4.cpp"
 // #include "renderer.hpp"
 // #include "pm-renderer.hpp"
+
+
+/************************ TFG ********************************/
+#include "figuras/sdfs/sdfWrapper.hpp"
+#include "src/primitives/sphere.hpp"
+
+std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const int rayosPP, const int escena) {
+
+		double distanciaParedes = 3;
+				Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
+		double fov = gradosARad(60); //0.475 * PI;
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
+		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+		Escena e(std::make_shared<Camara>(c));
+
+		// Esfera con SDF:
+		float r = distanciaParedes/3;
+		Sphere esf(centroHabitacion.toArray(), r);
+		// Wrapper:
+		SDFWrapper esfW(std::make_shared<Sphere>(esf));
+		esfW.setRandomColor();
+		// Se añade:
+		e.addFigura(std::make_shared<SDFWrapper>(esfW));
+		return std::make_unique<Escena>(e);
+}
+
+/************************ Fin TFG ********************************/
+
 
 
 // Escenas adaptadas a partir de las del main proporcionado de PM

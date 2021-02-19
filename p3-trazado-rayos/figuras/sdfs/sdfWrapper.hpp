@@ -13,7 +13,9 @@
 #include "prisma.hpp"
 
 // Definido en lo del tfg:
-#include "TFG-SDF/src/primitives/sdf.hpp"
+// #include "src/primitives/sdf.hpp"
+
+class SDF;
 
 class SDFWrapper : public Figura {
 	std::shared_ptr<SDF> sdf;
@@ -25,12 +27,8 @@ public:
 	std::string to_string() const override;
 
 	std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const override;
-	void addTextura(Textura _tex);
-	void setBoundingBox();
 	std::shared_ptr<Prisma> getBoundingBox() const override;
 	//double Interseccion(const Vector3& origen, const Vector3& dir, double *distancia);
-
-
 
 	Vector3 getNormal(const Vector3& pto) const override;
 

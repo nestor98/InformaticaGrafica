@@ -23,6 +23,14 @@ Vector3::Vector3(const Vector3& original) {
 	}
 }
 
+Vector3::Vector3(const float3& original) {
+	for (int i = 0; i < 3; i++) {
+		c[i] = original[i];
+	}
+	c[3] = 0;
+}
+
+
 Vector3::Vector3(float x, float y, float z, float homogenea) {
 	c[0] = x;
 	c[1] = y;

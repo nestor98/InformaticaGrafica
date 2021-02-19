@@ -44,9 +44,9 @@ int main(int argc, char* argv[]) {
 		rend.render(argv[1]);
 		// -----------------------------------------------
 	}
-	else if (seleccionado==RayMarcher) {
-		RayMarcher rend(*escena, nThreads, tipo, usarBVH, resColor);
-	}
+	//else if (seleccionado==RayMarcher) {
+		//RayMarcher rend(*escena, nThreads, tipo, usarBVH, resColor);
+	//}
 	else {
 		// -----------------------------------------------
 		// Con PROGRESSIVE PM;
@@ -73,3 +73,50 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

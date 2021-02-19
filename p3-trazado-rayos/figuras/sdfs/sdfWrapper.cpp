@@ -2,26 +2,28 @@
 #include <string>
 
 
-#include "esfera.hpp"
-
-#include "TFG-SDF/src/primitives/sphere.hpp"
-#include "TFG-SDF/src/sphere-marcher/sphere-marcher.hpp"
+#include "sdfWrapper.hpp"
+//
+// #include "src/primitives/sphere.hpp"
+#include "src/sphere-marcher/sphere-marcher.hpp"
 
 SDFWrapper::SDFWrapper(std::shared_ptr<SDF> _sdf) : sdf(_sdf) {}
 
-std::string SDFWrapper::to_string() const {
-	return "--- SDFWrapper:\nposicion: " + posicion.to_string() + "\nradio: " + std::to_string(radio);
-}
 
 std::optional<Figura::InterseccionData> SDFWrapper::interseccion(const Vector3& origen, const Vector3& dir) const
 {
 	std::optional<rayMarching::Intersection> interseccion = rayMarching::sphereTrace(origen.toArray(), dir.toArray(), *sdf);
 	if (!interseccion) return {};
-	return InterseccionData{interseccion.distance, interseccion.point};
+	return InterseccionData{interseccion->distance, Vector3(interseccion->point.toArray())};
 }
 
 Vector3 SDFWrapper::getNormal(const Vector3& pto) const {
-	return sdf.normal(pto.toArray());
+	return sdf->normal(pto.toArray());
+}
+
+
+std::string SDFWrapper::to_string() const {
+	return "Soy una figura con SDF";
 }
 
 // De momento devuelve caja infinita, como los planos

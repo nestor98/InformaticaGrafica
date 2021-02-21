@@ -54,6 +54,8 @@ protected:
 	Color ruletaRusa(const std::shared_ptr<Figura> fig, const Vector3& dir, const Vector3& pto, const GeneradorAleatorio& rngThread, const bool primerRebote=false) const;
 	Color pathTrace(const Vector3& o, const Vector3& dir, const GeneradorAleatorio& rngThread, const bool primerRebote = false) const;
 	Color shadowRay(const Vector3& pto, const Vector3& normal, const int indiceluz) const;
+	Color shadowRayDireccionales(const Vector3& pto, const Vector3& normal, const LuzDireccional& luz) const;
+
 	Color luzDirecta(const Vector3& pto, const Vector3& normal) const;
  	Color muestraLuzDirecta(const Vector3& pto, const Vector3& normal, const GeneradorAleatorio& rng) const;
 

@@ -16,6 +16,7 @@
 
 #include "utils.hpp"
 #include "luzpuntual.hpp"
+#include "luzdireccional.hpp"
 
 class Escena {
 
@@ -23,6 +24,8 @@ class Escena {
 	std::vector<std::shared_ptr<Figura>> figuras;
 
 	std::vector<LuzPuntual> luces;
+
+	std::vector<LuzDireccional> lucesDireccionales;
 
 	BoundingVolumeH bvh;
 	bool tieneBVH;
@@ -36,6 +39,8 @@ public:
 	std::string to_string() const;
 	void addFigura(const std::shared_ptr<Figura> f);
 	void addLuz(const LuzPuntual& luz);
+	void addLuz(const LuzDireccional& luzD);
+
 
 	void addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectFiguras);
 
@@ -45,8 +50,12 @@ public:
 	void getFiguras(std::vector<std::shared_ptr<Figura>>& v) const;
 
 	void getLuces(std::vector<LuzPuntual>& vLuces) const;
+	void getLucesDireccionales(std::vector<LuzDireccional>& vLuces) const;
+
 
 	int getNumLuces() const;
+	int getNumLucesDireccionales() const;
+
 
 	void getLuz(LuzPuntual& luz, const int i) const;
 	LuzPuntual getLuz(const int i) const;

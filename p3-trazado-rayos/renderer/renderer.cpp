@@ -51,6 +51,19 @@ Color Renderer::shadowRay(const Vector3& pto, const Vector3& normal, const int i
 	return c; // no esta iluminado
 }
 
+
+
+Color Renderer::shadowRayDireccionales(const Vector3& pto, const Vector3& normal, const LuzDireccional& luz) const {
+	Color c;
+	Vector3 rayoSombra = normalizar(-luz.getDir());
+	// rayoSombra = normalizar(rayoSombra);
+	auto interseccionFigura = e.interseccion(pto, rayoSombra);
+	if (!interseccionFigura) { // Si no intersecta con nada se añade
+		c = contribucion(luz.getEmision(), 1, normal, rayoSombra); // distancia 1 para que no cuente
+	}
+	return c; // no esta iluminado
+}
+
 Color Renderer::luzDirecta(const Vector3& pto, const Vector3& normal) const {
 	Color L;
 	int numLuces = e.getNumLuces();
@@ -66,14 +79,20 @@ Color Renderer::muestraLuzDirecta(const Vector3& pto, const Vector3& normal,
 	const GeneradorAleatorio& rng) const
 {
 	int numLuces = e.getNumLuces();
+	Color L;
 	if (numLuces>0) { // Se muestrea una sola luz
 
 		int indiceLuz = rng.rand(0, numLuces);
-		Color L = shadowRay(pto, normal, indiceLuz);
+		L = shadowRay(pto, normal, indiceLuz);
 		// std::cout << "L: " << L << '\n';
-		return L;
   }
-	return Color();
+	// Luces direccionales:
+	std::vector<LuzDireccional> vLuces;
+	e.getLucesDireccionales(vLuces);
+	for (auto l : vLuces) {
+		L = L + shadowRayDireccionales(pto, normal, l);
+	}
+	return L;
 }
 
 /*
@@ -366,7 +385,7 @@ void Renderer::render(const std::string fichero) {
 	initThreads(im, o, c->getNumPixeles()); // inicializar los threads
 	// std::cout << "hecho" << '\n';
 	waitThreads(); // y esperar a que terminen
-	im.setMaxFloat(rangoDinamico); 
+	im.setMaxFloat(rangoDinamico);
 	//im.guardar("out/HDR" + fichero, true); // guardar la imagen
 	im.extendedReinhard();
 	im.guardar("out/" + fichero, true); // guardar la imagen

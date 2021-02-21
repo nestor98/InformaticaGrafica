@@ -35,6 +35,10 @@ void Escena::addLuz(const LuzPuntual& luz)
 }
 
 
+void Escena::addLuz(const LuzDireccional& luzD)
+{
+	lucesDireccionales.emplace_back(luzD);
+}
 
 void Escena::addFiguras(const std::shared_ptr<std::vector<std::shared_ptr<Figura>>> vectFiguras) {
 	figuras.insert(figuras.end(), vectFiguras->begin(), vectFiguras->end());
@@ -112,6 +116,11 @@ int Escena::getNumLuces() const {
 	return luces.size();
 }
 
+
+int Escena::getNumLucesDireccionales() const {
+	return lucesDireccionales.size();
+}
+
 void Escena::getLuz(LuzPuntual& luz, const int i) const {
 	luz = luces[i];
 }
@@ -123,6 +132,10 @@ LuzPuntual Escena::getLuz(const int i) const {
 
 void Escena::getLuces(std::vector<LuzPuntual>& vLuces) const {
 	vLuces = luces;
+}
+
+void Escena::getLucesDireccionales(std::vector<LuzDireccional>& vLuces) const {
+	vLuces = lucesDireccionales;
 }
 
 void Escena::setMaterialFiguras(const std::vector<Material>& materiales){

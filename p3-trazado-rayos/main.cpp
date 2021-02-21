@@ -27,10 +27,10 @@ int main(int argc, char* argv[]) {
 	}
 
 	//720/16*9
-	auto escena = esferaSDF(500, 500 , atoi(argv[3])); // pixX, pixY, rayosPP
+	auto escena = esferaSDF(500, 500, atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
-	auto tipo = Renderer::TipoRender::Normales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
+	auto tipo = Renderer::TipoRender::Materiales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 
@@ -57,9 +57,6 @@ int main(int argc, char* argv[]) {
 				nFotonesCercanos = 100;
 		bool guardarDirectos =false;
 		float radioCausticos = 1.0f;
-		// Parametros PROGRESSIVE:
-		int nIteraciones = 10;
-		float r1 = 1.0;
 		// // Renderer de photon mapping:
 		PMRenderer pmrend(*escena, nThreads, tipo, usarBVH, resColor, maxNumFotones,
 			maxFotonesGlobales, maxFotonesCausticos, nFotonesCercanos,
@@ -68,16 +65,15 @@ int main(int argc, char* argv[]) {
 		if (seleccionado==PM) {
 			pmrend.render(argv[1]);
 		} else {
+			// Parametros PROGRESSIVE:
+			int nIteraciones = 10;
+			float r1 = 1.0;
 			pmrend.render(argv[1], nIteraciones, r1);
 		}
 	}
 
 	return 0;
 }
-
-
-
-
 
 
 

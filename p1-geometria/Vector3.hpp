@@ -12,7 +12,7 @@ const double PI = 3.141592653589793115997963468544185161590576171875;
 const int TAM_MATRIZ = 4;
 
  // Distancia de seguridad para alejar ptos de intersecciones:
-const double EPSILON_NORMAL = 1e-4;
+const double EPSILON_NORMAL = 1e-5;
 
 
 class Matriz4;

@@ -39,29 +39,34 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 		// Esfera con SDF:
 		float r = distanciaParedes/2.0;
 		Sphere esf(centroHabitacion.toArray(), r);
-		// Esfera esfControl(centroHabitacion-3*r*UP, r);
-		// esfControl.setMaterial(DIFUSO_BLANCO);
-		// e.addFigura(std::make_shared<Esfera>(esfControl));
-		int opcion = 2;
+		Esfera esfControl(centroHabitacion-2*r*UP, r/2);
+		esfControl.setMaterial(DIFUSO_BLANCO);
+		e.addFigura(std::make_shared<Esfera>(esfControl));
+		int opcion = 0;
 		if (opcion==0) { // Smooth union
 
 			// Otra:
-			Vector3 pos2 = centroHabitacion+r*LEFT*1.5;
-			Sphere esf2(pos2.toArray(), r);
+			Vector3 despl = r*LEFT*1.5/2;
+			Sphere esf2((centroHabitacion-despl).toArray(), r);
+			Sphere esf3((centroHabitacion+despl).toArray(), r);
 			// Smooth union:
-			float factor = 0.5; // Smoothing factor
+			float factor = 0.8; // Smoothing factor
 			SDFSmoothUnion sdfU(factor);
-			sdfU.addSDF(std::make_shared<Sphere>(esf)); // Add the spheres
+			sdfU.addSDF(std::make_shared<Sphere>(esf3)); // Add the spheres
 			sdfU.addSDF(std::make_shared<Sphere>(esf2));
 
 			// Wrapper:
 			SDFWrapper sdfW(std::make_shared<SDFSmoothUnion>(sdfU));
 
-
-			sdfW.setRandomColor();
+			sdfW.setMaterial(DIFUSO_VERDE_MAJO);
 
 			// Se añade:
 			e.addFigura(std::make_shared<SDFWrapper>(sdfW));
+
+			// luz puntual:
+			Color emisionLuces(30);//40 //8
+			LuzPuntual luz(centroHabitacion+UP+distanciaParedes*(-LEFT-2*FRONT), emisionLuces);
+			e.addLuz(luz);
 		}
 		else if (opcion == 1) { // Esfera sin mas
 			// Wrapper:

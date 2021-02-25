@@ -99,3 +99,6 @@ main: $(obj)
 .PHONY: clean
 clean:
 	rm -f $(obj) main
+
+miniclean:
+	rm -f main main.o figuras/sdfs/sdfWrapper.o

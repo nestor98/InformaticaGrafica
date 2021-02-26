@@ -83,6 +83,8 @@ public:
 // Clase matriz4, para las transformaciones de vectores
 class Matriz4 {
 private:
+	typedef std::array<std::array<float, 4>, 4> float4_4;
+
 	std::array<Vector3, 4> m; // formada por 4 vectores (verticales)
 
 	// Matriz identidad, se usa en otros metodos:
@@ -105,6 +107,8 @@ public:
 	// Por defecto, la identidad (no hace nada)
 	Matriz4();
 	Matriz4(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Vector3& v4);
+	Matriz4(const float4_4& arr);
+
 	/**************** Definiciones de transformaciones especificas ****************/
 
 	// desplazamiento en x,y,z:
@@ -161,6 +165,7 @@ public:
 
 	Vector3& operator [](int i);
 
+	float4_4 toArray() const;
 
 
 };

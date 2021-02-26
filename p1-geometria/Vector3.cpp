@@ -268,6 +268,15 @@ Matriz4::Matriz4(const Vector3& v1, const Vector3& v2, const Vector3& v3, const 
 	m[3] = v4;
 }
 
+Matriz4::Matriz4(const float4_4& arr) {
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < 4; j++) {
+			m[i][j] = arr[i][j];
+		}
+	}
+}
+
+
 /**************** Definiciones de transformaciones especificas ****************/
 
 // desplazamiento en x,y,z:
@@ -397,6 +406,17 @@ Vector3 Matriz4::operator [](int i) const {
 Vector3& Matriz4::operator [](int i) {
 	return m[i];
 }
+
+Matriz4::float4_4 Matriz4::toArray() const {
+	float4_4 arr;
+	for (size_t i = 0; i < 4; i++) {
+		for (size_t j = 0; j < 4; j++) {
+			arr[i][j] = m[i][j];
+		}
+	}
+	return arr;
+}
+
 
 
 /**************** OPERADORES ****************/

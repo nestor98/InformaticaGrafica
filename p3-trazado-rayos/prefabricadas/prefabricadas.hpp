@@ -19,11 +19,21 @@
 #include "src/primitives/sphere.hpp"
 #include "src/primitives/collections/smoothUnion.hpp"
 #include "src/primitives/modulo.hpp"
+#include "src/primitives/transformable.hpp"
 
+class MiSDF : public SDFTransformable {
+public:
+	MiSDF(const Mat4& base) : SDFTransformable(base) {}
+
+	float sdf(const Vec3& point) const override {
+		//return point.getModulo()-1.5; // radio 1.5
+		return sdf::sdBox(point, Vec3(0.5));
+	}
+};
 
 std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const int rayosPP) {
 		double distanciaParedes = 3;
-				Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
 		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
 		Vector3 posCam(0,0,0,true);
 		posCam = posCam - UP * distanciaParedes/4.0;
@@ -42,7 +52,7 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 		Esfera esfControl(centroHabitacion-2*r*UP, r/2);
 		esfControl.setMaterial(DIFUSO_BLANCO);
 		e.addFigura(std::make_shared<Esfera>(esfControl));
-		int opcion = 0;
+		int opcion = 3;
 		if (opcion==0) { // Smooth union
 
 			// Otra:
@@ -90,6 +100,26 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 			SDFModulo esfMod(std::make_shared<Sphere>(esf3), repetition.toArray());
 
 			SDFWrapper sdfW(std::make_shared<SDFModulo>(esfMod));
+
+		  sdfW.setMaterial(DIFUSO_VERDE_MAJO);
+			// sdfW.setRandomColor();
+			//
+			Color emisionLuces(4);//(4,3,1);//40 //8
+			LuzDireccional luz(-0.82*UP+LEFT+FRONT, emisionLuces);
+			e.addLuz(luz);
+			//Se añade:
+			e.addFigura(std::make_shared<SDFWrapper>(sdfW));
+		}
+		else if (opcion == 3) { // Box
+			Matriz4 base = BASE_UNIVERSAL;
+			base[3] = centroHabitacion+30*FRONT; base[3].setPunto();
+			Matriz4 rot;
+			rot.setRotarX(gradosARad(30));
+			base = rot*base;
+			std::cout << "base: " << base << '\n';
+			// SDFTransformable box(base.toArray());
+			MiSDF sdfT(base.toArray());
+			SDFWrapper sdfW(std::make_shared<MiSDF>(sdfT));
 
 		  sdfW.setMaterial(DIFUSO_VERDE_MAJO);
 			// sdfW.setRandomColor();

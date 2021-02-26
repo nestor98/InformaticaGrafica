@@ -51,8 +51,8 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 		Sphere esf(centroHabitacion.toArray(), r);
 		Esfera esfControl(centroHabitacion-2*r*UP, r/2);
 		esfControl.setMaterial(DIFUSO_BLANCO);
-		e.addFigura(std::make_shared<Esfera>(esfControl));
-		int opcion = 3;
+		//e.addFigura(std::make_shared<Esfera>(esfControl));
+		int opcion = 2;
 		if (opcion==0) { // Smooth union
 
 			// Otra:
@@ -94,15 +94,17 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 
 		}
 		else if (opcion == 2) { // Modulo
-			Vector3 repetition(6);
+			Vector3 repetition(r*3); repetition.setVector();
+			repetition[2] = repetition[2] * 5;
+			std::cout << "rep: " << repetition << '\n';
 			//Sphere esfOrigen(Vector3({0,0,0}).toArray(),r/5.0);
-			Sphere esf3(Vector3(centroSuelo-FRONT+UP).toArray(),r/5.0);
+			Sphere esf3((repetition/2).toArray(),r/2);
 			SDFModulo esfMod(std::make_shared<Sphere>(esf3), repetition.toArray());
 
 			SDFWrapper sdfW(std::make_shared<SDFModulo>(esfMod));
 
-		  sdfW.setMaterial(DIFUSO_VERDE_MAJO);
-			// sdfW.setRandomColor();
+		  // sdfW.setMaterial(DIFUSO_VERDE_MAJO);
+			sdfW.setRandomColor();
 			//
 			Color emisionLuces(4);//(4,3,1);//40 //8
 			LuzDireccional luz(-0.82*UP+LEFT+FRONT, emisionLuces);

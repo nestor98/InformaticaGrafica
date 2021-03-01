@@ -25,12 +25,15 @@ int main(int argc, char* argv[]) {
 		<< " <fichero de salida> <numero de threads> <rayospp> <resolColor> <0, 1 o 2 (PT,PM,PPM)>\n";
 		exit(1);
 	}
+	auto tipo = Renderer::TipoRender::Normales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
+	if (argc == 7) {
+		tipo = (atoi(argv[6])==1) ? Renderer::TipoRender::Normales : Renderer::TipoRender::Materiales;
+	}
 
 	//720/16*9
-	auto escena = esferaSDF(500, 500, atoi(argv[3])); // pixX, pixY, rayosPP
+	auto escena = sierpinskiTetra(1000, 1000, atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
-	auto tipo = Renderer::TipoRender::Normales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	bool usarBVH = true;
 	int resColor = atoi(argv[4]); // maxFloat de hdr
 
@@ -74,32 +77,3 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

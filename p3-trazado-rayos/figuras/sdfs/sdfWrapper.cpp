@@ -14,10 +14,10 @@ std::optional<Figura::InterseccionData> SDFWrapper::interseccion(const Vector3& 
 {
 	//std::cout << "intersectando wrapper" << '\n';
 	std::optional<rayMarching::Intersection> interseccion = rayMarching::sphereTrace(origen.toArray(), normalizar(dir).toArray(), *sdf);
-	if (!interseccion || interseccion->distance<0) return {};
+	if (!interseccion || interseccion->t<=0) return {};
 	Vector3 pto(interseccion->point.toArray());
 	pto.setPunto();
-	return InterseccionData{interseccion->distance, pto};
+	return InterseccionData{interseccion->t, pto};
 }
 
 Vector3 SDFWrapper::getNormal(const Vector3& pto) const {

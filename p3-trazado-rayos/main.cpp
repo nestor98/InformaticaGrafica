@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	}
 	auto tipo = Renderer::TipoRender::Normales;//;Normales//;//Materiales;//FotonMasCercano;//;FotonesRadioFijo;//Materiales;//VectoresWiReflexion;//Materiales;//VectoresWiRefraccion;krFresnel
 	if (argc == 7) {
-		tipo = (atoi(argv[6])==1) ? Renderer::TipoRender::Normales : Renderer::TipoRender::Materiales;
+		tipo = (atoi(argv[6])==1) ? tipo : Renderer::TipoRender::Materiales;
 	}
 
 	//720/16*9

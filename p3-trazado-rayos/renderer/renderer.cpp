@@ -199,7 +199,9 @@ Vector3 vectorTipoRender(const Renderer::TipoRender tipoRender, const std::share
 	}
 	else if (tipoRender == Renderer::Normales) {
 		// return fig->getNormal(ptoInterseccion);
-		return fig->getBase(ptoInterseccion)[2];
+		Vector3 n = fig->getBase(ptoInterseccion)[2];
+		// std::cout << "fig: " << fig << "\tn: " <<n << '\n';
+		return n;
 	}
 	else {
 		std::cerr << "ERROR: Tipo de render desconocido" << '\n';

@@ -228,7 +228,7 @@ std::unique_ptr<Escena> sierpinskiTetra(const int pixelesX, const int pixelesY, 
 		paredFondo.setMaterial(ESPEJO);
 		e.addFigura(std::make_shared<Plano>(paredFondo));
 
-		Plano paredDetras(FRONT, distanciaParedes);
+		Plano paredDetras(FRONT, 2.0*distanciaParedes);
 		paredDetras.setMaterial(ESPEJO);
 		e.addFigura(std::make_shared<Plano>(paredDetras));
 
@@ -242,6 +242,7 @@ std::unique_ptr<Escena> sierpinskiTetra(const int pixelesX, const int pixelesY, 
 		std::cout << "base: " << base << '\n';
 		// SDFTransformable box(base.toArray());
 		SierpinskiTetrahedron sdfS(base.toArray(), 5);
+		sdfS.setEpsilon(1e-5);
 		sdfS.setScale(1.1);
 		SDFWrapper sdfW(std::make_shared<SierpinskiTetrahedron>(sdfS));
 
@@ -313,16 +314,9 @@ std::unique_ptr<Escena> escenaPruebas(const int pixelesX, const int pixelesY, co
 		// prismaLuz.setColor(Color(100));
 		// 		e.addFigura(std::make_shared<Prisma>(prismaLuz));
 
-
-
 		// ----------------------- Camara:
 		// Camara c = Camara(posCam, fCam, lCam, uCam,pixelesX,pixelesY,rayosPP);
 		// std::cout << gradosARad(90) << '\n'<< PI/4.0 <<'\n';
-
-
-
-		//
-
 
 
 	Material cristal = Material(Color(), Color(), Color(0.9,0.9,0.9), 1.5f);

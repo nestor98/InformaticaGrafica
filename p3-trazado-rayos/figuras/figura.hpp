@@ -74,7 +74,6 @@ public:
 	void setMaterial(const Material& _m);
 	Material getMaterial() const;
 
-
 	// Geometria -------------------------
 	virtual std::optional<InterseccionData> interseccion(const Vector3& origen, const Vector3& dir) const;
 

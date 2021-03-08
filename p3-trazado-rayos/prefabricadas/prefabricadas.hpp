@@ -21,6 +21,7 @@
 #include "src/primitives/modulo.hpp"
 #include "src/primitives/transformable.hpp"
 #include "src/primitives/composites/sierpinski.hpp"
+#include "src/primitives/composites/romanescu.hpp"
 
 class MiSDF : public SDFTransformable {
 public:
@@ -236,21 +237,21 @@ std::unique_ptr<Escena> sierpinskiTetra(const int pixelesX, const int pixelesY, 
 		Matriz4 base = BASE_UNIVERSAL;
 		base[3] = centroHabitacion-2*FRONT-1.6*UP-0.7*LEFT; base[3].setPunto();
 		Matriz4 rot;
-		rot.setRotarX(gradosARad(45)); base = base*rot;
+		rot.setRotarX(gradosARad(55)); base = base*rot;
 		rot.setRotarZ(gradosARad(45)); base = base*rot;
 		// rot.setRotarY(gradosARad(30)); base = base*rot;
 		std::cout << "base: " << base << '\n';
 		// SDFTransformable box(base.toArray());
-		SierpinskiTetrahedron sdfS(base.toArray(), 5);
-		sdfS.setEpsilon(1e-5);
+		SierpinskiTetrahedron sdfS(base.toArray(), 6);
+		sdfS.setEpsilon(1e-6);
 		sdfS.setScale(1.1);
 		SDFWrapper sdfW(std::make_shared<SierpinskiTetrahedron>(sdfS));
 
-		Prisma pBase(base[3]-0.5*FRONT-UP*2+1.5*LEFT, Vector3(3.5,3.5,1));
+		Prisma pBase(base[3]-1.8*FRONT-UP*1.65+1.7*LEFT, Vector3(3.5,3.5,1));
 		pBase.setMaterial(DIFUSO_GRIS);
 		e.addFigura(std::make_shared<Prisma>(pBase));
 
-	  sdfW.setMaterial(DIFUSO_NARANJA);
+	  sdfW.setMaterial(MEZCLA_NARANJA);
 		// sdfW.setRandomColor();
 		//
 		//Se añade:
@@ -260,6 +261,77 @@ std::unique_ptr<Escena> sierpinskiTetra(const int pixelesX, const int pixelesY, 
 		return std::make_unique<Escena>(e);
 }
 
+
+
+
+std::unique_ptr<Escena> romanescu(const int pixelesX, const int pixelesY, const int rayosPP) {
+		double distanciaParedes = 3;
+		Vector3 centroSuelo =distanciaParedes*FRONT - distanciaParedes*UP;
+		Vector3 centroHabitacion = centroSuelo + distanciaParedes * UP;
+		Vector3 posCam(0,0,0,true);
+		posCam = posCam - UP * distanciaParedes/4.0;
+		double fov = gradosARad(60); //0.475 * PI;
+		Vector3 uCam = UP * double(pixelesY)/double(pixelesX);//(0,0,double(pixelesY)/double(pixelesX),false);
+		posCam = posCam + 1.6* LEFT;
+		Camara c = Camara(posCam-(centroHabitacion-posCam).getModulo()*FRONT,
+		centroHabitacion, uCam, fov, pixelesX, pixelesY, rayosPP);
+
+		Escena e(std::make_shared<Camara>(c));
+
+		// Cornell box:
+		// Paredes:
+		Plano suelo(UP, 1.0*distanciaParedes);
+		suelo.setMaterial(DIFUSO_GRIS);
+		e.addFigura(std::make_shared<Plano>(suelo));
+
+		Plano techo(-UP, distanciaParedes);
+		techo.setColor(2.5,2.5,2.5);
+		// techo.setMaterial(DIFUSO_BLANCO);
+		e.addFigura(std::make_shared<Plano>(techo));
+		Plano paredi(-LEFT, distanciaParedes);
+		 // paredi.setColor(0.8,0,0);
+		paredi.setMaterial(MEZCLA_ROJO);
+		e.addFigura(std::make_shared<Plano>(paredi));
+		Plano paredd(LEFT, distanciaParedes);
+
+		paredd.setMaterial(MEZCLA_VERDE);
+		e.addFigura(std::make_shared<Plano>(paredd));
+		//  -----------------
+		Plano paredFondo(-FRONT, 2.0*distanciaParedes);
+		paredFondo.setMaterial(ESPEJO);
+		e.addFigura(std::make_shared<Plano>(paredFondo));
+
+		Plano paredDetras(FRONT, 2.0*distanciaParedes);
+		paredDetras.setMaterial(ESPEJO);
+		e.addFigura(std::make_shared<Plano>(paredDetras));
+
+
+		Matriz4 base = BASE_UNIVERSAL;
+		base[3] = centroHabitacion-2*FRONT-1.6*UP-0.7*LEFT; base[3].setPunto();
+		Matriz4 rot;
+		rot.setRotarX(gradosARad(55)); base = base*rot;
+		rot.setRotarZ(gradosARad(45)); base = base*rot;
+		// rot.setRotarY(gradosARad(30)); base = base*rot;
+		std::cout << "base: " << base << '\n';
+		// SDFTransformable box(base.toArray());
+		Romanescu sdfS(base.toArray(), 1);
+		sdfS.setEpsilon(1e-6);
+		sdfS.setScale(0.4);
+		SDFWrapper sdfW(std::make_shared<Romanescu>(sdfS));
+
+		// Prisma pBase(base[3]-1.8*FRONT-UP*1.65+1.7*LEFT, Vector3(3.5,3.5,1));
+		// pBase.setMaterial(DIFUSO_GRIS);
+		// e.addFigura(std::make_shared<Prisma>(pBase));
+
+	  sdfW.setMaterial(MEZCLA_NARANJA);
+		// sdfW.setRandomColor();
+		//
+		//Se añade:
+		e.addFigura(std::make_shared<SDFWrapper>(sdfW));
+
+		std::cout << "escena:\n" << e << '\n';
+		return std::make_unique<Escena>(e);
+}
 
 /************************ Fin TFG ********************************/
 

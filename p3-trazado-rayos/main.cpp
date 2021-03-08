@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	//720/16*9
-	auto escena = sierpinskiTetra(1000, 1000, atoi(argv[3])); // pixX, pixY, rayosPP
+	auto escena = esferaSDF(1000, 1000, atoi(argv[3])); // pixX, pixY, rayosPP
 	//escena->setMaterialFiguras({DIFUSO_ROJO, DIFUSO_AZUL, DIFUSO_BLANCO});
 	int nThreads = atoi(argv[2]);
 	bool usarBVH = true;
@@ -77,3 +77,15 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+

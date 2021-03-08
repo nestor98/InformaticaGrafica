@@ -97,6 +97,7 @@ public:
 	const Material MEZCLA_BLANCO(Color(.85/2.0,.85/2.0,.85/2.0), Color(0.45,0.45,0.45), Color());
 	const Material MEZCLA_ROJO(Color(.85/2.0,.085/2.0,.085/2.0), Color(0.45,0.45,0.45), Color());
 	const Material MEZCLA_VERDE(Color(62.0/255/2.0,153.0/255.0/2.0,122.0/255.0/2.0), Color(0.45,0.45,0.45), Color());
+	const Material MEZCLA_NARANJA(Color(.85/1.2,.6/1.2,.02/1.2), Color(0.45,0.45,0.45), Color());
 
 
 

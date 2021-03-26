@@ -22,6 +22,7 @@
 #include "src/primitives/transformable.hpp"
 #include "src/primitives/composites/sierpinski.hpp"
 #include "src/primitives/composites/romanescu.hpp"
+#include "src/primitives/examples/displaced-plane.hpp"
 
 class MiSDF : public SDFTransformable {
 public:
@@ -57,8 +58,9 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 		Esfera esfControl(centroHabitacion-2*r*UP, r/2);
 		esfControl.setMaterial(DIFUSO_BLANCO);
 		//e.addFigura(std::make_shared<Esfera>(esfControl));
-		enum Opcion {smooth, esfe, modulo, miSDF, sierpinski};
-		Opcion opcion = Opcion::sierpinski;
+		enum Opcion {smooth, esfe, modulo,
+			miSDF, sierpinski, displacedPlane, perlin};
+		Opcion opcion = Opcion::perlin;
 		if (opcion==Opcion::smooth) { // Smooth union
 
 			// Otra:
@@ -83,6 +85,39 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 			Color emisionLuces(30);//40 //8
 			LuzPuntual luz(centroHabitacion+UP+distanciaParedes*(-LEFT-2*FRONT), emisionLuces);
 			e.addLuz(luz);
+		}
+		else if (opcion==Opcion::displacedPlane) { // Disp. plane
+			DisplacedPlaneSine dispPlane(UP.toArray(), 5);
+			dispPlane.setEpsilon(1e-1);
+			// Wrapper:
+			SDFWrapper sdfW(std::make_shared<DisplacedPlaneSine>(dispPlane));
+
+			sdfW.setMaterial(DIFUSO_VERDE_MAJO);
+
+			// Se añade:
+			e.addFigura(std::make_shared<SDFWrapper>(sdfW));
+
+			Color emisionLuces(4);//(4,3,1);//40 //8
+			LuzDireccional luz(-0.82*UP+LEFT+FRONT, emisionLuces);
+			e.addLuz(luz);
+		}
+		else if (opcion==Opcion::perlin) { // Disp. plane
+			int seed = 10;
+			PerlinPlane dispPlane(UP.toArray(), 5, seed);
+			dispPlane.setEpsilon(1e-1);
+			// Wrapper:
+			SDFWrapper sdfW(std::make_shared<PerlinPlane>(dispPlane));
+
+			sdfW.setMaterial(DIFUSO_VERDE_MAJO);
+
+			// Se añade:
+			e.addFigura(std::make_shared<SDFWrapper>(sdfW));
+
+			Color emisionLuces(4);//(4,3,1);//40 //8
+			LuzDireccional luz(-0.82*UP+LEFT+FRONT, emisionLuces);
+			LuzDireccional luz2(-0.82*UP-LEFT+FRONT, emisionLuces/2);
+			e.addLuz(luz);
+			e.addLuz(luz2);
 		}
 		else if (opcion == Opcion::esfe) { // Esfera sin mas
 			// Wrapper:
@@ -124,7 +159,7 @@ std::unique_ptr<Escena> esferaSDF(const int pixelesX, const int pixelesY, const 
 				// e.addFigura(std::make_shared<Plano>(techoLuz));
 
 				Esfera esfLuz(-LEFT*100-FRONT*30, 30);
-				esfLuz.setColor(500);
+				esfLuz.setColor(200);
 				e.addFigura(std::make_shared<Esfera>(esfLuz));
 			}
 
